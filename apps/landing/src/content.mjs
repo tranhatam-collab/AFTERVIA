@@ -19,9 +19,9 @@ const vi = {
   dateLocale: 'vi-VN',
   switch: { text: 'English', lang: 'en', path: '/en/' },
   meta: {
-    title: 'AFTERVIA — Sau mua, luôn rõ',
-    description: 'Nền tảng phối hợp hậu mãi có chứng cứ: giữ hồ sơ, ghi rõ trách nhiệm và biết bước tiếp theo. Đang phát triển, chưa mở bán.',
-    ogImageAlt: 'AFTERVIA: Sau mua, luôn rõ. Đang phát triển, chưa mở bán.',
+    title: 'AFTERVIA — Quản lý hậu mãi để mọi thứ bền lâu',
+    description: 'Nền tảng quản lý hậu mãi có chứng cứ: giữ hồ sơ, ghi rõ trách nhiệm và biết bước tiếp theo. Đang phát triển, chưa mở bán.',
+    ogImageAlt: 'AFTERVIA: Quản lý hậu mãi để mọi thứ bền lâu. Đang phát triển, chưa mở bán.',
     skip: 'Chuyển đến nội dung chính',
   },
   header: {
@@ -31,7 +31,8 @@ const vi = {
   },
   hero: {
     status: 'Đang phát triển · chưa mở bán',
-    h1: 'Sau mua, luôn rõ.',
+    h1: 'Quản lý hậu mãi để mọi thứ bền lâu.',
+    tagline: 'THINGS LIVE LONGER',
     lead: 'Hồ sơ hậu mãi thường nằm rải rác: hóa đơn trong email, bảo hành trong ảnh chụp, lịch sử sửa chữa trong tin nhắn. AFTERVIA giữ các bằng chứng đó ở một nơi, ghi rõ ai xác nhận điều gì và bước tiếp theo là gì.',
     ctaStatus: 'Xem trạng thái hiện tại',
     ctaPricing: 'Xem giá đề xuất',
@@ -151,9 +152,9 @@ const en = {
   dateLocale: 'en-US',
   switch: { text: 'Tiếng Việt', lang: 'vi', path: '/' },
   meta: {
-    title: 'AFTERVIA — Clarity after every purchase',
-    description: 'Evidence-led after-sales collaboration: keep records, show who is responsible and know the next step. In development, not yet on sale.',
-    ogImageAlt: 'AFTERVIA: Clarity after every purchase. In development, not yet on sale.',
+    title: 'AFTERVIA — Manage aftercare. Make things last longer.',
+    description: 'Evidence-led aftercare for products and the people who buy them: keep records, show who is responsible and know the next step. In development, not yet on sale.',
+    ogImageAlt: 'AFTERVIA: Manage aftercare. Make things last longer. In development, not yet on sale.',
     skip: 'Skip to main content',
   },
   header: {
@@ -163,7 +164,8 @@ const en = {
   },
   hero: {
     status: 'In development · not yet on sale',
-    h1: 'Clarity after every purchase.',
+    h1: 'Manage aftercare. Make things last longer.',
+    tagline: 'THINGS LIVE LONGER',
     lead: 'After-sales records are scattered: an invoice in an email, a warranty in a photo, a repair history in a chat. AFTERVIA keeps that evidence in one place, shows who confirmed what and what happens next.',
     ctaStatus: 'See current status',
     ctaPricing: 'See proposed prices',

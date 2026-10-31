@@ -1,41 +1,63 @@
 /* AFTERVIA landing. Không JavaScript, không font hay ảnh bên ngoài.
-   Màu là token trên :root; chế độ tối nằm trong media query riêng. */
+   Font Inter được tự host trong /fonts (giấy phép OFL, xem fonts/LICENSE-Inter.txt).
+   Màu là token trên :root theo bảng nhận diện: Forest Green, Leaf Green, Warm White, Charcoal, Neutral Gray.
+   Chế độ tối nằm trong media query riêng. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-vietnamese-wght-normal.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-latin-wght-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 :root {
   color-scheme: light dark;
-  --color-paper: #F6F8FA;
+  --color-paper: #F8FAF7;
   --color-surface: #FFFFFF;
-  --color-ink: #142B36;
-  --color-ink-muted: #3D5561;
-  --color-accent: #167D8D;
-  --color-link: #0F6A78;
-  --color-primary: #0F6A78;
-  --color-on-primary: #FFFFFF;
+  --color-ink: #1F2937;
+  --color-ink-muted: #6B7280;
+  --color-accent: #0F4D3A;
+  --color-leaf: #22C55E;
+  --color-link: #0F4D3A;
+  --color-primary: #0F4D3A;
+  --color-on-primary: #F8FAF7;
   --color-warning: #8A5A0E;
-  --color-line: #D3DDE3;
-  --color-focus: #0F6A78;
-  --color-pill-bg: #E4EEF1;
-  --color-pill-ink: #0F4F5A;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --color-line: #DCE3DE;
+  --color-focus: #0F4D3A;
+  --color-pill-bg: #E4F2E9;
+  --color-pill-ink: #0F4D3A;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --radius: 14px;
   --max-width: 1120px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-paper: #0D1B22;
-    --color-surface: #142730;
-    --color-ink: #E8F0F4;
-    --color-ink-muted: #AFC2CC;
-    --color-accent: #3FB3C4;
-    --color-link: #7FD3DE;
-    --color-primary: #3FB3C4;
-    --color-on-primary: #0D1B22;
+    --color-paper: #1F2937;
+    --color-surface: #273342;
+    --color-ink: #F8FAF7;
+    --color-ink-muted: #A7B0BD;
+    --color-accent: #22C55E;
+    --color-leaf: #22C55E;
+    --color-link: #4ADE80;
+    --color-primary: #22C55E;
+    --color-on-primary: #1F2937;
     --color-warning: #E8B45C;
-    --color-line: #2A3F4A;
-    --color-focus: #7FD3DE;
-    --color-pill-bg: #173842;
-    --color-pill-ink: #B7E6EE;
+    --color-line: #34414F;
+    --color-focus: #4ADE80;
+    --color-pill-bg: #173A2A;
+    --color-pill-ink: #BBF7D0;
   }
 }
 
@@ -82,8 +104,8 @@ h1,
 h2,
 h3 {
   margin: 0 0 0.5em;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -149,11 +171,20 @@ ol {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   color: var(--color-ink);
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-decoration: none;
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  flex: none;
 }
 
 .primary-nav ul {
@@ -201,6 +232,15 @@ ol {
   color: var(--color-pill-ink);
   font-size: 0.875rem;
   font-weight: 650;
+}
+
+.tagline {
+  margin-bottom: 14px;
+  color: var(--color-link);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
 }
 
 .lead {
@@ -264,8 +304,8 @@ ol {
   stroke-width: 4;
 }
 
-.hero-mark .node-ink {
-  fill: var(--color-ink);
+.hero-mark .node-leaf {
+  fill: var(--color-leaf);
 }
 
 .section {

@@ -50,6 +50,7 @@ const ALLOWED_SAME = new Set([
   'Desk Growth',
   'Desk Scale',
   'USD',
+  'THINGS LIVE LONGER',
 ]);
 const NUMERIC_LIKE = /^[\d\s.,]+$/;
 
@@ -133,8 +134,8 @@ function renderHead(locale, env) {
     `<meta name="description" content="${description}">`,
     `<meta name="robots" content="${robots}">`,
     '<meta name="color-scheme" content="light dark">',
-    '<meta name="theme-color" content="#F6F8FA" media="(prefers-color-scheme: light)">',
-    '<meta name="theme-color" content="#0D1B22" media="(prefers-color-scheme: dark)">',
+    '<meta name="theme-color" content="#F8FAF7" media="(prefers-color-scheme: light)">',
+    '<meta name="theme-color" content="#1F2937" media="(prefers-color-scheme: dark)">',
     `<link rel="canonical" href="${canonical}">`,
     `<link rel="alternate" hreflang="vi" href="${SITE.origin}/">`,
     `<link rel="alternate" hreflang="en" href="${SITE.origin}/en/">`,
@@ -161,13 +162,18 @@ function renderHead(locale, env) {
   ].join('\n');
 }
 
+// Logo biểu tượng nội tuyến: cùng hình học với public/favicon.svg. Màu cố định theo bảng nhận diện.
+function renderMark() {
+  return '<svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect width="64" height="64" rx="14" fill="#0F4D3A"/><path d="M14 50 L32 14 L50 50" fill="none" stroke="#F8FAF7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 39 C 27 31, 36 31, 43 37 C 38 43, 29 44, 21 39 Z" fill="#22C55E"/></svg>';
+}
+
 function renderHeader(locale) {
   const t = locale;
   return [
     `<a class="skip-link" href="#main">${escapeHtml(t.meta.skip)}</a>`,
     '<header class="site-header">',
     '<div class="container header-row">',
-    `<a class="wordmark" href="${locale.path}">${SITE.name}</a>`,
+    `<a class="wordmark" href="${locale.path}">${renderMark()}<span>${SITE.name}</span></a>`,
     `<nav class="primary-nav" aria-label="${escapeHtml(t.header.navLabel)}">`,
     '<ul>',
     `<li><a href="#products">${escapeHtml(t.header.nav.products)}</a></li>`,
@@ -191,6 +197,7 @@ function renderHero(locale) {
     '<div class="container hero-grid">',
     '<div class="hero-copy">',
     `<p class="status-pill">${escapeHtml(t.status)}</p>`,
+    `<p class="tagline">${escapeHtml(t.tagline)}</p>`,
     `<h1 id="hero-title">${escapeHtml(t.h1)}</h1>`,
     `<p class="lead">${escapeHtml(t.lead)}</p>`,
     '<div class="actions">',
@@ -202,7 +209,7 @@ function renderHero(locale) {
     '<path class="track" d="M30 150 C 110 150, 120 60, 190 100 S 290 150, 330 50"/>',
     '<circle class="node" cx="30" cy="150" r="14"/>',
     '<circle class="node-hollow" cx="190" cy="100" r="14"/>',
-    '<circle class="node-ink" cx="330" cy="50" r="14"/>',
+    '<circle class="node-leaf" cx="330" cy="50" r="14"/>',
     '</svg>',
     '</div>',
     '</section>',

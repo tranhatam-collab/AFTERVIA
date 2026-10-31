@@ -1,13 +1,13 @@
 {
   "name": "AFTERVIA",
   "short_name": "AFTERVIA",
-  "description": "Nền tảng phối hợp hậu mãi có chứng cứ. Đang phát triển, chưa mở bán.",
+  "description": "Nền tảng quản lý hậu mãi có chứng cứ. Đang phát triển, chưa mở bán.",
   "lang": "vi",
   "start_url": "/",
   "scope": "/",
   "display": "browser",
-  "background_color": "#F6F8FA",
-  "theme_color": "#142B36",
+  "background_color": "#F8FAF7",
+  "theme_color": "#0F4D3A",
   "icons": [
     {
       "src": "/favicon.svg",

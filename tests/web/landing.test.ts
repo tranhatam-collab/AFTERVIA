@@ -307,10 +307,12 @@ describe('landing AFTERVIA (WEB-01)', () => {
       }
     });
 
-    it('WEB-01 css: không @import, không url(), không expression(); có :focus-visible và prefers-reduced-motion', () => {
+    it('WEB-01 css: không @import, url() chỉ trỏ tới /fonts cục bộ, không expression(); có :focus-visible và prefers-reduced-motion', () => {
       const css = readText(devDist, 'styles.css');
       expect(css).not.toMatch(/@import/);
-      expect(css).not.toMatch(/url\(/);
+      for (const match of css.matchAll(/url\(([^)]*)\)/g)) {
+        expect(match[1], 'url() chỉ được trỏ tới tệp cục bộ trong /fonts').toMatch(/^\/fonts\/[a-z0-9-]+\.woff2$/);
+      }
       expect(css).not.toMatch(/expression\(/i);
       expect(css).toMatch(/:focus-visible/);
       expect(css).toMatch(/prefers-reduced-motion/);
@@ -516,6 +518,37 @@ describe('landing AFTERVIA (WEB-01)', () => {
       const favicon = readText(devDist, 'favicon.svg').trim();
       expect(favicon.startsWith('<svg')).toBe(true);
       expect(favicon.endsWith('</svg>')).toBe(true);
+    });
+  });
+
+  describe('WEB-01: bộ nhận diện (bảng màu, font, logo)', () => {
+    it('WEB-01 brand: token màu khớp bảng nhận diện Forest Green, Leaf Green, Warm White, Charcoal, Neutral Gray', () => {
+      const { light, dark } = cssTokens(readText(devDist, 'styles.css'));
+      expect(light.primary).toBe('#0F4D3A');
+      expect(light.paper).toBe('#F8FAF7');
+      expect(light.ink).toBe('#1F2937');
+      expect(light['ink-muted']).toBe('#6B7280');
+      expect(light.leaf).toBe('#22C55E');
+      expect(dark.paper).toBe('#1F2937');
+      expect(dark.ink).toBe('#F8FAF7');
+      expect(dark.leaf).toBe('#22C55E');
+    });
+
+    it('WEB-01 brand: font Inter được tự host trong /fonts kèm giấy phép; không tải font từ bên ngoài', () => {
+      const css = readText(devDist, 'styles.css');
+      expect(css).toContain("font-family: 'Inter'");
+      expect(css).not.toMatch(/fonts\.googleapis|fonts\.gstatic|https?:\/\//);
+      for (const file of ['inter-latin-wght-normal.woff2', 'inter-vietnamese-wght-normal.woff2', 'LICENSE-Inter.txt']) {
+        expect(existsSync(join(devDist, 'fonts', file)), file).toBe(true);
+      }
+    });
+
+    it('WEB-01 brand: tagline THINGS LIVE LONGER và logo nội tuyến xuất hiện trên cả hai trang', () => {
+      for (const locale of ['vi', 'en'] as const) {
+        const page = loadPage(locale);
+        expect(textOf(page.root)).toContain('THINGS LIVE LONGER');
+        expect(page.elements.some(({ el }) => el.tagName === 'svg' && (attr(el, 'class') ?? '').includes('brand-mark'))).toBe(true);
+      }
     });
   });
 });

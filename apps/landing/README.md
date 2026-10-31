@@ -27,6 +27,8 @@ node apps/landing/build.mjs
 | `src/og-card.html` | Mẫu ảnh chia sẻ 1200×630 |
 | `public/_headers` | CSP và header bảo mật (Cloudflare Pages đọc tệp này trong thư mục output) |
 | `public/site.webmanifest`, `public/favicon.svg`, `public/og-image.png` | Manifest, favicon, ảnh chia sẻ |
+| `public/fonts/` | Inter (SIL OFL 1.1) tự host, subset latin và vietnamese, bản biến thiên; giấy phép `LICENSE-Inter.txt` |
+| `docs/design/BRAND_TOKENS.md` (ngoài thư mục này) | Bảng màu, chữ, logo, tagline và quy tắc áp dụng |
 
 ### Tạo lại `public/og-image.png`
 
