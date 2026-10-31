@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 23,
+    "iterations_used": 24,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -652,9 +652,17 @@
         "T19",
         "T20"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO08-02.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (bằng chứng chưa quét, lý do hiển thị hai bên, tổ chức SUSPENDED), giới hạn và rollback",
+        "supabase/migrations/0008_cases.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; bảng quy tắc khớp allowlist domain; cases, case_events và case_evidence với trigger chỉ thêm; RLS theo khách và thành viên tổ chức; create_case, attach_case_evidence, transition_case",
+        "tests/db/cases.test.ts: 9/9 pass (T17 4, T18 2, T19 2, T20 1): khách không đóng được case, cách ly tổ chức, hai kết nối đồng thời cùng phiên bản cho một thành công và một 409 không có khoảng trống lịch sử, yêu cầu lặp không ghi thêm, resolve và close cần outcome và bằng chứng, reopen giữ outcome, lịch sử không sửa hay xóa được",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 143 tệp, typecheck, build:landing, Vitest 205/205 trong 28 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 205/205 success=true; matrix from-report: T18 NOT_RUN -> PASS (PARTIAL); PASS 22, NOT_RUN 24, FAIL 0"
+      ],
+      "started_at": "2026-10-31T17:21:26.448Z",
+      "finished_at": "2026-10-31T17:26:26.940Z"
     },
     {
       "id": "WO08-03",
