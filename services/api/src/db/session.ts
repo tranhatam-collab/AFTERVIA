@@ -2,6 +2,9 @@
 // giống PostgREST, để RLS và hàm SECURITY DEFINER áp dụng đúng.
 import pg from 'pg';
 
+// Giữ ngày theo lịch dưới dạng chuỗi YYYY-MM-DD (OID 1082), không chuyển sang Date theo múi giờ (T22).
+pg.types.setTypeParser(1082, (value: string) => value);
+
 export function createPool(connectionString: string): pg.Pool {
   return new pg.Pool({ connectionString, max: 4 });
 }

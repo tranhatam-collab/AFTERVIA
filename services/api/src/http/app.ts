@@ -2,6 +2,7 @@
 // Đăng nhập chỉ là GIẢ LẬP ở môi trường local/test (DEC-ENG-11). Mọi lỗi trả về mã chung, không lộ sự tồn tại của tổ chức.
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import type pg from 'pg';
+import { normalizeItemFields, type ItemFields } from '@aftervia/domain';
 import { signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
 
@@ -78,6 +79,8 @@ function fromDbError(error: unknown): HttpError | null {
       return e.message?.includes('at least one active owner') ? new HttpError(409, 'last_owner') : new HttpError(400, 'invalid_input');
     case '22023':
       return new HttpError(400, 'invalid_input');
+    case '40001':
+      return new HttpError(409, 'version_conflict');
     default:
       return null;
   }
@@ -223,6 +226,68 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
         [orgId, targetId],
       ));
       return send(res, 200, { ok: true });
+    }
+  }
+
+  if (path === '/v1/items') {
+    if (method === 'GET') {
+      const rows = await runRead(config, auth.userId, async (c) => (await c.query(
+        'select id, title, brand, model, purchased_on, currency, version, created_at, updated_at from public.items order by created_at, id',
+      )).rows);
+      return send(res, 200, { items: rows });
+    }
+    if (method === 'POST') {
+      const body = await readJson(req);
+      const parsed = normalizeItemFields(body);
+      if (!parsed.ok) throw new HttpError(400, 'invalid_input');
+      const f = parsed.value;
+      const id = await runRead(config, auth.userId, async (c) => (await c.query(
+        'select public.create_item($1, $2, $3, $4, $5) as id',
+        [f.title, f.brand, f.model, f.purchasedOn, f.currency],
+      )).rows[0]?.id as string);
+      return send(res, 201, { id });
+    }
+  }
+
+  const item = /^\/v1\/items\/([^/]+)$/.exec(path);
+  if (item) {
+    const itemId = item[1] ?? '';
+    if (!UUID.test(itemId)) return send(res, 404, { error: 'not_found' });
+    if (method === 'GET') {
+      const rows = await runRead(config, auth.userId, async (c) => (await c.query(
+        'select id, title, brand, model, purchased_on, currency, version, created_at, updated_at from public.items where id = $1',
+        [itemId],
+      )).rows);
+      if (rows.length === 0) return send(res, 404, { error: 'not_found' });
+      return send(res, 200, { item: rows[0] });
+    }
+    if (method === 'PATCH') {
+      const body = await readJson(req);
+      const expected = body.version;
+      if (typeof expected !== 'number' || !Number.isInteger(expected) || expected < 1) throw new HttpError(400, 'invalid_input');
+      const version = await runRead(config, auth.userId, async (c) => {
+        const current = (await c.query(
+          'select title, brand, model, purchased_on, currency from public.items where id = $1',
+          [itemId],
+        )).rows[0];
+        if (!current) throw new HttpError(404, 'not_found');
+        const base: ItemFields = {
+          title: current.title as string,
+          brand: (current.brand as string | null) ?? null,
+          model: (current.model as string | null) ?? null,
+          purchasedOn: (current.purchased_on as string | null) ?? null,
+          currency: (current.currency as string | null)?.trim() ?? null,
+        };
+        const merged = normalizeItemFields(body, base);
+        if (!merged.ok) throw new HttpError(400, 'invalid_input');
+        const f = merged.value;
+        const result = await c.query(
+          'select public.update_item($1, $2, $3, $4, $5, $6, $7) as version',
+          [itemId, expected, f.title, f.brand, f.model, f.purchasedOn, f.currency],
+        );
+        return result.rows[0]?.version as number;
+      });
+      return send(res, 200, { version });
     }
   }
 

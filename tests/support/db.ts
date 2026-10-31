@@ -1,4 +1,6 @@
 import pg from 'pg';
+
+pg.types.setTypeParser(1082, (value: string) => value);
 import { applyMigrations, applyShim, assertTestDatabase } from '../../tools/db/migrate.mjs';
 
 // Database-backed tests never skip. A missing URL is a failure, so no PASS can come from silence.
