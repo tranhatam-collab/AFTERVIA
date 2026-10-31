@@ -17,3 +17,20 @@
 ## B. Quyết định cần chủ dự án (DEC01–DEC12)
 
 Xem bảng trạng thái trong `00_EXECUTION_PLAN.md` mục 6. Không quyết định nào trong số này được coi là đã duyệt vì file này tồn tại.
+
+## C. Phê duyệt của chủ dự án
+
+Ngày 31/10/2026, chủ dự án trả lời "All" cho câu hỏi 1–5 trong phiên. Ghi nhận như sau:
+
+| Câu | Nội dung | Phê duyệt |
+|---|---|---|
+| 1 | Tạo `main` làm base cho PR nháp | Đồng ý về ý định. Cách thực hiện đã đề xuất không dùng được, xem `docs/plan/evidence/PR-STATUS.md`. Chờ chọn phương án A hoặc B. |
+| 2 | Builder là Claude Code trong repo (DEC-ENG-01) | Đồng ý |
+| 3 | Vòng lặp tự chạy đến khi hết việc máy làm được, tối đa 60 lượt (DEC-ENG-08) | Đồng ý. Dừng khi chủ dự án nói "dừng vòng lặp" |
+| 4 | Viết mã synthetic trước khi G0 đóng (DEC-ENG-05) | Đồng ý. Không dữ liệu thật, không production, không thanh toán live khi chưa đủ G0 |
+| 5 | Stack TypeScript, Node 22, PostgreSQL 16, Vitest; Expo cho mobile khi tới WO10 (DEC-ENG-02) | Đồng ý |
+| 6 | Danh sách phỏng vấn và hạn mức chi cho người tham gia (DEC04) | Chưa trả lời |
+| 7 | Bật HawkScan DAST | Chưa trả lời. Cần Docker chạy được và `HAWK_API_KEY` đặt trong môi trường, không dán vào chat |
+| 8 | Phiên bản trình duyệt mục tiêu (T36) | Chưa trả lời |
+
+Phê duyệt này không bao gồm: production, dữ liệu thật, thanh toán live, tài khoản dịch vụ, mua tên miền, nộp store, gửi tin cho khách. Những việc đó vẫn cần phê duyệt riêng.
