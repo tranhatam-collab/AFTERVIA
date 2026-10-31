@@ -28,5 +28,21 @@
   "confirmed.badge": "Đã xác nhận bởi {actor}",
   "confirmed.evidence": "Nguồn: {source}",
   "locale.vi": "Tiếng Việt",
-  "locale.en": "English"
+  "locale.en": "English",
+  "nav.items": "Món đồ",
+  "nav.cases": "Case",
+  "nav.reminders": "Nhắc việc",
+  "nav.settings": "Cài đặt",
+  "outbox.pending": "Chờ đồng bộ",
+  "outbox.syncing": "Đang đồng bộ",
+  "outbox.synced": "Đã đồng bộ",
+  "outbox.uncertain": "Chưa xác nhận: bản nháp này có thể đã được lưu. Kiểm tra danh sách trước khi gửi lại.",
+  "outbox.rejected": "Máy chủ không nhận bản nháp này. Sửa rồi lưu lại.",
+  "outbox.cancelled": "Đã hủy",
+  "outbox.cancel": "Hủy bản nháp",
+  "outbox.confirmRetry": "Đã kiểm tra danh sách, gửi lại",
+  "outbox.resume": "Đồng bộ ngay",
+  "item.add": "Thêm món đồ",
+  "item.draft.saved": "Đã lưu nháp trên thiết bị. Chưa gửi lên máy chủ.",
+  "settings.language": "Ngôn ngữ"
 }

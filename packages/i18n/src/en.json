@@ -28,5 +28,21 @@
   "confirmed.badge": "Confirmed by {actor}",
   "confirmed.evidence": "Source: {source}",
   "locale.vi": "Tiếng Việt",
-  "locale.en": "English"
+  "locale.en": "English",
+  "nav.items": "Items",
+  "nav.cases": "Cases",
+  "nav.reminders": "Reminders",
+  "nav.settings": "Settings",
+  "outbox.pending": "Waiting to sync",
+  "outbox.syncing": "Syncing",
+  "outbox.synced": "Synced",
+  "outbox.uncertain": "Not confirmed: this draft may already be saved. Check the list before sending again.",
+  "outbox.rejected": "The server did not accept this draft. Fix it and save again.",
+  "outbox.cancelled": "Cancelled",
+  "outbox.cancel": "Cancel draft",
+  "outbox.confirmRetry": "I checked the list, send again",
+  "outbox.resume": "Sync now",
+  "item.add": "Add item",
+  "item.draft.saved": "Saved as a draft on this device. Not sent to the server yet.",
+  "settings.language": "Language"
 }

@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 29,
+    "iterations_used": 30,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -803,9 +803,17 @@
       "acceptance": [
         "T23"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-02.md: lệnh, kết quả, phụ thuộc đã ghim, giới hạn (không chạy trên thiết bị, chưa đăng nhập, chưa khử trùng máy chủ, AsyncStorage chưa kiểm trên máy), audit 31 cảnh báo và rollback",
+        "apps/mobile/src/offline: outbox.ts (hàng đợi có trạng thái, gửi tối đa một lần, không báo đã gửi khi chưa xác nhận), send-item.ts (ánh xạ HTTP sang bốn kết quả), draft.ts (kiểm bản nháp theo miền dữ liệu)",
+        "apps/mobile/app: 4 tab (Món đồ, Case, Nhắc việc, Cài đặt), màn thêm món đồ lưu nháp không báo đã gửi, đồng bộ thủ công, gửi lại chỉ sau xác nhận",
+        "tests/mobile/outbox.test.ts: 19 kiểm thử logic (tên không mang mã T23 vì T23 là DEVICE, vẫn NOT_RUN); tests/i18n/catalog.test.ts: thêm 16 khóa vào danh sách bắt buộc",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 194 tệp, typecheck gốc và apps/mobile, build:landing, build:web, Vitest 276/276 trong 34 tệp, kiểm thử vòng lặp 13/13; JSON 276/276 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0"
+      ],
+      "started_at": "2026-10-31T18:41:51.981Z",
+      "finished_at": "2026-10-31T18:42:26.746Z"
     },
     {
       "id": "WO10-03",
