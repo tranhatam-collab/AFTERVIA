@@ -22,7 +22,7 @@ T20,Cases,HIGH,Reopen,AUTO,PARTIAL,WO08-02,PASS,2026-10-31,
 T21,Notifications,MEDIUM,Push bị từ chối,DEVICE,PARTIAL,WO07-03;DEV-01,PASS,2026-10-31,Quyền push thật nằm trên thiết bị.
 T22,Dates,HIGH,Múi giờ/đổi ngày,AUTO,PARTIAL,WO07-02,PASS,2026-10-31,
 T23,Offline,HIGH,Queue mất mạng,DEVICE,PARTIAL,WO10-02;DEV-01,NOT_RUN,,Hàng đợi offline có unit test; mất mạng thật cần thiết bị.
-T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,NOT_RUN,,
+T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,PASS,2026-10-31,
 T25,Deletion,HIGH,Xóa tài khoản,AUTO,PARTIAL,WO11-02;WO11-03,NOT_RUN,,
 T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02;WO16-01,NOT_RUN,,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA.
 T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,NOT_RUN,,Chỉ fixture sandbox; không dùng khóa live.

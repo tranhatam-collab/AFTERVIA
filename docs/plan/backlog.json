@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 30,
+    "iterations_used": 31,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -845,9 +845,17 @@
       "acceptance": [
         "T24"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-01.md: lệnh, kết quả, phạm vi, giới hạn (chưa có HTTP, hết hạn đọc bằng mắt, chưa dọn dẹp gói, không có byte tài liệu) và rollback",
+        "supabase/migrations/0013_exports.sql: bảng gói và file chỉ thêm, RLS, export_granted_documents, store_export kiểm phạm vi và băm trong cơ sở dữ liệu, fetch_export_file với mã băm và TTL 24 giờ",
+        "services/api/src/export/bundle.ts: dựng năm tệp JSON, CSV (RFC 4180, chống tiêm công thức) và manifest SHA-256; chỉ chạy ở máy chủ",
+        "tests/db/exports.test.ts: 7 kiểm thử T24 trên aftervia_test (phạm vi grant, phạm vi chủ gói, manifest, gói sai phạm vi bị từ chối, liên kết tạm, đường dẫn và gửi lại, grant đã thu hồi) và 3 kiểm thử đơn vị",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 199 tệp, typecheck gốc và apps/mobile, build landing và web, Vitest 286/286 trong 35 tệp, kiểm thử vòng lặp 13/13; JSON 286/286 success=true; T24 NOT_RUN -> PASS (PARTIAL); PASS 25, NOT_RUN 21, FAIL 0"
+      ],
+      "started_at": "2026-10-31T18:48:46.863Z",
+      "finished_at": "2026-10-31T18:52:49.844Z"
     },
     {
       "id": "WO11-02",
