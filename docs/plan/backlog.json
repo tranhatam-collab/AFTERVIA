@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 25,
+    "iterations_used": 26,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -702,9 +702,17 @@
         "T07",
         "T08"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-01.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (hạn 30 ngày, chỉ partner, chủ case đọc bằng chứng của mình, timeline cho người tham gia), giới hạn (chưa có proxy, bản đã tải không thu hồi được) và rollback",
+        "supabase/migrations/0010_sharing.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; case_participants và case_document_grants chỉ server ghi, RLS theo người liên quan; check_document_access trả về lý do từ chối, người ngoài nhận not_allowed",
+        "tests/db/sharing.test.ts: 9/9 pass (T07 5, T08 4): đối tác chỉ thấy case được mời, đối tác dùng ID hoặc tài liệu của case khác bị từ chối, người lạ không được cấp grant, thu hồi grant và người tham gia có hiệu lực ngay, hết hạn được DB kiểm, grant không có ký tự đại diện và không trùng, quyền đọc và ghi, audit đầy đủ",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 151 tệp, typecheck, build:landing, Vitest 220/220 trong 30 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 220/220 success=true; T05 14 và T06 37 vẫn pass; matrix from-report: T07 và T08 NOT_RUN -> PASS, coverage PARTIAL; proxy đọc tài liệu là WO09-02"
+      ],
+      "started_at": "2026-10-31T17:39:17.483Z",
+      "finished_at": "2026-10-31T17:42:13.469Z"
     },
     {
       "id": "WO09-02",
