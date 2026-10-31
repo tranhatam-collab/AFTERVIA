@@ -30,3 +30,25 @@ export async function resetTestDatabase(url: string = testDatabaseUrl()): Promis
     await client.end();
   }
 }
+
+// Runs a block as an authenticated user (or anon when userId is null) in one transaction.
+// Commits on success, rolls back on error. Mirrors how PostgREST sets claims per request.
+export async function asActor<T>(userId: string | null, run: (client: pg.Client) => Promise<T>): Promise<T> {
+  const client = await connect();
+  try {
+    await client.query('begin');
+    const claims = userId ? { sub: userId, role: 'authenticated' } : { role: 'anon' };
+    await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify(claims)]);
+    await client.query(`set local role ${userId ? 'authenticated' : 'anon'}`);
+    try {
+      const result = await run(client);
+      await client.query('commit');
+      return result;
+    } catch (error) {
+      await client.query('rollback');
+      throw error;
+    }
+  } finally {
+    await client.end();
+  }
+}

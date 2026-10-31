@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 5,
+    "iterations_used": 6,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -191,9 +191,15 @@
         "T03",
         "T06"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 41 files, vitest 22/22 (T37 4 + T03 5 + identity 13), node 13/13",
+        "matrix: T06 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-01.md"
+      ],
+      "started_at": "2026-10-31T14:36:31.634Z",
+      "finished_at": "2026-10-31T14:38:16.334Z"
     },
     {
       "id": "WO04-02",
