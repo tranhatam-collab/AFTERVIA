@@ -85,3 +85,7 @@ Mỗi lần dừng phải có:
 ## 6. Dừng khẩn
 
 Nếu phát hiện lỗ hổng rò dữ liệu, đăng nhập sai tenant, thanh toán ngoài dự kiến hoặc lệnh có thể xóa dữ liệu thật: dừng vòng ngay, không lên lịch vòng kế tiếp, và báo cáo bằng chứng.
+
+## 7. Trạng thái PR
+
+Nếu tạo PR nháp thất bại vì thiếu nhánh base, ghi lại trong `docs/plan/evidence/PR-STATUS.md`, không thử lại mỗi vòng, không tạo nhánh base khi chưa có phê duyệt rõ ràng, và tiếp tục vòng lặp trên nhánh làm việc.
