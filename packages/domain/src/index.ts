@@ -7,3 +7,4 @@ export * from './extraction-schema';
 export * from './ai-gateway';
 export * from './confirmation';
 export * from './ai-resilience';
+export * from './reminder-schedule';
