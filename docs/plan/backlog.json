@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 3,
+    "iterations_used": 4,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -144,9 +144,16 @@
       "acceptance": [
         "T03"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "db:migrate --with-shim trên aftervia_test: applied 1 (0000_baseline)",
+        "npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 36 files, vitest 9/9 (T37 4 + T03 5), node 13/13",
+        "matrix: T03 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO03-03.md"
+      ],
+      "started_at": "2026-10-31T14:29:44.019Z",
+      "finished_at": "2026-10-31T14:30:12.097Z"
     },
     {
       "id": "WO03-04",

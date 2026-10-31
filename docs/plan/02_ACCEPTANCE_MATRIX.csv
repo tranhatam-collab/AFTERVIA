@@ -1,7 +1,7 @@
 test_id,domain,severity,title,automation_class,coverage,mapped_tasks,test_status,last_run,note
 T01,G0,CRITICAL,Wron source export,G0_EXTERNAL,NONE,HUM-G0-01,NOT_RUN,,Chỉ áp dụng nếu Wron là builder. Repo này thuộc chủ dự án; vẫn cần xác nhận quyền và license dependency.
 T02,G0,CRITICAL,Quyền khai thác,LEGAL,NONE,HUM-G0-01;HUM-WO18-02,NOT_RUN,,Hợp đồng/điều khoản là việc của chủ dự án và luật sư; AI không tự phê duyệt.
-T03,G0,CRITICAL,Persistence,AUTO,PARTIAL,WO03-03;WO04-01,NOT_RUN,,Kiểm tra qua kết nối DB mới; chưa có restart tiến trình API thật.
+T03,G0,CRITICAL,Persistence,AUTO,PARTIAL,WO03-03;WO04-01,PASS,2026-10-31,Kiểm tra qua kết nối DB mới; chưa có restart tiến trình API thật.
 T04,Auth,CRITICAL,Khách A đọc item B,AUTO,PARTIAL,WO04-03;WO05-01;WO07-01;WO09-03,NOT_RUN,,Phủ profiles/organizations/members; items và documents bổ sung sau.
 T05,Auth,CRITICAL,Tenant A truy cập tenant B,AUTO,PARTIAL,WO04-03;WO08-03;WO09-03,NOT_RUN,,Storage và search sẽ có test riêng khi các đường đó tồn tại.
 T06,Auth,CRITICAL,Role escalation,AUTO,PARTIAL,WO04-01;WO04-02;WO04-03;WO08-03,NOT_RUN,,Đường client trực tiếp đã kiểm; đường HTTP chờ WO09-03.
