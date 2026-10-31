@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 27,
+    "iterations_used": 28,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -754,9 +754,17 @@
         "T04",
         "T05"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-03.md: lệnh, kết quả, đối chiếu 13 thao tác, sai khác so với hợp đồng, quy tắc, giới hạn và rollback",
+        "services/api/src/http/contract.ts: bảng 13 thao tác (operationId, method, đường dẫn, cách triển khai) và matchContract",
+        "services/api/src/http/app.ts: thao tác hợp đồng đi qua handleContract (401, lỗi code/message/request_id, 501 cho 5 thao tác chưa có nền tảng, alias upload-ticket, route_not_found)",
+        "tests/api/contract.test.ts: 17/17 pass: parity với OpenAPI, 401 và 501, T04 x2 và T05 x1 qua HTTP với 404 đồng nhất, luồng case, chuyển trạng thái, grant và thu hồi",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 160 tệp, typecheck, build:landing, Vitest 245/245 trong 32 tệp, kiểm thử vòng lặp 13/13; JSON 245/245 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0"
+      ],
+      "started_at": "2026-10-31T17:55:33.551Z",
+      "finished_at": "2026-10-31T18:08:27.485Z"
     },
     {
       "id": "WO10-01",

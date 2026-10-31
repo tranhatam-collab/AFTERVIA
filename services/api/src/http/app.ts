@@ -5,6 +5,9 @@ import type pg from 'pg';
 import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@aftervia/domain';
 import { signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
+import { randomUUID } from 'node:crypto';
+import { CASE_STATES } from '@aftervia/domain';
+import { matchContract, type ContractMatch } from './contract';
 
 export interface AppConfig {
   pool: pg.Pool;
@@ -144,6 +147,9 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
     const token = signHs256({ sub: userId, role: 'authenticated', iat: now, exp: now + TOKEN_TTL_SECONDS, simulated: true }, config.jwtSecret);
     return send(res, 200, { access_token: token, token_type: 'Bearer', expires_in: TOKEN_TTL_SECONDS, simulated: true });
   }
+
+  const contract = matchContract(method, path);
+  if (contract && contract.route.implementedBy !== 'legacy') return handleContract(req, res, config, contract);
 
   const auth = authenticate(req, config);
 
@@ -291,8 +297,8 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
     }
   }
 
-  if (path === '/v1/documents') {
-    if (method === 'GET') {
+  if (path === '/v1/documents' || path === '/v1/documents/upload-ticket') {
+    if (method === 'GET' && path === '/v1/documents') {
       const rows = await runRead(config, auth.userId, async (c) => (await c.query(
         'select id, declared_mime, size_bytes, scan_status, created_at, updated_at from public.documents order by created_at, id',
       )).rows);
@@ -326,7 +332,203 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
     return send(res, 200, { document: rows[0] });
   }
 
-  return send(res, 404, { error: 'not_found' });
+  return send(res, 404, { error: 'route_not_found' });
+}
+
+// Thao tác theo hợp đồng (WO09-03). Lỗi dùng đúng hình dạng Error của hợp đồng: { code, message, request_id }.
+const CONTRACT_MESSAGES: Record<string, string> = {
+  unauthenticated: 'Authentication is required.',
+  forbidden: 'You do not have permission for this action.',
+  not_found: 'Not found.',
+  conflict: 'The request conflicts with an existing record.',
+  version_conflict: 'The record was changed by someone else. Reload and try again.',
+  invalid_state: 'This action is not allowed in the current state.',
+  invalid_input: 'The request is invalid.',
+  not_implemented: 'This operation is not available yet.',
+  internal_error: 'An internal error occurred.',
+};
+const DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:\d{2})$/;
+
+function sendContractError(res: ServerResponse, status: number, code: string, requestId: string): void {
+  const key = code in CONTRACT_MESSAGES ? code : status >= 500 ? 'internal_error' : 'invalid_input';
+  send(res, status, { code: key, message: CONTRACT_MESSAGES[key], request_id: requestId });
+}
+
+// Đổi lỗi cơ sở dữ liệu thành mã của hợp đồng. Không tiết lộ đối tượng: thiếu quyền và không tồn tại cho cùng 404.
+function contractDbError(error: unknown): { status: number; code: string } | null {
+  switch ((error as { code?: string }).code) {
+    case '42501':
+      return { status: 403, code: 'forbidden' };
+    case 'P0002':
+      return { status: 404, code: 'not_found' };
+    case '23505':
+      return { status: 409, code: 'conflict' };
+    case '40001':
+      return { status: 409, code: 'version_conflict' };
+    case '55000':
+      return { status: 409, code: 'invalid_state' };
+    case '22023':
+    case '22P02':
+    case '23514':
+      return { status: 400, code: 'invalid_input' };
+    default:
+      return null;
+  }
+}
+
+function contractUuid(value: unknown): string {
+  if (typeof value !== 'string' || !UUID.test(value)) throw new HttpError(400, 'invalid_input');
+  return value;
+}
+
+// Tham số đường dẫn sai định dạng được coi là không tìm thấy, như mọi đối tượng khác.
+function pathUuid(value: string): string {
+  if (!UUID.test(value)) throw new HttpError(404, 'not_found');
+  return value;
+}
+
+function contractBody(body: Record<string, unknown>, required: string[], optional: string[]): void {
+  const allowed = new Set([...required, ...optional]);
+  for (const key of Object.keys(body)) if (!allowed.has(key)) throw new HttpError(400, 'invalid_input');
+  for (const key of required) if (!(key in body)) throw new HttpError(400, 'invalid_input');
+}
+
+function idempotencyKey(req: IncomingMessage): string {
+  const value = req.headers['idempotency-key'];
+  if (typeof value !== 'string' || value.length < 8 || value.length > 128) throw new HttpError(400, 'invalid_input');
+  return value;
+}
+
+function boundedText(value: unknown, max: number): string {
+  if (typeof value !== 'string') throw new HttpError(400, 'invalid_input');
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.length > max) throw new HttpError(400, 'invalid_input');
+  return trimmed;
+}
+
+function uuidList(value: unknown): string[] {
+  if (!Array.isArray(value) || value.length > 20) throw new HttpError(400, 'invalid_input');
+  return value.map((item) => contractUuid(item));
+}
+
+function dateTime(value: unknown): string {
+  if (typeof value !== 'string' || !DATE_TIME.test(value) || Number.isNaN(Date.parse(value))) throw new HttpError(400, 'invalid_input');
+  return value;
+}
+
+async function caseSummary(client: pg.PoolClient, caseId: string): Promise<Record<string, unknown>> {
+  const row = (await client.query('select id, status, version, outcome from public.cases where id = $1', [caseId])).rows[0];
+  if (!row) throw new HttpError(404, 'not_found');
+  return { id: row.id, status: row.status, version: row.version, outcome: row.outcome };
+}
+
+async function runContract(req: IncomingMessage, config: AppConfig, userId: string, match: ContractMatch): Promise<unknown> {
+  const { params, route } = match;
+  switch (route.operationId) {
+    case 'createCase': {
+      const key = idempotencyKey(req);
+      const body = await readJson(req);
+      contractBody(body, ['item_id', 'organization_id', 'description', 'shared_document_ids'], []);
+      const itemId = contractUuid(body.item_id);
+      const orgId = contractUuid(body.organization_id);
+      const description = boundedText(body.description, 4000);
+      // Giới hạn lý do của cơ sở dữ liệu là 500 ký tự; hợp đồng cho phép 4000. Sai khác được ghi trong evidence.
+      if (description.length > 500) throw new HttpError(400, 'invalid_input');
+      const shared = uuidList(body.shared_document_ids);
+      return withUser(config.pool, userId, async (c) => {
+        const created = (await c.query('select out_case_id from public.create_case($1::uuid, $2::uuid, $3::text, $4::text)', [
+          itemId,
+          orgId,
+          description,
+          key,
+        ])).rows[0];
+        const caseId = created?.out_case_id as string;
+        for (const doc of shared) await c.query('select public.attach_case_evidence($1::uuid, $2::uuid)', [caseId, doc]);
+        return caseSummary(c, caseId);
+      });
+    }
+    case 'getCase': {
+      const caseId = pathUuid(params.case_id ?? '');
+      return withUser(config.pool, userId, (c) => caseSummary(c, caseId));
+    }
+    case 'transitionCase': {
+      const caseId = pathUuid(params.case_id ?? '');
+      const key = idempotencyKey(req);
+      const body = await readJson(req);
+      contractBody(body, ['next_state', 'reason', 'expected_version'], ['evidence_document_ids']);
+      const next = body.next_state;
+      if (typeof next !== 'string' || !(CASE_STATES as readonly string[]).includes(next)) throw new HttpError(400, 'invalid_input');
+      const reason = boundedText(body.reason, 500);
+      const expected = body.expected_version;
+      if (typeof expected !== 'number' || !Number.isInteger(expected) || expected < 1) throw new HttpError(400, 'invalid_input');
+      const evidence = body.evidence_document_ids === undefined ? [] : uuidList(body.evidence_document_ids);
+      return withUser(config.pool, userId, async (c) => {
+        for (const doc of evidence) await c.query('select public.attach_case_evidence($1::uuid, $2::uuid)', [caseId, doc]);
+        // Hợp đồng không có trường outcome: resolve và close bị DB từ chối (invalid_input) cho đến khi hợp đồng được cập nhật.
+        const row = (await c.query(
+          'select out_version, out_status, out_outcome from public.transition_case($1::uuid, $2::text, $3::integer, $4::text, $5::text, null)',
+          [caseId, next, expected, reason, key],
+        )).rows[0];
+        return { id: caseId, status: row?.out_status, version: row?.out_version, outcome: row?.out_outcome ?? null };
+      });
+    }
+    case 'grantDocument': {
+      const caseId = pathUuid(params.case_id ?? '');
+      idempotencyKey(req); // hợp đồng yêu cầu khóa; việc cấp grant chưa có khóa lặp (ghi trong evidence)
+      const body = await readJson(req);
+      contractBody(body, ['document_id', 'recipient_id', 'expires_at', 'can_download'], []);
+      const doc = contractUuid(body.document_id);
+      const recipient = contractUuid(body.recipient_id);
+      const expires = dateTime(body.expires_at);
+      const canDownload = body.can_download;
+      if (typeof canDownload !== 'boolean') throw new HttpError(400, 'invalid_input');
+      return withUser(config.pool, userId, async (c) => {
+        const row = (await c.query(
+          'select public.grant_case_document($1::uuid, $2::uuid, $3::uuid, $4::boolean, $5::timestamptz) as id',
+          [caseId, doc, recipient, canDownload, expires],
+        )).rows[0];
+        return { id: row?.id as string, status: 'active' };
+      });
+    }
+    case 'revokeGrant': {
+      const caseId = pathUuid(params.case_id ?? '');
+      const grantId = pathUuid(params.grant_id ?? '');
+      return withUser(config.pool, userId, async (c) => {
+        // Grant phải thuộc đúng case trong đường dẫn. Không thuộc, hoặc không thấy được, đều là 404.
+        const found = await c.query('select id from public.case_document_grants where id = $1 and case_id = $2', [grantId, caseId]);
+        if (found.rowCount === 0) throw new HttpError(404, 'not_found');
+        await c.query('select public.revoke_case_document_grant($1::uuid)', [grantId]);
+        return { id: grantId, status: 'revoked' };
+      });
+    }
+    case 'extractDocument':
+    case 'reviewExtraction':
+    case 'createExport':
+    case 'requestDeletion':
+    case 'getJob':
+      throw new HttpError(501, 'not_implemented');
+    default:
+      throw new HttpError(404, 'not_found');
+  }
+}
+
+async function handleContract(req: IncomingMessage, res: ServerResponse, config: AppConfig, match: ContractMatch): Promise<void> {
+  const requestId = randomUUID();
+  res.setHeader('x-request-id', requestId);
+  let userId: string;
+  try {
+    userId = authenticate(req, config).userId;
+  } catch {
+    return sendContractError(res, 401, 'unauthenticated', requestId);
+  }
+  try {
+    return send(res, 200, await runContract(req, config, userId, match));
+  } catch (error) {
+    if (error instanceof HttpError) return sendContractError(res, error.status, error.code, requestId);
+    const mapped = contractDbError(error);
+    if (mapped) return sendContractError(res, mapped.status, mapped.code, requestId);
+    return sendContractError(res, 500, 'internal_error', requestId);
+  }
 }
 
 export function createHttpServer(config: AppConfig): Server {
