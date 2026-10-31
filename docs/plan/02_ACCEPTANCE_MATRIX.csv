@@ -19,7 +19,7 @@ T17,Cases,HIGH,State trái phép,AUTO,PARTIAL,WO08-01;WO08-02,NOT_RUN,,
 T18,Cases,HIGH,Concurrent updates,AUTO,PARTIAL,WO08-02,NOT_RUN,,
 T19,Cases,HIGH,Đóng thiếu bằng chứng,AUTO,PARTIAL,WO08-01;WO08-02,NOT_RUN,,
 T20,Cases,HIGH,Reopen,AUTO,PARTIAL,WO08-02,NOT_RUN,,
-T21,Notifications,MEDIUM,Push bị từ chối,DEVICE,PARTIAL,WO07-03;DEV-01,NOT_RUN,,Quyền push thật nằm trên thiết bị.
+T21,Notifications,MEDIUM,Push bị từ chối,DEVICE,PARTIAL,WO07-03;DEV-01,PASS,2026-10-31,Quyền push thật nằm trên thiết bị.
 T22,Dates,HIGH,Múi giờ/đổi ngày,AUTO,PARTIAL,WO07-02,PASS,2026-10-31,
 T23,Offline,HIGH,Queue mất mạng,DEVICE,PARTIAL,WO10-02;DEV-01,NOT_RUN,,Hàng đợi offline có unit test; mất mạng thật cần thiết bị.
 T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,NOT_RUN,,
