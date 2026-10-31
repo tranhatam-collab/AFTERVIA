@@ -1,0 +1,8 @@
+Thực hiện QA AFTERVIA theo 46 tests được cung cấp, ghi từng test PASS/FAIL/NOT_RUN và bằng chứng. Không tự chuyển NOT_RUN thành PASS.
+
+Ưu tiên: cross-tenant API/storage/search/export, IDOR, role escalation, document grants/revoke, prompt injection, secret/log leak, XSS/SSRF, webhook replay, unauthorized support access. Critical/high chưa sửa là release blocker.
+
+Diễn tập backup DB+objects sang môi trường cô lập, kiểm counts/hash/policies/tombstones và đo RPO/RTO. Kiểm rollback migration, mobile release builds, AI outage/manual fallback, cost caps.
+Security review độc lập cần người khác với AI viết code; bạn chỉ chuẩn bị evidence, không tự cấp chứng nhận.
+
+Không chạy scan phá hoại trên hệ thống bên ngoài, không dùng production data. Báo danh sách lỗi, tệp sửa, tests, residual risk và chi phí. Dừng chờ review release.

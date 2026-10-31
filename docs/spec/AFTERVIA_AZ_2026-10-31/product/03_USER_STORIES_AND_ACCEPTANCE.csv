@@ -1,0 +1,21 @@
+﻿story_id,actor,need,acceptance,priority,implementation_status
+US01,Customer,Đăng nhập và khôi phục truy cập,Token không lộ; session thu hồi được,P0,NOT_IMPLEMENTED
+US02,Customer,Thêm hóa đơn bằng ảnh/file,Kiểm MIME/size; lưu private; có fallback tay,P0,NOT_IMPLEMENTED
+US03,Customer,Duyệt trường AI,Mỗi trường có source/null; sửa được trước lưu,P0,NOT_IMPLEMENTED
+US04,Customer,Tạo item và nhắc việc,Ngày chưa xác nhận không tự thành deadline,P0,NOT_IMPLEMENTED
+US05,Customer,Mở case với cửa hàng,Chọn tài liệu chia rõ; có receipt gửi,P0,NOT_IMPLEMENTED
+US06,Merchant,Triage và yêu cầu phần thiếu,Không đọc phần kho riêng chưa cấp,P0,NOT_IMPLEMENTED
+US07,Manager,Phân công nhân viên,Role/org checked server-side; audit actor,P0,NOT_IMPLEMENTED
+US08,Participant,Xem timeline thống nhất,Mỗi event có actor/time/state; không client overwrite,P0,NOT_IMPLEMENTED
+US09,Customer,Thu hồi chia sẻ,New reads blocked; download limitations explained,P0,NOT_IMPLEMENTED
+US10,Partner,Tham gia đúng case,Không tìm/xem case khác,P0,NOT_IMPLEMENTED
+US11,Merchant,Đóng case có bằng chứng,Outcome/reason required; khách có thể reopen,P0,NOT_IMPLEMENTED
+US12,Customer,Xuất hồ sơ,Chỉ export authorized objects; JSON+files readable,P0,NOT_IMPLEMENTED
+US13,Customer,Xóa tài khoản,Primary deletion và retention exceptions minh bạch,P0,NOT_IMPLEMENTED
+US14,Customer,Dùng app khi AI lỗi,Nhập tay và xem dữ liệu cũ vẫn chạy,P0,NOT_IMPLEMENTED
+US15,MerchantOwner,Quản lý gói,Entitlement server authoritative; replay-safe,P1,NOT_IMPLEMENTED
+US16,Customer,Mời gia đình,Item/document scope; revoke tested,P1,NOT_IMPLEMENTED
+US17,Manager,Xem hiệu quả hậu mãi,Định nghĩa số đo; không đếm closed thành resolved,P1,NOT_IMPLEMENTED
+US18,All,Dùng tiếng Việt/English,No hardcoded public text; locale dates correct,P0,NOT_IMPLEMENTED
+US19,Owner,Khôi phục backup,Restore rehearsal và authorization integrity,P0,NOT_IMPLEMENTED
+US20,Owner,Rời Wron,Source export/legal rights/independent build verified,G0,NOT_IMPLEMENTED

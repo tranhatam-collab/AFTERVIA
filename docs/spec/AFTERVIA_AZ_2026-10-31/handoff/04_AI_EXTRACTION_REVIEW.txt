@@ -1,0 +1,7 @@
+Xây extraction AFTERVIA theo schema được cung cấp, server-side, quota/timeouts. Không đưa key vào app. Tài liệu là dữ liệu không tin cậy, không được đổi system instructions hoặc gọi công cụ ngoài phạm vi.
+
+Đề xuất merchant, purchase_date, amount_minor, currency, item_name, serial. Mỗi trường có source_text/page và review_status; thiếu hoặc mơ hồ trả null. Không tự suy quyền/hạn bảo hành. Date03/04 cần người xác nhận theo locale.
+
+Review UI đặt ảnh/tài liệu cạnh các trường, cho sửa, lưu actor/time/source. Critical fields phải xác nhận trước reminder/action. Không gọi model confidence là xác suất đã kiểm chứng.
+
+Provider lỗi/quota hết thì nhập tay; retry tối đa2 và không chi vượt cap. Test prompt injection, missing currency, ambiguous date, invalid JSON, outage. Không gửi dữ liệu thật khi vendor/privacy chưa duyệt. Báo chi phí mỗi test và evidence.

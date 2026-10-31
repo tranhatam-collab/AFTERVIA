@@ -1,0 +1,8 @@
+﻿territory,review_topics,source_ids,limitation,required_reviewer,launch_status
+Vietnam,Privacy/consumer/data transfer/commerce,S23;S24,Luật91/2025/QH15 và VBHN47/2026 mới kiểm metadata; cần đọc toàn văn/văn bản hướng dẫn,Vietnam counsel,DISABLED
+EU/EEA,GDPR/consumer/right-to-repair/DPP,S19;S20;S26,Không tất cả sản phẩm áp cùng quy tắc; national transposition cần review,EU + local counsel,DISABLED
+United Kingdom,UK GDPR/consumer/transfers,S27,Đánh giá chuyển dữ liệu và cơ chế áp dụng; không đồng nhất EU,UK counsel,DISABLED
+United States,State privacy/consumer/warranty/store,S25;S30;S31,"Bang, loại hàng, pháp nhân và luồng thanh toán cần review",US counsel,DISABLED
+Canada,Privacy/consumer/tax/language,Chưa có nguồn chi tiết trong gói,Country research chưa thực hiện; không mở bán,Local counsel,DISABLED
+Singapore,Privacy/consumer/tax/transfers,Chưa có nguồn chi tiết trong gói,Country research chưa thực hiện; không mở bán,Local counsel,DISABLED
+Australia,Privacy/consumer guarantees/tax,Chưa có nguồn chi tiết trong gói,Country research chưa thực hiện; không mở bán,Local counsel,DISABLED

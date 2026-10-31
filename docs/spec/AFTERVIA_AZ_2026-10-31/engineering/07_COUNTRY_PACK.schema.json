@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AFTERVIA Country Pack - design only",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "country_code",
+    "version",
+    "status",
+    "ui_locales",
+    "currency",
+    "legal_review",
+    "sources"
+  ],
+  "properties": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "DISABLED",
+        "IN_REVIEW",
+        "ENABLED"
+      ]
+    },
+    "ui_locales": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "legal_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer",
+        "reviewed_at",
+        "next_review_at"
+      ],
+      "properties": {
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reviewed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "next_review_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "url",
+          "accessed_at",
+          "scope"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "accessed_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "scope": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "supported_product_categories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "billing_ready": {
+      "type": "boolean"
+    },
+    "privacy_ready": {
+      "type": "boolean"
+    },
+    "support_ready": {
+      "type": "boolean"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ENABLED"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "billing_ready",
+          "privacy_ready",
+          "support_ready"
+        ],
+        "properties": {
+          "billing_ready": {
+            "const": true
+          },
+          "privacy_ready": {
+            "const": true
+          },
+          "support_ready": {
+            "const": true
+          },
+          "legal_review": {
+            "properties": {
+              "reviewer": {
+                "type": "string",
+                "minLength": 1
+              },
+              "reviewed_at": {
+                "type": "string",
+                "format": "date"
+              },
+              "next_review_at": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          },
+          "sources": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

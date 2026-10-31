@@ -1,0 +1,7 @@
+Sau khi Gate0 được review, thiết lập repo AFTERVIA theo kiến trúc đã duyệt, không tự thay framework. Dev/staging tách riêng. Shared domain types và VI/EN localization; frontend không giữ service keys.
+
+Tạo auth/session, organizations, organization_members, profiles. Người dùng sở hữu kho cá nhân; tenant cửa hàng không tự có quyền đọc kho đó. Server authorize mọi object; RLS/private storage là lớp bổ sung, không chỉ ẩn nút UI.
+
+Admin/owner/agent/partner không tự nâng quyền. Test token hết hạn, revoke session, role escalation, org A đọc org B; mọi path list/detail/search/export phải cùng policy.
+
+Tạo migration có version, .env.example, lint/typecheck và test scripts nếu nền tảng hỗ trợ. Nếu không chạy được tests ghi NOT_RUN/BLOCKED, không PASS. Không tạo production. Kết thúc bằng receipt tệp/commit/migration/tests/rollback.

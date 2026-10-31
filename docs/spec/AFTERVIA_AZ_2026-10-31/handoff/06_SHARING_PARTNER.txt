@@ -1,0 +1,7 @@
+Xây chia sẻ tối thiểu cho AFTERVIA. Case participant không tự có mọi tài liệu. case_document_grants ghi document, recipient, scope/can_download, expiry, revoked_at.
+
+Trước share, UI hiển thị người nhận, file, mục đích, thời hạn và quyền tải. Partner chỉ xem case và file được cấp, không tìm cả khách/tenant. Thu hồi grant chặn request mới server-side. Tài liệu nhạy cảm dùng authorization proxy; signed URL không được hứa thu hồi ngay nếu còn TTL. Nói rõ không thu hồi được bản đã tải hợp lệ.
+
+Test partner sai case, expired/revoked grants, direct storage URL, export vượt scope, role revoked. Không dùng link public dài hạn. Family sharing dùng cùng nguyên tắc object scope, không auto share cả kho.
+
+Mọi test chưa chạy ghi NOT_RUN. Báo migration, policy, evidence và rollback; không mời người thật.

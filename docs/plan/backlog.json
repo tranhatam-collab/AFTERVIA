@@ -1,0 +1,1026 @@
+{
+  "meta": {
+    "schema": "aftervia.backlog.v1",
+    "source": "docs/spec/AFTERVIA_AZ_2026-10-31/ops/02_BACKLOG_WORK_ORDERS.csv (WO01–WO22) và engineering/10_REPO_FILE_MANIFEST.csv",
+    "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
+    "generated_on": "2026-10-31",
+    "iteration_budget": 60,
+    "iterations_used": 1,
+    "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
+  },
+  "tasks": [
+    {
+      "id": "HUM-G0-01",
+      "wo": "WO01",
+      "gate": "G0",
+      "kind": "HUMAN",
+      "title": "Xác nhận builder (Wron hoặc repo này) và quyền sử dụng source; ghi quyết định vào docs/plan/04_DECISIONS.md",
+      "deps": [],
+      "acceptance": [
+        "T01",
+        "T02"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-DEC-01",
+      "wo": "WO01",
+      "gate": "G0",
+      "kind": "HUMAN",
+      "title": "Chủ dự án duyệt DEC01–DEC12: tên làm việc, pháp nhân, reviewer độc lập, vendor AI, thị trường pilot, dữ liệu thật, thanh toán, phát hành",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO02-01",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Chuẩn bị bộ discovery: guide phỏng vấn 3 nhóm, mẫu consent, sheet baseline trước/sau. Không thu dữ liệu thật",
+      "deps": [],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO02-02",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "30 phỏng vấn (15 cửa hàng, 10 khách, 5 đối tác dịch vụ) có consent; ghi ghi chú vào sổ E01",
+      "deps": [
+        "WO02-01"
+      ],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO02-03",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Chốt 5 design partners đúng tiêu chí (G1)",
+      "deps": [
+        "HUM-WO02-02"
+      ],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO03-01",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khung repo: phiên bản ghim, TypeScript strict, Vitest, scripts verify, kiểm checksum bundle, quét bí mật",
+      "deps": [],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: bundle 69/69, secret scan 22 files, tsc OK, vitest 4/4 (T37), node tests 13/13",
+        "docs/plan/evidence/WO03-01.md",
+        "matrix: T37 NOT_RUN -> PASS (coverage PARTIAL)"
+      ],
+      "started_at": "2026-10-31T14:17:53.249Z",
+      "finished_at": "2026-10-31T14:18:27.861Z"
+    },
+    {
+      "id": "WO03-02",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "CI GitHub Actions: Postgres 16, npm ci, verify, audit phụ thuộc production",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO03-03",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Trình chạy migration có checksum; chặn reset DB không phải _test; shim auth cục bộ chỉ cho kiểm thử",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [
+        "T03"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO03-04",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "README thiết lập sạch; .env.example chỉ có tên biến; SECURITY.md quy trình sự cố tạm thời",
+      "deps": [
+        "WO03-02"
+      ],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO04-01",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Migration 0001: profiles, organizations, organization_members, audit_events (append-only), RLS và hàm SECURITY DEFINER có kiểm quyền",
+      "deps": [
+        "WO03-03"
+      ],
+      "acceptance": [
+        "T03",
+        "T06"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO04-02",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Chính sách phân quyền dùng chung (packages/domain) và authorize.ts; kiểm song song TS với SQL trên ma trận vai trò",
+      "deps": [
+        "WO04-01"
+      ],
+      "acceptance": [
+        "T06"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO04-03",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bộ kiểm thử xâm nhập đa tenant: đọc, ghi, liệt kê, đếm, thu hồi, mọi đường vào DB",
+      "deps": [
+        "WO04-02"
+      ],
+      "acceptance": [
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO05-01",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng documents và upload ticket: khóa lưu trữ ngẫu nhiên, không URL công khai, RLS chỉ chủ sở hữu",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T04",
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO05-02",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Kiểm tra tệp: giới hạn 10 MB, JPEG/PNG/PDF theo chữ ký nhị phân, từ chối MIME giả, trạng thái quarantine",
+      "deps": [
+        "WO05-01"
+      ],
+      "acceptance": [
+        "T09"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO05-03",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Hoàn tất upload idempotent (khóa theo chủ sở hữu + sha256 + idempotency key); cổng quét mã độc, không có scanner thì BLOCKED cho upload thật",
+      "deps": [
+        "WO05-02"
+      ],
+      "acceptance": [
+        "T09",
+        "T10"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO06-01",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Schema trích xuất (theo 09_EXTRACTION) và kiểm ngữ nghĩa: ISO 4217, số nguyên minor, ngày hợp lệ",
+      "deps": [
+        "WO05-03"
+      ],
+      "acceptance": [
+        "T12",
+        "T13"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO06-02",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Cổng AI phía server: tài liệu là dữ liệu không tin cậy, allowlist công cụ rỗng, chỉ gửi nội dung đã được cấp quyền",
+      "deps": [
+        "WO06-01"
+      ],
+      "acceptance": [
+        "T11",
+        "T45"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO06-03",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Quy tắc null và xác nhận: ngày mơ hồ 03/04 cần xác nhận; thiếu tiền tệ hoặc serial thì null; trường quan trọng chặn hành động trước xác nhận",
+      "deps": [
+        "WO06-02"
+      ],
+      "acceptance": [
+        "T12",
+        "T13",
+        "T14"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO06-04",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Quota, ngân sách, timeout, retry tối đa 2, fallback nhập tay khi nhà cung cấp lỗi",
+      "deps": [
+        "WO06-03"
+      ],
+      "acceptance": [
+        "T15",
+        "T16"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO06-05",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Dịch vụ xác nhận trường: field_confirmations append-only với actor, thời gian, giá trị cũ và mới",
+      "deps": [
+        "WO06-04"
+      ],
+      "acceptance": [
+        "T14"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO07-01",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng items (RLS chỉ chủ sở hữu), CRUD và nhập tay khi AI lỗi",
+      "deps": [
+        "WO06-05"
+      ],
+      "acceptance": [
+        "T04"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO07-02",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Xử lý ngày: date-only không đổi theo múi giờ; lịch nhắc theo IANA timezone đã xác nhận",
+      "deps": [
+        "WO07-01"
+      ],
+      "acceptance": [
+        "T22"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO07-03",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Nhắc việc chỉ từ ngày đã xác nhận; push bị từ chối vẫn có hộp thư trong app, không báo đã gửi",
+      "deps": [
+        "WO07-02"
+      ],
+      "acceptance": [
+        "T21"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO07-04",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "i18n VI/EN: khóa văn bản đủ bộ, định dạng ngày và tiền bằng Intl, không chuỗi cứng trong UI",
+      "deps": [
+        "WO07-03"
+      ],
+      "acceptance": [
+        "T32"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO08-01",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Module state machine của case: allowlist chuyển trạng thái, withdrawn không tính resolved, reopen cần lý do",
+      "deps": [
+        "WO07-04",
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO08-02",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng cases và case_events append-only, version chống ghi đè (409), đóng case cần outcome và bằng chứng",
+      "deps": [
+        "WO08-01"
+      ],
+      "acceptance": [
+        "T17",
+        "T18",
+        "T19",
+        "T20"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO08-03",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Inbox và phân công Desk: phạm vi tổ chức, quản lý phân công agent, mọi thay đổi có audit",
+      "deps": [
+        "WO08-02"
+      ],
+      "acceptance": [
+        "T05",
+        "T06"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO09-01",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "case_participants và case_document_grants: thu hồi, hết hạn, phạm vi tài liệu cụ thể",
+      "deps": [
+        "WO08-03"
+      ],
+      "acceptance": [
+        "T07",
+        "T08"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO09-02",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Proxy tải tài liệu: kiểm grant tại mỗi lần đọc, không URL công khai, thu hồi chặn lượt đọc mới",
+      "deps": [
+        "WO09-01",
+        "WO05-03"
+      ],
+      "acceptance": [
+        "T07",
+        "T08",
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO09-03",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "HTTP API cho 13 thao tác của OpenAPI và kiểm hợp đồng (operationId khớp, lỗi không lộ đối tượng)",
+      "deps": [
+        "WO09-02"
+      ],
+      "acceptance": [
+        "T04",
+        "T05"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-01",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Web Desk (React + Vite): loading/empty/error/offline/denied, escape nội dung, bố cục mobile-first",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T32",
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-02",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Mobile shell (Expo): 4 tab, màn P0, hàng đợi offline có trạng thái pending. Chỉ kiểm typecheck và logic, không tuyên bố chạy trên máy thật",
+      "deps": [
+        "WO10-01"
+      ],
+      "acceptance": [
+        "T23"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-03",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "E2E web trên Chromium: thêm món đồ, mở case, chia một tài liệu, Desk xử lý, đóng có bằng chứng, xuất",
+      "deps": [
+        "WO10-01",
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T36",
+        "T24"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-01",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Xuất dữ liệu: chỉ đối tượng được phép; JSON + CSV + manifest SHA-256; liên kết tạm 24 giờ",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T24"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-02",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Xóa tài khoản: yêu cầu, thu hồi phiên và grant, tombstone, danh mục giữ lại; restore áp lại tombstone",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T25",
+        "T26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-03",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Màn Quyền riêng tư (xuất, xóa, chia sẻ) trên web và mobile, xác thực lại trước khi xóa",
+      "deps": [
+        "WO11-02",
+        "WO10-02"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO12-01",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Sổ sự kiện thanh toán unique(provider, event_id); xác minh chữ ký và timestamp; chống replay và đảo thứ tự (sandbox)",
+      "deps": [
+        "WO11-02"
+      ],
+      "acceptance": [
+        "T27",
+        "T28"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO12-02",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Máy trạng thái entitlement (trial, active, grace, past_due, canceled, expired, refunded, disputed); hết hạn không khóa hồ sơ",
+      "deps": [
+        "WO12-01"
+      ],
+      "acceptance": [
+        "T29",
+        "T46"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO12-03",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Đối soát bằng fixture từ báo cáo sandbox; tách doanh thu thực tế và số mô hình",
+      "deps": [
+        "WO12-02"
+      ],
+      "acceptance": [
+        "T30"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO13-01",
+      "wo": "WO13",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Gia đình: chia sẻ theo từng món đồ, thu hồi có hiệu lực ở lần gọi tiếp theo",
+      "deps": [
+        "WO09-02"
+      ],
+      "acceptance": [
+        "T31"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO14-01",
+      "wo": "WO14",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "KPI hậu mãi: resolved, closed, withdrawn, reopened tách bạch; số đo thực tế tách số mô hình",
+      "deps": [
+        "WO08-02"
+      ],
+      "acceptance": [
+        "T43"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO15-01",
+      "wo": "WO15",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Kiểm truy cập tự động (axe) trên các route web; nhãn và thứ tự tiêu điểm bàn phím",
+      "deps": [
+        "WO10-01"
+      ],
+      "acceptance": [
+        "T33"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO15-02",
+      "wo": "WO15",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Đo p95 cục bộ theo profile pilot đã công bố; ghi số mẫu và điều kiện; không suy diễn SLA",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T40"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO16-01",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Sao lưu DB và manifest object; khôi phục sang DB cô lập; so số dòng, hash, chính sách, tombstone",
+      "deps": [
+        "WO03-03",
+        "WO11-02"
+      ],
+      "acceptance": [
+        "T39",
+        "T26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO16-02",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Cờ kill switch (AI, chia sẻ, thông báo, thanh toán, quốc gia) và break-glass hỗ trợ có phê duyệt, hạn và audit",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T42"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO16-03",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Giám sát không PII, runbook sự cố, mức nghiêm trọng; kiểm log không chứa tài liệu hoặc token",
+      "deps": [
+        "WO16-02"
+      ],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO16-04",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Country pack: mặc định DISABLED, xác thực JSON schema, cổng bật thị trường cần phê duyệt pháp lý",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T41"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO17-01",
+      "wo": "WO17",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Gói bằng chứng bảo mật: threat model sang test, rủi ro còn lại, kịch bản DAST khi có server đang chạy",
+      "deps": [
+        "WO16-03",
+        "WO12-03",
+        "WO10-03"
+      ],
+      "acceptance": [
+        "T37",
+        "T38",
+        "T41"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO17-02",
+      "wo": "WO17",
+      "gate": "G2",
+      "kind": "HUMAN",
+      "title": "Đánh giá bảo mật độc lập bởi người không phải tác giả AI (DEC05); mọi CRITICAL/HIGH phải được đóng",
+      "deps": [
+        "WO17-01"
+      ],
+      "acceptance": [
+        "T04",
+        "T05",
+        "T07",
+        "T08"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "DEV-01",
+      "wo": "WO10",
+      "gate": "G2",
+      "kind": "DEVICE",
+      "title": "Cài development hoặc release build trên iPhone và Android thật; chạy luồng P0 và quyền push",
+      "deps": [
+        "WO10-02"
+      ],
+      "acceptance": [
+        "T34",
+        "T35",
+        "T21",
+        "T23"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "DEV-02",
+      "wo": "WO10",
+      "gate": "G2",
+      "kind": "DEVICE",
+      "title": "Kiểm trình duyệt mục tiêu thật (Chrome, Safari, Firefox) theo phiên bản đã chốt",
+      "deps": [
+        "WO10-03"
+      ],
+      "acceptance": [
+        "T36"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "INF-01",
+      "wo": "WO16",
+      "gate": "G2",
+      "kind": "INFRA",
+      "title": "Staging độc lập: diễn tập khôi phục DB và object, đo RPO/RTO thật, rollback có migration",
+      "deps": [
+        "WO16-01"
+      ],
+      "acceptance": [
+        "T39",
+        "T44"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO18-01",
+      "wo": "WO18",
+      "gate": "G3",
+      "kind": "AUTO_PREP",
+      "title": "Gói pháp lý: privacy và terms ở trạng thái DRAFT, checklist tên và IP, checklist store và billing; không xuất bản",
+      "deps": [
+        "WO16-04"
+      ],
+      "acceptance": [
+        "T41",
+        "T46"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO18-02",
+      "wo": "WO18",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Luật sư và tư vấn IP duyệt theo quốc gia; duyệt store và billing (G3); phê duyệt DEC01, DEC07, DEC09",
+      "deps": [
+        "WO18-01"
+      ],
+      "acceptance": [
+        "T02",
+        "T41",
+        "T46"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO19-01",
+      "wo": "WO19",
+      "gate": "G3",
+      "kind": "AUTO_PREP",
+      "title": "Kế hoạch pilot 5–10 cửa hàng: baseline, sổ đo thao tác, SLA hỗ trợ đúng giờ làm việc, tiêu chí dừng",
+      "deps": [
+        "WO16-03"
+      ],
+      "acceptance": [
+        "E02",
+        "E03"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO19-02",
+      "wo": "WO19",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Chạy pilot với cửa hàng thật; cần DEC08 cho dữ liệu thật và đồng ý của người dùng (G3)",
+      "deps": [
+        "WO19-01",
+        "DEV-01",
+        "HUM-WO18-02"
+      ],
+      "acceptance": [
+        "E02",
+        "E03",
+        "E04",
+        "E06"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO20-01",
+      "wo": "WO20",
+      "gate": "G4",
+      "kind": "AUTO_PREP",
+      "title": "Checklist phát hành G4 và kịch bản rollback trên staging; không chạm production",
+      "deps": [
+        "WO16-01",
+        "WO17-01"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO20-02",
+      "wo": "WO20",
+      "gate": "G4",
+      "kind": "HUMAN",
+      "title": "Quyết định phát hành G4 của chủ dự án; production chỉ mở khi có duyệt riêng (DEC10)",
+      "deps": [
+        "WO20-01",
+        "HUM-WO17-02",
+        "HUM-WO19-02"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO21-01",
+      "wo": "WO21",
+      "gate": "G5",
+      "kind": "HUMAN",
+      "title": "Tăng trưởng (G5): kênh bán, retention theo cohort, CAC; chỉ khi đã có dữ liệu pilot",
+      "deps": [
+        "HUM-WO20-02"
+      ],
+      "acceptance": [
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO22-01",
+      "wo": "WO22",
+      "gate": "G5",
+      "kind": "HUMAN",
+      "title": "Quyết định thị trường mới và tích hợp (WO22)",
+      "deps": [
+        "HUM-WO21-01"
+      ],
+      "acceptance": [
+        "E08"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    }
+  ]
+}

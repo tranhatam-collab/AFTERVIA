@@ -1,0 +1,8 @@
+Chuẩn bị bàn giao AFTERVIA, KHÔNG tự phát hành. Chỉ nói production-ready khi owner đã duyệt legal/IP/country/billing và independent review, tất cả test bắt buộc pass.
+
+Xuất full source, lockfiles, migrations, assets, README clean setup/build, .env.example không secrets, SBOM/license notices, API/schema, tests/results, backup/restore, monitoring, incident/support, rollback và data export instructions.
+
+Chứng minh build trên môi trường độc lập và cài trên iOS/Android thật; web chạy staging. Liệt kê mọi dịch vụ trả phí, dữ liệu gửi AI, account owner, quota và chi phí dự kiến.
+Tên AFTERVIA vẫn provisional nếu chưa clearance; không công bố trademark/SOC2 hoặc doanh thu chưa có.
+
+Receipt cuối: commit SHA, build versions, file checksums, passed/failed/not-run, known limits, approvals still needed. Không tự tạo store listing, mua domain, charge khách hoặc publish production.

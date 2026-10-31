@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "ES2023"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@aftervia/domain": [
+        "packages/domain/src/index.ts"
+      ]
+    },
+    "allowJs": true
+  },
+  "include": [
+    "packages/**/*.ts",
+    "services/**/*.ts",
+    "tests/**/*.ts",
+    "tools/checks/*.mjs",
+    "vitest.config.ts"
+  ]
+}

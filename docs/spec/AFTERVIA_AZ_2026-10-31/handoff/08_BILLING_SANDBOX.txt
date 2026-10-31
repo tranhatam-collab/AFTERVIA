@@ -1,0 +1,7 @@
+Chỉ xây billing SANDBOX AFTERVIA sau approval thiết kế. Giá đề xuất Personal0, Family4.99, Desk49/149/399 USD/tháng. Không mở live checkout hoặc nhập key thật. Provider và storefront phải được chủ dự án/pháp lý duyệt.
+
+Entitlement server authoritative. Webhook kiểm signature/timestamp; ledger unique(provider,event_id), chống replay và out-of-order. Trial/active/grace/past_due/cancel/expired/refunded/disputed phân biệt. Hết gói không xóa hoặc khóa export hồ sơ.
+
+Quota server-side; retry không đếm đôi; hết quota không tự charge overage. Thuế/refund/fee/cash-in tách nhau. RevenueCat không thay nghĩa vụ store; không thêm link né chính sách.
+
+Test forged webhook, replay, out-of-order, refund, downgrade, cancel, delete-account vs subscription. Test money không phải doanh thu. Báo evidence reconciliation sandbox và các blockers trước live.

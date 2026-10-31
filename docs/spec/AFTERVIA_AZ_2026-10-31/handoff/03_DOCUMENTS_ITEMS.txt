@@ -1,0 +1,7 @@
+Xây lát cắt item + document AFTERVIA. Chỉ fixtures synthetic. Item thuộc owner_user_id. Document private, metadata gồm MIME, size, sha256, scan_status, object_key không public.
+
+Luồng upload: xác thực → giới hạn10MB và JPEG/PNG/PDF → quarantine → kiểm định dạng/an toàn → lưu metadata → liên kết item. Nếu scanner chưa có, ghi BLOCKED cho real uploads; không giả scanner PASS. Nhập tay phải luôn dùng được.
+
+UI mobile/web: list item, add, detail, loading/empty/error/offline/permission denied; draft chưa gửi không hiển thị thành công. Upload retries idempotent; không nhân đôi bản ghi.
+
+Kiểm A không đọc/download file B, sai MIME, file quá giới hạn, upload trùng, network loss. Không đọc tài liệu từ URL tùy ý. Báo evidence và giới hạn; dừng trước AI.

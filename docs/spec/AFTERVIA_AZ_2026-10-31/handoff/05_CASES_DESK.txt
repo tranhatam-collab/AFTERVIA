@@ -1,0 +1,7 @@
+Xây AFTERVIA Desk và case state machine server-side. Draft→submitted→triaged→waiting_customer/waiting_merchant/waiting_partner→in_progress→resolved→closed; withdrawn không tính resolved; reopen cần reason và quay triaged.
+
+Khách chọn item và tài liệu chia cho merchant. Desk có inbox, filter, detail, assignment, missing-evidence request, timeline. Events append-only có actor/time/previous/next/reason/request_id. Optimistic concurrency bằng version; update xung đột trả409.
+
+Resolve cần outcome và evidence; không biến 'đã gửi' thành 'đã hoàn tiền'. Khách có thể phản hồi không đồng ý/mở lại theo policy. Không tự gọi hãng hoặc gửi thông báo ra ngoài chưa duyệt.
+
+Test state trái phép, agent sai org, concurrent updates, idempotent submit, close thiếu evidence. Không báo metric tiết kiệm tiền giả. Báo receipt; dừng trước sharing ngoài tổ chức.

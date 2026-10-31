@@ -1,0 +1,24 @@
+﻿screen_id,role,route_design,name,primary_action,guardrail
+P01,Public,/,Landing,Demo/pilot request,No invented testimonials
+P02,Public,/pricing,Bảng giá,Xem gói,Proposed pricing until live approved
+P03,Public,/privacy,Privacy notice,Đọc chính sách,Legal review required
+P04,Public,/terms,Terms,Đọc điều khoản,Legal review required
+P05,Public,/help,Trợ giúp,Tìm hỗ trợ,Real contact required
+P06,Public,/account-deletion,Yêu cầu xóa,Xác thực/yêu cầu xóa,No unnecessary PII
+A01,All,/auth/sign-in,Đăng nhập,Xác thực,No account enumeration
+A02,All,/onboarding,Thiết lập,Chọn thị trường/ngôn ngữ,Only enabled countries
+C01,Customer,/app/items,Món đồ,Xem/thêm,Owner or scoped share
+C02,Customer,/app/items/new,Thêm món đồ,Upload/nhập tay,Quota/type validation
+C03,Customer,/app/documents/{id}/review,Duyệt AI,Xác nhận/sửa,Source visible
+C04,Customer,/app/items/{id},Chi tiết món đồ,Tạo case,Object authorization
+C05,Customer,/app/cases,Hồ sơ,Theo dõi,Only participated cases
+C06,Participant,/app/cases/{id},Timeline,Phản hồi/chia sẻ,Per-document grants
+C07,Customer,/app/reminders,Nhắc việc,Tạo/chỉnh,Confirmed dates only
+C08,Customer,/app/settings/privacy,Quyền riêng tư,Export/delete/grants,Reauthentication
+D01,Merchant,/desk/inbox,Tiếp nhận,Triage,Organization isolation
+D02,Merchant,/desk/cases/{id},Xử lý case,Assign/transition,Server state machine
+D03,Merchant,/desk/team,Nhóm,Mời/thu hồi quyền,Owner/admin only
+D04,Merchant,/desk/reports,Báo cáo,Xem số đo,No invented live metrics
+D05,MerchantOwner,/desk/billing,Gói/thu tiền,Plan/cancel,Sandbox until approval
+D06,MerchantOwner,/desk/settings,Cấu hình,Policy/location,Versioned changes
+R01,Partner,/partner/cases/{id},Case được giao,Cập nhật phần việc,No global client search

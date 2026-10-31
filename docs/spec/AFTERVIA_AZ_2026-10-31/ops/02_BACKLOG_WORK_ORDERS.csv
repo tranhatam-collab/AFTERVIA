@@ -1,0 +1,23 @@
+﻿work_order_id,stage,deliverable,proposed_owner_role,dependencies,acceptance_refs,status
+WO01,G0,Vendor/source/IP probe,Tech+Legal,None,T01;T02;T03,NOT_STARTED
+WO02,G1,Discovery và baseline,Product,WO01,E01;E04,NOT_STARTED
+WO03,P0,Repo/env/CI/security baseline,Tech,WO01,T37;T44,NOT_STARTED
+WO04,P0,Auth/roles/tenant policies,Backend,WO03,T04;T05;T06,NOT_STARTED
+WO05,P0,Private documents/upload,Backend+Mobile,WO04,T09;T10,NOT_STARTED
+WO06,P0,Extraction schema/review,AI+Product,WO05,T11;T12;T13;T14;T15;T16,NOT_STARTED
+WO07,P0,Items/reminders/locale,Fullstack,WO06,T21;T22;T32,NOT_STARTED
+WO08,P0,Cases/state machine/events,Backend+Web,WO04;WO07,T17;T18;T19;T20,NOT_STARTED
+WO09,P0,Grants/partner permissions,Security+Backend,WO08,T07;T08;T45,NOT_STARTED
+WO10,P0,Mobile/web end-to-end,Fullstack,WO09,T23;T34;T35;T36,NOT_STARTED
+WO11,P0,Export/delete/retention,Backend+Legal,WO09,T24;T25;T26,NOT_STARTED
+WO12,P1,Billing sandbox/entitlements,Backend+Finance,WO04;WO11,T27;T28;T29;T30;T46,NOT_STARTED
+WO13,P1,Family scope,Fullstack,WO09,T31,NOT_STARTED
+WO14,P1,Analytics/KPIs,Data+Product,WO08,T43,NOT_STARTED
+WO15,P0,Accessibility/performance,QA,WO10,T33;T40,NOT_STARTED
+WO16,P0,Backup/monitoring/support,SRE+Operations,WO03;WO11,T39;T42;T44,NOT_STARTED
+WO17,G2,Independent security review,Reviewer,WO10;WO11;WO12,All CRITICAL/HIGH,NOT_STARTED
+WO18,G2,Country/legal/IP/store review,Legal+Owner,WO02;WO12,T02;T41;T46,NOT_STARTED
+WO19,G3,Pilot/run evidence/costs,Product+Sales,WO15;WO16;WO17;WO18,E02;E03;E04;E06,NOT_STARTED
+WO20,G4,Release decision / rollback drill,Owner+Tech,WO19,All required tests PASS,NOT_STARTED
+WO21,Growth,Repeatable acquisition/retention,Sales+Product,WO20,E05;E07,NOT_STARTED
+WO22,Growth,New market/integration decision,Owner+Legal,WO21,Country gates plus demand,NOT_STARTED
