@@ -8,6 +8,7 @@ import { recordDenial, withUser } from '../db/session';
 import { randomUUID } from 'node:crypto';
 import { CASE_STATES } from '@aftervia/domain';
 import { matchContract, type ContractMatch } from './contract';
+import { logEvent } from '../observability/log';
 
 export interface AppConfig {
   pool: pg.Pool;
@@ -527,6 +528,7 @@ async function handleContract(req: IncomingMessage, res: ServerResponse, config:
     if (error instanceof HttpError) return sendContractError(res, error.status, error.code, requestId);
     const mapped = contractDbError(error);
     if (mapped) return sendContractError(res, mapped.status, mapped.code, requestId);
+    logEvent('request.internal_error', { request_id: requestId, error_class: error instanceof Error ? error.name : 'unknown' });
     return sendContractError(res, 500, 'internal_error', requestId);
   }
 }
@@ -535,6 +537,7 @@ export function createHttpServer(config: AppConfig): Server {
   return createServer((req, res) => {
     handle(req, res, config).catch((error: unknown) => {
       if (error instanceof HttpError) return send(res, error.status, { error: error.code });
+      logEvent('request.internal_error', { error_class: error instanceof Error ? error.name : 'unknown' });
       return send(res, 500, { error: 'internal_error' });
     });
   });

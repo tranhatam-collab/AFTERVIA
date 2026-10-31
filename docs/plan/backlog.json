@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 38,
+    "iterations_used": 39,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1094,9 +1094,18 @@
       "acceptance": [
         "T37"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-03.md",
+        "services/api/src/observability/log.ts",
+        "services/api/src/observability/severity.ts",
+        "tests/observability/log.test.ts",
+        "docs/ops/INCIDENT_RUNBOOK.md",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:18:48.739Z",
+      "finished_at": "2026-10-31T20:23:53.741Z"
     },
     {
       "id": "WO16-04",
