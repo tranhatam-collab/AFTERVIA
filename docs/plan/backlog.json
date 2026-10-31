@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 34,
+    "iterations_used": 35,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -982,9 +982,16 @@
       "acceptance": [
         "T43"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO14-01.md",
+        "supabase/migrations/0016_case_outcome_kpis.sql",
+        "tests/db/case-kpis.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T19:35:30.875Z",
+      "finished_at": "2026-10-31T19:40:02.935Z"
     },
     {
       "id": "WO15-01",
