@@ -8,3 +8,4 @@ export * from './ai-gateway';
 export * from './confirmation';
 export * from './ai-resilience';
 export * from './reminder-schedule';
+export * from './case-state';
