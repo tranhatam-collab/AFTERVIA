@@ -29,7 +29,7 @@ T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,NOT_RUN,,Chỉ fixture s
 T28,Billing,CRITICAL,Replay/out of order,AUTO,PARTIAL,WO12-01,NOT_RUN,,
 T29,Billing,HIGH,Refund/expiry,AUTO,PARTIAL,WO12-02,NOT_RUN,,
 T30,Billing,HIGH,Reconciliation,AUTO,PARTIAL,WO12-03,NOT_RUN,,Đối soát với báo cáo provider thật là HUMAN/INFRA.
-T31,Family,HIGH,Scope family,AUTO,PARTIAL,WO13-01,NOT_RUN,,
+T31,Family,HIGH,Scope family,AUTO,PARTIAL,WO13-01,PASS,2026-10-31,
 T32,Localization,MEDIUM,VI/EN dài,AUTO,PARTIAL,WO07-04;WO10-01,PASS,2026-10-31,Kiểm chữ dài và đổi ngôn ngữ bằng trình duyệt; thiết bị thật ở DEV-01.
 T33,Accessibility,HIGH,Keyboard/screen reader,PARTIAL,PARTIAL,WO15-01;DEV-01,NOT_RUN,,Axe tự động không thay thế kiểm thử screen reader thật.
 T34,Mobile,HIGH,Release build iOS,DEVICE,NONE,DEV-01,NOT_RUN,,Cần iPhone thật và development/release build đã ký.
