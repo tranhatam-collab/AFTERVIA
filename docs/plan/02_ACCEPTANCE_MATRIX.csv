@@ -8,7 +8,7 @@ T06,Auth,CRITICAL,Role escalation,AUTO,PARTIAL,WO04-01;WO04-02;WO04-03;WO08-03,P
 T07,Sharing,CRITICAL,Partner sai case,AUTO,PARTIAL,WO09-01;WO09-02,NOT_RUN,,
 T08,Sharing,CRITICAL,Thu hồi grant,AUTO,PARTIAL,WO09-01;WO09-02,NOT_RUN,,Bản đã tải hợp lệ không thu hồi được: giới hạn phải ghi rõ cho người dùng.
 T09,Storage,HIGH,File độc/hỏng,AUTO,PARTIAL,WO05-02,PASS,2026-10-31,Quét mã độc thật cần scanner đã duyệt (INFRA); không giả PASS scanner.
-T10,Storage,HIGH,Upload trùng/retry,AUTO,PARTIAL,WO05-03,NOT_RUN,,
+T10,Storage,HIGH,Upload trùng/retry,AUTO,PARTIAL,WO05-03,PASS,2026-10-31,
 T11,AI,CRITICAL,Prompt injection,AUTO,PARTIAL,WO06-02,NOT_RUN,,Dùng provider giả định định; đánh giá mô hình thật cần bộ dữ liệu được phép (HUMAN).
 T12,AI,HIGH,Ngày mơ hồ,AUTO,PARTIAL,WO06-01;WO06-03,NOT_RUN,,
 T13,AI,HIGH,Currency/serial thiếu,AUTO,PARTIAL,WO06-01;WO06-03,NOT_RUN,,

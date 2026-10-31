@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 13,
+    "iterations_used": 14,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -406,9 +406,16 @@
         "T09",
         "T10"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO05-03.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn BLOCKED cho upload thật và rollback",
+        "npx vitest run tests/db/completion.test.ts tests/db/migrations.test.ts tests/db/quarantine.test.ts: 16/16 pass trên aftervia_test",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 99 tệp, typecheck, build:landing, Vitest 136/136, kiểm thử vòng lặp 13/13",
+        "Ma trận từ báo cáo JSON: T10 NOT_RUN sang PASS, mức phủ PARTIAL; upload thật BLOCKED: chưa có kho lưu trữ (DEC06) và scanner (INFRA)"
+      ],
+      "started_at": "2026-10-31T15:55:05.271Z",
+      "finished_at": "2026-10-31T15:57:28.574Z"
     },
     {
       "id": "WO06-01",
