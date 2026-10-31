@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 37,
+    "iterations_used": 38,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1070,9 +1070,17 @@
       "acceptance": [
         "T42"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-02.md",
+        "supabase/migrations/0017_kill_switches_break_glass.sql",
+        "tests/db/break-glass.test.ts",
+        "tests/db/kill-switches.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:07:06.857Z",
+      "finished_at": "2026-10-31T20:13:05.031Z"
     },
     {
       "id": "WO16-03",

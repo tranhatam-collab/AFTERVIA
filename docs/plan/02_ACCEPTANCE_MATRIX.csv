@@ -40,7 +40,7 @@ T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,PASS,2026-10
 T39,Recovery,HIGH,Backup restore,PARTIAL,PARTIAL,WO16-01;INF-01,NOT_RUN,,Diễn tập cục bộ có; RPO/RTO thật cần staging (INFRA).
 T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,PASS,2026-10-31,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ.
 T41,Legal,HIGH,Country gating,AUTO,PARTIAL,WO16-04;HUM-WO18-02,NOT_RUN,,Cổng kỹ thuật tự động; duyệt pháp lý là HUMAN.
-T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,NOT_RUN,,
+T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,PASS,2026-10-31,
 T43,Analytics,HIGH,Không metric giả,AUTO,PARTIAL,WO14-01,PASS,2026-10-31,
 T44,Release,HIGH,Rollback,PARTIAL,PARTIAL,WO03-02;WO20-01;INF-01,NOT_RUN,,Rollback có migration cần staging thật (INFRA).
 T45,Privacy,CRITICAL,AI data scope,AUTO,PARTIAL,WO06-02,PASS,2026-10-31,
