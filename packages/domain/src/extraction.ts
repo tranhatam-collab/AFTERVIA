@@ -36,6 +36,10 @@ export type ExtractionCheck = { ok: true; value: Extraction } | { ok: false; err
 
 const FIELDS: FieldName[] = ['merchant', 'purchase_date', 'amount_minor', 'currency', 'item_name', 'serial'];
 const ISO_4217 = new Set<string>(Intl.supportedValuesOf('currency'));
+
+export function isIso4217(code: string): boolean {
+  return ISO_4217.has(code);
+}
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 const NUMERIC_DATE = /^(\d{1,2})[\/.-](\d{1,2})(?:[\/.-](\d{4}))?$/;
 
