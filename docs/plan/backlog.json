@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 32,
+    "iterations_used": 33,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -873,9 +873,12 @@
         "T25",
         "T26"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "BLOCKED",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-10-31T19:10:27.047Z",
+      "blocked_reason": "Lát cắt 1 xong: thu hồi quyền, tombstone chỉ thêm, áp lại sau khôi phục (T25, T26 PASS ở mức PARTIAL, chưa phải nghiệm thu). Còn chờ quyết định: xóa dữ liệu theo chính sách (HUMAN); cơ chế cho bảng chỉ thêm; xác minh danh tính và thu hồi phiên (DEC03); tombstone nằm ngoài backup (WO16-01); quyền bên nhận khi khách xóa; thành viên tổ chức. Bằng chứng: docs/plan/evidence/WO11-02.md",
+      "blocked_at": "2026-10-31T19:17:50.561Z"
     },
     {
       "id": "WO11-03",
