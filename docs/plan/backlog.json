@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 39,
+    "iterations_used": 40,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1119,9 +1119,18 @@
       "acceptance": [
         "T41"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-04.md",
+        "packs/countries/VN.json",
+        "packages/domain/src/country-pack.ts",
+        "tests/country/gate.test.ts",
+        "tests/country/pack-schema.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:28:37.313Z",
+      "finished_at": "2026-10-31T20:32:53.638Z"
     },
     {
       "id": "WO17-01",

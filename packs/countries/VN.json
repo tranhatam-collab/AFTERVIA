@@ -1,0 +1,17 @@
+{
+  "country_code": "VN",
+  "version": "0.1.0",
+  "status": "DISABLED",
+  "ui_locales": ["vi", "en"],
+  "currency": "VND",
+  "legal_review": {
+    "reviewer": null,
+    "reviewed_at": null,
+    "next_review_at": null
+  },
+  "sources": [],
+  "supported_product_categories": [],
+  "billing_ready": false,
+  "privacy_ready": false,
+  "support_ready": false
+}
