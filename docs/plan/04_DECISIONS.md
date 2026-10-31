@@ -66,3 +66,9 @@ Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker da
 - WO07-01 (items nhập tay) không còn phụ thuộc WO06-05 và được đưa lên trước WO05-01 trong `backlog.json`.
 - Lý do: đường nhập tay (US14) độc lập với trích xuất AI. WO06 vẫn là điều kiện trước khi bật AI cho item.
 - Đăng nhập thật cần nhà cung cấp danh tính (DEC03). Môi trường cục bộ sẽ dùng token giả lập ở tầng API (WO04-02 và WO09-03). Mọi chỗ dùng token giả lập phải ghi rõ là mô phỏng.
+
+### DEC-ENG-11: lát cắt cần API HTTP mỏng
+
+- Thêm WO04-04 (AUTO) vào backlog ngay sau WO04-03: API HTTP mỏng bằng `node:http`, không thêm thư viện.
+- Đăng nhập trong môi trường cục bộ là giả lập: JWT ký HMAC bằng khóa cục bộ, chỉ dùng trong kiểm thử và phát triển. Tài liệu và báo cáo phải ghi rõ đây là mô phỏng. Đăng nhập thật cần nhà cung cấp danh tính (DEC03).
+- API này cũng là nền cho DAST khi có Docker và `HAWK_API_KEY` (DEC-ENG-09).

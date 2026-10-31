@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 7,
+    "iterations_used": 8,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -233,6 +233,31 @@
         "WO04-02"
       ],
       "acceptance": [
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 49 files, vitest 46/46 (gồm 13 kiểm thử đa tenant), node 13/13",
+        "matrix: T04 NOT_RUN -> PASS, T05 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-03.md"
+      ],
+      "started_at": "2026-10-31T14:46:40.785Z",
+      "finished_at": "2026-10-31T14:47:29.088Z"
+    },
+    {
+      "id": "WO04-04",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "API HTTP mỏng cho lát cắt: đăng nhập giả lập bằng JWT ký cục bộ (ghi rõ là mô phỏng), tạo tổ chức, mời, đọc danh sách và chi tiết; kiểm cách ly hai tài khoản qua HTTP; ghi nhật ký lần từ chối ở API",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T03",
         "T04",
         "T05",
         "T06"
