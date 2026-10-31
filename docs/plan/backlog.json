@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 31,
+    "iterations_used": 32,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -829,9 +829,12 @@
         "T36",
         "T24"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "BLOCKED",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-10-31T18:57:49.072Z",
+      "blocked_reason": "Chặn: không đủ lát cắt để làm trong một vòng, và công cụ không tách được task. Thiếu màn hình web (thêm món, mở case, chia tài liệu, Desk, đóng, xuất). Thiếu HTTP cho Desk, hoàn tất tải lên và createExport. Transition của hợp đồng không có outcome (WO09-03). DEC06 chưa chọn kho byte (HUMAN_REQUIRED). Safari và Firefox cần DEV-02. Bằng chứng: docs/plan/evidence/WO10-03.md",
+      "blocked_at": "2026-10-31T19:00:58.795Z"
     },
     {
       "id": "WO11-01",

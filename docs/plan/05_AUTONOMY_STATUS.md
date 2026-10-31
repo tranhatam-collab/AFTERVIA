@@ -1,18 +1,18 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 31/10/2026, sau lượt WO11-01 (lượt kích hoạt 18:46:48 UTC; ghi ngay sau push `e1906bc`).
+- Cập nhật: 31/10/2026, sau lượt WO10-03 (lượt kích hoạt 18:56:43 UTC; ghi trong cùng commit của lượt, chặn có bằng chứng).
 - Trạng thái: **CONTINUE**. Chưa có `ENGINEERING_ACCEPTED`.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
 ## Repo và nhánh
 - Repo `tranhatam-collab/AFTERVIA`. Nhánh làm việc `ccr-4544c9f7-b1t50m` (writer duy nhất).
-- Commit code mới nhất của task: `e1906bc` (WO11-01). Trước đó: `219559c` (đính chính CI WO10-02), `d16538d` (checkpoint WO10-02), `9351ca1` (WO10-02), `5b8b870` (checkpoint WO10-01), `0bbd654` (WO10-01), `0c9bf30` (checkpoint WO09-03), `08fb6c0` (WO09-03), `31a8ab0` (checkpoint WO09-02), `0dc0175` (WO09-02), `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
-- Commit checkpoint này nằm ngay sau `e1906bc` (xem `git log`).
+- Commit code mới nhất của task: `e1906bc` (WO11-01). WO10-03 không có commit code: BLOCKED, chỉ có bằng chứng và trạng thái. Trước đó: `219559c` (đính chính CI WO10-02), `d16538d` (checkpoint WO10-02), `9351ca1` (WO10-02), `5b8b870` (checkpoint WO10-01), `0bbd654` (WO10-01), `0c9bf30` (checkpoint WO09-03), `08fb6c0` (WO09-03), `31a8ab0` (checkpoint WO09-02), `0dc0175` (WO09-02), `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
+- Commit của lượt này (bằng chứng WO10-03, backlog, receipt, checkpoint) nằm trên `fd3023c` (xem `git log`).
 - `main` là commit gốc rỗng `b809781`, không chứa ứng dụng.
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_015DFQnVwmGoWg29sLmAV26k` (18:46:48 UTC), đã xong.
+- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_0141NKc8oeUJAvxisygXfF18` (18:56:43 UTC), đã xong.
 - Lượt kế tiếp: `send_later` đặt ngay sau commit này, 2 phút, theo Bước 7 của `01_LOOP_PROTOCOL.md`. Lượt đó ghi trigger của mình trong receipt.
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
@@ -20,6 +20,7 @@
 WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WEB-01.
 
 ## Bị chặn và chờ người
+- WO10-03 (BLOCKED, không phải DONE): E2E web trên Chromium cần màn hình web (thêm món, mở case, chia tài liệu, Desk, đóng, xuất), HTTP cho Desk, hoàn tất tải lên, `createExport` và `outcome` của `Transition` (WO09-03), cùng quyết định DEC06 (kho byte). Công cụ chưa có thao tác tách task. Bằng chứng: `docs/plan/evidence/WO10-03.md`. WO17-01 và DEV-02 phụ thuộc WO10-03 và đang chờ.
 - WEB-02 (INFRA, BLOCKED): đưa landing lên `aftervia.iai.one`. Chờ quyền Cloudflare Pages qua biến môi trường (D15) và xác nhận DNS của `iai.one` (D14).
 - HUM-WEB-03 (HUMAN): chủ dự án và luật sư duyệt nội dung công khai, miễn trừ và tên AFTERVIA (D13). Tên và tagline chưa kiểm tra nhãn hiệu.
 - Đăng nhập thật (DEC03, D3): cần chọn nhà cung cấp danh tính và Supabase project. Hiện chỉ có đăng nhập giả lập cục bộ, được ghi rõ là giả lập.
@@ -43,15 +44,20 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. Chưa có HTTP cho `createExport` và tải gói; gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Vòng kế tiếp (2 phút sau commit này): đầu vòng kiểm CI của `e1906bc` trên PR #1. Sau đó `decide` đề xuất WO10-03: "E2E web trên Chromium: thêm món đồ, mở case, chia một tài liệu, Desk xử lý, đóng có bằng chứng, xuất" (phụ thuộc WO10-01 và WO11-01 đã DONE; acceptance T36 và T24; P0; AUTO). Phạm vi lớn: web hiện chỉ có danh sách món đồ, nên đánh giá phạm vi và các blocker trước khi bắt đầu; không tự tuyên bố kết quả thiết bị.
+- Vòng kế tiếp (2 phút sau commit này): `decide` đề xuất START WO11-02 ("Xóa tài khoản: yêu cầu, thu hồi phiên và grant, tombstone, danh mục giữ lại"; không còn phụ thuộc mở). Chính sách lưu giữ và dọn dẹp gói hết hạn do chủ dự án quyết định, nên lượt đó chỉ làm phần AUTO và ghi rõ phần chờ quyết định. Đầu vòng kiểm CI của commit mới trên PR #1; cổng audit vẫn đỏ, chờ quyết định.
 
-## Kết quả kiểm thử tại `e1906bc`
+## Kết quả kiểm thử
+
+- Lượt WO10-03 (trên cây làm việc, trước commit): `npm run verify` exit 0 với `TEST_DATABASE_URL` nạp từ `.github/workflows/ci.yml` (không in giá trị). Bundle 69/69; quét bí mật 202 tệp (5 luật); Vitest 286/286 trong 35 tệp; Vitest JSON 286/286, `success=true`; `from-report` không đổi dòng nào.
+- Tại `e1906bc` (lượt WO11-01):
 - `npm run verify` exit 0 với `TEST_DATABASE_URL` trỏ tới `aftervia_test` (PostgreSQL 16.15), trên cùng mã đã commit.
 - Bundle 69/69. Quét bí mật 199 tệp (5 luật). Vitest 286/286 trong 35 tệp. Kiểm thử vòng lặp 13/13. Báo cáo JSON của Vitest 286/286, mã thoát 0. T24: 7 kiểm thử pass (WO11-01). T23: 0 kiểm thử mang tiền tố (đúng chủ ý, DEVICE). T32 (10 kiểm thử) và T38 (9) đều pass. Typecheck gồm `apps/mobile`: exit 0. Kiểm trình duyệt ngoài repo cho Desk: 30/30.
-- Ma trận: PASS 24 (T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T32, T37, T38, T45), NOT_RUN 22, FAIL 0. T07 và T08 PASS ở mức PARTIAL: quyết định và audit; luồng tải byte chờ DEC06. T38 PASS: không có đường đọc theo URL và không có cột URL. T33 vẫn NOT_RUN.
+- Ma trận: PASS 25 (T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T32, T37, T38, T45, T24 từ WO11-01), NOT_RUN 21, FAIL 0. T07 và T08 PASS ở mức PARTIAL: quyết định và audit; luồng tải byte chờ DEC06. T38 PASS: không có đường đọc theo URL và không có cột URL. T33 vẫn NOT_RUN.
 - CI: `5b8b870` có `verify` success (run 41229554503). `9351ca1`, `d16538d`: `npm ci` ✓, `npm run verify` ✓, bước `Dependency audit (production, high+)` ✗ (runs 41230732500 và 41230813371). `e1906bc` chưa có kết quả CI khi ghi. Lỗi do phụ thuộc Expo của WO10-02; xem mục "CI đỏ" trong phần bảo mật. Lượt kế tiếp kiểm lại đầu vòng.
 
 ## Lỗi trong lượt và cách khắc phục
+- WO10-03: `start` chạy trước khi tách task (quy tắc 7), vì công cụ không có thao tác tách. Ghi nhận là lệch quy trình; task đã được chặn có bằng chứng.
+- Verify đầu lượt chạy trong shell không có `TEST_DATABASE_URL`: exit 1, 20 tệp kiểm thử DB đỏ ngay khi báo thiếu biến, trước khi kết nối. Đã nạp biến từ cấu hình CI trong cùng lệnh và chạy lại: exit 0.
 - Lỗ hổng: hàm đọc tài liệu không kiểm trạng thái quét. Tài liệu `QUARANTINED` vẫn được phục vụ nếu grant còn hiệu lực. Phát hiện khi rà lại sau khi kiểm thử đã pass. Đã sửa bằng migration `0012` (thay hàm, cùng chữ ký), thêm kiểm thử `T07`, và ghi trong evidence. Migration `0011` không sửa vì đã áp dụng.
 
 ## Bảo mật
@@ -82,13 +88,13 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Ngân sách và quota thật: chưa có giới hạn đã duyệt (D7); ngân sách của WO06-04 chưa lưu DB và chưa gắn owner. **HUMAN_REQUIRED**.
 - Quyền Cloudflare Pages và DNS `iai.one` (WEB-02): **HUMAN_REQUIRED**.
 - DAST (HawkScan): **BLOCKED**.
-- Web và mobile đầy đủ (WO10): WO10-01 (Desk danh sách với đủ trạng thái) và WO10-02 (mobile shell với hàng đợi, phần logic) đã xong. Còn lại: thiết bị thật (DEV-01) cho T23, T32 và T36, cùng đăng nhập thật. Bộ nhận diện trong `docs/design/BRAND_TOKENS.md` là chuẩn cho WO10. Bộ văn bản VI/EN của WO07-04 là nguồn chuỗi cho WO10.
+- Web và mobile đầy đủ (WO10): WO10-01 (Desk danh sách với đủ trạng thái) và WO10-02 (mobile shell với hàng đợi, phần logic) đã xong. Còn lại: WO10-03 (E2E web trên Chromium, BLOCKED), thiết bị thật (DEV-01) cho T23 và T32, DEV-02 cho T36 (Safari, Firefox), cùng đăng nhập thật. Bộ nhận diện trong `docs/design/BRAND_TOKENS.md` là chuẩn cho WO10. Bộ văn bản VI/EN của WO07-04 là nguồn chuỗi cho WO10.
 - Bộ biểu tượng ứng dụng và SVG gốc của logo: **HUMAN_REQUIRED** (designer).
 - Thiết bị thật, luật sư, pilot với khách, reviewer bảo mật độc lập: **HUMAN_REQUIRED**.
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 31/60 đã dùng (sau WO11-01).
+- Vòng lặp: 32/60 đã dùng (sau WO10-03, BLOCKED).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -98,6 +104,8 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- Lượt 18:56 UTC: WO10-03 BLOCKED. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1856Z.md`.
+- Quy tắc vận hành: mọi `npm run verify` và lệnh Vitest JSON phải có `TEST_DATABASE_URL` trong cùng lệnh, lấy từ `.github/workflows/ci.yml`, không in giá trị ra màn hình.
 - Lượt 18:46 UTC: WO11-01. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1846Z.md`.
 - Lượt 18:31 UTC: WO10-02. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1831Z.md`.
 - Lượt 18:14 UTC: WO10-01. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1814Z.md`.
