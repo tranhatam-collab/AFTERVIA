@@ -46,3 +46,23 @@ Chủ dự án trả lời "Ok all" cho câu 6–8. Câu 7 có thể ghi là đ�
 | 8 | Phiên bản Chrome, Safari, Firefox mục tiêu (T36) | CHỜ THÔNG TIN | Đề xuất mặc định để anh đồng ý hoặc sửa: Chrome hai bản ổn định mới nhất; Safari hai bản mới nhất trên macOS và iOS; Firefox bản ổn định mới nhất và bản ESR. |
 
 Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker daemon không chạy; repo chưa có máy chủ HTTP (`services/api/src` chưa có tệp server).
+
+## E. Quyết định của chủ dự án sau câu hỏi 1–8
+
+| Mục | Quyết định | Ghi chú |
+|---|---|---|
+| Git và PR | Phương án C: `main` là commit gốc rỗng; nhánh liên kết bằng merge `-s ours`; không force-push | Đã thực hiện. PR #1 (nháp), xem `docs/plan/evidence/PR-STATUS.md` |
+| Builder | Claude Code trong repo. Wron chỉ là thử nghiệm tùy chọn | Không đổi builder khi chưa có bằng chứng kỹ thuật |
+| Phỏng vấn (câu 6) | Chuẩn bị danh sách, kịch bản và tiêu chí. Chưa chi tiền, chưa liên hệ bên ngoài khi chưa có quyền | Danh sách người do chủ dự án cung cấp. Vòng lặp không tự tìm kiếm hay thu thập thông tin cá nhân. Hạn mức chi: chưa đặt |
+| HawkScan DAST (câu 7) | Giữ BLOCKED. Không giả lập PASS. Không dán key vào chat | Cần `HAWK_API_KEY` trong môi trường, Docker chạy được, máy chủ HTTP (sau WO09-03) |
+| Trình duyệt (câu 8) | Chrome và Firefox: hai phiên bản stable gần nhất. Safari: các phiên bản macOS và iOS được hỗ trợ. Ghim phiên bản chính xác khi chạy | Thay cho đề xuất có ESR trước đó |
+| Vòng lặp | Tiếp tục tác vụ nội bộ đã duyệt. Không tự merge, release, thanh toán, hay dùng dữ liệu khách hàng thật | Không tự mở rộng sang quyền quản trị, chi tiêu hay phát hành |
+| Mốc ưu tiên | Lát cắt: đăng nhập, dữ liệu tồn tại sau kết nối lại, cách ly giữa hai tài khoản | Xem DEC-ENG-10 |
+| "Dữ liệu thật" | Hiểu là dữ liệu được lưu vào DB thử nghiệm, không mock. Không phải dữ liệu khách hàng thật | Ranh giới về dữ liệu khách hàng không đổi |
+| Công cụ quản lý | Không thêm hệ thống quản lý mới. Giữ backlog và ma trận hiện có | |
+
+### DEC-ENG-10: đưa lát cắt lên trước
+
+- WO07-01 (items nhập tay) không còn phụ thuộc WO06-05 và được đưa lên trước WO05-01 trong `backlog.json`.
+- Lý do: đường nhập tay (US14) độc lập với trích xuất AI. WO06 vẫn là điều kiện trước khi bật AI cho item.
+- Đăng nhập thật cần nhà cung cấp danh tính (DEC03). Môi trường cục bộ sẽ dùng token giả lập ở tầng API (WO04-02 và WO09-03). Mọi chỗ dùng token giả lập phải ghi rõ là mô phỏng.

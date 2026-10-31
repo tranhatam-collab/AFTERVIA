@@ -236,6 +236,22 @@
       "evidence": []
     },
     {
+      "id": "WO07-01",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng items (RLS chỉ chủ sở hữu), CRUD và nhập tay khi AI lỗi",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T04"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
       "id": "WO05-01",
       "wo": "WO05",
       "gate": "P0",
@@ -365,22 +381,6 @@
       ],
       "acceptance": [
         "T14"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
-      "id": "WO07-01",
-      "wo": "WO07",
-      "gate": "P0",
-      "kind": "AUTO",
-      "title": "Bảng items (RLS chỉ chủ sở hữu), CRUD và nhập tay khi AI lỗi",
-      "deps": [
-        "WO06-05"
-      ],
-      "acceptance": [
-        "T04"
       ],
       "status": "TODO",
       "attempts": 0,
