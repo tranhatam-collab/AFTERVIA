@@ -2,7 +2,7 @@
 // Đăng nhập chỉ là GIẢ LẬP ở môi trường local/test (DEC-ENG-11). Mọi lỗi trả về mã chung, không lộ sự tồn tại của tổ chức.
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import type pg from 'pg';
-import { normalizeItemFields, type ItemFields } from '@aftervia/domain';
+import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@aftervia/domain';
 import { signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
 
@@ -289,6 +289,41 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
       });
       return send(res, 200, { version });
     }
+  }
+
+  if (path === '/v1/documents') {
+    if (method === 'GET') {
+      const rows = await runRead(config, auth.userId, async (c) => (await c.query(
+        'select id, declared_mime, size_bytes, scan_status, created_at, updated_at from public.documents order by created_at, id',
+      )).rows);
+      return send(res, 200, { documents: rows });
+    }
+    if (method === 'POST') {
+      const body = await readJson(req);
+      const parsed = normalizeUploadTicket(body);
+      if (!parsed.ok) throw new HttpError(400, 'invalid_input');
+      const ticket = await runRead(config, auth.userId, async (c) => (await c.query(
+        'select out_document_id, out_ticket_id, out_expires_at from public.create_upload_ticket($1, $2)',
+        [parsed.value.declaredMime, parsed.value.sizeBytes],
+      )).rows[0]);
+      return send(res, 201, {
+        document_id: ticket.out_document_id,
+        ticket_id: ticket.out_ticket_id,
+        expires_at: ticket.out_expires_at,
+      });
+    }
+  }
+
+  const document = /^\/v1\/documents\/([^/]+)$/.exec(path);
+  if (document && method === 'GET') {
+    const docId = document[1] ?? '';
+    if (!UUID.test(docId)) return send(res, 404, { error: 'not_found' });
+    const rows = await runRead(config, auth.userId, async (c) => (await c.query(
+      'select id, declared_mime, size_bytes, scan_status, created_at, updated_at from public.documents where id = $1',
+      [docId],
+    )).rows);
+    if (rows.length === 0) return send(res, 404, { error: 'not_found' });
+    return send(res, 200, { document: rows[0] });
   }
 
   return send(res, 404, { error: 'not_found' });

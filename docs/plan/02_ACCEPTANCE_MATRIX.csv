@@ -36,7 +36,7 @@ T34,Mobile,HIGH,Release build iOS,DEVICE,NONE,DEV-01,NOT_RUN,,Cần iPhone thậ
 T35,Mobile,HIGH,Release build Android,DEVICE,NONE,DEV-01,NOT_RUN,,Cần Android thật và build đã ký.
 T36,Web,HIGH,Browser support,PARTIAL,PARTIAL,WO10-03;DEV-02,NOT_RUN,,Sandbox chỉ có Chromium; Safari/Firefox thật cần DEV-02.
 T37,Security,CRITICAL,Secret/log leak,AUTO,PARTIAL,WO03-01;WO03-04;WO16-03,PASS,2026-10-31,Quét repo và log; chưa có quét crash report thật.
-T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,NOT_RUN,,
+T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,PASS,2026-10-31,
 T39,Recovery,HIGH,Backup restore,PARTIAL,PARTIAL,WO16-01;INF-01,NOT_RUN,,Diễn tập cục bộ có; RPO/RTO thật cần staging (INFRA).
 T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,NOT_RUN,,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ.
 T41,Legal,HIGH,Country gating,AUTO,PARTIAL,WO16-04;HUM-WO18-02,NOT_RUN,,Cổng kỹ thuật tự động; duyệt pháp lý là HUMAN.
