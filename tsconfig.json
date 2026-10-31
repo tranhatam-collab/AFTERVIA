@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": [
-      "ES2023"
+      "ES2023",
+      "DOM"
     ],
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -15,6 +16,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "types": [
       "node"
@@ -36,6 +38,9 @@
     "services/**/*.ts",
     "tests/**/*.ts",
     "tools/checks/*.mjs",
+    "apps/web/src/**/*.ts",
+    "apps/web/src/**/*.tsx",
+    "apps/web/vite.config.ts",
     "vitest.config.ts"
   ]
 }

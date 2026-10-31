@@ -34,6 +34,7 @@ describe('WO07-04 Vietnamese and English messages, dates and money', () => {
       'common.denied',
       'common.save',
       'common.cancel',
+      'common.retry',
       'item.title.label',
       'item.brand.label',
       'item.model.label',

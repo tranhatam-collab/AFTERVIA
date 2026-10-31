@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 28,
+    "iterations_used": 29,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -779,9 +779,17 @@
         "T32",
         "T38"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-01.md: lệnh, kết quả, lỗi receiver tìm bằng kiểm trình duyệt và đã sửa, giới hạn (chỉ danh sách, chưa đăng nhập, font và CSP chưa có, bản dịch cần rà soát)",
+        "apps/web/src: state.ts (phân loại phản hồi, kiểm hình dạng dữ liệu, loadItems), view.tsx (mọi trạng thái, văn bản qua t()), App.tsx (ngoại tuyến giữ dữ liệu cũ, thử lại, chuyển VI/EN), main.tsx, styles.css (mobile trước)",
+        "tests/web/desk.test.ts: 12 kiểm thử (T32 x3, T38 x4, còn lại là trạng thái và biên giới yêu cầu); tests/i18n/catalog.test.ts: thêm common.retry vào danh sách bắt buộc",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 171 tệp, typecheck gồm apps/web, build:landing, build:web, Vitest 257/257 trong 33 tệp, kiểm thử vòng lặp 13/13; JSON 257/257 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0",
+        "kiểm trình duyệt ngoài repo: 30/30 pass ở 360 và 1280 px, VI và EN, mọi trạng thái, ngoại tuyến, và bản phát hành không token; kết quả và ảnh trong scratchpad"
+      ],
+      "started_at": "2026-10-31T18:16:10.133Z",
+      "finished_at": "2026-10-31T18:26:30.022Z"
     },
     {
       "id": "WO10-02",
