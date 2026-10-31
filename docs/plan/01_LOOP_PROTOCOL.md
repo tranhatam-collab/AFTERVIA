@@ -89,3 +89,10 @@ Nếu phát hiện lỗ hổng rò dữ liệu, đăng nhập sai tenant, thanh 
 ## 7. Trạng thái PR
 
 Nếu tạo PR nháp thất bại vì thiếu nhánh base, ghi lại trong `docs/plan/evidence/PR-STATUS.md`, không thử lại mỗi vòng, không tạo nhánh base khi chưa có phê duyệt rõ ràng, và tiếp tục vòng lặp trên nhánh làm việc.
+
+## 8. Điều phối một writer và checkpoint
+
+- Chỉ một scheduler được ghi vào nhánh làm việc. Hiện tại là chuỗi `send_later`. Không bật Cloud Routine ghi khi chuỗi này còn chạy (xem `06_DECISION_QUEUE.md`, D1 và D12).
+- Mỗi vòng cập nhật `docs/plan/05_AUTONOMY_STATUS.md`. Mỗi task để lại receipt trong `docs/plan/evidence/AUTO_RUNS/` theo mẫu `docs/spec/AUTONOMY_V1/templates/STATUS_TEMPLATE.md`.
+- Trạng thái kết thúc phiên: `CONTINUE`, `BLOCKED_HANDOFF`, `PAUSED_LIMIT`, hoặc `ENGINEERING_ACCEPTED`. Chỉ đặt `ENGINEERING_ACCEPTED` khi `07_RELEASE_READINESS.md` không còn NOT_RUN hay PARTIAL cho yêu cầu kỹ thuật P0/P1.
+- Kết quả không phải VERIFIED thì ghi PARTIAL, NOT_RUN, BLOCKED hoặc HUMAN_REQUIRED. Không gọi kiểm thử con PASS là nghiệm thu đầy đủ.
