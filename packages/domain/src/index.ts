@@ -2,3 +2,5 @@ export * from './permissions';
 export * from './items';
 export * from './documents';
 export * from './upload-inspection';
+export * from './extraction';
+export * from './extraction-schema';

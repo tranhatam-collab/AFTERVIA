@@ -10,8 +10,8 @@ T08,Sharing,CRITICAL,Thu hồi grant,AUTO,PARTIAL,WO09-01;WO09-02,NOT_RUN,,Bản
 T09,Storage,HIGH,File độc/hỏng,AUTO,PARTIAL,WO05-02,PASS,2026-10-31,Quét mã độc thật cần scanner đã duyệt (INFRA); không giả PASS scanner.
 T10,Storage,HIGH,Upload trùng/retry,AUTO,PARTIAL,WO05-03,PASS,2026-10-31,
 T11,AI,CRITICAL,Prompt injection,AUTO,PARTIAL,WO06-02,NOT_RUN,,Dùng provider giả định định; đánh giá mô hình thật cần bộ dữ liệu được phép (HUMAN).
-T12,AI,HIGH,Ngày mơ hồ,AUTO,PARTIAL,WO06-01;WO06-03,NOT_RUN,,
-T13,AI,HIGH,Currency/serial thiếu,AUTO,PARTIAL,WO06-01;WO06-03,NOT_RUN,,
+T12,AI,HIGH,Ngày mơ hồ,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-10-31,
+T13,AI,HIGH,Currency/serial thiếu,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-10-31,
 T14,AI,CRITICAL,Sai trường có hậu quả,AUTO,PARTIAL,WO06-03;WO06-05,NOT_RUN,,Cổng hành động đã kiểm; độ chính xác mô hình thật chưa đo.
 T15,AI,HIGH,Provider outage,AUTO,PARTIAL,WO06-04,NOT_RUN,,
 T16,AI,HIGH,Budget exceeded,AUTO,PARTIAL,WO06-04,NOT_RUN,,
