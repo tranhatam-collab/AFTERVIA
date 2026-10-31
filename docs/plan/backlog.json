@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 11,
+    "iterations_used": 12,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -321,16 +321,24 @@
       "wo": "WEB",
       "gate": "P0",
       "title": "Landing page tĩnh (VI/EN) cho AFTERVIA: trang chủ, giá đề xuất (ghi rõ chưa được thị trường chấp nhận), quyền riêng tư và điều khoản ở trạng thái DRAFT, không thu thập email hay dữ liệu cá nhân, không lời chứng thực giả; build được và kiểm HTML, liên kết, ngôn ngữ và tương phản cơ bản",
-      "evidence": [],
-      "attempts": 0,
-      "status": "TODO",
+      "evidence": [
+        "docs/plan/evidence/WEB-01.md: lệnh đã chạy, kết quả, tệp đổi, giới hạn và rollback",
+        "npx vitest run tests/web: 24/24 pass (tests/web/landing.test.ts)",
+        "Trình duyệt thật Chromium, 12 tổ hợp vi và en x sáng và tối x 360, 768, 1280: không tràn ngang, không lỗi console, không vi phạm CSP; skip link và các neo hoạt động",
+        "npm run verify exit 0 với TEST_DATABASE_URL trỏ aftervia_test: bundle 69/69, quét bí mật 85 tệp, Vitest 115/115, kiểm thử vòng lặp 13/13",
+        "Tên kiểm thử không mang mã T-xx: T33 vẫn NOT_RUN vì phạm vi toàn ứng dụng; matrix changes []"
+      ],
+      "attempts": 1,
+      "status": "DONE",
       "id": "WEB-01",
       "kind": "AUTO",
       "deps": [],
       "acceptance": [
         "US18",
         "T33"
-      ]
+      ],
+      "started_at": "2026-10-31T15:17:17.070Z",
+      "finished_at": "2026-10-31T15:34:01.889Z"
     },
     {
       "wo": "WEB",
@@ -338,13 +346,15 @@
       "title": "Đưa landing page lên AFTERVIA.iai.one: cần quyền DNS của iai.one, tài khoản hosting (đề xuất Cloudflare Pages nếu DNS nằm trên Cloudflare) và token qua biến môi trường, không dán vào chat",
       "evidence": [],
       "attempts": 0,
-      "status": "TODO",
+      "status": "BLOCKED",
       "id": "WEB-02",
       "kind": "INFRA",
       "deps": [
         "WEB-01"
       ],
-      "acceptance": []
+      "acceptance": [],
+      "blocked_reason": "Chờ quyền Cloudflare Pages (token đặt trong biến môi trường, không dán vào chat; D15) và quyết định DNS của iai.one (D14). developers.cloudflare.com không phân giải được từ phiên này nên cấu hình chưa đối chiếu với tài liệu chính thức",
+      "blocked_at": "2026-10-31T15:34:01.928Z"
     },
     {
       "wo": "WEB",

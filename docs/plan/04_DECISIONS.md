@@ -80,3 +80,12 @@ Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker da
 - Đưa lên domain (WEB-02) cần quyền DNS của `iai.one`, tài khoản hosting và token đặt trong biến môi trường. Chưa có các quyền này nên chưa làm.
 - Tên AFTERVIA chưa clearance (DEC01, DEC12). Công khai tên này trên domain là quyết định của chủ dự án (xem `06_DECISION_QUEUE.md`, D13).
 - Ưu tiên: WEB-01 được đặt trước WO05-02 trong backlog, theo yêu cầu trực tiếp của chủ dự án.
+
+### DEC-ENG-13: chỉ thị 31/10/2026 về hosting, landing và phát triển web
+
+- Hosting ưu tiên: Cloudflare Pages (D14). Landing VI/EN xây ngay (WEB-01, DONE trên nhánh, chưa công bố).
+- Web App (AFTERVIA Personal và Desk) phát triển sau lớp phân quyền và dữ liệu P0, không thay bằng giao diện giả. Đăng nhập thật cần nhà cung cấp danh tính (D3), chưa có.
+- Email liên hệ không hiển thị khi chưa có địa chỉ đã xác thực. Landing không bật form, analytics theo dõi cá nhân hay thanh toán.
+- Công khai chỉ khi có quyền hosting và DNS, và nội dung đã được duyệt (HUM-WEB-03). Không đổi nameserver của cả `iai.one` khi chỉ cần một subdomain.
+- Quyền triển khai đưa qua biến môi trường, không dán vào chat và không ghi vào repo (D15). Không tạo token giả.
+- Tên AFTERVIA là thương hiệu làm việc, chưa xác nhận độc quyền (D13).

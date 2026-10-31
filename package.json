@@ -15,11 +15,13 @@
     "check:secrets": "node tools/checks/secret-scan.mjs",
     "db:migrate": "node tools/db/migrate.mjs",
     "loop": "node tools/loop/backlog.mjs",
-    "verify": "npm run check:bundle && npm run check:secrets && npm run typecheck && npm run test && npm run test:loop"
+    "build:landing": "node apps/landing/build.mjs",
+    "verify": "npm run check:bundle && npm run check:secrets && npm run typecheck && npm run build:landing && npm run test && npm run test:loop"
   },
   "devDependencies": {
     "@types/node": "22.20.5",
     "@types/pg": "8.23.1",
+    "parse5": "8.0.1",
     "typescript": "5.9.3",
     "vitest": "4.1.12"
   },
