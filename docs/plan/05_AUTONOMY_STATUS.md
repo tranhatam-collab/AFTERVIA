@@ -1,23 +1,23 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 31/10/2026, sau lượt WO09-02 (lượt kích hoạt 17:46:11 UTC; ghi lúc khoảng 17:52 UTC).
+- Cập nhật: 31/10/2026, sau lượt WO09-03 (lượt kích hoạt 17:54:47 UTC; ghi ngay sau push `08fb6c0`).
 - Trạng thái: **CONTINUE**. Chưa có `ENGINEERING_ACCEPTED`.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
 ## Repo và nhánh
 - Repo `tranhatam-collab/AFTERVIA`. Nhánh làm việc `ccr-4544c9f7-b1t50m` (writer duy nhất).
-- Commit code mới nhất của task: `0dc0175` (WO09-02). Trước đó: `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
-- Commit checkpoint này nằm ngay sau `0dc0175` (xem `git log`).
+- Commit code mới nhất của task: `08fb6c0` (WO09-03). Trước đó: `31a8ab0` (checkpoint WO09-02), `0dc0175` (WO09-02), `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
+- Commit checkpoint này nằm ngay sau `08fb6c0` (xem `git log`).
 - `main` là commit gốc rỗng `b809781`, không chứa ứng dụng.
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_018kBgkebaUdfcHdAt98Jw3R` (17:46:11 UTC), đã xong.
+- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_01S2wndJsDM34yYBDVDAjzkc` (17:54:47 UTC), đã xong.
 - Lượt kế tiếp: `send_later` đặt ngay sau commit này, 2 phút, theo Bước 7 của `01_LOOP_PROTOCOL.md`. Lượt đó ghi trigger của mình trong receipt.
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
-WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WEB-01.
+WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WEB-01.
 
 ## Bị chặn và chờ người
 - WEB-02 (INFRA, BLOCKED): đưa landing lên `aftervia.iai.one`. Chờ quyền Cloudflare Pages qua biến môi trường (D15) và xác nhận DNS của `iai.one` (D14).
@@ -35,27 +35,29 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Phạm vi inbox và quyền phân công (WO08-03): cần chủ dự án xác nhận. Đề xuất hiện tại: inbox theo toàn tổ chức; chỉ owner và manager phân công.
 - Hạn chia sẻ (WO09-01): tối đa 30 ngày; chỉ vai trò partner; người tham gia thấy timeline; lý do từ chối đầy đủ chỉ cho người liên quan. Cần chủ dự án xác nhận trước khi chia sẻ thật.
 - Quyền đọc của chủ sở hữu không phụ thuộc trạng thái case (WO09-02): cần chủ dự án xác nhận.
+- Hợp đồng HTTP (WO09-03): `Transition` không có outcome, nên `resolved` và `closed` không đi được qua HTTP. Danh sách mã lỗi, giới hạn mô tả (500 theo DB, 4000 theo hợp đồng) và cách gắn `shared_document_ids` (bằng chứng, không cấp grant) cần chủ dự án xác nhận. `UploadRequest` của hợp đồng (`mime`, `sha256`) chưa khớp route legacy (`declared_mime`).
 
 ## Việc kế tiếp
-- Vòng kế tiếp (2 phút sau commit này): đầu vòng kiểm CI của commit mới nhất trên nhánh. Sau đó `decide` đề xuất WO09-03: "HTTP API cho 13 thao tác của OpenAPI và kiểm hợp đồng (operationId khớp, lỗi không lộ đối tượng)" (phụ thuộc WO09-02; acceptance T04, T05; P0). Đọc `docs/spec` về OpenAPI và danh sách 13 thao tác trước khi thiết kế.
+- Vòng kế tiếp (2 phút sau commit này): đầu vòng kiểm CI của `08fb6c0` trên PR #1. Sau đó `decide` đề xuất WO10-01: "Web Desk (React + Vite): loading/empty/error/offline/denied, escape nội dung, bố cục mobile-first" (phụ thuộc WO09-03; acceptance T32, T38; P0; AUTO). Đọc dòng task, dòng T32 và T38 trong ma trận, và bộ nhận diện trước khi thiết kế.
 
-## Kết quả kiểm thử tại `0dc0175`
+## Kết quả kiểm thử tại `08fb6c0`
 - `npm run verify` exit 0 với `TEST_DATABASE_URL` trỏ tới `aftervia_test` (PostgreSQL 16.15), trên cùng mã đã commit.
-- Bundle 69/69. Quét bí mật 156 tệp (5 luật). Vitest 228/228 trong 31 tệp. Kiểm thử vòng lặp 13/13. Báo cáo JSON của Vitest 228/228, mã thoát 0.
+- Bundle 69/69. Quét bí mật 160 tệp (5 luật). Vitest 245/245 trong 32 tệp. Kiểm thử vòng lặp 13/13. Báo cáo JSON của Vitest 245/245, mã thoát 0. T04 (17 kiểm thử) và T05 (15) đều pass, gồm 3 kiểm thử HTTP mới của WO09-03.
 - Ma trận: PASS 24 (T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T32, T37, T38, T45), NOT_RUN 22, FAIL 0. T07 và T08 PASS ở mức PARTIAL: quyết định và audit; luồng tải byte chờ DEC06. T38 PASS: không có đường đọc theo URL và không có cột URL. T33 vẫn NOT_RUN.
-- CI: `05b1e27` có `verify` success (run 41225884643). `0dc0175` và commit checkpoint chưa kiểm trong lượt này; lượt kế tiếp kiểm ngay đầu vòng.
+- CI: `31a8ab0` có `verify` success (run 41226556796). `08fb6c0` và commit checkpoint chưa kiểm trong lượt này; lượt kế tiếp kiểm ngay đầu vòng.
 
 ## Lỗi trong lượt và cách khắc phục
 - Lỗ hổng: hàm đọc tài liệu không kiểm trạng thái quét. Tài liệu `QUARANTINED` vẫn được phục vụ nếu grant còn hiệu lực. Phát hiện khi rà lại sau khi kiểm thử đã pass. Đã sửa bằng migration `0012` (thay hàm, cùng chữ ký), thêm kiểm thử `T07`, và ghi trong evidence. Migration `0011` không sửa vì đã áp dụng.
 
 ## Bảo mật
-- HawkScan (DAST): **BLOCKED**. Không chạy vì `HAWK_API_KEY` chưa đặt và chưa có máy chủ HTTP đang chạy. Hook gợi ý quét sau mỗi commit, kể cả `0dc0175`; đã ghi nhận nhưng không đủ điều kiện.
-- Các module chờ reviewer độc lập: chữ ký tệp và quarantine (WO05-02), hoàn tất idempotent (WO05-03), kiểm đầu ra trích xuất (WO06-01), cổng AI (WO06-02), cổng xác nhận và hành động (WO06-03), chống lỗi và ngân sách AI (WO06-04), xác nhận trường chỉ thêm (WO06-05), lịch nhắc và hộp thư (WO07-03), máy trạng thái case (WO08-01), bảng case, RLS, hàm `SECURITY DEFINER` và khóa đồng thời (WO08-02), inbox và phân công Desk (WO08-03), người tham gia và grant tài liệu (WO09-01), proxy đọc tài liệu và ghi audit (WO09-02). Không tự gọi là đã duyệt.
+- HawkScan (DAST): **BLOCKED**. Không chạy vì `HAWK_API_KEY` chưa đặt và chưa có máy chủ HTTP đang chạy. Hook gợi ý quét sau mỗi commit, kể cả `0dc0175` và `08fb6c0`; đã ghi nhận nhưng không đủ điều kiện.
+- Các module chờ reviewer độc lập: chữ ký tệp và quarantine (WO05-02), hoàn tất idempotent (WO05-03), kiểm đầu ra trích xuất (WO06-01), cổng AI (WO06-02), cổng xác nhận và hành động (WO06-03), chống lỗi và ngân sách AI (WO06-04), xác nhận trường chỉ thêm (WO06-05), lịch nhắc và hộp thư (WO07-03), máy trạng thái case (WO08-01), bảng case, RLS, hàm `SECURITY DEFINER` và khóa đồng thời (WO08-02), inbox và phân công Desk (WO08-03), người tham gia và grant tài liệu (WO09-01), proxy đọc tài liệu và ghi audit (WO09-02), HTTP cho 13 thao tác và lỗi không lộ đối tượng (WO09-03). Không tự gọi là đã duyệt.
 - WO06-05 chưa kiểm quyền sở hữu extraction vì chưa có bảng extraction. Cần sửa ở task extraction và reviewer xác nhận.
 - WO07-02 chưa kiểm quyền của người xác nhận múi giờ trên món đồ. WO07-03 kiểm quyền chủ sở hữu khi tạo lịch nhắc; reviewer cần xác nhận.
 - WO08-02: bằng chứng `SCANNER_UNAVAILABLE` chỉ là tham chiếu, chưa có chia sẻ tài liệu cho merchant. Tổ chức SUSPENDED chưa được chặn khi chuyển trạng thái.
 - WO08-03: khi thành viên bị thu hồi, case đang gán vẫn giữ người được gán (chưa có chính sách gán lại). Từ chối do không thuộc tổ chức không được ghi audit (lựa chọn có chủ đích, cần xác nhận).
 - WO09-01 và WO09-02: đường đọc chưa có byte thật. Mọi lần đọc phải đi qua `read_case_document` và chế độ `view` phải được thực thi ở tầng HTTP. Bản đã tải hợp lệ không thu hồi được; người dùng phải được thông báo rõ.
+- WO09-03: lần từ chối 403 của transitionCase, grantDocument và revokeGrant chưa ghi authz.denied ở tầng API. Route legacy vẫn trả `{error}`, không phải hình dạng hợp đồng. Cần làm trước khi coi ranh giới HTTP là đầy đủ.
 - CSP và header bảo mật của landing: chờ reviewer độc lập.
 
 ## Blocker (phân loại)
@@ -81,7 +83,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 27/60 đã dùng (sau WO09-02).
+- Vòng lặp: 28/60 đã dùng (sau WO09-03).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -91,6 +93,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- Lượt 17:54 UTC: WO09-03. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1754Z.md`.
 - Lượt 17:46 UTC: WO09-02. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1746Z.md`.
 - Lượt 17:37 UTC: WO09-01. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1737Z.md`.
 - Lượt 17:30 UTC: WO08-03. Lượt 17:20 UTC: WO08-02. Lượt 17:11 UTC: WO08-01. Lượt 17:03 UTC: WO07-04. Lượt 16:53 UTC: WO07-03. Lượt 16:43 UTC: WO07-02. Lượt 16:31 UTC: WO06-05. Lượt 16:20 UTC: WO06-04. Lượt 16:14 UTC: WO06-03. Lượt 16:07 UTC: WO06-02. Lượt 16:01 UTC: WO06-01. Lượt 15:53 UTC: WO05-03. Lượt 15:38 UTC: WO05-02. Lượt 15:08 UTC: WEB-01.
