@@ -34,3 +34,15 @@ Ngày 31/10/2026, chủ dự án trả lời "All" cho câu hỏi 1–5 trong ph
 | 8 | Phiên bản trình duyệt mục tiêu (T36) | Chưa trả lời |
 
 Phê duyệt này không bao gồm: production, dữ liệu thật, thanh toán live, tài khoản dịch vụ, mua tên miền, nộp store, gửi tin cho khách. Những việc đó vẫn cần phê duyệt riêng.
+
+## D. Cập nhật câu 6–8 (31/10/2026)
+
+Chủ dự án trả lời "Ok all" cho câu 6–8. Câu 7 có thể ghi là đồng ý. Câu 6 và 8 cần nội dung cụ thể nên chưa ghi là đã duyệt.
+
+| Câu | Nội dung | Trạng thái | Điều kiện hoặc việc còn lại |
+|---|---|---|---|
+| 6 | Danh sách phỏng vấn và hạn mức chi cho người tham gia (DEC04) | CHỜ THÔNG TIN | Cần: số người và kênh tuyển (không mua danh sách email), và có trả tiền hay không. Nếu có, cần mức tối đa. Đề xuất mặc định: không trả tiền; chỉ quà tặng nhỏ nếu anh ghi rõ mức. |
+| 7 | Bật HawkScan DAST | ĐỒNG Ý CÓ ĐIỀU KIỆN, đang BLOCKED | (a) Thêm biến môi trường `HAWK_API_KEY` trong cài đặt môi trường, không dán vào chat; phiên mới mới đọc được biến. (b) Môi trường có Docker đang chạy. Hiện daemon không chạy. (c) Có máy chủ HTTP để quét, tức là sau WO09-03. |
+| 8 | Phiên bản Chrome, Safari, Firefox mục tiêu (T36) | CHỜ THÔNG TIN | Đề xuất mặc định để anh đồng ý hoặc sửa: Chrome hai bản ổn định mới nhất; Safari hai bản mới nhất trên macOS và iOS; Firefox bản ổn định mới nhất và bản ESR. |
+
+Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker daemon không chạy; repo chưa có máy chủ HTTP (`services/api/src` chưa có tệp server).
