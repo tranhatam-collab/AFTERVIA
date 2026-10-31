@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 1,
+    "iterations_used": 2,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -46,9 +46,15 @@
       "acceptance": [
         "E01"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: bundle 69/69, secret scan 29 files, vitest 4/4, node tests 13/13",
+        "03_BASELINE_SHEET.csv: 30 dòng, 12 cột, 0 dòng sai độ rộng",
+        "docs/plan/evidence/WO02-01.md"
+      ],
+      "started_at": "2026-10-31T14:23:32.663Z",
+      "finished_at": "2026-10-31T14:23:47.470Z"
     },
     {
       "id": "HUM-WO02-02",
