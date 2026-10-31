@@ -13,7 +13,7 @@
 
 ## Scheduler (một writer)
 - Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_01UuCpeDiPyi6uk5kQe7G3pg` (16:20:53 UTC), đã xong.
-- Lượt kế tiếp: một `send_later` 2 phút sau lượt này (khoảng 16:28 UTC), theo Bước 7 của `01_LOOP_PROTOCOL.md`. ID trigger do công cụ trả về, ghi trong báo cáo cuối của lượt.
+- Lượt kế tiếp: `send_later` đặt lúc 16:28 UTC, chạy lúc 16:31:00 UTC, theo Bước 7 của `01_LOOP_PROTOCOL.md`. Trigger: `trig_01JHytt6SPKdZWStdGDNtfby`.
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
@@ -28,7 +28,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Danh sách trường quan trọng (WO06-03): đội phát triển chọn ngày mua, số tiền, tiền tệ và serial. Cần chủ dự án xác nhận.
 
 ## Việc kế tiếp
-- Vòng kế tiếp (khoảng 16:28 UTC): đầu vòng kiểm CI của `3c09cf7` và commit checkpoint. Sau đó `decide` đề xuất WO06-05: "Dịch vụ xác nhận trường: field_confirmations append-only với actor, thời gian, giá trị cũ và mới" (phụ thuộc WO06-04, acceptance T14, P0). Task này dự kiến có migration mới, kiểm theo quy tắc 8 của `01_LOOP_PROTOCOL.md`.
+- Vòng kế tiếp (16:31 UTC): đầu vòng kiểm CI của `3c09cf7` và commit checkpoint. Sau đó `decide` đề xuất WO06-05: "Dịch vụ xác nhận trường: field_confirmations append-only với actor, thời gian, giá trị cũ và mới" (phụ thuộc WO06-04, acceptance T14, P0). Task này dự kiến có migration mới, kiểm theo quy tắc 8 của `01_LOOP_PROTOCOL.md`.
 
 ## Kết quả kiểm thử tại `3c09cf7`
 - `npm run verify` exit 0 với `TEST_DATABASE_URL` trỏ tới `aftervia_test` (PostgreSQL 16.15).
