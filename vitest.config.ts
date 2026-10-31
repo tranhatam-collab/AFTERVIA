@@ -6,6 +6,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@aftervia/domain': fileURLToPath(new URL('./packages/domain/src/index.ts', import.meta.url)),
+      '@aftervia/i18n': fileURLToPath(new URL('./packages/i18n/src/index.ts', import.meta.url)),
     },
   },
   test: {

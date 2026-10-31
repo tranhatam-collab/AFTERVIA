@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 21,
+    "iterations_used": 22,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -598,9 +598,17 @@
       "acceptance": [
         "T32"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO07-04.md: lệnh, kết quả, quy tắc, giới hạn (chưa có giao diện, landing chưa chuyển bộ văn bản, trình duyệt và thiết bị thuộc WO10-01 và DEV-01) và rollback",
+        "packages/i18n/src/vi.json và en.json: 29 khóa, cùng bộ khóa, placeholder khớp, NFC; index.ts: t() từ chối khóa lạ, formatDateOnly theo UTC, formatMoneyMinor theo ISO 4217",
+        "tests/i18n/catalog.test.ts: 7/7 pass (T32): đủ bộ khóa, placeholder, khóa lạ bị từ chối, NFC, ngày theo lịch, tiền theo đơn vị nhỏ nhất",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 135 tệp, typecheck, build:landing, Vitest 190/190 trong 26 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 190/190 success=true; matrix from-report: T32 NOT_RUN -> PASS, coverage PARTIAL; chữ dài và đổi ngôn ngữ trên trình duyệt chờ WO10-01"
+      ],
+      "started_at": "2026-10-31T17:04:10.072Z",
+      "finished_at": "2026-10-31T17:07:28.362Z"
     },
     {
       "id": "WO08-01",
