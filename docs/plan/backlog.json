@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 26,
+    "iterations_used": 27,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -729,9 +729,17 @@
         "T08",
         "T38"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-02.md: lệnh, kết quả, quy tắc, giới hạn (chưa có luồng tải byte, chế độ view chưa thực thi ở tầng byte, bản đã tải không thu hồi được) và rollback",
+        "supabase/migrations/0011_document_reads.sql và 0012_document_read_status.sql: read_case_document kiểm grant tại mỗi lần đọc, ghi audit cho mọi lần đọc được phép hoặc bị từ chối, chỉ nhận UUID, không trả về URL hay khóa lưu trữ, từ chối tài liệu không ở trạng thái quét được phép; db:migrate áp đúng và chạy lại không áp gì thêm",
+        "tests/db/document_reads.test.ts: 8/8 pass (T07 4, T08 3, T38 1): lượt đọc được cấp được ghi audit, lượt đọc khác case hoặc không có grant bị từ chối, grant chỉ xem không tải được, thu hồi và hết hạn chặn lượt đọc kế tiếp, đầu vào URL bị từ chối theo kiểu không có audit, không có cột URL, tài liệu quarantine không được phục vụ kể cả với chủ sở hữu",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 156 tệp, typecheck, build:landing, Vitest 228/228 trong 31 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 228/228 success=true; T07 9, T08 7, T38 5 đều pass; matrix from-report: không đổi dòng nào; T07 và T08 giữ PASS ở mức PARTIAL; T38 giữ PASS"
+      ],
+      "started_at": "2026-10-31T17:47:21.939Z",
+      "finished_at": "2026-10-31T17:50:36.234Z"
     },
     {
       "id": "WO09-03",
