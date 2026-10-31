@@ -6,3 +6,4 @@ export * from './extraction';
 export * from './extraction-schema';
 export * from './ai-gateway';
 export * from './confirmation';
+export * from './ai-resilience';
