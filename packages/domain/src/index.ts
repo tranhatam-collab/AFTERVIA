@@ -4,3 +4,4 @@ export * from './documents';
 export * from './upload-inspection';
 export * from './extraction';
 export * from './extraction-schema';
+export * from './ai-gateway';
