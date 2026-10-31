@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 41,
+    "iterations_used": 42,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1274,9 +1274,17 @@
         "E02",
         "E03"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/pilot/KE_HOACH_PILOT.md (DRAFT): giả thuyết và quy tắc quyết định E02/E03 chép từ đặc tả, chỗ chưa chốt được ghi rõ; 10 điều kiện trước khi bắt đầu (chưa dòng nào đạt); baseline ít nhất 20 hồ sơ; định nghĩa cột và chỉ số; tiêu chí dừng là đề xuất; bảng phê duyệt chưa có dòng nào được duyệt",
+        "docs/pilot/SO_DO_THAO_TAC.csv: chỉ có tiêu đề 20 cột, không có dữ liệu; docs/pilot/SLA_HO_TRO.md (DRAFT): giờ làm việc, kênh và người trực, trường ticket, mức độ S1 đến S4 (đề xuất), truy cập hỗ trợ; các con số chờ chủ dự án",
+        "npm run verify exit 0 tại lượt này, URL DB nạp từ .github/workflows/ci.yml trong cùng lệnh: bundle 69/69; quét bí mật 250 tệp; Vitest 352 pass, 1 bỏ qua, 46 tệp; test:loop 13/13",
+        "Vitest JSON success=true, 352 pass, 0 fail; from-report changes rỗng; summary PASS 33, NOT_RUN 13, FAIL 0; E02 và E03 vẫn NOT_STARTED trong validation/03_EXPERIMENT_REGISTER.csv, không đổi",
+        "docs/plan/evidence/WO19-01.md: phạm vi, không làm, giới hạn cần con người, rollback"
+      ],
+      "started_at": "2026-10-31T20:53:11.802Z",
+      "finished_at": "2026-10-31T20:58:09.522Z"
     },
     {
       "id": "HUM-WO19-02",

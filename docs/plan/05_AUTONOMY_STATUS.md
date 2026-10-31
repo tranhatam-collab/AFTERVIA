@@ -1,23 +1,23 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 31/10/2026, sau lượt WO18-01 (lượt kích hoạt 20:36:41 UTC; ghi trong cùng commit của lượt).
-- Trạng thái: **CONTINUE**. Chưa có `ENGINEERING_ACCEPTED`.
+- Cập nhật: 31/10/2026, sau lượt WO19-01 (lượt kích hoạt 20:51:08 UTC; ghi trong cùng commit của lượt).
+- Trạng thái: **BLOCKED_HANDOFF** (decide trả về STOP_STUCK sau WO19-01; không lên lịch vòng kế tiếp). Chưa có `ENGINEERING_ACCEPTED`.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
 ## Repo và nhánh
 - Repo `tranhatam-collab/AFTERVIA`. Nhánh làm việc `ccr-4544c9f7-b1t50m` (writer duy nhất).
-- Commit mới nhất của task: lượt WO18-01 (bản nháp pháp lý và checklist ở trạng thái DRAFT; BLOCKED ở T46; xem `git log`). Ngay trước: lượt WO16-04 (cổng country pack và pack mẫu DISABLED, T41). Trước đó: lượt WO16-03 (nhật ký có cấu trúc, phân mức, runbook DRAFT). Trước đó: lượt WO11-02 (`0014`, T25/T26, BLOCKED), `24ab351` (WO10-03, BLOCKED), `e1906bc` (WO11-01), `219559c` (đính chính CI WO10-02), `d16538d` (checkpoint WO10-02), `9351ca1` (WO10-02), `5b8b870` (checkpoint WO10-01), `0bbd654` (WO10-01), `0c9bf30` (checkpoint WO09-03), `08fb6c0` (WO09-03), `31a8ab0` (checkpoint WO09-02), `0dc0175` (WO09-02), `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
-- Commit của lượt WO16-03 là `5d64678`; lượt WO16-04 là `c003703`; lượt WO18-01 nằm ngay sau (xem `git log`).
+- Commit mới nhất của task: lượt WO19-01 (kế hoạch pilot DRAFT, sổ đo và SLA dự thảo; DONE ở mức kế hoạch; xem `git log`). Ngay trước: lượt WO18-01 (bản nháp pháp lý và checklist DRAFT; BLOCKED ở T46). Trước đó: lượt WO16-04 (cổng country pack, T41). Trước đó: lượt WO11-02 (`0014`, T25/T26, BLOCKED), `24ab351` (WO10-03, BLOCKED), `e1906bc` (WO11-01), `219559c` (đính chính CI WO10-02), `d16538d` (checkpoint WO10-02), `9351ca1` (WO10-02), `5b8b870` (checkpoint WO10-01), `0bbd654` (WO10-01), `0c9bf30` (checkpoint WO09-03), `08fb6c0` (WO09-03), `31a8ab0` (checkpoint WO09-02), `0dc0175` (WO09-02), `05b1e27` (checkpoint WO09-01), `22ff4b3` (WO09-01), `387e6d8` (checkpoint WO08-03), `dd363d0` (WO08-03), `d896638` (checkpoint WO08-02), `6f1282c` (WO08-02), `cc9b231` (checkpoint WO08-01), `19a9dab` (WO08-01), `173f5a0` (checkpoint WO07-04), `4b5db22` (WO07-04), `7345f6b` (checkpoint WO07-03), `d4ed4f6` (WO07-03), `ee5baaf`, `22443ea` (WO07-02), `ede043d`, `c7f5e6f` (WO06-05), `f93fd2a`, `27bfa61`, `3c09cf7` (WO06-04), `b13cab3`, `1470146` (WO06-03), `081c2cd`, `8160beb`, `c477d0e`, `64eea75`.
+- Commit của lượt WO16-03 là `5d64678`; lượt WO16-04 là `c003703`; lượt WO18-01 là `bd9be9c`; lượt WO19-01 nằm ngay sau (xem `git log`).
 - `main` là commit gốc rỗng `b809781`, không chứa ứng dụng.
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_01WyvLTZ1MQsqAZ2XaXscXaR` (20:36:41 UTC), đã xong. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
-- Lượt kế tiếp: `send_later` đặt ngay sau commit này, 2 phút, theo Bước 7 của `01_LOOP_PROTOCOL.md`. Lượt đó ghi trigger của mình trong receipt.
+- Chuỗi `send_later` là writer duy nhất. Trigger vừa chạy: `trig_01Bt85kyMWGyfuZwh3XHjyuH` (20:51:08 UTC), đã xong. Không lên lịch vòng kế tiếp: decide trả về STOP_STUCK. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
+- Lượt kế tiếp: không có (STOP_STUCK, xem Việc kế tiếp).
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
-WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WEB-01.
+WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WO19-01, WEB-01.
 
 ## Bị chặn và chờ người
 - WO18-01 (BLOCKED ở T46): bản nháp và checklist ở mức DRAFT đã xong trong `docs/legal/`. T46 cần tài khoản store thật; DEC09 đang NOT_AUTHORIZED. Bằng chứng: `docs/plan/evidence/WO18-01.md`. HUM-WO18-02 (luật sư và IP) chờ WO18-01.
@@ -46,9 +46,11 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. Chưa có HTTP cho `createExport` và tải gói; gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Vòng kế tiếp (2 phút sau commit này): `decide` đề xuất START WO19-01 (kế hoạch pilot 5–10 cửa hàng: baseline, sổ đo thao tác, SLA hỗ trợ đúng giờ làm việc, tiêu chí dừng; AUTO_PREP; E02, E03). Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
+- Không có vòng kế tiếp: `decide` trả về STOP_STUCK sau WO19-01. Bảy tác vụ tự động còn lại đều chờ phụ thuộc chưa xong: WO11-03, WO12-01, WO12-02, WO12-03 và WO16-01 (chờ WO11-02, đang BLOCKED); WO17-01 (chờ WO10-03, đang BLOCKED, và WO12-03); WO20-01 (chờ WO16-01 và WO17-01). Mở khóa cần quyết định của con người, xem mục "Bị chặn và chờ người". Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
 
 ## Kết quả kiểm thử
+
+- Lượt WO19-01: `npm run verify` exit 0 (bundle 69/69; quét bí mật 250 tệp, 5 luật; Vitest 352 pass và 1 bỏ qua có chủ đích, trong 46 tệp; test:loop 13/13). JSON 352/352 pass, 0 fail, `success=true`. Matrix: không đổi dòng nào; PASS 33, NOT_RUN 13, FAIL 0. E02 và E03 vẫn NOT_STARTED. Không đổi mã nên không có đột biến.
 
 - Lượt WO18-01: `npm run verify` exit 0 (bundle 69/69; quét bí mật 245 tệp, 5 luật; Vitest 352 pass và 1 bỏ qua có chủ đích, trong 46 tệp; test:loop 13/13). JSON 352/352 pass, 0 fail, `success=true`. Matrix: không đổi dòng nào (T41 PASS ở mức PARTIAL; T46 NOT_RUN); PASS 33, NOT_RUN 13, FAIL 0. Không đổi mã nên không có đột biến.
 
@@ -124,7 +126,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 41/60 đã dùng (sau WO18-01, BLOCKED ở T46; duyệt pháp lý là HUMAN).
+- Vòng lặp: 42/60 đã dùng (sau WO19-01, DONE ở mức kế hoạch; decide trả về STOP_STUCK).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -134,6 +136,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- Lượt 20:51 UTC: WO19-01 DONE ở mức kế hoạch (AUTO_PREP; E02 và E03 NOT_STARTED, cần HUM-WO19-02). Bộ chuẩn bị nằm trong `docs/pilot/`: kế hoạch, sổ đo chỉ có tiêu đề, SLA dự thảo. `decide` sau đó trả về STOP_STUCK; không lên lịch vòng kế tiếp. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2051Z.md`.
 - Lượt 20:36 UTC: WO18-01 BLOCKED ở T46 (cần tài khoản store thật; DEC09 NOT_AUTHORIZED). Phần AUTO_PREP ở mức DRAFT: hai bản nháp v0.2 và hai checklist trong `docs/legal/`. Không xuất bản; không có luật sư nào duyệt. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2036Z.md`. Dòng đồng tác giả dùng `Claude <noreply@anthropic.com>`, không đưa tên model (mục 3, quy tắc 5 của giao thức).
 - Lượt 20:27 UTC: WO16-04 DONE ở mức mã và kiểm thử (T41 PARTIAL). Mọi pack là DISABLED; quốc gia pilot chưa quyết định (DEC07). Đã khôi phục nhầm lẫn phụ thuộc ajv về HEAD. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2027Z.md`.
 - Lượt 20:17 UTC: WO16-03 DONE ở mức mã và kiểm thử. API ghi nhật ký có cấu trúc lần đầu (hai đường 500, chỉ tên lớp lỗi). Runbook sự cố là DRAFT. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2017Z.md`.
