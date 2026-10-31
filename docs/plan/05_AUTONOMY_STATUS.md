@@ -1,48 +1,55 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 31/10/2026, sau lượt WO05-03 (lượt kích hoạt 15:53:48 UTC; ghi lúc khoảng 15:58 UTC).
+- Cập nhật: 31/10/2026, sau lượt WO06-01 (lượt kích hoạt 16:01:00 UTC; ghi lúc khoảng 16:05 UTC).
 - Trạng thái: **CONTINUE**. Chưa có `ENGINEERING_ACCEPTED`.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
 ## Repo và nhánh
 - Repo `tranhatam-collab/AFTERVIA`. Nhánh làm việc `ccr-4544c9f7-b1t50m` (writer duy nhất).
-- Commit mới nhất: `bd5af49` (WO05-03). Trước đó: `a5abea6` (checkpoint), `8adad33` (bộ nhận diện landing), `6c5ddcc` (WO05-02), `1f6fa29` (checkpoint WEB-01).
-- Commit checkpoint này nằm ngay sau `bd5af49` (xem `git log`).
+- Commit mới nhất: `64eea75` (WO06-01). Trước đó: `50f9f57` (checkpoint WO05-03), `bd5af49` (WO05-03), `a5abea6`, `8adad33`, `6c5ddcc`, `1f6fa29`.
+- Commit checkpoint này nằm ngay sau `64eea75` (xem `git log`).
 - `main` là commit gốc rỗng `b809781`, không chứa ứng dụng.
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Trigger chờ: `trig_01V1CtnhgHYcX4cm8kmA3bii`, lúc 16:00:00 UTC.
-- Trigger trước `trig_01BwKtvpX6JJ926xYCGWq82T` đã chạy xong lúc 15:53:48 UTC và không còn chờ.
+- Chuỗi `send_later` là writer duy nhất. Trigger chờ: `trig_01LdTfZGbG4iNfJaJgvZkC9c`, lúc 16:07:00 UTC.
+- Trigger trước `trig_01V1CtnhgHYcX4cm8kmA3bii` đã chạy xong lúc 16:01:00 UTC và không còn chờ.
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
-WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO07-01, WEB-01.
+WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO07-01, WEB-01.
 
 ## Bị chặn và chờ người
 - WEB-02 (INFRA, BLOCKED): đưa landing lên `aftervia.iai.one`. Chờ quyền Cloudflare Pages qua biến môi trường (D15) và xác nhận DNS của `iai.one` (D14).
 - HUM-WEB-03 (HUMAN): chủ dự án và luật sư duyệt nội dung công khai, miễn trừ và tên AFTERVIA (D13). Tên và tagline chưa kiểm tra nhãn hiệu.
 - Đăng nhập thật (DEC03, D3): cần chọn nhà cung cấp danh tính và Supabase project. Hiện chỉ có đăng nhập giả lập cục bộ, được ghi rõ là giả lập.
-- Upload thật (DEC06 và INFRA): WO05-03 hoàn tất phần idempotent và cổng trạng thái. Upload thật vẫn BLOCKED cho đến khi có kho lưu trữ byte đã chọn và scanner mã độc đã duyệt. Tài liệu hiện dừng ở SCANNER_UNAVAILABLE, không CLEAN.
+- Upload thật (DEC06 và INFRA): WO05-03 hoàn tất phần idempotent và cổng trạng thái. Upload thật vẫn BLOCKED cho đến khi có kho lưu trữ byte đã chọn và scanner mã độc đã duyệt.
+- Trích xuất bằng AI (WO06-02 và WO06-03): chưa có provider đã duyệt, khóa, hay quyết định về dữ liệu gửi đi. WO06-01 chỉ kiểm đầu ra, không gọi model.
 
 ## Việc kế tiếp
-- Vòng kế tiếp (lúc 16:00 UTC): `decide` đề xuất WO06-01. Vòng đó sẽ đọc backlog và đặc tả của WO06-01 trước khi bắt đầu.
+- Vòng kế tiếp (lúc 16:07 UTC): `decide` đề xuất WO06-02. Vòng đó sẽ đọc backlog và đặc tả của WO06-02 trước khi bắt đầu.
 
-## Kết quả kiểm thử tại `bd5af49`
+## Kết quả kiểm thử tại `64eea75`
 - `npm run verify` exit 0 với `TEST_DATABASE_URL` trỏ tới `aftervia_test` (PostgreSQL 16.15).
-- Bundle 69/69. Quét bí mật 99 tệp (5 luật). Vitest 136/136 trong 17 tệp. Kiểm thử vòng lặp 13/13.
-- Ma trận: PASS 9 (T03, T04, T05, T06, T09, T10, T22, T37, T38), NOT_RUN 37. T09 và T10 PASS với mức phủ PARTIAL. T33 vẫn NOT_RUN.
-- CI: `verify` xanh trên `a5abea6` (run #12). Các commit `bd5af49` và commit checkpoint chưa kiểm trong lượt này; lượt kế tiếp kiểm ngay đầu vòng.
+- Bundle 69/69. Quét bí mật 104 tệp (5 luật). Vitest 144/144 trong 18 tệp. Kiểm thử vòng lặp 13/13.
+- Ma trận: PASS 11 (T03, T04, T05, T06, T09, T10, T12, T13, T22, T37, T38), NOT_RUN 35. T09, T10, T12, T13 PASS với mức phủ PARTIAL. T33 vẫn NOT_RUN.
+- CI: `verify` run #13 xanh trên `50f9f57`. Các commit `64eea75` và commit checkpoint chưa kiểm trong lượt này; lượt kế tiếp kiểm ngay đầu vòng.
+
+## Lỗi trong lượt và cách khắc phục
+- Một lệnh tạo báo cáo JSON của Vitest chạy thiếu `TEST_DATABASE_URL`: chỉ 64/144 kiểm thử pass, mã thoát 1. `matrix.mjs from-report` đã đổi T03, T04, T05, T10, T38 từ PASS sang NOT_RUN.
+- Đã khắc phục: chạy lại với biến môi trường, báo cáo 144/144 và mã thoát 0, rồi mới cập nhật ma trận. Các dòng PASS đã được khôi phục; diff của ma trận chỉ còn T12 và T13.
+- Quy tắc từ đây: mọi lệnh chạy Vitest để tạo báo cáo JSON, và lệnh `from-report` đi kèm, phải đặt `TEST_DATABASE_URL` trong cùng lệnh shell, và chỉ cập nhật ma trận khi báo cáo đủ xanh.
 
 ## Bảo mật
 - HawkScan (DAST): **BLOCKED**. Không chạy vì `HAWK_API_KEY` chưa đặt và chưa có máy chủ HTTP đang chạy. Hook gợi ý quét sau mỗi commit; đã ghi nhận nhưng không đủ điều kiện.
-- Chữ ký tệp, hàm quarantine (WO05-02) và hoàn tất idempotent (WO05-03): chờ reviewer độc lập. Không tự gọi là đã duyệt.
+- Chữ ký tệp, quarantine (WO05-02), hoàn tất idempotent (WO05-03) và kiểm đầu ra trích xuất (WO06-01): chờ reviewer độc lập. Không tự gọi là đã duyệt.
 - CSP và header bảo mật của landing: chờ reviewer độc lập.
 
 ## Blocker (phân loại)
 - Đăng nhập thật: cần nhà cung cấp danh tính và Supabase project (DEC03). **HUMAN_REQUIRED**.
 - Lưu byte tệp thật: cần chọn kho đối tượng riêng tư (DEC06). **HUMAN_REQUIRED**.
 - Scanner mã độc cho upload thật: cần scanner đã duyệt (INFRA). **BLOCKED** cho upload thật.
+- Provider trích xuất AI: cần duyệt nhà cung cấp, khóa, và quyết định về việc gửi dữ liệu (WO06-02). **HUMAN_REQUIRED**.
 - Quyền Cloudflare Pages và DNS `iai.one` (WEB-02): **HUMAN_REQUIRED**.
 - DAST (HawkScan): **BLOCKED**.
 - Web và mobile đầy đủ (WO10): chưa bắt đầu. Bộ nhận diện trong `docs/design/BRAND_TOKENS.md` là chuẩn cho WO10.
@@ -51,14 +58,15 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 14/60 đã dùng (sau WO05-03).
+- Vòng lặp: 15/60 đã dùng (sau WO06-01).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
 - Không dùng dữ liệu thật, không production, không thanh toán live, không tài khoản dịch vụ mới, không mua tên miền, không đổi DNS.
+- Không gọi model AI và không đưa khóa vào repo.
 - Font Inter được tự host kèm giấy phép; không tải từ CDN.
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
-- Lượt 15:53 UTC: WO05-03, theo giao thức, một task. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1553Z.md`.
-- Lượt 15:38 UTC: WO05-02. Lượt 15:08 UTC: WEB-01.
+- Lượt 16:01 UTC: WO06-01, theo giao thức, một task. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T1601Z.md`.
+- Lượt 15:53 UTC: WO05-03. Lượt 15:38 UTC: WO05-02. Lượt 15:08 UTC: WEB-01.
