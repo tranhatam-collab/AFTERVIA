@@ -18,7 +18,7 @@
 WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO07-01.
 
 ## Đang làm
-- Không có. Việc kế tiếp là WO05-02: kiểm chữ ký nhị phân (JPEG, PNG, PDF), giới hạn kích thước, quarantine. Chưa cần kho đối tượng cho phần kiểm tra này.
+- Không có. Việc kế tiếp là WEB-01 (landing page theo yêu cầu của chủ dự án), sau đó WO05-02: kiểm chữ ký nhị phân (JPEG, PNG, PDF), giới hạn kích thước, quarantine. Chưa cần kho đối tượng cho phần kiểm tra này.
 
 ## Kết quả kiểm thử tại `0a85995`
 - `npm run verify` exit 0 với `TEST_DATABASE_URL` trỏ tới `aftervia_test` (PostgreSQL 16.15).

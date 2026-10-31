@@ -318,6 +318,49 @@
       "finished_at": "2026-10-31T15:04:35.754Z"
     },
     {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Landing page tĩnh (VI/EN) cho AFTERVIA: trang chủ, giá đề xuất (ghi rõ chưa được thị trường chấp nhận), quyền riêng tư và điều khoản ở trạng thái DRAFT, không thu thập email hay dữ liệu cá nhân, không lời chứng thực giả; build được và kiểm HTML, liên kết, ngôn ngữ và tương phản cơ bản",
+      "evidence": [],
+      "attempts": 0,
+      "status": "TODO",
+      "id": "WEB-01",
+      "kind": "AUTO",
+      "deps": [],
+      "acceptance": [
+        "US18",
+        "T33"
+      ]
+    },
+    {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Đưa landing page lên AFTERVIA.iai.one: cần quyền DNS của iai.one, tài khoản hosting (đề xuất Cloudflare Pages nếu DNS nằm trên Cloudflare) và token qua biến môi trường, không dán vào chat",
+      "evidence": [],
+      "attempts": 0,
+      "status": "TODO",
+      "id": "WEB-02",
+      "kind": "INFRA",
+      "deps": [
+        "WEB-01"
+      ],
+      "acceptance": []
+    },
+    {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Chủ dự án và luật sư duyệt nội dung công khai, miễn trừ và tên AFTERVIA trước khi công bố (DEC01, DEC12)",
+      "evidence": [],
+      "attempts": 0,
+      "status": "TODO",
+      "id": "HUM-WEB-03",
+      "kind": "HUMAN",
+      "deps": [
+        "WEB-01"
+      ],
+      "acceptance": []
+    },
+    {
       "id": "WO05-02",
       "wo": "WO05",
       "gate": "P0",

@@ -72,3 +72,11 @@ Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker da
 - Thêm WO04-04 (AUTO) vào backlog ngay sau WO04-03: API HTTP mỏng bằng `node:http`, không thêm thư viện.
 - Đăng nhập trong môi trường cục bộ là giả lập: JWT ký HMAC bằng khóa cục bộ, chỉ dùng trong kiểm thử và phát triển. Tài liệu và báo cáo phải ghi rõ đây là mô phỏng. Đăng nhập thật cần nhà cung cấp danh tính (DEC03).
 - API này cũng là nền cho DAST khi có Docker và `HAWK_API_KEY` (DEC-ENG-09).
+
+### DEC-ENG-12: landing page và web tại AFTERVIA.iai.one
+
+- Yêu cầu của chủ dự án: áp dụng landing page và web cho dự án này trên `AFTERVIA.iai.one`.
+- Phần dựng trang (WEB-01) là việc nội bộ, làm được ngay: landing tĩnh VI/EN, không form thu thập dữ liệu, không lời chứng thực giả, quyền riêng tư và điều khoản ở trạng thái DRAFT.
+- Đưa lên domain (WEB-02) cần quyền DNS của `iai.one`, tài khoản hosting và token đặt trong biến môi trường. Chưa có các quyền này nên chưa làm.
+- Tên AFTERVIA chưa clearance (DEC01, DEC12). Công khai tên này trên domain là quyết định của chủ dự án (xem `06_DECISION_QUEUE.md`, D13).
+- Ưu tiên: WEB-01 được đặt trước WO05-02 trong backlog, theo yêu cầu trực tiếp của chủ dự án.

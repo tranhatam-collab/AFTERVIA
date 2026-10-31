@@ -16,3 +16,6 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, đề xuất, trạng 
 | D10 | Thứ tự ưu tiên lát cắt | Gói cũ ghi WO04-02 → WO04-03 → WO07-01 | Đã xác minh qua repo: WO04-02, WO04-03, WO07-01 đã DONE; ưu tiên tiếp theo theo backlog | DECIDED (theo bằng chứng) | Architect (Claude) |
 | D11 | Áp dụng gói tự chủ vào repo | Lưu trữ, dùng checkpoint, không kích hoạt routine | Đã lưu trữ tại `docs/spec/AUTONOMY_V1/`; đã áp dụng checkpoint và receipt | DECIDED (một phần) | Chủ dự án |
 | D12 | Hai writer cùng lúc | Cho phép hay không | Không. Không bật routine ghi khi chuỗi `send_later` còn chạy | DECIDED | Chủ dự án |
+| D13 | Công khai landing page tại AFTERVIA.iai.one khi tên AFTERVIA chưa clearance | Công khai / chờ clearance | Công khai chỉ là landing tĩnh không thu thập dữ liệu; chờ luật sư trước khi công bố nội dung | OPEN | Chủ dự án |
+| D14 | Nhà cung cấp hosting và DNS cho AFTERVIA.iai.one | Cloudflare Pages (nếu iai.one ở Cloudflare) hoặc nhà cung cấp khác | Cloudflare Pages; anh cho biết DNS của iai.one đang ở đâu | OPEN | Chủ dự án |
+| D15 | Cách cấp quyền triển khai | Cloudflare connector trên claude.ai (mở phiên mới sau khi thêm) hoặc API token trong biến môi trường | Biến môi trường, không dán vào chat | OPEN | Chủ dự án |
