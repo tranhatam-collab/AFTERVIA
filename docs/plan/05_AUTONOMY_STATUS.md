@@ -126,7 +126,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 42/60 đã dùng (sau WO19-01, DONE ở mức kế hoạch; decide trả về STOP_STUCK).
+- Vòng lặp: 44/60 đã dùng (sau WO24-01, DONE; decide trả về STOP_STUCK, còn 16 lượt).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -136,6 +136,10 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- **Phiên 01/11/2026 chạy trên máy cục bộ của chủ dự án, không phải môi trường CI/cloud của các lượt trước.** Máy này không có `psql`/`pg_ctl`/`docker`/`brew` — không tự nâng được DB `_test`. 26/47 tệp Vitest chạm DB không chạy được trong phiên này (172 pass + 180 skip ngoài DB). Các lượt trước ghi "Vitest 330/330" vì chạy ở môi trường có Postgres sẵn (CI hoặc sandbox khác) — không phải vì DB test đã hết cần thiết. Không giả PASS cho phần DB trong phiên này.
+- Lượt 01/11 (iter 44): WO24-01 DONE (AUTO_PREP, không gắn T-xx). Pin `actions/checkout` và `actions/setup-node` theo SHA (tag v4, đọc qua GitHub API); sinh SBOM cây phụ thuộc (`docs/plan/evidence/sbom/2026-11-01.json`); xác nhận `npm audit --omit=dev` trong CI không bắt được `image-size` (chỉ là devDependency qua expo→metro). CI vẫn một job duy nhất, chưa tách theo thành phần (NOT_CHECKED, cần chủ dự án quyết quy mô). Receipt: `docs/plan/evidence/WO24-01.md`.
+- Lượt 01/11 (iter 43): WO23-01 DONE (AUTO_PREP, không gắn T-xx). Thêm lệnh `split`/`add` cho `tools/loop/backlog.mjs` (gỡ đúng lý do BLOCKED của WO10-03: "công cụ không tách được task"). `npm ci` khôi phục `node_modules` (lockfile không đổi). `image-size` High (GHSA-5p2g-fcmc-qvqq) xác nhận còn mở, không vá được bằng `npm audit fix` không `--force`; đường duy nhất là qua `metro` (build-time của Expo), không có mã nguồn nào trong `services`/`apps` import trực tiếp. Đối chiếu ZIP v2 bên ngoài vào `docs/plan/08_V2_RECONCILIATION.md`: sửa 29/46 dòng mapping (nhiều hơn 13/46 mà một audit trước đó tìm ra); xác nhận chỉ 2 việc mới thật (công cụ split/add vừa làm, và SBOM/CI-pin WO24-01). Receipt: `docs/plan/evidence/WO23-01.md`.
+- Phát hiện chưa sửa trong phiên này (cần xác minh DB trước khi coi là DONE): `services/api/src/http/app.ts` (`transitionCase`, dòng ~468-473) luôn truyền `outcome = null` cho `public.transition_case(...)`; theo `supabase/migrations/0008_cases.sql` (dòng ~306-320), chuyển sang `resolved` hoặc `closed` đòi `p_outcome` khác null — nghĩa là case **không thể resolve/close qua API hiện tại**. Hợp đồng HTTP (`contractBody` cho `transitionCase`) cũng chưa khai báo trường `outcome`. Chưa sửa: cần chạy `tests/db/cases.test.ts` thật trên Postgres `_test` để xác nhận không phá vỡ ràng buộc khác trước khi coi là DONE; máy phiên này không có Postgres.
 - Lượt 20:51 UTC: WO19-01 DONE ở mức kế hoạch (AUTO_PREP; E02 và E03 NOT_STARTED, cần HUM-WO19-02). Bộ chuẩn bị nằm trong `docs/pilot/`: kế hoạch, sổ đo chỉ có tiêu đề, SLA dự thảo. `decide` sau đó trả về STOP_STUCK; không lên lịch vòng kế tiếp. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2051Z.md`.
 - Lượt 20:36 UTC: WO18-01 BLOCKED ở T46 (cần tài khoản store thật; DEC09 NOT_AUTHORIZED). Phần AUTO_PREP ở mức DRAFT: hai bản nháp v0.2 và hai checklist trong `docs/legal/`. Không xuất bản; không có luật sư nào duyệt. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2036Z.md`. Dòng đồng tác giả dùng `Claude <noreply@anthropic.com>`, không đưa tên model (mục 3, quy tắc 5 của giao thức).
 - Lượt 20:27 UTC: WO16-04 DONE ở mức mã và kiểm thử (T41 PARTIAL). Mọi pack là DISABLED; quốc gia pilot chưa quyết định (DEC07). Đã khôi phục nhầm lẫn phụ thuộc ajv về HEAD. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-10-31T2027Z.md`.

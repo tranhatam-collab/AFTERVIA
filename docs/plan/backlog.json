@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 43,
+    "iterations_used": 44,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1406,9 +1406,15 @@
         "WO03-01"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "pin actions/checkout@11d5960a326750d5838078e36cf38b85af677262 và actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 (tag v4, đọc qua GitHub API 01/11/2026)",
+        "npm ls --all --json -> docs/plan/evidence/sbom/2026-11-01.json (794 goi), xac nhan duong phu thuoc image-size: expo->@expo/metro->metro->image-size@1.2.1",
+        "ghi nhan npm audit --omit=dev trong CI khong bat duoc image-size (devDependency); CI hien chi 1 job, khong tach theo thanh phan; xem docs/plan/evidence/WO24-01.md"
+      ],
+      "started_at": "2026-11-01T11:19:07.675Z",
+      "finished_at": "2026-11-01T11:19:08.177Z"
     }
   ]
 }
