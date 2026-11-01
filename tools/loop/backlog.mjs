@@ -151,6 +151,75 @@ function findTask(data, id) {
   return task;
 }
 
+// Splits one oversized AUTO/AUTO_PREP task into several smaller ones (protocol rule 7).
+// `children` must be fully explicit: each child lists its own real deps (siblings or
+// existing ids), there is no implicit inheritance of the parent's deps. Any other task
+// that depended on the parent now depends on ALL children (the parent's work is only
+// "done" once every slice is). Cycle/shape safety is enforced by validateBacklog after
+// this call returns, same as every other mutating command in main().
+export function splitTask(data, parentId, children) {
+  const parent = findTask(data, parentId);
+  if (!LOOP_KINDS.has(parent.kind)) throw new Error(`${parentId} is ${parent.kind}; only AUTO/AUTO_PREP tasks can be split`);
+  if (!['TODO', 'BLOCKED'].includes(parent.status)) throw new Error(`${parentId} is ${parent.status}; only TODO or BLOCKED can be split`);
+  if (!Array.isArray(children) || children.length < 2) throw new Error('split needs at least 2 child tasks');
+
+  const existingIds = new Set(data.tasks.map((t) => t.id));
+  const childIds = [];
+  for (const child of children) {
+    if (typeof child.id !== 'string' || child.id.length === 0) throw new Error('each child needs a string id');
+    if (existingIds.has(child.id) || childIds.includes(child.id)) throw new Error(`${child.id}: id already in use`);
+    if (typeof child.title !== 'string' || child.title.length === 0) throw new Error(`${child.id}: needs a title`);
+    childIds.push(child.id);
+  }
+
+  const newTasks = children.map((child) => ({
+    id: child.id,
+    wo: child.wo ?? parent.wo,
+    gate: child.gate ?? parent.gate,
+    kind: child.kind ?? parent.kind,
+    title: child.title,
+    deps: Array.isArray(child.deps) ? [...child.deps] : [],
+    acceptance: Array.isArray(child.acceptance) ? [...child.acceptance] : [],
+    status: 'TODO',
+    attempts: 0,
+    evidence: [],
+    split_from: parentId,
+  }));
+
+  data.tasks = data.tasks.filter((t) => t.id !== parentId);
+  for (const t of data.tasks) {
+    if (Array.isArray(t.deps) && t.deps.includes(parentId)) {
+      t.deps = [...new Set([...t.deps.filter((d) => d !== parentId), ...childIds])];
+    }
+  }
+  data.tasks.push(...newTasks);
+  return newTasks;
+}
+
+// Registers one brand-new task that is not derived from splitting an existing one
+// (e.g. tooling or infra work found while reconciling an outside plan against this
+// backlog). Nothing else is rewired; `deps` must name ids that already exist.
+export function addTask(data, spec) {
+  if (typeof spec.id !== 'string' || spec.id.length === 0) throw new Error('new task needs a string id');
+  if (data.tasks.some((t) => t.id === spec.id)) throw new Error(`${spec.id}: id already in use`);
+  if (typeof spec.title !== 'string' || spec.title.length === 0) throw new Error(`${spec.id}: needs a title`);
+  if (!KINDS.includes(spec.kind)) throw new Error(`${spec.id}: invalid kind ${spec.kind}`);
+  const task = {
+    id: spec.id,
+    wo: spec.wo ?? spec.id,
+    gate: spec.gate,
+    kind: spec.kind,
+    title: spec.title,
+    deps: Array.isArray(spec.deps) ? [...spec.deps] : [],
+    acceptance: Array.isArray(spec.acceptance) ? [...spec.acceptance] : [],
+    status: 'TODO',
+    attempts: 0,
+    evidence: [],
+  };
+  data.tasks.push(task);
+  return task;
+}
+
 export function loadAcceptanceIds(matrixPath) {
   if (!existsSync(matrixPath)) return null;
   const text = readFileSync(matrixPath, 'utf8').replace(/^﻿/, '');
@@ -181,6 +250,7 @@ function parseArgs(argv) {
     if (arg === '--evidence') flags.evidence.push(rest[++i]);
     else if (arg === '--reason') flags.reason = rest[++i];
     else if (arg === '--file') flags.file = rest[++i];
+    else if (arg === '--spec') flags.spec = rest[++i];
     else positional.push(arg);
   }
   return { command, positional, flags };
@@ -228,8 +298,26 @@ function main(argv) {
     case 'unblock':
       unblockTask(data, positional[0]);
       break;
+    case 'split': {
+      if (!flags.spec) {
+        console.error('split needs --spec <path-to-json-array-of-children>');
+        process.exit(2);
+      }
+      const children = JSON.parse(readFileSync(resolve(flags.spec), 'utf8'));
+      splitTask(data, positional[0], children);
+      break;
+    }
+    case 'add': {
+      if (!flags.spec) {
+        console.error('add needs --spec <path-to-json-task-object>');
+        process.exit(2);
+      }
+      const spec = JSON.parse(readFileSync(resolve(flags.spec), 'utf8'));
+      addTask(data, spec);
+      break;
+    }
     default:
-      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock> [id] [--evidence txt]... [--reason txt]');
+      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock|split|add> [id] [--evidence txt]... [--reason txt] [--spec file]');
       process.exit(2);
   }
   const errors = validateBacklog(data, { acceptanceIds });

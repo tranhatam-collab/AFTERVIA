@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 42,
+    "iterations_used": 43,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1373,6 +1373,40 @@
         "E08"
       ],
       "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO23-01",
+      "wo": "WO23",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Lệnh split/add cho tools/loop/backlog.mjs để tách task quá lớn (WO10-03) hoặc thêm task mới phát sinh khi hòa giải kế hoạch ngoài",
+      "deps": [],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "node --test tools/loop/backlog.test.mjs: 14/14 pass",
+        "npm run typecheck && npm run typecheck:mobile: exit 0",
+        "npm run build:landing && npm run build:web: OK",
+        "npm run verify: 26 vitest files fail on TEST_DATABASE_URL (no Postgres/Docker in this machine), 172 pass + 180 skip ngoài DB; không giả PASS",
+        "npm audit --audit-level=high: image-size High vẫn mở qua expo->metro, build-time only, không sửa bằng non-force fix; xem docs/plan/evidence/WO23-01.md"
+      ],
+      "started_at": "2026-11-01T11:15:08.253Z",
+      "finished_at": "2026-11-01T11:15:08.343Z"
+    },
+    {
+      "id": "WO24-01",
+      "wo": "WO24",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "SBOM, đường phụ thuộc rõ ràng (ví dụ image-size qua expo->metro) và pin GitHub Action theo SHA; đối chiếu advisory thật trước khi coi là đã vá, không chỉ chạy npm audit fix",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [],
+      "status": "TODO",
       "attempts": 0,
       "evidence": []
     }
