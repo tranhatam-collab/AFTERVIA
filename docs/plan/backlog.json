@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 44,
+    "iterations_used": 45,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1415,6 +1415,30 @@
       ],
       "started_at": "2026-11-01T11:19:07.675Z",
       "finished_at": "2026-11-01T11:19:08.177Z"
+    },
+    {
+      "id": "WO25-01",
+      "wo": "WO25",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "transitionCase (HTTP): đọc và xác thực outcome từ body, truyền thật vào public.transition_case thay vì null cố định; case resolve/close được qua API",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run tests/api/contract.test.ts (TEST_DATABASE_URL thật): 18/18 pass",
+        "npm run verify (Postgres cuc bo lan dau): exit 0, Vitest 353 pass/1 skip/0 fail trong 46/47 file",
+        "matrix summary khong doi: PASS 33, NOT_RUN 13 - xem docs/plan/evidence/WO25-01.md"
+      ],
+      "started_at": "2026-11-02T03:34:34.539Z",
+      "finished_at": "2026-11-02T03:34:34.583Z"
     }
   ]
 }

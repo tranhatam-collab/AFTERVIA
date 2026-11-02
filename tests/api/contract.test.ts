@@ -281,15 +281,62 @@ describe('WO09-03 HTTP contract: 13 operations, one error shape, case and grant 
     );
   });
 
-  it('known gap: resolving needs an outcome, which the contract Transition does not carry, so the HTTP route refuses it with 400', async () => {
+  it('transitionCase: resolving without an outcome, or with one the DB does not allow, is refused with 400 and leaves the case in_progress', async () => {
     const progress = await api(h.url, 'POST', `/v1/cases/${caseId}/transitions`, tokens.merchantAgent, { next_state: 'in_progress', reason: 'Đang sửa', expected_version: 3 }, idem('progress-0001'));
     expect(progress.status).toBe(200);
     expect(progress.json).toMatchObject({ status: 'in_progress', version: 4 });
     expectError(
-      await api(h.url, 'POST', `/v1/cases/${caseId}/transitions`, tokens.merchantAgent, { next_state: 'resolved', reason: 'Đã sửa xong', expected_version: 4 }, idem('resolve-0001')),
+      await api(h.url, 'POST', `/v1/cases/${caseId}/transitions`, tokens.merchantAgent, { next_state: 'resolved', reason: 'Đã sửa xong', expected_version: 4 }, idem('resolve-no-outcome-0001')),
       400,
       'invalid_input',
     );
+    expectError(
+      await api(
+        h.url,
+        'POST',
+        `/v1/cases/${caseId}/transitions`,
+        tokens.merchantAgent,
+        { next_state: 'resolved', reason: 'Đã sửa xong', expected_version: 4, outcome: 'sent' },
+        idem('resolve-bad-outcome-0001'),
+      ),
+      400,
+      'invalid_input',
+    );
+    expect((await api(h.url, 'GET', `/v1/cases/${caseId}`, tokens.merchantAgent)).json).toMatchObject({ status: 'in_progress', version: 4 });
+  });
+
+  it('transitionCase: with a valid outcome the merchant resolves and closes the case end to end over HTTP (WO25-01)', async () => {
+    const created = await api(
+      h.url,
+      'POST',
+      '/v1/cases',
+      tokens.customer,
+      { item_id: itemId, organization_id: orgA, description: 'Máy kêu to khi chạy', shared_document_ids: [docA] },
+      idem('resolve-flow-case-0001'),
+    );
+    expect(created.status).toBe(200);
+    const flowCaseId = created.json.id as string;
+    const move = async (actor: UserName, nextState: string, expectedVersion: number, outcome: string | undefined, key: string) =>
+      api(
+        h.url,
+        'POST',
+        `/v1/cases/${flowCaseId}/transitions`,
+        tokens[actor],
+        outcome === undefined
+          ? { next_state: nextState, reason: 'Luồng xử lý', expected_version: expectedVersion }
+          : { next_state: nextState, reason: 'Luồng xử lý', expected_version: expectedVersion, outcome },
+        idem(key),
+      );
+    expect((await move('customer', 'submitted', 1, undefined, 'flow-submit-0001')).status).toBe(200);
+    expect((await move('merchantAgent', 'triaged', 2, undefined, 'flow-triage-0001')).status).toBe(200);
+    expect((await move('merchantAgent', 'in_progress', 3, undefined, 'flow-progress-0001')).status).toBe(200);
+    const resolved = await move('merchantAgent', 'resolved', 4, 'replaced', 'flow-resolve-0001');
+    expect(resolved.status).toBe(200);
+    expect(resolved.json).toMatchObject({ id: flowCaseId, status: 'resolved', version: 5, outcome: 'replaced' });
+    const closed = await move('merchantAgent', 'closed', 5, undefined, 'flow-close-0001');
+    expect(closed.status).toBe(200);
+    expect(closed.json).toMatchObject({ id: flowCaseId, status: 'closed', version: 6, outcome: 'replaced' });
+    expect((await api(h.url, 'GET', `/v1/cases/${flowCaseId}`, tokens.merchantAgent)).json).toMatchObject({ status: 'closed', version: 6, outcome: 'replaced' });
   });
 
   it('grantDocument: after the customer invites a partner, the customer grants one evidence document, and the partner can read the case and the document', async () => {

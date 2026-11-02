@@ -6,7 +6,7 @@ import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@af
 import { signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
 import { randomUUID } from 'node:crypto';
-import { CASE_STATES } from '@aftervia/domain';
+import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
 import { matchContract, type ContractMatch } from './contract';
 import { logEvent } from '../observability/log';
 
@@ -456,19 +456,28 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
       const caseId = pathUuid(params.case_id ?? '');
       const key = idempotencyKey(req);
       const body = await readJson(req);
-      contractBody(body, ['next_state', 'reason', 'expected_version'], ['evidence_document_ids']);
+      contractBody(body, ['next_state', 'reason', 'expected_version'], ['evidence_document_ids', 'outcome']);
       const next = body.next_state;
       if (typeof next !== 'string' || !(CASE_STATES as readonly string[]).includes(next)) throw new HttpError(400, 'invalid_input');
       const reason = boundedText(body.reason, 500);
       const expected = body.expected_version;
       if (typeof expected !== 'number' || !Number.isInteger(expected) || expected < 1) throw new HttpError(400, 'invalid_input');
       const evidence = body.evidence_document_ids === undefined ? [] : uuidList(body.evidence_document_ids);
+      // Trường outcome không có trong docs/spec/.../03_API_CONTRACT.openapi.yaml (bundle gốc, chỉ đọc, có checksum);
+      // đây là mở rộng thêm trường tùy chọn, không đổi operationId/method/path đã có trong hợp đồng gốc.
+      // Xem docs/plan/evidence/WO25-01.md. DB (transition_case) đòi outcome khác null khi next_state là resolved/closed.
+      let outcome: string | null = null;
+      if (body.outcome !== undefined) {
+        if (typeof body.outcome !== 'string' || !(RESOLUTION_OUTCOMES as readonly string[]).includes(body.outcome)) {
+          throw new HttpError(400, 'invalid_input');
+        }
+        outcome = body.outcome;
+      }
       return withUser(config.pool, userId, async (c) => {
         for (const doc of evidence) await c.query('select public.attach_case_evidence($1::uuid, $2::uuid)', [caseId, doc]);
-        // Hợp đồng không có trường outcome: resolve và close bị DB từ chối (invalid_input) cho đến khi hợp đồng được cập nhật.
         const row = (await c.query(
-          'select out_version, out_status, out_outcome from public.transition_case($1::uuid, $2::text, $3::integer, $4::text, $5::text, null)',
-          [caseId, next, expected, reason, key],
+          'select out_version, out_status, out_outcome from public.transition_case($1::uuid, $2::text, $3::integer, $4::text, $5::text, $6::text)',
+          [caseId, next, expected, reason, key, outcome],
         )).rows[0];
         return { id: caseId, status: row?.out_status, version: row?.out_version, outcome: row?.out_outcome ?? null };
       });
