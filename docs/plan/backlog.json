@@ -1693,10 +1693,17 @@
         "T32",
         "T38"
       ],
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "attempts": 1,
-      "evidence": [],
-      "started_at": "2026-11-03T02:52:30.867Z"
+      "evidence": [
+        "npx vitest run (4 tệp: desk-forms 8, desk-forms-dom 7, desk 12, catalog 7): 34/34 pass",
+        "Đột biến bỏ khóa đang gửi: 1 kiểm thử đỏ; bỏ tái dùng khóa idempotency: 2 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI, Postgres khởi động): typecheck gốc và mobile; bundle 69/69; quét bí mật 286 tệp; Vitest 410 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có E2E trên Chromium; nhãn outcome là bản dự thảo; case từ Desk cần bằng chứng để resolved (DEC06); POST /v1/items chưa khử trùng. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03e.md"
+      ],
+      "started_at": "2026-11-03T02:52:30.867Z",
+      "finished_at": "2026-11-03T04:31:02.480Z"
     },
     {
       "id": "WO10-03f",
@@ -1724,6 +1731,23 @@
         "WO26-01"
       ],
       "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "E2E-WEB-01",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "E2E Chromium: luồng web đầy đủ trên máy chủ và Desk cục bộ (thêm món, mở case, chia tài liệu metadata, Desk xử lý, đóng có outcome, xuất gói); Playwright với Chromium có sẵn; bước xuất gắn T24; Safari và Firefox thuộc DEV-02",
+      "deps": [
+        "WO10-03f",
+        "WO26-02"
+      ],
+      "acceptance": [
+        "T24"
+      ],
       "status": "TODO",
       "attempts": 0,
       "evidence": []

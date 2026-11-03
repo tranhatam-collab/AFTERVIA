@@ -1,8 +1,8 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 03/11/2026, sau lượt WO26-01 (lượt theo lịch 02:39 UTC; ghi trong cùng commit của lượt).
+- Cập nhật: 03/11/2026, sau lượt WO10-03e (bắt đầu 02:50 UTC, tạm dừng theo HOLD, tiếp tục 04:32 UTC; ghi trong cùng commit của lượt).
 - Trạng thái: **CONTINUE** (vòng lặp liên tục theo yêu cầu của chủ dự án ngày 03/11; làm tối đa việc tự động, rồi bàn giao dev local). Chưa có `ENGINEERING_ACCEPTED`.
-- **HOLD** (chủ dự án, 03/11, sau 02:50 UTC): P1 ở gate dependency của CI tại `9a76185`. Vòng lặp dừng và không lên lịch lượt mới. `WO10-03e` ở trạng thái IN_PROGRESS: mã đã xanh cục bộ, chưa có evidence; commit WIP cục bộ, chưa push. Gỡ HOLD khi có quyết định về blocker audit.
+- **HOLD đã gỡ** (chủ dự án, 03/11 sau 04:30 UTC: tiếp tục vòng lặp đến khi xong E2E). P1 ở gate dependency của CI tại `9a76185` vẫn đỏ, và mọi lần đẩy từ `426ac0f` đều đỏ ở cùng bước `Dependency audit`; chưa nới cổng audit. `WO10-03e` đã hoàn tất (`docs/plan/evidence/WO10-03e.md`), gồm commit WIP `6d35f87` và commit hoàn tất.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
 ## Repo và nhánh
@@ -18,7 +18,7 @@
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
-WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WO19-01, WO23-01, WO24-01, WO25-01, WO11-02a, WO11-02b, WO11-02c, WO10-03a, WO10-03b, WO10-03c, WO26-01, WEB-01.
+WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WO19-01, WO23-01, WO24-01, WO25-01, WO11-02a, WO11-02b, WO11-02c, WO10-03a, WO10-03b, WO10-03c, WO10-03e, WO26-01, WEB-01.
 
 ## Bị chặn và chờ người
 - WO18-01 (BLOCKED ở T46): bản nháp và checklist ở mức DRAFT đã xong trong `docs/legal/`. T46 cần tài khoản store thật; DEC09 đang NOT_AUTHORIZED. Bằng chứng: `docs/plan/evidence/WO18-01.md`. HUM-WO18-02 (luật sư và IP) chờ WO18-01.
@@ -47,7 +47,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01, WO10-03a): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. HTTP `createExport` và `getJob` đã có (WO10-03a), nhưng chưa có đường tải gói: đặc tả OpenAPI không có route tải, và mã truy cập không được trả ra (HUM-WO10-03a). Xuất trong lúc chờ xóa chưa có quy tắc (WO11-02d, Q6). Gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Vòng kế tiếp: WO10-03e (AUTO: điều khiển giao diện của Desk cho thêm món, mở case, chuyển trạng thái; `decide` = START, 03/11). Sau đó: WO10-03f (AUTO: điều khiển chia tài liệu và nút xuất) và WO26-02 (AUTO_PREP: tệp khởi động API cục bộ có ràng buộc). Ngân sách còn 8 lượt; nếu hết ngân sách trước khi xong, phần còn lại ghi rõ trong báo cáo cuối. Bản đề xuất sáu quyết định của WO11-02 nằm ở `docs/plan/evidence/WO11-02c.md`, đang chờ chủ dự án. Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
+- Vòng kế tiếp: WO10-03f (AUTO: điều khiển chia tài liệu, thu hồi và tạo gói xuất; `decide` = START). Sau đó: WO26-02 (AUTO_PREP: tệp khởi động API cục bộ có ràng buộc) và E2E-WEB-01 (AUTO: luồng web đầy đủ trên Chromium, acceptance T24). Ngân sách: 53/60 đã dùng; nếu hết ngân sách trước khi xong E2E, phần còn lại ghi rõ trong báo cáo cuối. Bản đề xuất sáu quyết định của WO11-02 nằm ở `docs/plan/evidence/WO11-02c.md`, đang chờ chủ dự án. Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
 
 ## Kết quả kiểm thử
 
@@ -137,7 +137,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 52/60 đã dùng (sau WO26-01; còn 8 lượt).
+- Vòng lặp: 53/60 đã dùng (sau WO10-03e; còn 7 lượt).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
