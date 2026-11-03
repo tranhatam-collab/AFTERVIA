@@ -61,12 +61,24 @@ async function readJson(req: IncomingMessage): Promise<Record<string, unknown>> 
   return parsed as Record<string, unknown>;
 }
 
-function authenticate(req: IncomingMessage, config: AppConfig): { userId: string; simulated: boolean } {
+// Mốc cắt phiên: lần yêu cầu xóa tài khoản sớm nhất của người dùng, đọc qua RLS (người dùng chỉ thấy dòng của mình).
+// Sau mốc đó, phiên phát trước hoặc đúng thời điểm đó, và phiên thiếu iat, bị từ chối ở mọi route.
+async function deletionCutoff(pool: pg.Pool, userId: string): Promise<number | null> {
+  return withUser(pool, userId, async (c) => {
+    const row = (await c.query('select extract(epoch from min(requested_at))::bigint as cutoff from public.account_deletion_requests')).rows[0];
+    return row?.cutoff === null || row?.cutoff === undefined ? null : Number(row.cutoff);
+  });
+}
+
+async function authenticateSession(req: IncomingMessage, config: AppConfig): Promise<{ userId: string; simulated: boolean }> {
   const match = /^Bearer (.+)$/.exec(req.headers.authorization ?? '');
   if (!match || !match[1]) throw new HttpError(401, 'unauthenticated');
   const result = verifyHs256(match[1], config.jwtSecret);
   if (!result.ok) throw new HttpError(401, 'unauthenticated');
-  return { userId: result.claims.sub, simulated: result.claims.simulated === true };
+  const { sub, iat } = result.claims;
+  const cutoff = await deletionCutoff(config.pool, sub);
+  if (cutoff !== null && (typeof iat !== 'number' || iat <= cutoff)) throw new HttpError(401, 'unauthenticated');
+  return { userId: sub, simulated: result.claims.simulated === true };
 }
 
 // Đổi lỗi cơ sở dữ liệu thành lỗi HTTP. Chỉ dùng mã SQLSTATE và thông điệp ổn định, không lộ chi tiết nội bộ.
@@ -152,7 +164,7 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
   const contract = matchContract(method, path);
   if (contract && contract.route.implementedBy !== 'legacy') return handleContract(req, res, config, contract);
 
-  const auth = authenticate(req, config);
+  const auth = await authenticateSession(req, config);
 
   if (method === 'GET' && path === '/v1/session') {
     return send(res, 200, { user_id: auth.userId, simulated: auth.simulated });
@@ -511,10 +523,16 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
         return { id: grantId, status: 'revoked' };
       });
     }
+    case 'requestDeletion': {
+      // Xóa tài khoản: chỉ người đã đăng nhập, cho chính mình. Lặp cùng mã trả cùng receipt (hàm SQL xử lý).
+      const body = await readJson(req);
+      contractBody(body, ['request_id'], []);
+      const requestId = boundedText(body.request_id, 128);
+      return withUser(config.pool, userId, async (c) => (await c.query('select public.request_account_deletion($1::text) as receipt', [requestId])).rows[0]?.receipt);
+    }
     case 'extractDocument':
     case 'reviewExtraction':
     case 'createExport':
-    case 'requestDeletion':
     case 'getJob':
       throw new HttpError(501, 'not_implemented');
     default:
@@ -527,7 +545,7 @@ async function handleContract(req: IncomingMessage, res: ServerResponse, config:
   res.setHeader('x-request-id', requestId);
   let userId: string;
   try {
-    userId = authenticate(req, config).userId;
+    userId = (await authenticateSession(req, config)).userId;
   } catch {
     return sendContractError(res, 401, 'unauthenticated', requestId);
   }

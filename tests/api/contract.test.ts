@@ -414,7 +414,6 @@ describe('WO09-03 HTTP contract: 13 operations, one error shape, case and grant 
       ['POST', `/v1/documents/${docA}/extract`],
       ['POST', `/v1/extractions/${UNKNOWN_ID}/review`],
       ['POST', '/v1/exports'],
-      ['POST', '/v1/account/deletion'],
       ['GET', `/v1/jobs/${UNKNOWN_ID}`],
     ];
     for (const [method, path] of pending) {

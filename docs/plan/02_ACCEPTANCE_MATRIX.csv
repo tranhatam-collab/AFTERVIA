@@ -1,47 +1,47 @@
 test_id,domain,severity,title,automation_class,coverage,mapped_tasks,test_status,last_run,note
 T01,G0,CRITICAL,Wron source export,G0_EXTERNAL,NONE,HUM-G0-01,NOT_RUN,,Chỉ áp dụng nếu Wron là builder. Repo này thuộc chủ dự án; vẫn cần xác nhận quyền và license dependency.
 T02,G0,CRITICAL,Quyền khai thác,LEGAL,NONE,HUM-G0-01;HUM-WO18-02,NOT_RUN,,Hợp đồng/điều khoản là việc của chủ dự án và luật sư; AI không tự phê duyệt.
-T03,G0,CRITICAL,Persistence,AUTO,PARTIAL,WO03-03;WO04-01,PASS,2026-11-02,Kiểm tra qua kết nối DB mới; chưa có restart tiến trình API thật.
-T04,Auth,CRITICAL,Khách A đọc item B,AUTO,PARTIAL,WO04-03;WO05-01;WO07-01;WO09-03,PASS,2026-11-02,Phủ profiles/organizations/members; items và documents bổ sung sau.
-T05,Auth,CRITICAL,Tenant A truy cập tenant B,AUTO,PARTIAL,WO04-03;WO08-03;WO09-03,PASS,2026-11-02,Storage và search sẽ có test riêng khi các đường đó tồn tại.
-T06,Auth,CRITICAL,Role escalation,AUTO,PARTIAL,WO04-01;WO04-02;WO04-03;WO08-03,PASS,2026-11-02,Đường client trực tiếp đã kiểm; đường HTTP chờ WO09-03.
-T07,Sharing,CRITICAL,Partner sai case,AUTO,PARTIAL,WO09-01;WO09-02,PASS,2026-11-02,
-T08,Sharing,CRITICAL,Thu hồi grant,AUTO,PARTIAL,WO09-01;WO09-02,PASS,2026-11-02,Bản đã tải hợp lệ không thu hồi được: giới hạn phải ghi rõ cho người dùng.
-T09,Storage,HIGH,File độc/hỏng,AUTO,PARTIAL,WO05-02,PASS,2026-11-02,Quét mã độc thật cần scanner đã duyệt (INFRA); không giả PASS scanner.
-T10,Storage,HIGH,Upload trùng/retry,AUTO,PARTIAL,WO05-03,PASS,2026-11-02,
-T11,AI,CRITICAL,Prompt injection,AUTO,PARTIAL,WO06-02,PASS,2026-11-02,Dùng provider giả định định; đánh giá mô hình thật cần bộ dữ liệu được phép (HUMAN).
-T12,AI,HIGH,Ngày mơ hồ,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-11-02,
-T13,AI,HIGH,Currency/serial thiếu,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-11-02,
-T14,AI,CRITICAL,Sai trường có hậu quả,AUTO,PARTIAL,WO06-03;WO06-05,PASS,2026-11-02,Cổng hành động đã kiểm; độ chính xác mô hình thật chưa đo.
-T15,AI,HIGH,Provider outage,AUTO,PARTIAL,WO06-04,PASS,2026-11-02,
-T16,AI,HIGH,Budget exceeded,AUTO,PARTIAL,WO06-04,PASS,2026-11-02,
-T17,Cases,HIGH,State trái phép,AUTO,PARTIAL,WO08-01;WO08-02,PASS,2026-11-02,
-T18,Cases,HIGH,Concurrent updates,AUTO,PARTIAL,WO08-02,PASS,2026-11-02,
-T19,Cases,HIGH,Đóng thiếu bằng chứng,AUTO,PARTIAL,WO08-01;WO08-02,PASS,2026-11-02,
-T20,Cases,HIGH,Reopen,AUTO,PARTIAL,WO08-02,PASS,2026-11-02,
-T21,Notifications,MEDIUM,Push bị từ chối,DEVICE,PARTIAL,WO07-03;DEV-01,PASS,2026-11-02,Quyền push thật nằm trên thiết bị.
-T22,Dates,HIGH,Múi giờ/đổi ngày,AUTO,PARTIAL,WO07-02,PASS,2026-11-02,
+T03,G0,CRITICAL,Persistence,AUTO,PARTIAL,WO03-03;WO04-01,PASS,2026-11-03,Kiểm tra qua kết nối DB mới; chưa có restart tiến trình API thật.
+T04,Auth,CRITICAL,Khách A đọc item B,AUTO,PARTIAL,WO04-03;WO05-01;WO07-01;WO09-03,PASS,2026-11-03,Phủ profiles/organizations/members; items và documents bổ sung sau.
+T05,Auth,CRITICAL,Tenant A truy cập tenant B,AUTO,PARTIAL,WO04-03;WO08-03;WO09-03,PASS,2026-11-03,Storage và search sẽ có test riêng khi các đường đó tồn tại.
+T06,Auth,CRITICAL,Role escalation,AUTO,PARTIAL,WO04-01;WO04-02;WO04-03;WO08-03,PASS,2026-11-03,Đường client trực tiếp đã kiểm; đường HTTP chờ WO09-03.
+T07,Sharing,CRITICAL,Partner sai case,AUTO,PARTIAL,WO09-01;WO09-02,PASS,2026-11-03,
+T08,Sharing,CRITICAL,Thu hồi grant,AUTO,PARTIAL,WO09-01;WO09-02,PASS,2026-11-03,Bản đã tải hợp lệ không thu hồi được: giới hạn phải ghi rõ cho người dùng.
+T09,Storage,HIGH,File độc/hỏng,AUTO,PARTIAL,WO05-02,PASS,2026-11-03,Quét mã độc thật cần scanner đã duyệt (INFRA); không giả PASS scanner.
+T10,Storage,HIGH,Upload trùng/retry,AUTO,PARTIAL,WO05-03,PASS,2026-11-03,
+T11,AI,CRITICAL,Prompt injection,AUTO,PARTIAL,WO06-02,PASS,2026-11-03,Dùng provider giả định định; đánh giá mô hình thật cần bộ dữ liệu được phép (HUMAN).
+T12,AI,HIGH,Ngày mơ hồ,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-11-03,
+T13,AI,HIGH,Currency/serial thiếu,AUTO,PARTIAL,WO06-01;WO06-03,PASS,2026-11-03,
+T14,AI,CRITICAL,Sai trường có hậu quả,AUTO,PARTIAL,WO06-03;WO06-05,PASS,2026-11-03,Cổng hành động đã kiểm; độ chính xác mô hình thật chưa đo.
+T15,AI,HIGH,Provider outage,AUTO,PARTIAL,WO06-04,PASS,2026-11-03,
+T16,AI,HIGH,Budget exceeded,AUTO,PARTIAL,WO06-04,PASS,2026-11-03,
+T17,Cases,HIGH,State trái phép,AUTO,PARTIAL,WO08-01;WO08-02,PASS,2026-11-03,
+T18,Cases,HIGH,Concurrent updates,AUTO,PARTIAL,WO08-02,PASS,2026-11-03,
+T19,Cases,HIGH,Đóng thiếu bằng chứng,AUTO,PARTIAL,WO08-01;WO08-02,PASS,2026-11-03,
+T20,Cases,HIGH,Reopen,AUTO,PARTIAL,WO08-02,PASS,2026-11-03,
+T21,Notifications,MEDIUM,Push bị từ chối,DEVICE,PARTIAL,WO07-03;DEV-01,PASS,2026-11-03,Quyền push thật nằm trên thiết bị.
+T22,Dates,HIGH,Múi giờ/đổi ngày,AUTO,PARTIAL,WO07-02,PASS,2026-11-03,
 T23,Offline,HIGH,Queue mất mạng,DEVICE,PARTIAL,WO10-02;DEV-01,NOT_RUN,,Hàng đợi offline có unit test; mất mạng thật cần thiết bị.
-T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,PASS,2026-11-02,
-T25,Deletion,HIGH,Xóa tài khoản,AUTO,PARTIAL,WO11-02;WO11-03,PASS,2026-11-02,
-T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02;WO16-01,PASS,2026-11-02,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA.
+T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,PASS,2026-11-03,
+T25,Deletion,HIGH,Xóa tài khoản,AUTO,PARTIAL,WO11-02;WO11-03,PASS,2026-11-03,
+T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02;WO16-01,PASS,2026-11-03,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA.
 T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,NOT_RUN,,Chỉ fixture sandbox; không dùng khóa live.
 T28,Billing,CRITICAL,Replay/out of order,AUTO,PARTIAL,WO12-01,NOT_RUN,,
 T29,Billing,HIGH,Refund/expiry,AUTO,PARTIAL,WO12-02,NOT_RUN,,
 T30,Billing,HIGH,Reconciliation,AUTO,PARTIAL,WO12-03,NOT_RUN,,Đối soát với báo cáo provider thật là HUMAN/INFRA.
-T31,Family,HIGH,Scope family,AUTO,PARTIAL,WO13-01,PASS,2026-11-02,
-T32,Localization,MEDIUM,VI/EN dài,AUTO,PARTIAL,WO07-04;WO10-01,PASS,2026-11-02,Kiểm chữ dài và đổi ngôn ngữ bằng trình duyệt; thiết bị thật ở DEV-01.
-T33,Accessibility,HIGH,Keyboard/screen reader,PARTIAL,PARTIAL,WO15-01;DEV-01,PASS,2026-11-02,Axe tự động không thay thế kiểm thử screen reader thật.
+T31,Family,HIGH,Scope family,AUTO,PARTIAL,WO13-01,PASS,2026-11-03,
+T32,Localization,MEDIUM,VI/EN dài,AUTO,PARTIAL,WO07-04;WO10-01,PASS,2026-11-03,Kiểm chữ dài và đổi ngôn ngữ bằng trình duyệt; thiết bị thật ở DEV-01.
+T33,Accessibility,HIGH,Keyboard/screen reader,PARTIAL,PARTIAL,WO15-01;DEV-01,PASS,2026-11-03,Axe tự động không thay thế kiểm thử screen reader thật.
 T34,Mobile,HIGH,Release build iOS,DEVICE,NONE,DEV-01,NOT_RUN,,Cần iPhone thật và development/release build đã ký.
 T35,Mobile,HIGH,Release build Android,DEVICE,NONE,DEV-01,NOT_RUN,,Cần Android thật và build đã ký.
 T36,Web,HIGH,Browser support,PARTIAL,PARTIAL,WO10-03;DEV-02,NOT_RUN,,Sandbox chỉ có Chromium; Safari/Firefox thật cần DEV-02.
-T37,Security,CRITICAL,Secret/log leak,AUTO,PARTIAL,WO03-01;WO03-04;WO16-03,PASS,2026-11-02,Quét repo và log; chưa có quét crash report thật.
-T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,PASS,2026-11-02,
+T37,Security,CRITICAL,Secret/log leak,AUTO,PARTIAL,WO03-01;WO03-04;WO16-03,PASS,2026-11-03,Quét repo và log; chưa có quét crash report thật.
+T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,PASS,2026-11-03,
 T39,Recovery,HIGH,Backup restore,PARTIAL,PARTIAL,WO16-01;INF-01,NOT_RUN,,Diễn tập cục bộ có; RPO/RTO thật cần staging (INFRA).
-T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,PASS,2026-11-02,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ.
-T41,Legal,HIGH,Country gating,AUTO,PARTIAL,WO16-04;HUM-WO18-02,PASS,2026-11-02,Cổng kỹ thuật tự động; duyệt pháp lý là HUMAN.
-T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,PASS,2026-11-02,
-T43,Analytics,HIGH,Không metric giả,AUTO,PARTIAL,WO14-01,PASS,2026-11-02,
+T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,PASS,2026-11-03,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ.
+T41,Legal,HIGH,Country gating,AUTO,PARTIAL,WO16-04;HUM-WO18-02,PASS,2026-11-03,Cổng kỹ thuật tự động; duyệt pháp lý là HUMAN.
+T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,PASS,2026-11-03,
+T43,Analytics,HIGH,Không metric giả,AUTO,PARTIAL,WO14-01,PASS,2026-11-03,
 T44,Release,HIGH,Rollback,PARTIAL,PARTIAL,WO03-02;WO20-01;INF-01,NOT_RUN,,Rollback có migration cần staging thật (INFRA).
-T45,Privacy,CRITICAL,AI data scope,AUTO,PARTIAL,WO06-02,PASS,2026-11-02,
+T45,Privacy,CRITICAL,AI data scope,AUTO,PARTIAL,WO06-02,PASS,2026-11-03,
 T46,Billing,HIGH,Hủy/xóa độc lập,PARTIAL,PARTIAL,WO12-02;HUM-WO18-02,NOT_RUN,,Bước hủy trên store là hành vi bên ngoài; cần kiểm trên tài khoản store thật.

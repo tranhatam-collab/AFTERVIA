@@ -28,7 +28,7 @@ export const CONTRACT_ROUTES: readonly ContractRoute[] = [
   { operationId: 'grantDocument', method: 'POST', path: '/v1/cases/{case_id}/grants', implementedBy: 'contract' },
   { operationId: 'revokeGrant', method: 'DELETE', path: '/v1/cases/{case_id}/grants/{grant_id}', implementedBy: 'contract' },
   { operationId: 'createExport', method: 'POST', path: '/v1/exports', implementedBy: 'not_implemented' },
-  { operationId: 'requestDeletion', method: 'POST', path: '/v1/account/deletion', implementedBy: 'not_implemented' },
+  { operationId: 'requestDeletion', method: 'POST', path: '/v1/account/deletion', implementedBy: 'contract' },
   { operationId: 'getJob', method: 'GET', path: '/v1/jobs/{job_id}', implementedBy: 'not_implemented' },
 ];
 

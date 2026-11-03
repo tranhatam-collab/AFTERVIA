@@ -1,0 +1,138 @@
+import type { AddressInfo } from 'node:net';
+import type { Server } from 'node:http';
+import type pg from 'pg';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { signHs256 } from '../../services/api/src/auth/jwt';
+import { createPool } from '../../services/api/src/db/session';
+import { createHttpServer } from '../../services/api/src/http/app';
+import { connect, resetTestDatabase } from '../support/db';
+
+// WO11-02a qua HTTP: yêu cầu xóa tài khoản, và phiên phát trước yêu cầu bị từ chối ở mọi route.
+// Dữ liệu tổng hợp. Mốc cắt phiên là requested_at trong account_deletion_requests (bảng chỉ thêm).
+const SECRET = ['local', 'test', 'signing', 'material', '0025'].join('-');
+const USERS = {
+  cOwner: '00000000-0000-4000-8000-0000000000c1',
+  dOther: '00000000-0000-4000-8000-0000000000d1',
+} as const;
+type UserName = keyof typeof USERS;
+const REQUEST_ID = 'erase-c1-request-0001';
+const UNKNOWN_CASE = '00000000-0000-4000-8000-0000000000ff';
+
+interface Harness {
+  server: Server;
+  pool: pg.Pool;
+  url: string;
+}
+
+async function startHarness(appEnv: string): Promise<Harness> {
+  const pool = createPool(process.env.TEST_DATABASE_URL ?? '');
+  const server = createHttpServer({ pool, jwtSecret: SECRET, appEnv });
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address() as AddressInfo;
+  return { server, pool, url: `http://127.0.0.1:${port}` };
+}
+
+async function stopHarness(h: Harness): Promise<void> {
+  h.server.closeAllConnections();
+  await new Promise<void>((resolve) => h.server.close(() => resolve()));
+  await h.pool.end();
+}
+
+async function api(url: string, method: string, path: string, token: string | null, body?: unknown): Promise<{ status: number; json: any }> {
+  const headers: Record<string, string> = { 'content-type': 'application/json' };
+  if (token) headers.authorization = `Bearer ${token}`;
+  const res = await fetch(url + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+  const text = await res.text();
+  return { status: res.status, json: text ? JSON.parse(text) : null };
+}
+
+async function admin<T>(run: (c: pg.Client) => Promise<T>): Promise<T> {
+  const c = await connect();
+  try {
+    return await run(c);
+  } finally {
+    await c.end();
+  }
+}
+
+async function profileStatus(userId: string): Promise<string | undefined> {
+  return admin(async (c) => (await c.query('select deletion_status from public.profiles where id = $1', [userId])).rows[0]?.deletion_status);
+}
+
+async function cutoffOf(userId: string): Promise<number | null> {
+  return admin(async (c) => {
+    const row = (await c.query('select extract(epoch from min(requested_at))::bigint as cutoff from public.account_deletion_requests where user_id = $1', [userId])).rows[0];
+    return row?.cutoff === null || row?.cutoff === undefined ? null : Number(row.cutoff);
+  });
+}
+
+// Phiên phát sau mốc cắt (iat > mốc). Dùng để kiểm đường đi hợp lệ sau yêu cầu xóa, không phụ thuộc đồng hồ.
+async function freshSession(userId: string): Promise<string> {
+  const cutoff = await cutoffOf(userId);
+  if (cutoff === null) throw new Error('no deletion request for this user');
+  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 60, exp: cutoff + 3600, simulated: true }, SECRET);
+}
+
+let h: Harness;
+const tokens = {} as Record<UserName, string>;
+
+describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the request refused on every route', () => {
+  beforeAll(async () => {
+    await resetTestDatabase();
+    await admin(async (c) => {
+      for (const [name, id] of Object.entries(USERS)) {
+        await c.query('insert into auth.users (id, email) values ($1, $2)', [id, `${name}@test.invalid`]);
+      }
+    });
+    h = await startHarness('test');
+    for (const name of Object.keys(USERS) as UserName[]) {
+      tokens[name] = (await api(h.url, 'POST', '/v1/dev/sign-in', null, { user_id: USERS[name] })).json.access_token as string;
+    }
+  });
+
+  afterAll(async () => {
+    await stopHarness(h);
+  });
+
+  it('T25 a deletion request over HTTP returns the receipt and moves the profile to PENDING_DELETION; a repeat with the same id returns the same receipt', async () => {
+    const first = await api(h.url, 'POST', '/v1/account/deletion', tokens.cOwner, { request_id: REQUEST_ID });
+    expect(first.status).toBe(200);
+    expect(first.json).toMatchObject({ request_id: REQUEST_ID, status: 'PENDING_POLICY' });
+    expect(await profileStatus(USERS.cOwner)).toBe('PENDING_DELETION');
+
+    const again = await api(h.url, 'POST', '/v1/account/deletion', await freshSession(USERS.cOwner), { request_id: REQUEST_ID });
+    expect(again.status).toBe(200);
+    expect(again.json).toEqual(first.json);
+  });
+
+  it('T25 a session issued before the request is refused on every route after it', async () => {
+    expect((await api(h.url, 'GET', '/v1/items', tokens.cOwner)).status).toBe(401);
+    expect((await api(h.url, 'GET', `/v1/cases/${UNKNOWN_CASE}`, tokens.cOwner)).status).toBe(401);
+    expect((await api(h.url, 'POST', '/v1/account/deletion', tokens.cOwner, { request_id: 'erase-c1-request-0002' })).status).toBe(401);
+  });
+
+  it('T25 a session issued after the cutoff is accepted, and a session without iat is refused', async () => {
+    expect((await api(h.url, 'GET', '/v1/items', await freshSession(USERS.cOwner))).status).toBe(200);
+    const withoutIat = signHs256({ sub: USERS.cOwner, role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, simulated: true }, SECRET);
+    expect((await api(h.url, 'GET', '/v1/items', withoutIat)).status).toBe(401);
+  });
+
+  it('T25 another account keeps its session and its profile after the request', async () => {
+    expect((await api(h.url, 'GET', '/v1/items', tokens.dOther)).status).toBe(200);
+    expect(await profileStatus(USERS.dOther)).toBe('ACTIVE');
+  });
+
+  it('T25 a request without a session is refused, and a body without a valid request_id is refused without changing the profile', async () => {
+    expect((await api(h.url, 'POST', '/v1/account/deletion', null, { request_id: 'erase-d1-request-0001' })).status).toBe(401);
+
+    const missing = await api(h.url, 'POST', '/v1/account/deletion', tokens.dOther, {});
+    expect(missing.status).toBe(400);
+    expect(missing.json.code).toBe('invalid_input');
+
+    const short = await api(h.url, 'POST', '/v1/account/deletion', tokens.dOther, { request_id: 'short' });
+    expect(short.status).toBe(400);
+    expect(short.json.code).toBe('invalid_input');
+
+    expect(await profileStatus(USERS.dOther)).toBe('ACTIVE');
+  });
+});

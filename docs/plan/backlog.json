@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 45,
+    "iterations_used": 46,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1435,10 +1435,17 @@
       "acceptance": [
         "T25"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO11-02"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02a.md: authenticateSession kiểm mốc cắt phiên qua RLS; phiên trước mốc, phiên đúng giây mốc và phiên thiếu iat bị 401 ở mọi route; route requestDeletion thật thay not_implemented; receipt và lặp cùng mã",
+        "tests/api/account-deletion-http.test.ts: 5 kiểm thử T25 qua HTTP; tests/api/contract.test.ts bỏ requestDeletion khỏi danh sách 501; 23/23 pass",
+        "Đột biến: vô hiệu hóa kiểm tra mốc cắt làm đỏ 2 kiểm thử T25; đã khôi phục app.ts (checksum khớp)",
+        "npm run verify exit 0 tại lượt này: bundle 69/69; quét bí mật 258 tệp; Vitest 358 pass, 1 bỏ qua, 47 tệp; test:loop 18/18; Vitest JSON success=true; from-report không đổi dòng nào, T25 vẫn PARTIAL"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:26:39.192Z",
+      "finished_at": "2026-11-03T01:32:33.901Z"
     },
     {
       "id": "WO11-02b",
