@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 54,
+    "iterations_used": 55,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1735,9 +1735,13 @@
         "WO26-01"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO26-02.md"
+      ],
+      "started_at": "2026-11-03T04:54:29.564Z",
+      "finished_at": "2026-11-03T05:06:07.028Z"
     },
     {
       "id": "E2E-WEB-01",

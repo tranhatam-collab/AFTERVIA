@@ -2,7 +2,7 @@
 
 Tài liệu này dành cho chủ dự án, để chạy và kiểm thử AFTERVIA trên máy macOS của mình. Mỗi lệnh ghi ở đây đã được chạy; mục 11 nói rõ phần nào chưa kiểm trên macOS.
 
-**Trạng thái:** WO26-01, cập nhật 03/11/2026. Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15. Chưa kiểm trên macOS.
+**Trạng thái:** WO26-01 và WO26-02, cập nhật 03/11/2026. Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15. Chưa kiểm trên macOS.
 
 ## 1. Yêu cầu
 
@@ -91,21 +91,35 @@ npx vite --config apps/web/vite.config.ts --port 5173 --strictPort
 
 Mở `http://localhost:5173/`. Đã kiểm: máy chủ phát triển (Vite 8.3.5) trả HTTP 200 và trang có phần tử `root`.
 
-- `VITE_API_BASE`: địa chỉ API mà Desk gọi. Đặt khi chạy dev hoặc khi build. Hiện chưa có API chạy độc lập (mục 7), nên Desk chỉ kiểm được giao diện và các trạng thái không có quyền hoặc lỗi.
+- `VITE_API_BASE`: địa chỉ API mà Desk gọi. Đặt khi chạy dev hoặc khi build. API cục bộ chạy được ở mục 7, nhưng API chưa có CORS: trình duyệt sẽ chặn Desk ở `localhost:5173` khi gọi `127.0.0.1:8787`. Cho tới khi có cách xử lý (việc riêng), Desk trong trình duyệt chỉ kiểm được giao diện và các trạng thái không có quyền hoặc lỗi; kiểm API bằng `curl`.
 - Token phát triển: chỉ trong chế độ dev, Desk đọc token từ `sessionStorage` với khóa `aftervia.dev.token`. Đặt token bằng công cụ dành cho nhà phát triển của trình duyệt. Không dán token vào chat hay commit.
 
-## 7. Chạy API: chưa có lệnh
+## 7. Chạy API cục bộ
 
-- Repo chưa có tệp khởi động API. `createHttpServer` trong `services/api/src/http/app.ts` là hàm xuất khẩu: nhận `pool`, `jwtSecret` và `appEnv`, trả về `http.Server`. Hiện chỉ bộ kiểm thử trong `tests/api/` gọi hàm này.
-- Trong lúc chờ, API được kiểm qua `npm test` và `npm run verify`.
-- Việc còn lại: một tệp khởi động cục bộ có ràng buộc, ghi thành WO26-02 trong backlog. Không tự viết tệp khởi động trỏ vào DB thật hoặc dùng khóa thật.
+Đặt hai biến trong shell. Giá trị chỉ nằm trên máy này, không dán vào chat, không commit:
+
+```bash
+export AFTERVIA_LOCAL_DATABASE_URL="$TEST_DATABASE_URL"
+export AFTERVIA_LOCAL_JWT_SECRET="$(openssl rand -hex 32)"
+npm run api:local
+```
+
+- API nghe tại `http://127.0.0.1:8787`. Đổi cổng bằng `AFTERVIA_LOCAL_PORT` (từ 1024 đến 65535).
+- Kiểm nhanh: `curl -s http://127.0.0.1:8787/healthz` trả `{"ok":true}`.
+- Dừng bằng Ctrl+C, hoặc `kill -TERM <pid>` nếu chạy nền.
+- Chế độ luôn là kiểm thử: đăng nhập giả lập (`POST /v1/dev/sign-in`, cần `user_id` có sẵn trong `auth.users` của DB `_test`) đang bật. `AFTERVIA_LOCAL_APP_ENV` bị từ chối nếu được đặt.
+- Không khởi động nếu: tên DB không kết thúc bằng `_test`; URL trỏ tới máy khác; URL có tham số `dbname`; khóa dưới 32 ký tự; cổng ngoài khoảng cho phép. Lỗi được in ra mà không in URL hay khóa.
+- Mã nguồn: `services/api/src/local/start-local.ts` (ràng buộc và khởi động) và `tools/dev/api-local.mjs` (trình chạy, dùng trình nạp của Vite, không thêm phụ thuộc).
 
 ## 8. Biến môi trường (chỉ tên)
 
 | Tên | Dùng ở đâu | Bắt buộc |
 |---|---|---|
 | `TEST_DATABASE_URL` | kiểm thử, `npm run db:migrate`, `npm run verify` | Có, khi chạy các lệnh đó. Tên DB phải kết thúc `_test` |
-| `VITE_API_BASE` | Desk, khi chạy dev hoặc build | Không; cần khi đã có API |
+| `AFTERVIA_LOCAL_DATABASE_URL` | `npm run api:local` | Có. Tên DB kết thúc `_test`; máy chủ là máy này |
+| `AFTERVIA_LOCAL_JWT_SECRET` | `npm run api:local` | Có. Ít nhất 32 ký tự; không in ra |
+| `AFTERVIA_LOCAL_PORT` | `npm run api:local` | Không. Mặc định 8787; từ 1024 đến 65535 |
+| `VITE_API_BASE` | Desk, khi chạy dev hoặc build | Không; xem mục 6 về CORS |
 | `EXPO_PUBLIC_API_BASE` | ứng dụng di động (Expo) | Không thuộc phạm vi tài liệu này |
 
 ## 9. Không đưa vào repo, chat, hoặc log
@@ -122,8 +136,10 @@ Mở `http://localhost:5173/`. Đã kiểm: máy chủ phát triển (Vite 8.3.5
 - `npm ci` lỗi: kiểm tra `node -v` (phải 22.12 trở lên). Không xóa `package-lock.json` để "sửa".
 - Lỗi checksum khi migration: không sửa migration đã áp dụng; báo chủ dự án.
 - `npm run verify` đỏ ở bước audit: bước `Dependency audit` chỉ có trong CI, không nằm trong `verify`. Xem blocker đã báo trên PR #1.
+- `AFTERVIA_LOCAL_DATABASE_URL is not set`, `AFTERVIA_LOCAL_JWT_SECRET must be at least 32 characters` hoặc `refusing to use database`: cấu hình của `npm run api:local` chưa đúng. Xem mục 7.
 
 ## 11. Đã kiểm và chưa kiểm
 
 - Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (19 migration); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
-- Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; chạy API độc lập (chưa có lệnh).
+- Đã kiểm WO26-02 trên container Linux (03/11/2026), `npm run api:local` với DB `_test`: thiếu cấu hình và tên DB sai đều bị từ chối (thoát 1); khởi động thật trả `/healthz` 200 và đăng nhập giả lập 200; chỉ nghe trên `127.0.0.1` (kiểm trong `/proc/net/tcp`; địa chỉ không phải loopback bị từ chối); SIGINT và SIGTERM dừng và giải phóng cổng; nhật ký không chứa khóa hay URL. Kiểm tự động: `tests/api/local-start.test.ts`.
+- Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; API cục bộ trên macOS; Desk gọi API cục bộ trong trình duyệt (API chưa có CORS).
