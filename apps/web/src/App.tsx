@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { t, type Locale } from '@aftervia/i18n';
 import { loadItems, type Item, type ListResult } from './state';
 import { ItemsView } from './view';
+import { DeskForms } from './DeskForms';
+import type { CaseSummary } from './actions';
 
 export interface AppProps {
   base: string;
@@ -15,6 +17,8 @@ export function App({ base, token, initialLocale }: AppProps) {
   const [result, setResult] = useState<ListResult>({ kind: 'loading' });
   // Bản tải thành công gần nhất, chỉ giữ trong bộ nhớ. Dùng khi ngoại tuyến; dữ liệu đó có thể đã cũ.
   const lastItems = useRef<Item[] | null>(null);
+  // Case đang làm việc: lấy từ biểu mẫu mở case hoặc chuyển trạng thái; biểu mẫu chuyển trạng thái dùng để điền sẵn.
+  const [activeCase, setActiveCase] = useState<CaseSummary | null>(null);
 
   const reload = useCallback(async () => {
     setResult({ kind: 'loading' });
@@ -62,6 +66,14 @@ export function App({ base, token, initialLocale }: AppProps) {
         </div>
       </header>
       <ItemsView locale={locale} result={result} onRetry={() => void reload()} />
+      <DeskForms
+        locale={locale}
+        base={base}
+        token={token}
+        activeCase={activeCase}
+        onItemAdded={() => void reload()}
+        onCaseChanged={setActiveCase}
+      />
     </main>
   );
 }
