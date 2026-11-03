@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 49,
+    "iterations_used": 50,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1592,10 +1592,18 @@
       "acceptance": [
         "T38"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO10-03"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run (3 tệp Desk, URL CI trong cùng lệnh): 28/28 pass (11 lớp yêu cầu, 5 tích hợp API, 12 Desk hiện có)",
+        "Đột biến bỏ kiểm tra UUID: 2 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): typecheck gốc và mobile; bundle 69/69; quét bí mật 272 tệp; Vitest 382 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có điều khiển giao diện (WO10-03e); POST /v1/items chưa khử trùng; chờ reviewer độc lập. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03b.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:17:47.047Z",
+      "finished_at": "2026-11-03T02:25:13.795Z"
     },
     {
       "id": "WO10-03c",
@@ -1652,6 +1660,23 @@
         "WO10-03a"
       ],
       "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-03e",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: điều khiển giao diện (VI/EN) cho thêm món, mở case và chuyển trạng thái, gọi lớp yêu cầu của WO10-03b; khóa nút khi đang gửi; kiểm thử T32 và T38",
+      "deps": [
+        "WO10-03b"
+      ],
+      "acceptance": [
+        "T32",
+        "T38"
+      ],
       "status": "TODO",
       "attempts": 0,
       "evidence": []
