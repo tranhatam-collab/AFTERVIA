@@ -5,10 +5,11 @@ import type pg from 'pg';
 import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@aftervia/domain';
 import { signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
 import { matchContract, type ContractMatch } from './contract';
 import { logEvent } from '../observability/log';
+import { buildExportBundle, sha256Hex, type ExportItem, type GrantedDocument } from '../export/bundle';
 
 export interface AppConfig {
   pool: pg.Pool;
@@ -530,10 +531,59 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
       const requestId = boundedText(body.request_id, 128);
       return withUser(config.pool, userId, async (c) => (await c.query('select public.request_account_deletion($1::text) as receipt', [requestId])).rows[0]?.receipt);
     }
+    case 'createExport': {
+      // Xuất gói: chỉ món đồ của người gọi và tài liệu có grant còn hiệu lực. store_export kiểm phạm vi và băm khi lưu.
+      // Mã truy cập của gói chỉ được băm và lưu. Thao tác tải gói chưa có trong đặc tả nên mã không được trả ra ngoài.
+      const key = idempotencyKey(req);
+      contractBody(await readJson(req), [], []);
+      return withUser(config.pool, userId, async (c) => {
+        const itemRows = (
+          await c.query('select id, title, brand, model, purchased_on, currency, version, created_at, updated_at from public.items order by created_at, id')
+        ).rows;
+        const grantRows = (
+          await c.query(
+            'select out_grant_id, out_case_id, out_document_id, out_declared_mime, out_size_bytes, out_scan_status, out_can_download, out_expires_at from public.export_granted_documents()',
+          )
+        ).rows;
+        const items: ExportItem[] = itemRows.map((r) => ({
+          id: r.id as string,
+          title: r.title as string,
+          brand: (r.brand as string | null) ?? null,
+          model: (r.model as string | null) ?? null,
+          purchased_on: (r.purchased_on as string | null) ?? null,
+          currency: (r.currency as string | null)?.trim() ?? null,
+          version: Number(r.version),
+          created_at: new Date(r.created_at as Date).toISOString(),
+          updated_at: new Date(r.updated_at as Date).toISOString(),
+        }));
+        const grants: GrantedDocument[] = grantRows.map((r) => ({
+          grant_id: r.out_grant_id as string,
+          case_id: r.out_case_id as string,
+          document_id: r.out_document_id as string,
+          declared_mime: r.out_declared_mime as string,
+          size_bytes: Number(r.out_size_bytes),
+          scan_status: r.out_scan_status as string,
+          can_download: r.out_can_download as boolean,
+          expires_at: new Date(r.out_expires_at as Date).toISOString(),
+        }));
+        const bundle = buildExportBundle({ items, grants, exportedAt: new Date().toISOString() });
+        const accessHash = sha256Hex(randomBytes(32).toString('hex'));
+        const stored = (
+          await c.query('select out_job_id from public.store_export($1::text, $2::text, $3::jsonb)', [key, accessHash, JSON.stringify(bundle)])
+        ).rows[0];
+        return { id: stored?.out_job_id as string, status: 'succeeded' };
+      });
+    }
+    case 'getJob': {
+      const jobId = pathUuid(params.job_id ?? '');
+      return withUser(config.pool, userId, async (c) => {
+        const row = (await c.query('select id from public.export_jobs where id = $1::uuid', [jobId])).rows[0];
+        if (!row) throw new HttpError(404, 'not_found');
+        return { id: row.id as string, status: 'succeeded' };
+      });
+    }
     case 'extractDocument':
     case 'reviewExtraction':
-    case 'createExport':
-    case 'getJob':
       throw new HttpError(501, 'not_implemented');
     default:
       throw new HttpError(404, 'not_found');

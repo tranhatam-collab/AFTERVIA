@@ -413,8 +413,6 @@ describe('WO09-03 HTTP contract: 13 operations, one error shape, case and grant 
     const pending: Array<[string, string]> = [
       ['POST', `/v1/documents/${docA}/extract`],
       ['POST', `/v1/extractions/${UNKNOWN_ID}/review`],
-      ['POST', '/v1/exports'],
-      ['GET', `/v1/jobs/${UNKNOWN_ID}`],
     ];
     for (const [method, path] of pending) {
       const body = method === 'GET' ? undefined : {};

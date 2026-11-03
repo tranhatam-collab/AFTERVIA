@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 48,
+    "iterations_used": 49,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1565,10 +1565,18 @@
       "acceptance": [
         "T24"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO10-03"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0 (URL CI trong cùng lệnh): bundle 69/69; quét bí mật 267 tệp; Vitest 366 pass, 1 bỏ qua; test:loop 18/18",
+        "npx vitest run exports-http + contract: 22/22 pass (4 T24 HTTP mới)",
+        "Đột biến getJob không qua RLS: 1 kiểm thử đỏ (expected 200 to be 404); đã khôi phục, checksum khớp",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0; T24 PASS ở mức PARTIAL",
+        "Giới hạn: chưa có route tải gói; link 24 giờ chỉ băm trong DB, chưa trả ra; chờ quyết định. HawkScan BLOCKED (không có hawk, HAWK_API_KEY, stackhawk.yml). Chi tiết: docs/plan/evidence/WO10-03a.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:01:13.899Z",
+      "finished_at": "2026-11-03T02:10:36.165Z"
     },
     {
       "id": "WO10-03b",
@@ -1628,6 +1636,20 @@
       "title": "Hướng dẫn dev local trên máy chủ dự án (macOS): Node, Postgres 16, npm ci, verify, DB _test, chạy API và Desk; chỉ ghi tên biến môi trường, không ghi giá trị bí mật",
       "deps": [
         "WO03-04"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO10-03a",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: chọn cách trả link tải gói xuất 24 giờ (route tải trong đặc tả, hoặc trả mã truy cập một lần kèm reviewer độc lập); không làm trong vòng lặp",
+      "deps": [
+        "WO10-03a"
       ],
       "acceptance": [],
       "status": "TODO",
