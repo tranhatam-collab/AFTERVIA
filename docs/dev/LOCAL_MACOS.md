@@ -91,7 +91,8 @@ npx vite --config apps/web/vite.config.ts --port 5173 --strictPort
 
 Mở `http://localhost:5173/`. Đã kiểm: máy chủ phát triển (Vite 8.3.5) trả HTTP 200 và trang có phần tử `root`.
 
-- `VITE_API_BASE`: địa chỉ API mà Desk gọi. Đặt khi chạy dev hoặc khi build. API cục bộ chạy được ở mục 7, nhưng API chưa có CORS: trình duyệt sẽ chặn Desk ở `localhost:5173` khi gọi `127.0.0.1:8787`. Cho tới khi có cách xử lý (việc riêng), Desk trong trình duyệt chỉ kiểm được giao diện và các trạng thái không có quyền hoặc lỗi; kiểm API bằng `curl`.
+- Trong chế độ dev, Desk gọi `/v1` cùng gốc và Vite chuyển tiếp tới `AFTERVIA_LOCAL_API_URL` (mặc định `http://127.0.0.1:8787`). Nhờ vậy không cần CORS và không cần đặt `VITE_API_BASE`. Chạy API cục bộ (mục 7) trước khi mở Desk.
+- `VITE_API_BASE` chỉ dùng khi build trỏ Desk tới một API khác. API chưa có CORS, nên cách đó chưa dùng được trong trình duyệt.
 - Token phát triển: chỉ trong chế độ dev, Desk đọc token từ `sessionStorage` với khóa `aftervia.dev.token`. Đặt token bằng công cụ dành cho nhà phát triển của trình duyệt. Không dán token vào chat hay commit.
 
 ## 7. Chạy API cục bộ
@@ -119,7 +120,9 @@ npm run api:local
 | `AFTERVIA_LOCAL_DATABASE_URL` | `npm run api:local` | Có. Tên DB kết thúc `_test`; máy chủ là máy này |
 | `AFTERVIA_LOCAL_JWT_SECRET` | `npm run api:local` | Có. Ít nhất 32 ký tự; không in ra |
 | `AFTERVIA_LOCAL_PORT` | `npm run api:local` | Không. Mặc định 8787; từ 1024 đến 65535 |
-| `VITE_API_BASE` | Desk, khi chạy dev hoặc build | Không; xem mục 6 về CORS |
+| `AFTERVIA_LOCAL_API_URL` | Desk khi chạy dev (proxy `/v1`), E2E | Không. Mặc định `http://127.0.0.1:8787` |
+| `VITE_API_BASE` | Desk, khi build | Không; để trống khi chạy dev |
+| `AFTERVIA_E2E_PLAYWRIGHT` | `npm run e2e:web` | Không. Đường dẫn gói `playwright` (repo không cài gói này) |
 | `EXPO_PUBLIC_API_BASE` | ứng dụng di động (Expo) | Không thuộc phạm vi tài liệu này |
 
 ## 9. Không đưa vào repo, chat, hoặc log
@@ -142,4 +145,20 @@ npm run api:local
 
 - Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (19 migration); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
 - Đã kiểm WO26-02 trên container Linux (03/11/2026), `npm run api:local` với DB `_test`: thiếu cấu hình và tên DB sai đều bị từ chối (thoát 1); khởi động thật trả `/healthz` 200 và đăng nhập giả lập 200; chỉ nghe trên `127.0.0.1` (kiểm trong `/proc/net/tcp`; địa chỉ không phải loopback bị từ chối); SIGINT và SIGTERM dừng và giải phóng cổng; nhật ký không chứa khóa hay URL. Kiểm tự động: `tests/api/local-start.test.ts`.
-- Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; API cục bộ trên macOS; Desk gọi API cục bộ trong trình duyệt (API chưa có CORS).
+- Đã kiểm E2E-WEB-01 trên container Linux (03/11/2026): `npm run e2e:web` chạy trọn luồng, xem mục 12.
+- Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; API cục bộ và E2E trên macOS; Safari và Firefox (DEV-02).
+
+## 12. E2E trên Chromium (E2E-WEB-01)
+
+Luồng đầy đủ trên DB `_test` cục bộ: thêm món, mở case, gắn bằng chứng và mời người tham gia (chỉ metadata, qua hàm cơ sở dữ liệu), chia tài liệu, Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24).
+
+```bash
+export TEST_DATABASE_URL="postgres://<tên-người-dùng>@localhost:5432/aftervia_test"
+export AFTERVIA_E2E_PLAYWRIGHT="<thư mục gói playwright>"
+npm run e2e:web
+```
+
+- Lệnh đặt lại DB `_test` (schema, shim, migration), chạy API cục bộ tại `127.0.0.1:8787` và Desk tại `127.0.0.1:5173`, rồi mở Chromium. Kết quả: `.loop/e2e/summary.json`, ảnh `.loop/e2e/*.png`, nhật ký API `.loop/e2e/api.log`. Thư mục `.loop/` không commit.
+- Thoát 0 nếu mọi bước đạt và không có lỗi trang. Thoát 1 và in bước lỗi nếu không.
+- Không nằm trong `npm run verify`: cần Playwright và Chromium cục bộ, và CI chưa có. Ma trận T24 vẫn lấy từ kiểm thử Vitest.
+- Giới hạn: chỉ Chromium; Desk chưa có CSS hoàn chỉnh; form mở case chưa gửi mã tài liệu, nên bằng chứng được gắn bằng hàm cơ sở dữ liệu.

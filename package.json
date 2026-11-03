@@ -16,6 +16,7 @@
     "check:secrets": "node tools/checks/secret-scan.mjs",
     "db:migrate": "node tools/db/migrate.mjs",
     "api:local": "node tools/dev/api-local.mjs",
+    "e2e:web": "node tools/e2e/web-e2e.mjs",
     "loop": "node tools/loop/backlog.mjs",
     "build:landing": "node apps/landing/build.mjs",
     "build:web": "vite build --config apps/web/vite.config.ts",
