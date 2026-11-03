@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 51,
+    "iterations_used": 52,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1654,9 +1654,17 @@
         "WO03-04"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm ci exit 0; npm run db:migrate -- --with-shim trên DB _test mới: applied 19 (DB tạm đã xóa)",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): bundle 69/69; quét bí mật 280 tệp; Vitest 395 pass, 1 bỏ qua; test:loop 18/18",
+        "Desk: npx vite --config apps/web/vite.config.ts --port 5173 trả HTTP 200 tại localhost:5173; đã dừng",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa kiểm trên macOS; chưa có lệnh chạy API (WO26-02). Chi tiết: docs/plan/evidence/WO26-01.md"
+      ],
+      "started_at": "2026-11-03T02:40:54.911Z",
+      "finished_at": "2026-11-03T02:46:48.506Z"
     },
     {
       "id": "HUM-WO10-03a",
@@ -1701,6 +1709,20 @@
       "acceptance": [
         "T38"
       ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO26-02",
+      "wo": "WO26",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Tệp khởi động API cục bộ (không phải production): đọc cấu hình từ biến môi trường, chỉ nối DB có hậu tố _test, không có đăng nhập giả lập ngoài chế độ kiểm thử; có kiểm thử cho các ràng buộc này",
+      "deps": [
+        "WO26-01"
+      ],
+      "acceptance": [],
       "status": "TODO",
       "attempts": 0,
       "evidence": []
