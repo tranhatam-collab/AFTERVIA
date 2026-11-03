@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 50,
+    "iterations_used": 51,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1618,10 +1618,18 @@
       "acceptance": [
         "T38"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO10-03"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run (5 tệp Desk, URL CI trong cùng lệnh): 41/41 pass (8 và 5 mới, 11 và 5 của WO10-03b, 12 Desk cũ)",
+        "Đột biến bỏ kiểm tra UUID ở grantsPath: 1 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): typecheck gốc và mobile; bundle 69/69; quét bí mật 277 tệp; Vitest 395 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có điều khiển giao diện (WO10-03f); gói xuất chưa tải được (HUM-WO10-03a); grant không có khóa lặp ở máy chủ; chờ reviewer độc lập. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03c.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:30:55.285Z",
+      "finished_at": "2026-11-03T02:35:22.792Z"
     },
     {
       "id": "WO10-03d",
@@ -1675,6 +1683,22 @@
       ],
       "acceptance": [
         "T32",
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-03f",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: điều khiển giao diện (VI/EN) cho chia tài liệu, thu hồi và tạo gói xuất, gọi lớp yêu cầu của WO10-03c; khóa nút khi đang gửi; kiểm thử T38",
+      "deps": [
+        "WO10-03c"
+      ],
+      "acceptance": [
         "T38"
       ],
       "status": "TODO",

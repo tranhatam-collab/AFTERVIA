@@ -68,22 +68,21 @@ export function transitionPath(caseId: string): string | null {
   return isUuid(caseId) ? `${CASES_PATH}/${caseId}/transitions` : null;
 }
 
-type Sent = { kind: 'sent'; status: number; body: unknown } | { kind: 'stopped'; result: ActionResult<never> };
+export type Sent = { kind: 'sent'; status: number; body: unknown } | { kind: 'stopped'; result: ActionResult<never> };
 
-// Một lần gửi, không thử lại. Không có token thì không gửi gì và trả về denied.
-async function post(options: ActionOptions, path: string, body: unknown, key: string | null): Promise<Sent> {
+export type Method = 'POST' | 'DELETE';
+
+// Một lần gửi, không thử lại. Không có token thì không gửi gì và trả về denied. Chỉ gửi thân khi được truyền vào.
+export async function send(options: ActionOptions, method: Method, path: string, body: unknown, key: string | null): Promise<Sent> {
   if (options.token === null) return { kind: 'stopped', result: { kind: 'denied' } };
-  const headers: Record<string, string> = {
-    accept: 'application/json',
-    'content-type': 'application/json',
-    authorization: `Bearer ${options.token}`,
-  };
+  const headers: Record<string, string> = { accept: 'application/json', authorization: `Bearer ${options.token}` };
+  if (body !== undefined) headers['content-type'] = 'application/json';
   if (key !== null) headers['idempotency-key'] = key;
   let response: Response;
   try {
     // Gọi qua biến, như state.ts: fetch của trình duyệt không chấp nhận this khác window.
-    const send = options.fetchImpl;
-    response = await send(`${options.base}${path}`, { method: 'POST', headers, body: JSON.stringify(body) });
+    const call = options.fetchImpl;
+    response = await call(`${options.base}${path}`, { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
   } catch {
     return { kind: 'stopped', result: networkFailure(options.online) === 'offline' ? { kind: 'offline' } : { kind: 'error' } };
   }
@@ -96,13 +95,18 @@ async function post(options: ActionOptions, path: string, body: unknown, key: st
   return { kind: 'sent', status: response.status, body: parsed };
 }
 
+// Gửi có thân JSON (POST). Mọi quy tắc khác giống send.
+async function post(options: ActionOptions, path: string, body: unknown, key: string | null): Promise<Sent> {
+  return send(options, 'POST', path, body, key);
+}
+
 function conflictCode(body: unknown): 'version_conflict' | 'invalid_state' | 'unknown' {
   const code = typeof body === 'object' && body !== null ? (body as Record<string, unknown>).code : undefined;
   return code === 'version_conflict' || code === 'invalid_state' ? code : 'unknown';
 }
 
 // 401, 403 và 404 cùng là "không có quyền": không cho biết đối tượng có tồn tại hay không.
-function failureOf(status: number, body: unknown): ActionResult<never> {
+export function failureOf(status: number, body: unknown): ActionResult<never> {
   if (status === 400) return { kind: 'invalid' };
   if (status === 409) return { kind: 'conflict', code: conflictCode(body) };
   return classifyStatus(status) === 'denied' ? { kind: 'denied' } : { kind: 'error' };
