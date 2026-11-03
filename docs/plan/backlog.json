@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 46,
+    "iterations_used": 47,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1459,10 +1459,18 @@
       "acceptance": [
         "T25"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO11-02"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02b.md: trigger refuse_writes_while_pending_deletion (migration 0018) trên 12 bảng; INSERT và UPDATE nội dung bị 55000 khi PENDING_DELETION; thu hồi và ghi không có phiên vẫn được",
+        "tests/db/pending-deletion-writes.test.ts: 4 kiểm thử T25; 15/15 cùng policy-parity và account-deletion",
+        "Đột biến: vô hiệu hóa trigger làm đỏ 2 kiểm thử T25; đã khôi phục migration (checksum khớp)",
+        "Sửa tests/support/local-auth-shim.sql: GUC rỗng là không có phiên; trước đó làm đỏ T06 khi trigger gọi auth.uid() ở đường admin",
+        "npm run verify exit 0: bundle 69/69; quét bí mật 262 tệp; Vitest 362 pass, 1 bỏ qua, 49 tệp; test:loop 18/18; Vitest JSON success=true; db:migrate OK (19 migration); matrix không đổi trạng thái"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:39:19.015Z",
+      "finished_at": "2026-11-03T01:48:34.556Z"
     },
     {
       "id": "WO11-02c",
