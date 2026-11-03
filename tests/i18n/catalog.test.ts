@@ -117,6 +117,23 @@ describe('WO07-04 Vietnamese and English messages, dates and money', () => {
       'desk.outcome.refunded',
       'desk.outcome.credited',
       'desk.outcome.no_remedy',
+      'desk.error.expiry',
+      'desk.grant.heading',
+      'desk.grant.documentId.label',
+      'desk.grant.recipientId.label',
+      'desk.grant.expiresAt.label',
+      'desk.grant.canDownload.label',
+      'desk.grant.submit',
+      'desk.grant.granted',
+      'desk.revoke.heading',
+      'desk.revoke.grantId.label',
+      'desk.revoke.submit',
+      'desk.revoke.revoked',
+      'desk.export.heading',
+      'desk.export.note',
+      'desk.export.submit',
+      'desk.export.created',
+      'desk.export.status.succeeded',
     ];
     expect(new Set(required)).toEqual(new Set(Object.keys(vi)));
     for (const key of required) {

@@ -88,5 +88,22 @@
   "desk.outcome.replaced": "Replaced",
   "desk.outcome.refunded": "Refunded",
   "desk.outcome.credited": "Credited",
-  "desk.outcome.no_remedy": "No remedy"
+  "desk.outcome.no_remedy": "No remedy",
+  "desk.error.expiry": "The access expiry must be after now and at most 30 days away.",
+  "desk.grant.heading": "Share a document",
+  "desk.grant.documentId.label": "Document ID",
+  "desk.grant.recipientId.label": "Recipient ID",
+  "desk.grant.expiresAt.label": "Access expires",
+  "desk.grant.canDownload.label": "Allow download",
+  "desk.grant.submit": "Share document",
+  "desk.grant.granted": "Document shared. Grant ID: {id}.",
+  "desk.revoke.heading": "Revoke document access",
+  "desk.revoke.grantId.label": "Grant ID",
+  "desk.revoke.submit": "Revoke access",
+  "desk.revoke.revoked": "Access {id} revoked.",
+  "desk.export.heading": "Export data",
+  "desk.export.note": "The package contains only your items. No download link is available in this session yet.",
+  "desk.export.submit": "Create export package",
+  "desk.export.created": "Export package {id} created. Status: {status}.",
+  "desk.export.status.succeeded": "Succeeded"
 }

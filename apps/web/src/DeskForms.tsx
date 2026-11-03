@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } fr
 import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
 import { t, type Locale, type MessageKey } from '@aftervia/i18n';
 import { addItem, openCase, transitionCase, type ActionOptions, type ActionResult, type CaseSummary } from './actions';
+import { SharingForms } from './SharingForms';
 import {
   DEFAULT_CURRENCY,
   OUTCOME_KEY,
@@ -311,6 +312,7 @@ export function DeskForms(props: DeskFormsProps) {
       <ItemForm locale={props.locale} base={props.base} token={props.token} onAdded={props.onItemAdded} />
       <CaseOpenForm locale={props.locale} base={props.base} token={props.token} onOpened={props.onCaseChanged} />
       <TransitionForm locale={props.locale} base={props.base} token={props.token} activeCase={props.activeCase} onMoved={props.onCaseChanged} />
+      <SharingForms locale={props.locale} base={props.base} token={props.token} activeCase={props.activeCase} />
     </div>
   );
 }

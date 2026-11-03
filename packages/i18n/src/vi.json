@@ -88,5 +88,22 @@
   "desk.outcome.replaced": "Đã thay mới",
   "desk.outcome.refunded": "Đã hoàn tiền",
   "desk.outcome.credited": "Đã ghi có",
-  "desk.outcome.no_remedy": "Không có biện pháp khắc phục"
+  "desk.outcome.no_remedy": "Không có biện pháp khắc phục",
+  "desk.error.expiry": "Hạn truy cập phải sau thời điểm hiện tại và không quá 30 ngày.",
+  "desk.grant.heading": "Chia tài liệu",
+  "desk.grant.documentId.label": "Mã tài liệu",
+  "desk.grant.recipientId.label": "Mã người nhận",
+  "desk.grant.expiresAt.label": "Hạn truy cập",
+  "desk.grant.canDownload.label": "Cho phép tải xuống",
+  "desk.grant.submit": "Chia tài liệu",
+  "desk.grant.granted": "Đã chia tài liệu. Mã quyền: {id}.",
+  "desk.revoke.heading": "Thu hồi quyền truy cập",
+  "desk.revoke.grantId.label": "Mã quyền",
+  "desk.revoke.submit": "Thu hồi quyền",
+  "desk.revoke.revoked": "Đã thu hồi quyền {id}.",
+  "desk.export.heading": "Xuất dữ liệu",
+  "desk.export.note": "Gói chỉ chứa món đồ của bạn. Chưa có liên kết tải trong phiên này.",
+  "desk.export.submit": "Tạo gói xuất",
+  "desk.export.created": "Đã tạo gói xuất {id}. Trạng thái: {status}.",
+  "desk.export.status.succeeded": "Đã xong"
 }
