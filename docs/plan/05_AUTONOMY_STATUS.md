@@ -1,6 +1,6 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 03/11/2026 01:48 UTC, sau lượt WO11-02b (ghi trong cùng commit của lượt).
+- Cập nhật: 03/11/2026, sau lượt WO11-02c (lượt theo lịch 01:53 UTC; ghi trong cùng commit của lượt).
 - Trạng thái: **CONTINUE** (vòng lặp liên tục theo yêu cầu của chủ dự án ngày 03/11; làm tối đa việc tự động, rồi bàn giao dev local). Chưa có `ENGINEERING_ACCEPTED`.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
@@ -46,7 +46,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. Chưa có HTTP cho `createExport` và tải gói; gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Vòng kế tiếp: WO11-02c (bản đề xuất quyết định, AUTO_PREP; `decide` = START, 03/11). Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
+- Vòng kế tiếp: WO10-03a (HTTP createExport và getJob; `decide` = START, 03/11). Bản đề xuất sáu quyết định của WO11-02 nằm ở `docs/plan/evidence/WO11-02c.md`, đang chờ chủ dự án. Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
 
 ## Kết quả kiểm thử
 
@@ -126,7 +126,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 47/60 đã dùng (sau WO11-02b; còn 13 lượt).
+- Vòng lặp: 48/60 đã dùng (sau WO11-02c; còn 12 lượt).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -136,6 +136,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- Lượt 03/11 01:53 UTC: WO11-02c DONE (AUTO_PREP): bản đề xuất sáu quyết định cho chủ dự án (danh mục xóa và grace; bảng chỉ thêm có nội dung cá nhân; DEC03 và phiên; thành viên tổ chức; bên nhận; xuất dữ liệu). Mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống. Không chọn thay chủ dự án. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-03T0153Z.md`.
 - Lượt 03/11 01:37 UTC: WO11-02b DONE (T25 giữ PARTIAL): trigger `refuse_writes_while_pending_deletion` (migration 0018) trên 12 bảng chặn INSERT và UPDATE nội dung khi tài khoản PENDING_DELETION; thu hồi và ghi không có phiên vẫn được. Sửa `tests/support/local-auth-shim.sql`: GUC rỗng là không có phiên. Chưa khóa: export_jobs, export_files (quyết định WO11-02d). Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-03T0137Z.md`.
 - Lượt 03/11 01:32 UTC: tách WO11-02 (a, b: AUTO; c: AUTO_PREP; d..g: HUMAN) và WO10-03 (a..c: AUTO; d: HUMAN, DEC06) bằng `backlog.mjs split`; thêm WO26-01 (hướng dẫn dev local). WO11-02a DONE: phiên cũ bị 401 ở mọi route sau yêu cầu xóa, route requestDeletion thật; T25 giữ PARTIAL, thêm 5 kiểm thử HTTP. Bước 0 có Postgres 16 khởi động lại trong container (worker restart làm mất DB). Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-03T0132Z.md`.
 - Lượt 02/11 (iter 45): WO25-01 DONE (AUTO, T17/T19/T20). `transitionCase` (HTTP) nay đọc và xác thực `outcome`, truyền thật vào `public.transition_case` — case resolve/close qua API không còn bị DB từ chối. **Máy này tìm được `/Applications/Postgres.app` (có `psql`/`pg_ctl`/`initdb` thật ở `Contents/Versions/17/bin`, chỉ không nằm trong PATH) — đã dựng cluster cục bộ (cổng 5433, data dir ngoài repo), chạy `node tools/db/migrate.mjs --with-shim`, và chạy được `npm run verify` với DB thật lần đầu trong phiên này: 353 pass, 1 skip, 0 fail trong 46/47 tệp.** Nhận định "máy không có Postgres" ở ghi chú 01/11 bên dưới chỉ đúng tại thời điểm đó (chưa tìm kỹ); môi trường cục bộ vẫn khác CI (không có Docker, không ảnh hưởng tới DB test). Receipt: `docs/plan/evidence/WO25-01.md`.

@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 47,
+    "iterations_used": 48,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1482,10 +1482,16 @@
         "WO11-01"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO11-02"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02c.md: bản đề xuất 6 quyết định (retention và grace, bảng chỉ thêm, DEC03 và phiên, thành viên tổ chức, bên nhận, xuất dữ liệu), mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống",
+        "Đã kiểm dữ liệu thật từ migration: các cột có nội dung cá nhân trong case_events, field_confirmations, export_files; legal/04 thiếu giá trị grace",
+        "npm run verify exit 0 tại đầu lượt (bundle 69/69; quét bí mật 264 tệp; Vitest 362 pass, 1 bỏ qua; test:loop 18/18). Không đổi mã; AUTO_PREP không có kiểm thử mới"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:54:24.624Z",
+      "finished_at": "2026-11-03T01:55:10.387Z"
     },
     {
       "id": "WO11-02d",
