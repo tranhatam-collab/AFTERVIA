@@ -816,27 +816,6 @@
       "finished_at": "2026-10-31T18:42:26.746Z"
     },
     {
-      "id": "WO10-03",
-      "wo": "WO10",
-      "gate": "P0",
-      "kind": "AUTO",
-      "title": "E2E web trên Chromium: thêm món đồ, mở case, chia một tài liệu, Desk xử lý, đóng có bằng chứng, xuất",
-      "deps": [
-        "WO10-01",
-        "WO11-01"
-      ],
-      "acceptance": [
-        "T36",
-        "T24"
-      ],
-      "status": "BLOCKED",
-      "attempts": 1,
-      "evidence": [],
-      "started_at": "2026-10-31T18:57:49.072Z",
-      "blocked_reason": "Chặn: không đủ lát cắt để làm trong một vòng, và công cụ không tách được task. Thiếu màn hình web (thêm món, mở case, chia tài liệu, Desk, đóng, xuất). Thiếu HTTP cho Desk, hoàn tất tải lên và createExport. Transition của hợp đồng không có outcome (WO09-03). DEC06 chưa chọn kho byte (HUMAN_REQUIRED). Safari và Firefox cần DEV-02. Bằng chứng: docs/plan/evidence/WO10-03.md",
-      "blocked_at": "2026-10-31T19:00:58.795Z"
-    },
-    {
       "id": "WO11-01",
       "wo": "WO11",
       "gate": "P0",
@@ -861,34 +840,20 @@
       "finished_at": "2026-10-31T18:52:49.844Z"
     },
     {
-      "id": "WO11-02",
-      "wo": "WO11",
-      "gate": "P0",
-      "kind": "AUTO",
-      "title": "Xóa tài khoản: yêu cầu, thu hồi phiên và grant, tombstone, danh mục giữ lại; restore áp lại tombstone",
-      "deps": [
-        "WO11-01"
-      ],
-      "acceptance": [
-        "T25",
-        "T26"
-      ],
-      "status": "BLOCKED",
-      "attempts": 1,
-      "evidence": [],
-      "started_at": "2026-10-31T19:10:27.047Z",
-      "blocked_reason": "Lát cắt 1 xong: thu hồi quyền, tombstone chỉ thêm, áp lại sau khôi phục (T25, T26 PASS ở mức PARTIAL, chưa phải nghiệm thu). Còn chờ quyết định: xóa dữ liệu theo chính sách (HUMAN); cơ chế cho bảng chỉ thêm; xác minh danh tính và thu hồi phiên (DEC03); tombstone nằm ngoài backup (WO16-01); quyền bên nhận khi khách xóa; thành viên tổ chức. Bằng chứng: docs/plan/evidence/WO11-02.md",
-      "blocked_at": "2026-10-31T19:17:50.561Z"
-    },
-    {
       "id": "WO11-03",
       "wo": "WO11",
       "gate": "P0",
       "kind": "AUTO",
       "title": "Màn Quyền riêng tư (xuất, xóa, chia sẻ) trên web và mobile, xác thực lại trước khi xóa",
       "deps": [
-        "WO11-02",
-        "WO10-02"
+        "WO10-02",
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02d",
+        "WO11-02e",
+        "WO11-02f",
+        "WO11-02g"
       ],
       "acceptance": [
         "T25"
@@ -904,7 +869,13 @@
       "kind": "AUTO",
       "title": "Sổ sự kiện thanh toán unique(provider, event_id); xác minh chữ ký và timestamp; chống replay và đảo thứ tự (sandbox)",
       "deps": [
-        "WO11-02"
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02d",
+        "WO11-02e",
+        "WO11-02f",
+        "WO11-02g"
       ],
       "acceptance": [
         "T27",
@@ -1048,7 +1019,13 @@
       "title": "Sao lưu DB và manifest object; khôi phục sang DB cô lập; so số dòng, hash, chính sách, tombstone",
       "deps": [
         "WO03-03",
-        "WO11-02"
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02d",
+        "WO11-02e",
+        "WO11-02f",
+        "WO11-02g"
       ],
       "acceptance": [
         "T39",
@@ -1141,7 +1118,10 @@
       "deps": [
         "WO16-03",
         "WO12-03",
-        "WO10-03"
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c",
+        "WO10-03d"
       ],
       "acceptance": [
         "T37",
@@ -1197,7 +1177,10 @@
       "kind": "DEVICE",
       "title": "Kiểm trình duyệt mục tiêu thật (Chrome, Safari, Firefox) theo phiên bản đã chốt",
       "deps": [
-        "WO10-03"
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c",
+        "WO10-03d"
       ],
       "acceptance": [
         "T36"
@@ -1439,6 +1422,196 @@
       ],
       "started_at": "2026-11-02T03:34:34.539Z",
       "finished_at": "2026-11-02T03:34:34.583Z"
+    },
+    {
+      "id": "WO11-02a",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Thu hồi phiên và route HTTP requestDeletion: token phát trước lúc yêu cầu xóa bị từ chối; thay not_implemented; kiểm thử T25",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02b",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khóa thao tác ghi khi tài khoản PENDING_DELETION ở các hàm ghi chính; kiểm thử T25",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02c",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Bản đề xuất quyết định cho chủ dự án (AUTO_PREP): danh mục xóa và giữ lại, bảng chỉ thêm, danh tính và phiên, thành viên tổ chức, bên nhận; mỗi mục có phương án, khuyến nghị và hậu quả",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02d",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: danh mục xóa và giữ lại theo legal/04 (chủ dự án và luật sư duyệt)",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02e",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: cơ chế xóa nội dung cá nhân trong bảng chỉ thêm có trigger chặn",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02f",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: xác minh danh tính và thu hồi phiên theo nhà cung cấp (DEC03)",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02g",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: thành viên tổ chức và quyền của bên nhận khi khách yêu cầu xóa",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO10-03a",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "HTTP createExport và getJob thay not_implemented: xuất gói qua API, link 24 giờ, kiểm phạm vi; kiểm thử T24",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T24"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO10-03"
+    },
+    {
+      "id": "WO10-03b",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: thêm món, mở case, chuyển trạng thái và đóng có outcome qua HTTP; kiểm thử tích hợp Desk và API có T38",
+      "deps": [
+        "WO10-01",
+        "WO09-03",
+        "WO25-01"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO10-03"
+    },
+    {
+      "id": "WO10-03c",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: chia tài liệu (grant) và nút xuất gói, dùng HTTP từ WO10-03a; kiểm thử T38",
+      "deps": [
+        "WO10-03a",
+        "WO10-03b"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO10-03"
+    },
+    {
+      "id": "WO10-03d",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: chọn kho byte cho tài liệu (DEC06) rồi luồng hoàn tất tải lên; không làm trong vòng lặp",
+      "deps": [],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO10-03"
+    },
+    {
+      "id": "WO26-01",
+      "wo": "WO26-01",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Hướng dẫn dev local trên máy chủ dự án (macOS): Node, Postgres 16, npm ci, verify, DB _test, chạy API và Desk; chỉ ghi tên biến môi trường, không ghi giá trị bí mật",
+      "deps": [
+        "WO03-04"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }
