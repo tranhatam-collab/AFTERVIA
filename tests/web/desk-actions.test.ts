@@ -122,6 +122,8 @@ describe('WO10-03b Web Desk actions: fixed paths, one send per call, and every a
     const fetchImpl = fakeFetch(200, {}, calls);
     expect(await openCase(options(fetchImpl), NEW_CASE, 'short')).toEqual({ kind: 'invalid' });
     expect(await openCase(options(fetchImpl), NEW_CASE, 'k'.repeat(129))).toEqual({ kind: 'invalid' });
+    expect(await addItem(options(fetchImpl), { title: 'Máy giặt' }, 'short')).toEqual({ kind: 'invalid' });
+    expect(await addItem(options(fetchImpl), { title: 'Máy giặt' }, 'k'.repeat(129))).toEqual({ kind: 'invalid' });
     expect(isIdempotencyKey('k'.repeat(8))).toBe(true);
     expect(isIdempotencyKey('k'.repeat(128))).toBe(true);
     expect(calls).toHaveLength(0);

@@ -1,7 +1,7 @@
 // Các thao tác ghi của Web Desk qua HTTP (WO10-03b): thêm món, mở case, chuyển trạng thái và đóng có outcome.
 // Logic thuần, như state.ts: nhận fetch từ bên ngoài, không đọc DOM và không đọc môi trường.
 // Chống SSRF (T38): mọi đường dẫn là hằng số, hoặc được dựng sau khi id khớp dạng UUID. Không có URL nào lấy từ dữ liệu.
-// Không tự thử lại: mỗi lần gọi gửi đúng một yêu cầu. POST /v1/items hiện chưa khử trùng theo Idempotency-Key.
+// Không tự thử lại: mỗi lần gọi gửi đúng một yêu cầu. POST /v1/items khử trùng khi có Idempotency-Key (SEC-IDEM-01).
 import { CASE_STATES, REASON_MAX, RESOLUTION_OUTCOMES, type CaseState, type ResolutionOutcome } from '@aftervia/domain';
 import { ITEMS_PATH, classifyStatus, networkFailure } from './state';
 
@@ -131,7 +131,8 @@ function parseCreatedId(body: unknown): { id: string } | null {
 }
 
 // Thêm món đồ: POST /v1/items. Chỉ tiêu đề là bắt buộc; các trường khác chỉ gửi khi có giá trị.
-export async function addItem(options: ActionOptions, input: NewItem): Promise<ActionResult<{ id: string }>> {
+// Có khóa (idempotencyKey): máy chủ khử trùng, gửi lại cùng khóa và cùng nội dung trả cùng món. Không có khóa: như trước.
+export async function addItem(options: ActionOptions, input: NewItem, idempotencyKey?: string): Promise<ActionResult<{ id: string }>> {
   if (typeof input.title !== 'string' || input.title.trim().length === 0) return { kind: 'invalid' };
   const body: Record<string, string> = { title: input.title };
   if (input.brand) body.brand = input.brand;
@@ -141,7 +142,8 @@ export async function addItem(options: ActionOptions, input: NewItem): Promise<A
     body.purchased_on = input.purchasedOn;
   }
   if (input.currency) body.currency = input.currency;
-  const sent = await post(options, ITEMS_PATH, body, null);
+  if (idempotencyKey !== undefined && !isIdempotencyKey(idempotencyKey)) return { kind: 'invalid' };
+  const sent = await post(options, ITEMS_PATH, body, idempotencyKey ?? null);
   if (sent.kind === 'stopped') return sent.result;
   if (classifyStatus(sent.status) !== 'success') return failureOf(sent.status, sent.body);
   const created = parseCreatedId(sent.body);

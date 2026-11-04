@@ -93,6 +93,23 @@ function headerOf(call: readonly unknown[] | undefined, name: string): string | 
 }
 
 describe('WO10-03e Web Desk forms in a DOM: one request per submit, locked while sending, and the list reloads on success', () => {
+  it('T38 the item form sends an Idempotency-Key, keeps it for the same content after a failure, and changes it when the content changes', async () => {
+    const fetchMock = vi.fn((_url: string, _init?: RequestInit) => Promise.resolve(jsonResponse(503, { code: 'internal_error' })));
+    vi.stubGlobal('fetch', fetchMock);
+    await render();
+    await fill({ title: 'Máy giặt có khóa' });
+    await submit(0);
+    await submit(0);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const first = headerOf(fetchMock.mock.calls[0], 'idempotency-key');
+    expect(first).toBeDefined();
+    expect(headerOf(fetchMock.mock.calls[1], 'idempotency-key')).toBe(first);
+    await fill({ title: 'Máy giặt có khóa mới' });
+    await submit(0);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(headerOf(fetchMock.mock.calls[2], 'idempotency-key')).not.toBe(first);
+  });
+
   it('T32 the item form shows the field error and sends nothing when the title is empty', async () => {
     const fetchMock = vi.fn((_url: string, _init?: RequestInit) => Promise.resolve(jsonResponse(201, { id: ITEM })));
     vi.stubGlobal('fetch', fetchMock);

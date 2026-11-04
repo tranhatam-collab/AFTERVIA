@@ -104,6 +104,7 @@ function ItemForm({ locale, base, token, onAdded }: { locale: Locale; base: stri
   const purchasedOnId = useId();
   const currencyId = useId();
   const [values, setValues] = useState<ItemFormValues>(EMPTY_ITEM);
+  const [pending, setPending] = useState<PendingKey | null>(null);
   const [busy, setBusy] = useState(false);
   const [fieldError, setFieldError] = useState<FieldError>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
@@ -119,12 +120,16 @@ function ItemForm({ locale, base, token, onAdded }: { locale: Locale; base: stri
       return;
     }
     setFieldError(null);
+    // Gửi lại đúng nội dung cũ thì giữ khóa (máy chủ trả cùng món); đổi nội dung thì cấp khóa mới.
+    const key = keyFor(pending, JSON.stringify(checked.value), newKey);
+    setPending(key);
     inFlight.current = true;
     setBusy(true);
-    const result = await addItem(optionsFor(base, token), checked.value);
+    const result = await addItem(optionsFor(base, token), checked.value, key.key);
     inFlight.current = false;
     setBusy(false);
     if (result.kind === 'success') {
+      setPending(null);
       setValues(EMPTY_ITEM);
       setNotice({ tone: 'status', text: t(locale, 'desk.item.added') });
       onAdded();

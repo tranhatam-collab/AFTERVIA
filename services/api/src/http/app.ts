@@ -257,15 +257,30 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
       return send(res, 200, { items: rows });
     }
     if (method === 'POST') {
+      // Không có khóa: giữ hành vi cũ. Có khóa (8–128 ký tự): khử trùng ở máy chủ; gửi lại cùng nội dung trả cùng id.
+      const key = req.headers['idempotency-key'] === undefined ? null : idempotencyKey(req);
       const body = await readJson(req);
       const parsed = normalizeItemFields(body);
       if (!parsed.ok) throw new HttpError(400, 'invalid_input');
       const f = parsed.value;
-      const id = await runRead(config, auth.userId, async (c) => (await c.query(
-        'select public.create_item($1, $2, $3, $4, $5) as id',
-        [f.title, f.brand, f.model, f.purchasedOn, f.currency],
-      )).rows[0]?.id as string);
-      return send(res, 201, { id });
+      try {
+        if (key === null) {
+          const id = await runRead(config, auth.userId, async (c) => (await c.query(
+            'select public.create_item($1, $2, $3, $4, $5) as id',
+            [f.title, f.brand, f.model, f.purchasedOn, f.currency],
+          )).rows[0]?.id as string);
+          return send(res, 201, { id });
+        }
+        const row = await withUser(config.pool, auth.userId, async (c) => (await c.query(
+          'select out_item_id from public.create_item_keyed($1, $2, $3, $4, $5, $6)',
+          [key, f.title, f.brand, f.model, f.purchasedOn, f.currency],
+        )).rows[0]);
+        return send(res, 201, { id: row?.out_item_id as string });
+      } catch (error) {
+        // Cùng khóa nhưng khác nội dung: 409. Các lỗi khác đi tiếp như cũ.
+        if ((error as { code?: string }).code === '23505') throw new HttpError(409, 'conflict');
+        throw error;
+      }
     }
   }
 
@@ -497,7 +512,7 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
     }
     case 'grantDocument': {
       const caseId = pathUuid(params.case_id ?? '');
-      idempotencyKey(req); // hợp đồng yêu cầu khóa; việc cấp grant chưa có khóa lặp (ghi trong evidence)
+      const key = idempotencyKey(req);
       const body = await readJson(req);
       contractBody(body, ['document_id', 'recipient_id', 'expires_at', 'can_download'], []);
       const doc = contractUuid(body.document_id);
@@ -506,11 +521,12 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
       const canDownload = body.can_download;
       if (typeof canDownload !== 'boolean') throw new HttpError(400, 'invalid_input');
       return withUser(config.pool, userId, async (c) => {
+        // Khóa lặp: gửi lại cùng nội dung trả grant cũ với trạng thái hiện tại; khác nội dung thì 409 (23505 → conflict).
         const row = (await c.query(
-          'select public.grant_case_document($1::uuid, $2::uuid, $3::uuid, $4::boolean, $5::timestamptz) as id',
-          [caseId, doc, recipient, canDownload, expires],
+          'select out_grant_id, out_status from public.grant_case_document_keyed($1, $2::uuid, $3::uuid, $4::uuid, $5::boolean, $6::timestamptz)',
+          [key, caseId, doc, recipient, canDownload, expires],
         )).rows[0];
-        return { id: row?.id as string, status: 'active' };
+        return { id: row?.out_grant_id as string, status: row?.out_status as string };
       });
     }
     case 'revokeGrant': {
