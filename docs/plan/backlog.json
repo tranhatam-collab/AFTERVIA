@@ -1763,6 +1763,22 @@
       ],
       "started_at": "2026-11-03T05:11:23.203Z",
       "finished_at": "2026-11-03T05:19:40.853Z"
+    },
+    {
+      "id": "SEC-IDEM-01",
+      "wo": "SEC",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khử trùng ở máy chủ theo Idempotency-Key cho POST /v1/items và cấp grant: lưu kết quả theo người dùng và khóa; cùng nội dung thì trả lại kết quả cũ, khác nội dung thì 409; kiểm thử T38",
+      "deps": [
+        "WO10-03c"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }
