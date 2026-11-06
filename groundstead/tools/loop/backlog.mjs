@@ -221,6 +221,20 @@ export function addTask(data, spec) {
   return task;
 }
 
+// Moves a task to the front of the pending queue. `decide` takes the first ready task in array order,
+// so this is how priority changes without hand-editing the backlog. Tasks that are already finished
+// keep their place; the task lands just before the first task that is still TODO.
+export function promoteTask(data, id) {
+  const index = data.tasks.findIndex((t) => t.id === id);
+  if (index < 0) throw new Error(`unknown task ${id}`);
+  const task = data.tasks[index];
+  if (task.status !== 'TODO') throw new Error(`${id} is ${task.status}; only TODO can be promoted`);
+  data.tasks.splice(index, 1);
+  const firstTodo = data.tasks.findIndex((t) => t.status === 'TODO');
+  data.tasks.splice(firstTodo < 0 ? data.tasks.length : firstTodo, 0, task);
+  return task;
+}
+
 export function loadAcceptanceIds(matrixPath) {
   if (!existsSync(matrixPath)) return null;
   const text = readFileSync(matrixPath, 'utf8').replace(/^\uFEFF/, '');
@@ -297,6 +311,9 @@ function main(argv) {
     case 'unblock':
       unblockTask(data, positional[0]);
       break;
+    case 'promote':
+      promoteTask(data, positional[0]);
+      break;
     case 'split': {
       if (!flags.spec) {
         console.error('split needs --spec <path-to-json-array-of-children>');
@@ -316,7 +333,7 @@ function main(argv) {
       break;
     }
     default:
-      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock|split|add> [id] [--evidence txt]... [--reason txt] [--spec file]');
+      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock|promote|split|add> [id] [--evidence txt]... [--reason txt] [--spec file]');
       process.exit(2);
   }
   const errors = validateBacklog(data, { acceptanceIds });

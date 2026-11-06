@@ -101,6 +101,7 @@ Một task AUTO_EXT phụ thuộc HUMAN chỉ sẵn sàng khi chủ dự án bá
 **Bước 1 — Quyết định.** `node tools/loop/backlog.mjs decide`:
 - `RESUME` → tiếp tục task `IN_PROGRESS`, đọc `docs/evidence/<id>.md` nếu có.
 - `START` → `node tools/loop/backlog.mjs start <id>`.
+- Đổi ưu tiên khi một task phụ thuộc về mặt ý nghĩa vào task khác: `node tools/loop/backlog.mjs promote <id>` (đưa task TODO lên đầu hàng đợi); không sửa tay `backlog.json`.
 - `STOP_*` → không lên lịch vòng kế tiếp; viết báo cáo cuối (§9).
 
 **Bước 2 — Đọc đúng phạm vi.** Dòng task trong `backlog.json`, các dòng GT liên quan trong `02_ACCEPTANCE.csv`, mục liên quan của `00_MASTER_PLAN.md`. Không đọc lại toàn bộ kế hoạch mỗi vòng.

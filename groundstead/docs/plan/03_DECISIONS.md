@@ -17,7 +17,8 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-14 | Phiên bản dependency | Ghim chính xác; chọn bản phát hành ít nhất 2 tuần: next 16.4.2 (15/10/2026), react và react-dom 19.3.1 (14/10/2026), typescript 5.9.3. `npm audit`: 0 lỗ hổng. | 06/11/2026 | Claude (kỹ thuật) |
 | D-15 | Luật quyền của sổ nguồn | Thẻ và bài chỉ được trích nguồn cho phép `summarize`, `offline` và `commercial` (site có affiliate là thương mại); nguồn khác ngôn ngữ phải cho `translate`; nguồn `link-only`/`restricted` chỉ để dẫn liên kết. Dựa trên §8.3 của kế hoạch; **không phải ý kiến pháp lý** — cờ quyền của từng nguồn do vòng lặp điền từ điều khoản công khai và chủ dự án/luật sư nên rà lại trước khi công khai (GS-030). | 06/11/2026 | Claude (kỹ thuật) |
 | D-16 | Thư viện nội dung | `ajv` 8.20.0, `ajv-formats` 3.0.1, `yaml` 2.9.1 (ghim chính xác, ≥ 2 tuần tuổi, `npm audit` 0). | 06/11/2026 | Claude (kỹ thuật) |
-| D-17 | Căn cứ tái sử dụng cho nguồn Mỹ | 4 nguồn chính phủ Mỹ được phép tái sử dụng dựa trên 17 U.S.C. § 105 (tác phẩm của viên chức liên bang) và, với NWS, câu tuyên bố trong weather.gov/disclaimer — **cả hai đọc qua kết quả tìm kiếm, chưa mở trang chính thức** vì mạng bị chặn. Ghi rõ giới hạn trong từng mục của sổ. Không phải ý kiến pháp lý; chủ dự án hoặc luật sư nên rà lại trước khi công khai. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
+| D-17 | Căn cứ tái sử dụng cho nguồn | 5 nguồn được phép tái sử dụng: NWS và USGS (đọc nguyên văn trên trang chính thức ngày 06/11/2026), Ủy ban châu Âu (CC BY 4.0, phải ghi nguồn và nêu thay đổi; đọc trên trang pháp lý), FEMA/Ready.gov và CDC (căn cứ 17 U.S.C. § 105 vì hai website chặn truy cập tự động, HTTP 403). WHO (CC BY-NC-SA 3.0 IGO), American Red Cross, ReliefWeb, WMO (chỉ trích đoạn ngắn), Chính phủ VN và Hội Chữ thập đỏ VN: đã đọc, **không** cho phép cách dùng thương mại của Groundstead. IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF: chưa đọc được (GS-H11). Không phải ý kiến pháp lý; chủ dự án hoặc luật sư nên rà lại trước khi công khai. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
+| D-18 | Mở mạng cho các trang nguồn chính thức | Chủ dự án đã duyệt môi trường riêng `groundstead-sources` (không sửa `Default`) với 19 tên miền chính xác; không biến môi trường, không script cài đặt; phiên này đã chuyển sang môi trường đó chỉ về mạng. Hết hạn duyệt kéo dài khoảng 4 giờ nên lịch vòng lặp bị chậm một lần; lần sau nên đề xuất đúng lúc chủ dự án đang theo dõi. | 06/11/2026 | Chủ dự án (duyệt qua thẻ môi trường) |
 
 ## Đang mở
 
@@ -28,7 +29,7 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-10 | Người duyệt nội dung an toàn | Mời người kiểm tra tình nguyện; người duyệt trả phí là khoản chi đầu tiên khi có doanh thu. | Nhãn `EXPERT_REVIEWED` | Chủ dự án |
 | D-11 | Định vị SI Bank | Không đặt thương hiệu người dùng dưới `sibank.com`. | Không chặn | Chủ dự án |
 | D-12 | Brand OS IAI.ONE (design tokens) | Vòng lặp dùng token trung tính cho đến khi có tệp token. | Không chặn | Chủ dự án |
-| D-18 | Mở mạng cho các trang nguồn chính thức | Tạo môi trường riêng `groundstead-sources` (không sửa `Default`) với 19 tên miền chính xác của các nguồn (Mỹ, quốc tế, Việt Nam); không biến môi trường, không script cài đặt. Chuyển phiên này sang môi trường đó chỉ về mạng. | GS-038 | Chủ dự án (duyệt qua thẻ của môi trường) |
+| D-19 | Thêm `www.nchmf.gov.vn` (đích chuyển hướng của nchmf.gov.vn) và các tên miền chặn bot vào danh sách mạng? | Không cần ngay. Hai việc nhỏ: (a) thêm `www.nchmf.gov.vn` khi cần đọc điều khoản của cơ quan khí tượng VN; (b) với trang chặn bot (HTTP 403) thì nhờ người đọc giúp (GS-H11), không né chặn. | GS-H11 | Chủ dự án |
 
 ## Bản ghi duyệt công khai
 

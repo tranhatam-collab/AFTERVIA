@@ -9,11 +9,11 @@
       "accessed": "2026-11-06",
       "license": {
         "kind": "public-domain",
-        "summary": "US federal government work, not subject to US copyright",
+        "summary": "US federal government work, public domain with three conditions",
         "url": "https://www.weather.gov/disclaimer",
-        "quote": "The information on National Weather Service (NWS) Web pages are in the public domain, unless specifically noted otherwise, and may be used without charge for any lawful purpose.",
+        "quote": "The information on National Weather Service (NWS) Web pages are in the public domain, unless specifically noted otherwise, and may be used without charge for any lawful purpose so long as you do not: 1) claim it is your own (e.g., by claiming copyright for NWS information -- see below), 2) use it in a manner that implies an endorsement or affiliation with NOAA/NWS, or 3) modify its content and then present it as official government material.",
         "checked_on": "2026-11-06",
-        "verified_via": "search-result"
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": true,
@@ -26,7 +26,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Quote taken from the text of weather.gov/disclaimer as returned by a web search; the page itself could not be opened from the build environment (GS-038 re-reads it). The NWS name and logo are separate and need permission, except to identify unaltered NWS content or link to NWS sites. Images credited to the public may not be public domain."
+      "notes": "Page read on 2026-11-06. Conditions: do not claim it as your own, do not imply NWS endorsement, do not present modified content as official government material (Groundstead's cards say they are summaries, not official). 17 U.S.C. 403 notice: a copyrighted work made predominantly of NWS material must identify the NWS material and say it is not subject to copyright. The NWS name and logo need permission, except to identify unaltered NWS content or link to NWS sites. Third-party imagery and map data on weather.gov are licensed separately. General safety principles may be used for other countries, but leave out US-only details (911, US programmes)."
     },
     {
       "id": "us-fema-ready",
@@ -54,7 +54,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Basis is the federal statute, not this site's own notice (the site could not be opened from the build environment; GS-038 reads it). It covers works of federal employees only. Contractor-written text, third-party material, images with a credit line, logos and emblems are NOT covered: check each page before use. General safety principles may be used for other countries, but leave out US-only details (911, US programmes, US insurance)."
+      "notes": "Basis is the federal statute, not this site's own notice: the site answers automated requests with HTTP 403, so its notice could not be read on 2026-11-06. It covers works of federal employees only. Contractor-written text, third-party material, images with a credit line, logos and emblems are NOT covered: check each page before use. General safety principles may be used for other countries, but leave out US-only details (911, US programmes, US insurance)."
     },
     {
       "id": "us-cdc-emergency",
@@ -82,7 +82,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Basis is the federal statute, not this site's own notice (the site could not be opened from the build environment; GS-038 reads it). It covers works of federal employees only. Contractor-written text, third-party material, images with a credit line, logos and emblems are NOT covered: check each page before use. General safety principles may be used for other countries, but leave out US-only details (911, US programmes, US insurance)."
+      "notes": "Basis is the federal statute, not this site's own notice: the site answers automated requests with HTTP 403, so its notice could not be read on 2026-11-06. It covers works of federal employees only. Contractor-written text, third-party material, images with a credit line, logos and emblems are NOT covered: check each page before use. General safety principles may be used for other countries, but leave out US-only details (911, US programmes, US insurance)."
     },
     {
       "id": "us-usgs-hazards",
@@ -93,11 +93,11 @@
       "accessed": "2026-11-06",
       "license": {
         "kind": "public-domain",
-        "summary": "US federal government work, not subject to US copyright",
-        "url": "https://www.govinfo.gov/content/pkg/USCODE-2020-title17/html/USCODE-2020-title17-chap1-sec105.htm",
-        "quote": "Copyright protection under this title is not available for any work of the United States Government, but the United States Government is not precluded from receiving and holding copyrights transferred to it by assignment, bequest, or otherwise.",
+        "summary": "USGS-authored information is in the US public domain; some non-USGS images are not",
+        "url": "https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits",
+        "quote": "USGS-authored or produced data and information are considered to be in the U.S. Public Domain. While the content of most USGS websites is in the U.S. Public Domain, not all information, illustrations, or photographs on our site are.",
         "checked_on": "2026-11-06",
-        "verified_via": "statute-text"
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": true,
@@ -110,7 +110,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Basis is the federal statute, not this site's own notice (the site could not be opened from the build environment; GS-038 reads it). It covers works of federal employees only. Contractor-written text, third-party material, images with a credit line, logos and emblems are NOT covered: check each page before use. General safety principles may be used for other countries, but leave out US-only details (911, US programmes, US insurance)."
+      "notes": "Page read on 2026-11-06. Only USGS-authored material is covered; non-USGS photographs and graphics used with permission need the copyright holder's permission and are usually marked as copyrighted. People shown in USGS multimedia may have publicity rights. General safety principles may be used for other countries, but leave out US-only details."
     },
     {
       "id": "who-guidance",
@@ -120,8 +120,12 @@
       "language": "en",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "open-license",
+        "summary": "CC BY-NC-SA 3.0 IGO: non-commercial use only; not allowed on a site that carries affiliate links or paid plans",
+        "url": "https://www.who.int/about/policies/publishing/copyright",
+        "quote": "The CC BY-NC-SA 3.0 IGO licence allows users to freely copy, reproduce, reprint, distribute, translate and adapt the work for non-commercial purposes, provided WHO is acknowledged as the source",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": false,
@@ -133,7 +137,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "Believed to be published under CC BY-NC-SA 3.0 IGO (from memory, not verified here). A non-commercial licence would not allow reuse on a site that carries affiliate links. Read https://www.who.int/about/policies/publishing/copyright before any use."
+      "notes": "Page read on 2026-11-06. Materials not under that licence need WHO's permission. Credited third-party material needs the originating publisher's permission. Link to WHO pages; do not copy or summarise them while Groundstead is commercial."
     },
     {
       "id": "ifrc-guidance",
@@ -156,7 +160,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "The red cross and red crescent emblems are protected and must not be reproduced. Check whether its first-aid content has its own licence."
+      "notes": "The site answers automated requests with HTTP 403 (checked 2026-11-06), so its terms are unread. The red cross and red crescent emblems are protected and must not be reproduced."
     },
     {
       "id": "undrr-guidance",
@@ -179,7 +183,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "Terms not read."
+      "notes": "The site answers automated requests with HTTP 403 (checked 2026-11-06), so its terms are unread."
     },
     {
       "id": "reliefweb",
@@ -189,8 +193,12 @@
       "language": "en",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "restricted",
+        "summary": "Personal, non-commercial use only; no resale, redistribution or derivative works",
+        "url": "https://reliefweb.int/terms-conditions",
+        "quote": "ReliefWeb grants permission to Users to visit the Space and to download and copy the information, documents and materials (collectively, “Materials”) from the Space for the User’s personal, non-commercial use, without any right to resell or redistribute them or to compile or create derivative works therefrom",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": false,
@@ -202,7 +210,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "Content copyright varies by item; terms not read."
+      "notes": "Terms page read on 2026-11-06. Specific materials may carry stricter restrictions. Link to items; do not copy them."
     },
     {
       "id": "gdacs",
@@ -225,7 +233,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "Alert feed used by GS-050. Its terms say it does not replace local authorities' alerts or evacuation orders (stated in the project plan; page not re-read). Read its data terms before relaying alerts."
+      "notes": "Pages are built with JavaScript, so no terms text could be read with a plain request (2026-11-06). Alert feed used by GS-050. The project plan says GDACS does not replace local authorities' alerts or evacuation orders; confirm on the site before relaying alerts."
     },
     {
       "id": "wmo",
@@ -235,11 +243,15 @@
       "language": "en",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "permission-granted",
+        "summary": "Short excerpts of web material may be reproduced free of charge with the source acknowledged; everything else needs permission",
+        "url": "https://wmo.int/copyright",
+        "quote": "Reproduction of short excerpts of WMO materials, figures and photographs on this website is authorized free of charge and without formal written permission provided that the original source is acknowledged.",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
-        "quote": false,
+        "quote": true,
         "summarize": false,
         "translate": false,
         "offline": false,
@@ -248,7 +260,7 @@
       "scope": [
         "GLOBAL"
       ],
-      "notes": "Terms not read."
+      "notes": "Copyright page and disclaimer read on 2026-11-06. Publications, emblem, name and abbreviation need permission; the disclaimer says reproduction or adaptation is otherwise subject to permission. Permission is unlikely for mainly commercial publications."
     },
     {
       "id": "eu-commission-preparedness",
@@ -258,20 +270,24 @@
       "language": "en",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "open-license",
+        "summary": "CC BY 4.0 for content owned by the EU unless otherwise indicated; credit must be given and changes indicated",
+        "url": "https://commission.europa.eu/legal-notice_en",
+        "quote": "Unless otherwise indicated (e.g. in individual copyright notices), content owned by the EU on this website is licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) licence. This means that reuse is allowed, provided appropriate credit is given and changes are indicated.",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
-        "quote": false,
-        "summarize": false,
-        "translate": false,
-        "offline": false,
-        "commercial": false
+        "quote": true,
+        "summarize": true,
+        "translate": true,
+        "offline": true,
+        "commercial": true
       },
       "scope": [
         "EU"
       ],
-      "notes": "The 72-hour self-sufficiency document dated 30 October 2026 is cited in the project plan; its exact URL and licence were not found. Commission reuse terms not read."
+      "notes": "Legal notice read on 2026-11-06. Every use must give credit and say that changes were made. Individual documents may carry their own notice: check the document before use. Third-party works, identifiable people, logos and names are excluded. The 72-hour household self-sufficiency document dated 30 October 2026 (cited in the project plan) has not been located, so nothing is cleared from it yet."
     },
     {
       "id": "us-red-cross",
@@ -281,8 +297,12 @@
       "language": "en",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "restricted",
+        "summary": "Terms of Use give a personal, non-commercial licence only",
+        "url": "https://www.redcross.org/terms-of-use.html",
+        "quote": "GRANT OF LICENSE. Red Cross grants You a personal, revocable, nontransferable, nonexclusive license to use the Service for personal, non-commercial purposes, conditioned on Your continued compliance with these Terms of Use.",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": false,
@@ -294,7 +314,7 @@
       "scope": [
         "US"
       ],
-      "notes": "A private nonprofit: expect all rights reserved. Terms not read."
+      "notes": "Terms page read on 2026-11-06. The service and its contents are owned or controlled by the American Red Cross; link to it, do not copy it. The red cross emblem is protected."
     },
     {
       "id": "vn-moh",
@@ -317,7 +337,7 @@
       "scope": [
         "VN"
       ],
-      "notes": "Terms not read. Vietnamese copyright law excludes some official documents (Law on Intellectual Property, Article 15), but sources disagreed on the current text; do not rely on it until the official text is read."
+      "notes": "moh.gov.vn did not accept a connection from the build environment (2026-11-06), so its terms are unread. Do not rely on Article 15 of the Law on Intellectual Property for reuse until the official text is read: secondary sources disagree on the current text."
     },
     {
       "id": "vn-nchmf",
@@ -340,7 +360,7 @@
       "scope": [
         "VN"
       ],
-      "notes": "Terms not read. Official forecasts and warnings: relay with source and time, never edit."
+      "notes": "nchmf.gov.vn redirects to www.nchmf.gov.vn, which is not on the environment's allowed list (2026-11-06), so its terms are unread. Official forecasts and warnings: relay with source and time, never edit."
     },
     {
       "id": "vn-chinhphu",
@@ -350,8 +370,12 @@
       "language": "vi",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "restricted",
+        "summary": "Copyright asserted; no reuse terms found on the home page",
+        "url": "https://chinhphu.vn/",
+        "quote": "© Cục Thông tin và Truyền thông Chính phủ",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": false,
@@ -363,7 +387,7 @@
       "scope": [
         "VN"
       ],
-      "notes": "Terms not read."
+      "notes": "Only the footer of the home page was read on 2026-11-06 (a copyright line, no reuse terms). Other pages may carry terms."
     },
     {
       "id": "vn-redcross",
@@ -373,8 +397,12 @@
       "language": "vi",
       "accessed": "2026-11-06",
       "license": {
-        "kind": "link-only",
-        "summary": "Terms not yet read by Groundstead; treated as all rights reserved. Link to it, do not copy or summarise it."
+        "kind": "restricted",
+        "summary": "Copyright belongs to the Central Vietnam Red Cross Society; no reuse terms found on the home page",
+        "url": "https://redcross.org.vn/",
+        "quote": "Bản quyền thuộc Trung ương Hội Chữ thập đỏ Việt Nam.",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
       },
       "usage": {
         "quote": false,
@@ -386,7 +414,7 @@
       "scope": [
         "VN"
       ],
-      "notes": "Terms not read. The emblem is protected."
+      "notes": "Only the footer of the home page was read on 2026-11-06. The emblem is protected."
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { addTask, blockTask, decide, finishTask, splitTask, startTask, unblockTask, validateBacklog, readyTasks } from './backlog.mjs';
+import { addTask, blockTask, decide, finishTask, promoteTask, splitTask, startTask, unblockTask, validateBacklog, readyTasks } from './backlog.mjs';
 
 const task = (over) => ({
   id: 'X',
@@ -196,4 +196,24 @@ test('GT02 loadAcceptanceIds reads only GT ids from the matrix', async () => {
   writeFileSync(file, '﻿test_id,title\nGT01,a\nGT02,"b, c"\nT03,legacy\n');
   assert.deepEqual([...loadAcceptanceIds(file)].sort(), ['GT01', 'GT02']);
   assert.equal(loadAcceptanceIds(join(dir, 'missing.csv')), null);
+});
+
+test('GT02 promote puts a pending task first in line without moving finished tasks, and refuses anything not TODO', () => {
+  const data = {
+    meta: { iterations_used: 0, iteration_budget: 9 },
+    tasks: [
+      task({ id: 'D', status: 'DONE', evidence: ['ok'] }),
+      task({ id: 'A' }),
+      task({ id: 'B' }),
+      task({ id: 'C' }),
+    ],
+  };
+  assert.deepEqual(decide(data), { action: 'START', task: 'A', ready_count: 3 });
+  promoteTask(data, 'C');
+  assert.deepEqual(data.tasks.map((t) => t.id), ['D', 'C', 'A', 'B']);
+  assert.deepEqual(decide(data), { action: 'START', task: 'C', ready_count: 3 });
+  assert.throws(() => promoteTask(data, 'D'), /only TODO can be promoted/);
+  assert.throws(() => promoteTask(data, 'ZZ'), /unknown task ZZ/);
+  startTask(data, 'C');
+  assert.throws(() => promoteTask(data, 'C'), /only TODO can be promoted/);
 });

@@ -231,21 +231,27 @@ test('GT03 the module list, both schemas and the real specs agree on the ten mod
   }
 });
 
-test('GT03 the real source ledger: no reuse without evidence, every other source is link-only, and the reusable ones are US federal', () => {
+test('GT03 the real source ledger: reuse only with evidence, non-commercial terms never allow commercial use, unread sources are link-only', () => {
   const { sources } = loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: TODAY });
   assert.ok(sources.length >= 15, `expected at least 15 sources, found ${sources.length}`);
   assert.equal(new Set(sources.map((s) => s.id)).size, sources.length, 'source ids must be unique');
   const reusable = sources.filter((s) => Object.values(s.usage).some(Boolean));
   assert.ok(reusable.length >= 1);
-  for (const s of reusable) {
-    assert.ok(s.license.quote && s.license.checked_on && s.license.verified_via, `${s.id} allows reuse without evidence`);
-    assert.equal(s.license.kind, 'public-domain', `${s.id}: only public-domain sources are reusable until the other terms are read (GS-038)`);
-    assert.ok(s.id.startsWith('us-'), `${s.id}: only US federal sources are cleared so far`);
+  for (const s of sources) {
+    const read = s.license.checked_on !== undefined;
+    if (!read) {
+      assert.equal(s.license.kind, 'link-only', `${s.id}: an unread source must be link-only`);
+      assert.deepEqual(Object.values(s.usage), [false, false, false, false, false], `${s.id}: an unread source allows nothing`);
+      continue;
+    }
+    assert.ok(s.license.quote && s.license.verified_via, `${s.id}: a read source must carry its quote and how it was verified`);
+    // The wording of the licence decides the commercial flag: "non-commercial" can never allow a site with affiliate links.
+    if (/non-?commercial/i.test(s.license.quote ?? '')) assert.equal(s.usage.commercial, false, `${s.id}: a non-commercial licence cannot allow commercial use`);
+    if (s.license.verified_via === 'official-page') assert.ok(s.license.url?.startsWith('https://'), `${s.id}: an official-page source must link the page it was read on`);
   }
-  for (const s of sources.filter((x) => !reusable.includes(x))) {
-    assert.equal(s.license.kind, 'link-only', `${s.id} must be link-only while its terms are unread`);
-    assert.equal(s.license.checked_on, undefined, `${s.id} claims a check date but allows no reuse`);
-  }
+  for (const s of reusable) assert.ok(['public-domain', 'open-license', 'permission-granted'].includes(s.license.kind), `${s.id}: reuse needs a licence that grants it`);
+  const cleared = reusable.filter((s) => s.usage.summarize && s.usage.offline && s.usage.commercial).map((s) => s.id).sort();
+  assert.deepEqual(cleared, ['eu-commission-preparedness', 'us-cdc-emergency', 'us-fema-ready', 'us-nws-safety', 'us-usgs-hazards'].sort(), 'sources cleared for cards changed: review the ledger');
 });
 
 test('GT03 a public-domain source cannot deny any use, and the real public-domain sources allow all five', () => {
