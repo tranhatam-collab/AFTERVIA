@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 17,
+    "iterations_used": 18,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -405,9 +405,11 @@
         "GT04",
         "GT05"
       ],
-      "status": "TODO",
+      "status": "BLOCKED",
       "attempts": 0,
-      "evidence": []
+      "evidence": [],
+      "blocked_reason": "Chờ D-26 (phạm vi thẻ có chi tiết NWS Hoa Kỳ: GLOBAL hay Hoa Kỳ). Nguồn đọc được và có quyền dùng hiện chỉ có NWS và USGS. FEMA, CDC, IFRC, UNDRR trả 403 cho truy cập tự động; GDACS là trang JavaScript; moh.gov.vn không truy cập được. WHO, Hội Chữ thập đỏ, ReliefWeb và trang chính phủ VN bị cấm dùng lại. Chưa viết thẻ nào thay nguồn.",
+      "blocked_at": "2026-11-06T15:46:43.406Z"
     },
     {
       "id": "GS-050",
@@ -422,9 +424,15 @@
         "GT14",
         "GT15"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 163 node tests passed (157 + 6 GT13–GT15)",
+        "mutations (đã hoàn tác): mọi bản công khai → GT13 đỏ; nguồn lỗi báo ok → GT14 đỏ; bỏ giờ nhận → GT15 đỏ",
+        "docs/evidence/GS-050.md"
+      ],
+      "started_at": "2026-11-06T15:49:59.765Z",
+      "finished_at": "2026-11-06T15:49:59.800Z"
     },
     {
       "id": "GS-051",
