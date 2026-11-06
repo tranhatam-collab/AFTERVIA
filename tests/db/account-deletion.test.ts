@@ -132,11 +132,12 @@ describe('WO11-02 account deletion slice: revoke access, tombstone and reapply a
     expect(receiptFirst).toMatchObject({
       request_id: 'req-del-partner-0001',
       status: 'PENDING_POLICY',
-      access_revoked: { grants: 1, participants: 1 },
+      access_revoked: { grants: 1, participants: 1, memberships: 0 },
     });
     expect(receiptFirst.pending).toEqual(
       expect.arrayContaining(['primary_data_erasure', 'retention_policy', 'session_revocation', 'identity_verification']),
     );
+    expect(receiptFirst.pending).not.toContain('organization_membership');
     expect((await check(PARTNER, caseA, doc1)).out_allowed).toBe(false);
     expect((await check(PARTNER3, caseA, doc1)).out_allowed).toBe(true);
     expect(first(await adminRows('select deletion_status from public.profiles where id = $1', [PARTNER])).deletion_status).toBe('PENDING_DELETION');

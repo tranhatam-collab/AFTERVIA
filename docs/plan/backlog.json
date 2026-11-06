@@ -4,8 +4,8 @@
     "source": "docs/spec/AFTERVIA_AZ_2026-10-31/ops/02_BACKLOG_WORK_ORDERS.csv (WO01–WO22) và engineering/10_REPO_FILE_MANIFEST.csv",
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
-    "iteration_budget": 60,
-    "iterations_used": 60,
+    "iteration_budget": 65,
+    "iterations_used": 61,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1847,6 +1847,93 @@
       ],
       "started_at": "2026-11-06T10:51:28.485Z",
       "finished_at": "2026-11-06T10:55:48.609Z"
+    },
+    {
+      "id": "WO11-02g-MEM",
+      "wo": "WO11-02g",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Thành viên tổ chức khi khách yêu cầu xóa (Q4, phương án A, đã QUYẾT): đánh dấu REVOKED mọi thành viên ACTIVE của khách; từ chối yêu cầu xóa nếu khách là owner duy nhất của một tổ chức",
+      "deps": [
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02g-MEM.md",
+        "verify exit 0 (bundle 69/69; secrets 318 files; Vitest 463/463 pass, 1 skipped); JSON success 464 total, 463 pass, 0 fail; db:migrate applied 0020 on aftervia_test; mutations: no sole-owner check 5/14 red, no owner-row lock 2/8 red in 5/5 runs; migration restored sha256 match"
+      ],
+      "started_at": "2026-11-06T15:20:04.865Z",
+      "finished_at": "2026-11-06T15:32:37.867Z"
+    },
+    {
+      "id": "WO11-02f-SESS",
+      "wo": "WO11-02f",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Phiên và xác thực lại trước khi xóa (Q3, phương án C, đã QUYẾT TẠM): thời hạn phiên 15 phút; yêu cầu xóa tài khoản chỉ nhận phiên phát trong 5 phút gần nhất; chưa chọn nhà cung cấp danh tính (DEC03)",
+      "deps": [
+        "WO11-02a"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-02e-EXP",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Nội dung gói xuất (Q2, phương án C, đã QUYẾT): đưa export_files.body sang bảng sửa được có hạn 24 giờ; export_files chỉ giữ tham chiếu và SHA-256; có hàm dọn nội dung đã hết hạn",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-02e-CONF",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Giá trị xác nhận trường (Q2, phương án C, đã QUYẾT): đưa field_confirmations.old_value và new_value sang bảng sửa được; bảng chỉ thêm giữ tham chiếu; T14 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO11-02e-CASE",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Lý do trong lịch sử case (Q2, phương án C, đã QUYẾT): đưa case_events.reason sang bảng sửa được; case_events giữ tham chiếu; ghi và đọc lịch sử vẫn đúng; T17 và T19 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }

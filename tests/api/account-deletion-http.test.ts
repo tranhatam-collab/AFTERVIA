@@ -13,6 +13,7 @@ const SECRET = ['local', 'test', 'signing', 'material', '0025'].join('-');
 const USERS = {
   cOwner: '00000000-0000-4000-8000-0000000000c1',
   dOther: '00000000-0000-4000-8000-0000000000d1',
+  soleOwner: '00000000-0000-4000-8000-0000000000b1',
 } as const;
 type UserName = keyof typeof USERS;
 const REQUEST_ID = 'erase-c1-request-0001';
@@ -134,5 +135,21 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
     expect(short.json.code).toBe('invalid_input');
 
     expect(await profileStatus(USERS.dOther)).toBe('ACTIVE');
+  });
+
+  it('T25 over HTTP, the sole active owner of an organization gets 409 invalid_state, and the profile stays ACTIVE', async () => {
+    await admin(async (c) => {
+      const org = await c.query("insert into public.organizations (legal_name, country, created_by) values ('Cửa hàng HTTP', 'VN', $1) returning id", [
+        USERS.soleOwner,
+      ]);
+      await c.query("insert into public.organization_members (org_id, user_id, role, status, granted_by) values ($1, $2, 'owner', 'ACTIVE', $2)", [
+        org.rows[0].id,
+        USERS.soleOwner,
+      ]);
+    });
+    const refused = await api(h.url, 'POST', '/v1/account/deletion', tokens.soleOwner, { request_id: 'erase-sole-request-0001' });
+    expect(refused.status).toBe(409);
+    expect(refused.json.code).toBe('invalid_state');
+    expect(await profileStatus(USERS.soleOwner)).toBe('ACTIVE');
   });
 });
