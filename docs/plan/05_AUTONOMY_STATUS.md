@@ -1,7 +1,7 @@
 # Checkpoint tự chủ AFTERVIA
 
-- Cập nhật: 06/11/2026, sau lượt WO16-01a (bắt đầu 10:32 UTC; ghi trong cùng commit của lượt).
-- Trạng thái: **CONTINUE** (lượt 06/11 10:32 UTC làm WO16-01a; `decide` = START WO17-01a, lượt kế tiếp lên lịch bằng `send_later`; xem Việc kế tiếp). Chưa có `ENGINEERING_ACCEPTED`. **HOLD phát hành** (chủ dự án, 06/11): chưa đủ điều kiện phát hành; không merge `main`, không deploy.
+- Cập nhật: 06/11/2026, sau lượt WO17-01a (bắt đầu 10:42 UTC; ghi trong cùng commit của lượt).
+- Trạng thái: **CONTINUE** (lượt 06/11 10:42 UTC làm WO17-01a; `decide` = START WO10-03d-prep, lượt cuối của ngân sách, lên lịch bằng `send_later`; xem Việc kế tiếp). Chưa có `ENGINEERING_ACCEPTED`. **HOLD phát hành** (chủ dự án, 06/11): chưa đủ điều kiện phát hành; không merge `main`, không deploy.
 - **HOLD đã gỡ** (chủ dự án, 03/11 sau 04:30 UTC: tiếp tục vòng lặp đến khi xong E2E). P1 ở gate dependency của CI tại `9a76185` vẫn đỏ, và mọi lần đẩy từ `426ac0f` đều đỏ ở cùng bước `Dependency audit`; chưa nới cổng audit. `WO10-03e` đã hoàn tất (`docs/plan/evidence/WO10-03e.md`), gồm commit WIP `6d35f87` và commit hoàn tất.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
@@ -13,12 +13,12 @@
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Lượt WO16-01a bắt đầu 10:32 UTC. Sau khi ghi xong lượt này, nếu `decide` trả về START hoặc RESUME thì lên lịch vòng kế tiếp bằng `send_later`. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
-- Lượt kế tiếp: WO17-01a (START theo `decide`), lên lịch bằng `send_later` sau khi push (xem Việc kế tiếp).
+- Chuỗi `send_later` là writer duy nhất. Lượt WO17-01a bắt đầu 10:42 UTC. Sau khi ghi xong lượt này, nếu `decide` trả về START hoặc RESUME thì lên lịch vòng kế tiếp bằng `send_later`. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
+- Lượt kế tiếp: WO10-03d-prep (START theo `decide`), lượt cuối của ngân sách, lên lịch bằng `send_later` sau khi push (xem Việc kế tiếp).
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
-WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WO19-01, WO23-01, WO24-01, WO25-01, WO11-02a, WO11-02b, WO11-02c, WO10-03a, WO10-03b, WO10-03c, WO10-03e, WO10-03f, WO26-01, WO26-02, E2E-WEB-01, SEC-IDEM-01, WO16-01a, WEB-01.
+WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04, WO05-01, WO05-02, WO05-03, WO06-01, WO06-02, WO06-03, WO06-04, WO06-05, WO07-01, WO07-02, WO07-03, WO07-04, WO08-01, WO08-02, WO08-03, WO09-01, WO09-02, WO09-03, WO10-01, WO10-02, WO11-01, WO13-01, WO14-01, WO15-01, WO15-02, WO16-02, WO16-03, WO16-04, WO19-01, WO23-01, WO24-01, WO25-01, WO11-02a, WO11-02b, WO11-02c, WO10-03a, WO10-03b, WO10-03c, WO10-03e, WO10-03f, WO26-01, WO26-02, E2E-WEB-01, SEC-IDEM-01, WO16-01a, WO17-01a, WEB-01.
 
 ## Bị chặn và chờ người
 - WO18-01 (BLOCKED ở T46): bản nháp và checklist ở mức DRAFT đã xong trong `docs/legal/`. T46 cần tài khoản store thật; DEC09 đang NOT_AUTHORIZED. Bằng chứng: `docs/plan/evidence/WO18-01.md`. HUM-WO18-02 (luật sư và IP) chờ WO18-01.
@@ -47,9 +47,11 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01, WO10-03a): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. HTTP `createExport` và `getJob` đã có (WO10-03a), nhưng chưa có đường tải gói: đặc tả OpenAPI không có route tải, và mã truy cập không được trả ra (HUM-WO10-03a). Xuất trong lúc chờ xóa chưa có quy tắc (WO11-02d, Q6). Gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Lượt 06/11 10:32 UTC: WO16-01a DONE; WO17-01a và WO10-03d-prep sẵn sàng (START theo `decide`). Các task AUTO còn lại (WO11-03, WO12-01..03, WO16-01b, WO17-01b, WO20-01) không sẵn sàng: chờ WO11-02d..g và WO10-03d (HUMAN), hoặc chuỗi phụ thuộc của chúng. Ngân sách: 58/60 đã dùng; nếu hết ngân sách trước khi xong E2E, phần còn lại ghi rõ trong báo cáo cuối. Bản đề xuất sáu quyết định của WO11-02 nằm ở `docs/plan/evidence/WO11-02c.md`, đang chờ chủ dự án. Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
+- Lượt 06/11 10:42 UTC: WO17-01a DONE; WO10-03d-prep sẵn sàng (START theo `decide`). Các task AUTO còn lại (WO11-03, WO12-01..03, WO16-01b, WO17-01b, WO20-01) không sẵn sàng: chờ WO11-02d..g và WO10-03d (HUMAN), hoặc chuỗi phụ thuộc của chúng. Ngân sách: 59/60 đã dùng; nếu hết ngân sách trước khi xong E2E, phần còn lại ghi rõ trong báo cáo cuối. Bản đề xuất sáu quyết định của WO11-02 nằm ở `docs/plan/evidence/WO11-02c.md`, đang chờ chủ dự án. Theo yêu cầu của chủ dự án ngày 03/11: vòng lặp liên tục, làm tối đa việc tự động, rồi bàn giao dev local. Đã tách WO11-02 và WO10-03 thành lát kỹ thuật; các quyết định chính sách và kho byte nằm trong backlog dưới dạng việc HUMAN (WO11-02d..g, WO10-03d) và vẫn chặn chuỗi phụ thuộc của chúng. Cổng audit CI vẫn đỏ, chờ quyết định của chủ dự án.
 
 ## Kết quả kiểm thử
+
+- Lượt WO17-01a (chỉ tài liệu): `npm run verify` exit 0 (bundle 69/69; quét bí mật 313 tệp, 5 luật; Vitest 60 tệp đạt và 1 bỏ qua, 454 kiểm thử đạt và 1 bỏ qua; test:loop 18/18). JSON: 454 pass, 0 fail, 1 pending, `success=true`, trên 455 kiểm thử. Matrix: `from-report` không đổi trạng thái nào; PASS 34, NOT_RUN 12, FAIL 0. Không có kiểm thử mới, nên không có đột biến.
 
 - Lượt WO16-01a: `npm run verify` exit 0 (bundle 69/69; quét bí mật 310 tệp, 5 luật; Vitest 60 tệp đạt và 1 bỏ qua, 454 kiểm thử đạt và 1 bỏ qua; test:loop 18/18). JSON: 454 pass, 0 fail, 1 pending, `success=true`, trên 455 kiểm thử. Matrix: T39 NOT_RUN → PASS (coverage PARTIAL); PASS 34, NOT_RUN 12, FAIL 0. Đột biến (bỏ qua nạp bảng `items`): 3/5 kiểm thử đỏ; đã khôi phục, sha256 khớp.
 
@@ -147,7 +149,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 
 ## Ngân sách và quota
 - Chưa đo được. Không dùng dịch vụ trả phí. Không đặt extra usage. Chưa có giới hạn đã duyệt (D7).
-- Vòng lặp: 58/60 đã dùng (sau WO16-01a; còn 2 lượt chưa dùng).
+- Vòng lặp: 59/60 đã dùng (sau WO17-01a; còn 1 lượt chưa dùng).
 
 ## Ranh giới đã tuân thủ
 - Không force-push, không rebase, không merge, không push `main`, không tạo PR mới.
@@ -157,6 +159,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Không đưa tên model vào commit hoặc tài liệu.
 
 ## Ghi chú vận hành
+- Lượt 06/11 10:42 UTC: WO17-01a DONE (AUTO_PREP, gate G2): gói bằng chứng bảo mật, phần tài liệu. Ánh xạ 12 đe dọa của spec sang biện pháp, kiểm thử có tên thật, trạng thái và khoảng trống; cổng phát hành chưa đạt ở cổng audit P1, đánh giá độc lập, và liên hệ sự cố trong `SECURITY.md`. 12 kịch bản DAST đã ghi, chưa chạy. Chờ reviewer độc lập. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-06T1042Z.md`.
 - Lượt 06/11 10:32 UTC: WO16-01a DONE (AUTO, T39): diễn tập khôi phục DB cục bộ bằng sao lưu logic (NDJSON, manifest SHA-256), khôi phục vào `aftervia_restore_test`, so số dòng, hash, RLS, trigger và hàm. Chỉ là bằng chứng cục bộ: RPO/RTO thật và staging (INF-01) vẫn chờ. Tách WO16-01, WO17-01 và thêm WO10-03d-prep trước lượt. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-06T1032Z.md`.
 - Lượt 04/11 00:54 UTC: SEC-IDEM-01 DONE (AUTO, T38): khử trùng ở máy chủ cho `POST /v1/items` và cấp grant (migration 0019, hai hàm `*_keyed`); Desk gửi khóa cho form tạo món. Gửi lại grant nay trả grant cũ với trạng thái hiện tại thay vì lỗi xung đột; chỉ mục unique một phần vẫn chặn grant hoạt động thứ hai. 11 đột biến đều bị bắt. Chờ reviewer độc lập. `decide` = STOP_STUCK; không lên lịch vòng kế tiếp. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-04T0054Z.md`.
 - Lượt 03/11 05:11 UTC: E2E-WEB-01 DONE (AUTO, T24): `npm run e2e:web` chạy trọn luồng trên DB `_test`, Chromium và Desk dev server thật; 12 bước; không lỗi trang. Ba lỗi trong lượt đã sửa (alias `@aftervia/domain` của Desk dev, cột `status`, harness). `decide` = STOP_STUCK; không lên lịch vòng kế tiếp. Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-03T0511Z.md`.
