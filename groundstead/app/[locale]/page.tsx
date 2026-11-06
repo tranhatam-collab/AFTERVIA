@@ -35,6 +35,7 @@ export default async function Home({ params }: Params) {
             ))}
           </ul>
         </section>
+        <p><a href={localePath(locale, 'help/')}>{m.homeHelpLink}</a></p>
       </main>
     </>
   );

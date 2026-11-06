@@ -1,0 +1,36 @@
+{
+  "code": "VN",
+  "name": {
+    "en": "Vietnam",
+    "vi": "Việt Nam"
+  },
+  "locales": [
+    "en",
+    "vi"
+  ],
+  "currency": "VND",
+  "units": "metric",
+  "status": "partial",
+  "pending": {
+    "en": "Emergency numbers for Viet Nam have not yet been checked against an official source in this build. Some reports say these numbers may change, so do not rely on memory. Until they are confirmed, look up the number for where you are on an official government website, or ask local authorities.",
+    "vi": "Số khẩn cấp của Việt Nam chưa được đối chiếu với nguồn chính thức trong bản dựng này. Một số báo cáo cho biết các số này có thể thay đổi, vì vậy đừng chỉ dựa vào trí nhớ. Trong lúc chờ, hãy tra số khẩn cấp tại nơi bạn đang ở trên trang chính phủ chính thức hoặc hỏi chính quyền địa phương."
+  },
+  "emergency_numbers": [],
+  "authorities": [
+    {
+      "role": "red-cross",
+      "name": "Hội Chữ thập đỏ Việt Nam",
+      "url": "https://redcross.org.vn/",
+      "source": "vn-redcross",
+      "checked_on": "2026-11-06"
+    },
+    {
+      "role": "other",
+      "name": "Cổng thông tin điện tử Chính phủ",
+      "url": "https://chinhphu.vn/",
+      "source": "vn-chinhphu",
+      "checked_on": "2026-11-06"
+    }
+  ],
+  "checked_on": "2026-11-06"
+}

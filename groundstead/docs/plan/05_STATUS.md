@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 6 (GS-038).
+- Cập nhật: 06/11/2026, sau vòng 7 (GS-015).
 - Trạng thái: **CONTINUE** — vòng lặp đang chạy bằng chuỗi `send_later` (writer duy nhất).
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 6/100 vòng.
+- Ngân sách: 7/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -14,9 +14,10 @@
 | 4 | GS-011 Lược đồ nội dung, sổ nguồn/quyền, nhãn duyệt | DONE — verify exit 0, 54/54 kiểm thử; GT03, GT04 PASS (PARTIAL); 7 đột biến đều bị bắt | `docs/evidence/GS-011.md` |
 | 5 | GS-030 Sổ nguồn và quyền, 10 content spec | DONE một phần có chủ đích — verify exit 0, 61/61 kiểm thử; 4/16 nguồn (Mỹ) tái sử dụng được, 12 nguồn link-only vì **mạng chặn**; GS-038 BLOCKED | `docs/evidence/GS-030.md` |
 | 6 | GS-038 Đọc điều khoản nguồn trên trang chính thức | DONE — verify exit 0, 62/62 kiểm thử; 5 nguồn tái sử dụng được (NWS, USGS, EU CC BY 4.0, FEMA, CDC), 6 nguồn đã đọc nhưng không cho dùng thương mại, 5 chưa đọc được; thêm lệnh `promote` | `docs/evidence/GS-038.md` |
+| 7 | GS-015 Gói quốc gia VN/US, trang Ai giúp tôi | DONE — verify exit 0, 77/77 kiểm thử (6 danh bạ, 8 trình duyệt); GT34 PASS (PARTIAL); số khẩn cấp **chưa xác minh** ở cả hai nước | `docs/evidence/GS-015.md` |
 
 ## Việc kế tiếp
-- GS-015 (gói quốc gia VN/US; kiểm số khẩn cấp trên trang chính thức), rồi GS-031 (3 thẻ an toàn đầu; trích 5 nguồn đủ điều kiện, phải hiển thị ghi công và câu "đã tóm lược, không phải bản chính thức").
+- GS-031 (thẻ an toàn: lũ lụt và nắng nóng từ trang NWS đã đọc; mất điện chưa có nguồn đọc được), rồi GS-014 (màn hình khẩn cấp).
 - Môi trường: phiên đang dùng `groundstead-sources` (mạng giới hạn 19 tên miền).
 
 ## Chờ chủ dự án (đang chặn đường chính)

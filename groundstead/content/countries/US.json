@@ -1,0 +1,36 @@
+{
+  "code": "US",
+  "name": {
+    "en": "United States",
+    "vi": "Hoa Kỳ"
+  },
+  "locales": [
+    "en",
+    "vi"
+  ],
+  "currency": "USD",
+  "units": "imperial",
+  "status": "partial",
+  "pending": {
+    "en": "Emergency numbers for the United States have not yet been checked against an official source in this build. Until they are, look up the number for where you are on an official government website, or ask local authorities.",
+    "vi": "Số khẩn cấp của Hoa Kỳ chưa được đối chiếu với nguồn chính thức trong bản dựng này. Trong lúc chờ, hãy tra số khẩn cấp tại nơi bạn đang ở trên trang chính phủ chính thức hoặc hỏi chính quyền địa phương."
+  },
+  "emergency_numbers": [],
+  "authorities": [
+    {
+      "role": "weather-service",
+      "name": "National Weather Service",
+      "url": "https://www.weather.gov/",
+      "source": "us-nws-safety",
+      "checked_on": "2026-11-06"
+    },
+    {
+      "role": "red-cross",
+      "name": "American Red Cross",
+      "url": "https://www.redcross.org/",
+      "source": "us-red-cross",
+      "checked_on": "2026-11-06"
+    }
+  ],
+  "checked_on": "2026-11-06"
+}

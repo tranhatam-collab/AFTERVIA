@@ -1,0 +1,112 @@
+// Browser checks on the built site (out/). Uses the Chromium already installed on this machine through the
+// Playwright library, so no browser is downloaded. Each test title starts with the acceptance id it covers.
+import { after, before, test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { createServer } from 'node:http';
+import { readFile, stat } from 'node:fs/promises';
+import { dirname, extname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { MESSAGES } from '../../lib/i18n/messages.ts';
+
+const require = createRequire(import.meta.url);
+const { chromium } = require('playwright');
+const OUT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'out');
+const TYPES = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.json': 'application/json',
+  '.xml': 'application/xml',
+  '.txt': 'text/plain; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.webmanifest': 'application/manifest+json',
+};
+
+let server;
+let browser;
+let base;
+
+before(async () => {
+  server = createServer(async (req, res) => {
+    const path = decodeURIComponent(new URL(req.url ?? '/', 'http://localhost').pathname);
+    let file = resolve(OUT, `.${path}`);
+    if (!file.startsWith(OUT)) {
+      res.writeHead(403).end();
+      return;
+    }
+    try {
+      if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
+      const body = await readFile(file);
+      res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' }).end(body);
+    } catch {
+      res.writeHead(404, { 'content-type': 'text/plain' }).end('not found');
+    }
+  });
+  await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
+  base = `http://127.0.0.1:${server.address().port}`;
+  browser = await chromium.launch();
+});
+
+after(async () => {
+  await browser?.close();
+  server?.close();
+});
+
+async function open(path) {
+  const page = await browser.newPage();
+  const problems = [];
+  page.on('pageerror', (e) => problems.push(String(e)));
+  page.on('console', (msg) => {
+    if (msg.type() === 'error' && !/favicon/i.test(msg.text())) problems.push(msg.text());
+  });
+  const response = await page.goto(`${base}${path}`, { waitUntil: 'load' });
+  return { page, problems, status: response?.status() };
+}
+
+test('GT34 a visitor reaches the Vietnamese directory from the home page and sees its contacts', async () => {
+  const { page, problems, status } = await open('/vi/');
+  try {
+    assert.equal(status, 200);
+    await page.click('a[href="/vi/help/"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/vi/help/');
+    assert.equal(await page.textContent('h1'), MESSAGES.vi.helpTitle);
+    await page.click('a[href="/vi/help/vn/"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/vi/help/vn/');
+    const text = await page.textContent('main');
+    assert.ok(text.includes(MESSAGES.vi.helpFooter), 'the footer is shown');
+    assert.ok(await page.locator('a[href^="https://redcross.org.vn"]').count() > 0, 'the Red Cross entry links to its own site');
+    assert.deepEqual(problems, []);
+  } finally {
+    await page.close();
+  }
+});
+
+test('GT31 switching language on the US directory keeps the same page in the other language', async () => {
+  const { page, problems } = await open('/en/help/us/');
+  try {
+    await page.click('header a[hreflang="vi"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/vi/help/us/');
+    assert.ok((await page.textContent('h1')).includes('Hoa Kỳ'));
+    assert.deepEqual(problems, []);
+  } finally {
+    await page.close();
+  }
+});
+
+for (const path of ['/en/', '/vi/', '/en/help/', '/vi/help/', '/en/help/us/', '/vi/help/vn/']) {
+  test(`GT34 ${path} loads with status 200 and no browser errors`, async () => {
+    const { page, problems, status } = await open(path);
+    try {
+      assert.equal(status, 200);
+      assert.equal(await page.locator('h1').count(), 1);
+      assert.deepEqual(problems, []);
+    } finally {
+      await page.close();
+    }
+  });
+}

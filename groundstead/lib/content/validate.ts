@@ -267,6 +267,8 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
     if (!schemaOk(v.country, raw, file)) continue;
     const pack = raw as CountryPack;
     countries.push({ file: rel(file), data: pack, body: '' });
+    if (pack.status === 'verified' && pack.emergency_numbers.length === 0) err(file, 'a verified pack needs at least one emergency number');
+    if (pack.status === 'partial' && !pack.pending) err(file, 'a partial pack must say what is still unverified (pending.en and pending.vi)');
     if (basename(file, '.json') !== pack.code) err(file, `file name must be "${pack.code}.json"`);
     const entries = [
       ...pack.emergency_numbers.map((e) => ({ label: `emergency number ${e.number}`, source: e.source, checked_on: e.checked_on })),

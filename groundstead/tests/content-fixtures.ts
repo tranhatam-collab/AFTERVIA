@@ -75,7 +75,7 @@ export const SPEC = {
 };
 
 export const COUNTRY_VN = {
-  code: 'VN', name: { en: 'Vietnam', vi: 'Viet Nam' }, locales: ['en', 'vi'], currency: 'VND', units: 'metric',
+  code: 'VN', name: { en: 'Vietnam', vi: 'Viet Nam' }, locales: ['en', 'vi'], currency: 'VND', units: 'metric', status: 'verified',
   emergency_numbers: [{ service: 'general', number: '112', source: 'example-vn-notice', checked_on: '2026-11-01' }],
   authorities: [{ role: 'disaster-agency', name: 'Example disaster agency', url: 'https://example.org/agency', source: 'example-vn-notice', checked_on: '2026-11-01' }],
   checked_on: '2026-11-01',

@@ -94,8 +94,12 @@ export type CountryPack = {
   locales: Locale[];
   currency: string;
   units: 'metric' | 'imperial';
-  emergency_numbers: { service: string; number: string; source: string; checked_on: string }[];
-  authorities: { role: string; name: string; url: string; source: string; checked_on: string }[];
+  // "verified": every number was read on an official source. "partial": numbers are not yet checked,
+  // and `pending` says so in both languages.
+  status: 'verified' | 'partial';
+  pending?: { en: string; vi: string };
+  emergency_numbers: { service: 'general' | 'police' | 'fire' | 'ambulance' | 'disaster' | 'poison'; number: string; source: string; checked_on: string }[];
+  authorities: { role: 'disaster-agency' | 'weather-service' | 'red-cross' | 'health-ministry' | 'other'; name: string; url: string; source: string; checked_on: string }[];
   checked_on: string;
 };
 

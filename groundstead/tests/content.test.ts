@@ -263,3 +263,13 @@ test('GT03 a public-domain source cannot deny any use, and the real public-domai
   const { sources } = loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: TODAY });
   for (const s of sources.filter((x) => x.license.kind === 'public-domain')) assert.deepEqual(Object.values(s.usage), [true, true, true, true, true], s.id);
 });
+
+test('GT34 a verified pack needs a number; a partial pack must say what is still unverified', () => {
+  const noNumbers = editJson(validFiles(), 'countries/VN.json', (d) => void (d.emergency_numbers = []));
+  assert.match(messages(noNumbers), /a verified pack needs at least one emergency number/);
+  const pending = { en: 'Emergency numbers are not yet checked against an official source in this fixture.', vi: 'Số khẩn cấp trong dữ liệu thử này chưa được đối chiếu với nguồn chính thức.' };
+  const partial = editJson(validFiles(), 'countries/VN.json', (d) => { d.status = 'partial'; d.emergency_numbers = []; d.pending = pending; });
+  assert.deepEqual(run(partial).errors, []);
+  const noPending = editJson(validFiles(), 'countries/VN.json', (d) => { d.status = 'partial'; d.emergency_numbers = []; });
+  assert.match(messages(noPending), /a partial pack must say what is still unverified/);
+});
