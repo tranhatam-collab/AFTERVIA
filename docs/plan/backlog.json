@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 59,
+    "iterations_used": 60,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1840,9 +1840,13 @@
         "WO10-03c"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-03d-prep.md"
+      ],
+      "started_at": "2026-11-06T10:51:28.485Z",
+      "finished_at": "2026-11-06T10:55:48.609Z"
     }
   ]
 }
