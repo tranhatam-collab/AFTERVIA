@@ -159,6 +159,36 @@ test('GS-013 E2E: the English landing shows the preview notice and seven pillars
   }
 });
 
+test('GT12 E2E: with every outside service blocked, the emergency guidance and the contact list still work and make no outside request', async () => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const problems = [];
+  const blocked = [];
+  page.on('pageerror', (e) => problems.push(String(e)));
+  page.on('console', (msg) => {
+    if (msg.type() === 'error' && !/favicon|ERR_FAILED/i.test(msg.text())) problems.push(msg.text());
+  });
+  await page.route('**/*', (route) => {
+    const url = route.request().url();
+    if (url.startsWith(base)) return route.continue();
+    blocked.push(url);
+    return route.abort();
+  });
+  try {
+    const response = await page.goto(`${base}/en/emergency/flood-safety/`, { waitUntil: 'load' });
+    assert.equal(response?.status(), 200);
+    assert.ok(((await page.textContent('.firstaction')) ?? '').length > 10, 'the first action still shows');
+    await page.goto(`${base}/en/emergency/`, { waitUntil: 'load' });
+    assert.ok(await page.locator('a[href="/en/emergency/flood-safety/"]').count() > 0, 'the situation list still links to the flood guide');
+    await page.goto(`${base}/en/help/us/`, { waitUntil: 'load' });
+    assert.ok(((await page.textContent('main')) ?? '').includes('911'), 'the contact list still shows 911');
+    assert.deepEqual(blocked, [], 'the pages make no request outside this site');
+    assert.deepEqual(problems, []);
+  } finally {
+    await context.close();
+  }
+});
+
 test('GT21 E2E: the readiness check scores seven pillars on the device, shows no overall grade, sends nothing, and keeps a label the reader can change', async () => {
   const context = await browser.newContext();
   const page = await context.newPage();

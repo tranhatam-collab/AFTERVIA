@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 12,
+    "iterations_used": 14,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -294,9 +294,15 @@
       "acceptance": [
         "GT12"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 132 node tests passed (129 earlier + 2 boundary + 1 E2E GT12)",
+        "mutations: commerce import caught by boundary guard; outside fetch caught only after the E2E added the emergency index page; tree restored",
+        "docs/evidence/GS-020.md"
+      ],
+      "started_at": "2026-11-06T15:10:46.100Z",
+      "finished_at": "2026-11-06T15:13:26.903Z"
     },
     {
       "id": "GS-021",
@@ -311,9 +317,10 @@
         "GT07",
         "GT08"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "IN_PROGRESS",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-11-06T15:13:32.380Z"
     },
     {
       "id": "GS-022",
