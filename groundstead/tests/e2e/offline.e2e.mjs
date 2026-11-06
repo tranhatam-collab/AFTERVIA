@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { startServer } from './server.mjs';
 import { OFFLINE } from '../../lib/offline/text.ts';
+import { PRINT } from '../../lib/print/text.ts';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
@@ -139,6 +140,29 @@ test('GT07 a manifest without a valid signature is refused, even when every file
     } finally {
       await s.close();
     }
+  }
+});
+
+test('GT08 the printable copy opens offline, hides its controls on paper, and states the storage answer the browser gives', async () => {
+  const s = await session();
+  try {
+    await downloadEn(s);
+    const persisted = await s.page.evaluate(() => navigator.storage.persisted());
+    const persist = s.page.locator('[data-persist]');
+    assert.equal(await persist.getAttribute('data-persist'), persisted ? 'granted' : 'notGranted');
+    assert.equal(await persist.textContent(), persisted ? OFFLINE.en.storageGranted : OFFLINE.en.storageNotGranted);
+    await s.page.reload({ waitUntil: 'load' });
+    await s.page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+    await s.page.waitForSelector('[data-offline="ready"]');
+    s.stopServer();
+    await s.page.goto(`${s.base}/en/emergency/print/`, { waitUntil: 'load' });
+    assert.equal(await s.page.textContent('h1'), PRINT.en.title);
+    assert.equal(await button(s.page, PRINT.en.button).isVisible(), true);
+    await s.page.emulateMedia({ media: 'print' });
+    assert.equal(await button(s.page, PRINT.en.button).isVisible(), false, 'the print button is hidden on paper');
+    assert.deepEqual(s.problems, []);
+  } finally {
+    await s.close();
   }
 });
 

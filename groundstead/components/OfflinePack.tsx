@@ -15,6 +15,7 @@ import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
 type Phase = 'checking' | 'busy' | 'none' | 'ready' | 'notReady' | 'unsupported' | 'removed';
 type Info = { version: string; updated: string };
 type Check = { kind: 'none' } | { kind: 'notReady' } | { kind: 'ready'; info: Info };
+type Persist = 'granted' | 'notGranted' | 'unknown';
 type Body = { bytes: ArrayBuffer; type: string | null };
 type Fetched =
   | { kind: 'ok'; manifest: PackManifest; bodies: Map<string, Body> }
@@ -22,6 +23,20 @@ type Fetched =
   | { kind: 'failed' };
 
 const PREFIX = 'groundstead-pack-';
+
+// Asks the browser to keep this site's storage when space runs low (GS-023). With request false it only reads the
+// current answer. A browser that does not say what it keeps gives 'unknown'.
+async function persistence(request: boolean): Promise<Persist> {
+  const storage = typeof navigator === 'undefined' ? undefined : navigator.storage;
+  if (!storage || typeof storage.persisted !== 'function') return 'unknown';
+  try {
+    if (await storage.persisted()) return 'granted';
+    if (!request || typeof storage.persist !== 'function') return 'notGranted';
+    return (await storage.persist()) ? 'granted' : 'notGranted';
+  } catch {
+    return 'unknown';
+  }
+}
 
 function supported(): boolean {
   return (
@@ -163,11 +178,18 @@ function messageFor(phase: Phase, info: Info | null, labels: OfflineText): strin
   }
 }
 
+function persistMessage(persist: Persist, labels: OfflineText): string {
+  if (persist === 'granted') return labels.storageGranted;
+  if (persist === 'notGranted') return labels.storageNotGranted;
+  return labels.storageUnknown;
+}
+
 export function OfflinePack({ locale, labels }: { locale: string; labels: OfflineText }) {
   // "checking" is also the first render on the server, so the static HTML and the first client render match.
   const [phase, setPhase] = useState<Phase>('checking');
   const [info, setInfo] = useState<Info | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [persist, setPersist] = useState<Persist | null>(null);
 
   // Shows what is stored after checking it. A stored pack that fails the check is removed.
   async function settle(): Promise<Check['kind']> {
@@ -175,6 +197,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
     if (check.kind === 'ready') {
       setInfo(check.info);
       setPhase('ready');
+      setPersist(await persistence(false));
     } else if (check.kind === 'notReady') {
       await dropPacks(locale);
       setInfo(null);
@@ -221,6 +244,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
         return;
       }
       setInfo({ version: fetched.manifest.version, updated: fetched.manifest.updated });
+      setPersist(await persistence(true));
       setPhase('ready');
     } catch {
       setPhase('unsupported');
@@ -242,6 +266,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
     try {
       await dropPacks(locale);
       setInfo(null);
+      setPersist(null);
       setPhase('removed');
     } catch {
       setPhase('unsupported');
@@ -257,6 +282,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
       <p role="status" aria-live="polite" data-offline={phase}>
         {notice ?? messageFor(phase, info, labels)}
       </p>
+      {persist ? <p data-persist={persist}>{persistMessage(persist, labels)}</p> : null}
       <div className="actions">
         <button type="button" onClick={download} disabled={busy || phase === 'unsupported'}>
           {labels.download}

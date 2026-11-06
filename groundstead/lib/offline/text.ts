@@ -16,6 +16,10 @@ export type OfflineText = {
   statusUnsigned: string;
   statusUnsupported: string;
   statusRemoved: string;
+  storageGranted: string;
+  storageNotGranted: string;
+  storageUnknown: string;
+  printLink: string;
   note: string;
 };
 
@@ -33,6 +37,10 @@ const EN: OfflineText = {
   statusUnsigned: 'This pack does not have a valid signature, so it is not used.',
   statusUnsupported: 'This browser cannot store an offline copy.',
   statusRemoved: 'The offline copy was removed from this device.',
+  storageGranted: 'The browser keeps this copy even when storage runs low.',
+  storageNotGranted: 'The browser has not agreed to keep this copy when storage runs low, so it may be removed. Print the guides (link below) and download again later.',
+  storageUnknown: 'This browser does not say whether it keeps this copy when storage runs low.',
+  printLink: 'Printable version of the emergency guides',
   note: 'Official alerts and local orders still come first.',
 };
 
@@ -50,6 +58,10 @@ const VI: OfflineText = {
   statusUnsigned: 'Gói này không có chữ ký hợp lệ, nên không được dùng.',
   statusUnsupported: 'Trình duyệt này không lưu được bản sao ngoại tuyến.',
   statusRemoved: 'Đã xóa bản sao ngoại tuyến khỏi thiết bị này.',
+  storageGranted: 'Trình duyệt giữ bản sao này kể cả khi thiếu dung lượng.',
+  storageNotGranted: 'Trình duyệt chưa đồng ý giữ bản sao này khi thiếu dung lượng, nên bản sao có thể bị xóa. Hãy in các hướng dẫn (liên kết bên dưới) và tải lại sau.',
+  storageUnknown: 'Trình duyệt này không cho biết có giữ bản sao này khi thiếu dung lượng hay không.',
+  printLink: 'Bản in của hướng dẫn khẩn cấp',
   note: 'Cảnh báo chính thức và lệnh của chính quyền địa phương vẫn được ưu tiên trước.',
 };
 

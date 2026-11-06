@@ -58,3 +58,10 @@ button { cursor: pointer; }
 .score { font-weight: 700; }
 .results { margin-top: 2rem; }
 .result { border-left: 4px solid var(--accent); padding: .25rem 1rem; margin: 1.25rem 0; }
+
+@media print {
+  .noprint { display: none !important; }
+  body { background: #fff; color: #000; }
+  a { color: #000; text-decoration: underline; }
+  section { break-inside: avoid; }
+}

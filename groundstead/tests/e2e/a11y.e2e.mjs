@@ -24,6 +24,8 @@ const PAGES = [
   '/vi/emergency/flood-safety/',
   '/en/readiness/',
   '/vi/readiness/',
+  '/en/emergency/print/',
+  '/vi/emergency/print/',
 ];
 
 let server;

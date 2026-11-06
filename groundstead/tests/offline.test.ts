@@ -8,7 +8,9 @@ import { sha256Hex } from '../lib/offline/digest.ts';
 import { base64ToBytes, verifySignature } from '../lib/offline/signature.ts';
 import { assetRefs, buildManifest, inPack, signManifest } from '../lib/offline/pack.ts';
 import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
-import { OUT, readOut } from './helpers.ts';
+import { elements, OUT, readOut, visibleText } from './helpers.ts';
+import { cardsFor } from '../lib/emergency/cards.ts';
+import { PRINT } from '../lib/print/text.ts';
 
 const encode = (text: string) => new TextEncoder().encode(text);
 
@@ -162,6 +164,27 @@ test('GT06 the service worker is served at /sw.js and never stores a response it
   const sw = readOut('sw.js');
   assert.match(sw, /addEventListener\('fetch'/);
   assert.doesNotMatch(sw, /\.put\(|\.add\(|addAll\(/, 'only the page stores a file, after the check');
+});
+
+test('GT08 build output: each locale has a printable emergency page with its cards, numbers and sources, kept out of search', () => {
+  for (const locale of LOCALES) {
+    const html = readOut(`${locale}/emergency/print/index.html`);
+    assert.equal(elements(html, 'html')[0]?.lang, locale);
+    assert.equal(elements(html, 'h1').length, 1, 'one h1');
+    const text = visibleText(html);
+    assert.ok(text.includes(PRINT[locale].title), `${locale} print title`);
+    assert.ok(text.includes(PRINT[locale].button), `${locale} print button`);
+    for (const card of cardsFor(locale)) {
+      assert.ok(text.includes(card.item.data.title), `${locale} print lists ${card.item.data.title}`);
+      assert.ok(text.includes(card.item.data.first_action), `${locale} print gives the first action of ${card.item.data.title}`);
+    }
+    assert.ok(
+      elements(html, 'meta').some((m) => m.name === 'robots' && (m.content ?? '').includes('noindex')),
+      'the printed copy is not indexed',
+    );
+    const emergency = readOut(`${locale}/emergency/index.html`);
+    assert.ok(emergency.includes(`/${locale}/emergency/print/`), 'the emergency page links to the printable copy');
+  }
 });
 
 // A new Ed25519 pair for one test, created in memory. Nothing is stored.

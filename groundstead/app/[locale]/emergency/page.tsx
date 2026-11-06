@@ -39,6 +39,7 @@ export default async function EmergencyIndex({ params }: Params) {
           labels={{ checking: m.emergencyNetChecking, online: m.emergencyNetOnline, offline: m.emergencyNetOffline }}
         />
         <OfflinePack locale={locale} labels={OFFLINE[locale]} />
+        <p><a href={localePath(locale, 'emergency/print/')}>{OFFLINE[locale].printLink}</a></p>
         <p className="footnote">{m.emergencyUpdated}: {buildDate()}</p>
         <section aria-labelledby="cards-title">
           <h2 id="cards-title">{m.emergencyCardsTitle}</h2>
