@@ -27,6 +27,7 @@ export type Alert = {
   effective: string; // ISO 8601 (UTC): when it takes effect
   references: string[]; // "source:id" of the alerts this message updates or cancels
   where?: { lat: number; lon: number }; // the place of the event, when the source gives one
+  url?: string; // the source's own page for this event, shown as a link (never a copy of its text)
 };
 
 export function keyOf(alert: Pick<Alert, 'source' | 'id'>): string {

@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 20 (GS-081; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
-- Trạng thái: **CONTINUE** — vòng lặp tiếp tục theo `decide`. Có lịch kiểm tra an toàn cho PR #2 (`send_later`, khoảng 17:48Z).
+- Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
+- Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 20/100 vòng.
+- Ngân sách: 21/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -28,19 +28,22 @@
 | 18 | GS-050 Lõi cảnh báo: mô hình CAP, lọc công khai, trạng thái nguồn, bộ chuyển USGS và GDACS (bản ghi mẫu) | DONE — verify exit 0, 163/163 kiểm thử (gồm 6 GT13–GT15); 3 đột biến bị bắt; GT13, GT14, GT15 PASS (PARTIAL); chưa nối vào trang nào; tên trường nguồn theo bản ghi mẫu; quyết định D-33 | `docs/evidence/GS-050.md` |
 | 19 | GS-051 Gộp trùng đa nguồn và khớp vị trí theo bán kính (5–100 km) | DONE — verify exit 0, 169/169 kiểm thử (gồm 6 GT16–GT17); 4 đột biến bị bắt; GT16, GT17 PASS (PARTIAL); địa bàn chọn thủ công chưa có (GS-103); quyết định D-34 | `docs/evidence/GS-051.md` |
 | 20 | GS-081 SEO kỹ thuật: canonical theo trang (sửa lỗi trang con trỏ về trang chủ), hreflang, Open Graph, Organization, HowTo, robots | DONE — verify exit 0, 176/176 kiểm thử (gồm 6 GT31); 3 đột biến trên HTML đã build bị bắt; GT31 PASS (PARTIAL); FAQPage chưa làm (chưa có nội dung); quyết định D-35 | `docs/evidence/GS-081.md` |
+| 21 | GS-053a Lõi job làm mới bản chụp cảnh báo: bộ chuyển GDACS theo RSS thật (đã đối chiếu cấu trúc), USGS, trạng thái nguồn, CLI `tools/alerts/refresh.mjs`; không chạy theo lịch | DONE — verify exit 0, 182/182 kiểm thử (gồm 6 job GT13–GT16); 3 đột biến bị bắt (M24–M26); GT13, GT14, GT16 PASS (PARTIAL). Chạy thật: GDACS `ok` (198 cảnh báo công khai còn hiệu lực), USGS `failed` (proxy chặn); sửa 2 lỗi bộ chuyển (giờ GMT, tên trường); đính chính D-33 | `docs/evidence/GS-053.md` |
+| — | GS-053b Chọn nơi chạy job định kỳ (D-36) và cấp khóa VAPID | WAITING_HUMAN — chờ chủ dự án | — |
 | — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
-- GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog).
-- GS-053 (job đọc nguồn sống, GT16 phần còn lại): việc kế tiếp theo `decide`, nhưng cần kiểm endpoint thật (GDACS là trang JavaScript; các nguồn khác có thể bị chặn) và chủ dự án quyết nơi chạy job. Chưa bắt đầu.
-- Sau GS-053 còn: GS-052 (mở thẻ 72 giờ theo hiểm họa, GT18), GS-062 (thu hồi với bản ghi mẫu), GS-100 (gói quốc gia mới, cần nguồn), và các cổng G1/G2/G3.
+- GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog). Đây là điểm nghẽn chính: GS-032 → GS-052 → GS-G1 → gần như toàn bộ việc AUTO còn lại (GS-036…GS-106, GS-G2, GS-G3).
+- GS-053a DONE (vòng 21): lõi job; GDACS đọc RSS thật; USGS bị proxy chặn nên chưa kiểm dữ liệu thật. GS-053b HUMAN: chủ dự án chọn nơi chạy job định kỳ (D-36) và cấp khóa VAPID. Đến lúc đó job chỉ chạy tay bằng `tools/alerts/refresh.mjs`.
+- Sau đó còn: GS-052 (mở thẻ 72 giờ theo hiểm họa, GT18; chờ GS-032), GS-062 (thu hồi với bản ghi mẫu), GS-100 (gói quốc gia mới, cần nguồn), và các cổng G1/G2/G3.
 - Gói chưa ký trên Preview và Production cho đến khi chủ dự án cấp khóa (D-30). Ở trạng thái này gói bị từ chối và nút tải báo "không có chữ ký hợp lệ" (đúng GT07).
 - Khóa thật cho gói: xem D-30 và GS-H12 bên dưới.
 - GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".
-- Phát hiện cần ghi vào GS-081: canonical của trang con kế thừa từ layout (trỏ về trang chủ).
+- Canonical của trang con kế thừa từ layout (trỏ về trang chủ): đã sửa và ghi trong GS-081 (vòng 20).
 - Môi trường: phiên đang dùng `groundstead-sources` (mạng giới hạn 19 tên miền).
 
 ## Quyết định đang mở
+- **D-36:** nơi chạy job làm mới cảnh báo định kỳ (Vercel Cron, Supabase Edge Function hoặc GitHub Actions); quyền dùng dữ liệu GDACS công khai (GS-H11 chưa xong); danh sách host USGS được phép. Chặn GS-053b và việc hiện cảnh báo công khai. Chủ dự án quyết.
 - **D-26:** phạm vi của hai hướng dẫn lũ lụt và nắng nóng. Metadata ghi `GLOBAL`, nhưng nội dung là bản tóm tắt NWS Hoa Kỳ và có chi tiết chỉ áp dụng ở Hoa Kỳ (NOAA Weather Radio, inch, °F). Cần chủ dự án chọn: đổi phạm vi thành Hoa Kỳ, hoặc đổi đơn vị và bỏ chi tiết chỉ dành cho Hoa Kỳ rồi kiểm lại trích dẫn. Chặn: dùng hai hướng dẫn ngoài Hoa Kỳ.
 - **D-25:** đăng ký sớm đang đóng. Trước khi mở phải có chính sách riêng tư được duyệt và công bố, và trang phải nêu gói Thành viên trả phí cùng giá (kế hoạch §11: 39 USD/năm, giá kiểm lại sau 90 ngày). Quyết định giá là của chủ dự án.
 - **D-23:** mở thêm tên miền để đọc số khẩn cấp (VN: bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn; Hoa Kỳ: fcc.gov, usa.gov). Không tự thêm.
@@ -48,6 +51,7 @@
 ## Chờ chủ dự án (đang chặn đường chính)
 - **D-30 / GS-H12 (chặn gói ngoại tuyến sẵn sàng trên Preview và Production):** sinh cặp khóa Ed25519; đặt khóa riêng làm secret của build (không commit, không ghi ra đĩa); đặt khóa công khai làm `NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY`. Đến lúc đó gói bị từ chối (đúng GT07). Vòng lặp không tự sinh khóa thật.
 - **GS-H11 (không gấp):** 5 website chặn truy cập tự động hoặc không kết nối (IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF) và FEMA/CDC cũng chặn: nhờ anh mở bằng trình duyệt, chép câu bản quyền/tái sử dụng gửi lại để ghi vào sổ nguồn.
+- **GS-053b (HUMAN, D-36):** chọn nơi chạy job định kỳ và cấp khóa VAPID cho thông báo đẩy (chỉ gói miễn phí). Không chặn các việc AUTO khác, trừ GS-G2 và GS-105 (phụ thuộc GS-053b).
 - **GS-H01:** tạo repo trống `tranhatam-collab/groundstead` (chặn tách repo và CI riêng; không chặn các task khác).
 - **GS-H02, GS-H03:** duyệt nội dung landing và DNS `iai.one` (chặn landing công khai, cần trước 20/11).
 - **GS-031b:** thẻ mất điện cần một trang chính thức đọc được có hướng dẫn mất điện. NWS, USGS, Red Cross đã đọc không có; FEMA và CDC chặn tự động.
@@ -61,4 +65,5 @@
 ## Ma trận nghiệm thu
 PASS 21 · NOT_RUN 15 · MANUAL_PENDING 1 (tổng 37). Độ phủ: FULL 1 · PARTIAL 20 · NONE 16.
 Vòng 13–19: GT12 (GS-020), GT06 (GS-021), GT07 (GS-021, GS-022), GT08 (GS-021, GS-023), GT05 (GS-033), GT13–GT15 (GS-050), GT16–GT17 (GS-051) PASS (PARTIAL); phần còn thiếu ghi trong CSV và bằng chứng.
+Vòng 20–21: GT31 (GS-081) PASS (PARTIAL); GT13, GT14, GT16 (GS-053a) thêm độ phủ: lọc công khai, trạng thái nguồn, gộp một lần. Chưa phủ: hiển thị trên trang và kênh đẩy (GS-053b).
 Sửa CSV ở vòng 9: GT32 và GT33 có giá trị lệch cột (`PARTIAL` nằm ở cột `automation_class`); GT09, GT10, GT11 được ghi PARTIAL theo bằng chứng GS-014. Vòng 10 chỉ thêm ghi chú độ phủ cho GT04, GT09, GT10, GT31, GT32 (landing); không đổi trạng thái.

@@ -4,7 +4,8 @@ import { KINDS, type Alert } from '../lib/alerts/model.ts';
 import { inForce, isPublic, publicAlerts } from '../lib/alerts/filter.ts';
 import { sourceState } from '../lib/alerts/sources.ts';
 import { alertFacts, coverageNote, lastUpdatedLine } from '../lib/alerts/render.ts';
-import { fromGdacs, fromUsgs, toIso } from '../lib/alerts/transform.ts';
+import { fromGdacsRss, fromUsgs, toIso } from '../lib/alerts/transform.ts';
+import { GDACS_SAMPLE } from './alerts-fixtures.ts';
 
 const RECEIVED = '2026-11-06T10:01:00.000Z';
 
@@ -86,7 +87,7 @@ test('GT14 a failed, stale or never-updated source is never read as no alerts, s
 test('GT14 a feed of the wrong shape, or a record with missing fields, gives no alerts and no error', () => {
   assert.deepEqual(fromUsgs('not a feed', RECEIVED), []);
   assert.deepEqual(fromUsgs({ features: 'x' }, RECEIVED), []);
-  assert.deepEqual(fromGdacs(null, RECEIVED), []);
+  assert.deepEqual(fromGdacsRss('not xml', RECEIVED), []);
   assert.deepEqual(fromUsgs({ features: [{ id: 'x', properties: { title: 'no times' } }] }, RECEIVED), []);
 });
 
@@ -109,6 +110,7 @@ test('GT15 every public alert shows the agency, sent, received and effective tim
 test('GT15 the USGS and GDACS samples become alerts that name their agency; an event no longer current is not shown', () => {
   assert.equal(toIso('2026-11-06T06:00:00'), '2026-11-06T06:00:00.000Z');
   assert.equal(toIso('2026-11-06T13:00:00+07:00'), '2026-11-06T06:00:00.000Z');
+  assert.equal(toIso('Fri, 06 Nov 2026 06:00:00 GMT'), '2026-11-06T06:00:00.000Z', 'RSS dates carry GMT');
   const usgs = fromUsgs(
     {
       features: [
@@ -129,35 +131,8 @@ test('GT15 the USGS and GDACS samples become alerts that name their agency; an e
   assert.equal(usgs[0]?.kind, 'observation');
   assert.equal(usgs[0]?.sent, '2026-11-06T09:20:00.000Z');
   assert.equal(usgs[0]?.effective, '2026-11-06T09:00:00.000Z');
-  const gdacs = fromGdacs(
-    {
-      features: [
-        {
-          properties: {
-            eventtype: 'FL',
-            eventid: 1001,
-            name: 'Orange flood alert in Example',
-            fromdate: '2026-11-06T06:00:00',
-            datemodified: '2026-11-06T08:00:00',
-            iscurrent: 'true',
-          },
-        },
-        {
-          properties: {
-            eventtype: 'EQ',
-            eventid: 77,
-            name: 'Green earthquake alert in Old',
-            fromdate: '2026-11-05T01:00:00',
-            datemodified: '2026-11-05T02:00:00',
-            iscurrent: 'false',
-          },
-        },
-        { properties: { eventtype: 'TC', name: 'no id' } },
-      ],
-    },
-    RECEIVED,
-  );
-  assert.equal(gdacs.length, 2, 'the record without an id is skipped');
+  const gdacs = fromGdacsRss(GDACS_SAMPLE, RECEIVED);
+  assert.equal(gdacs.length, 3, 'the record without an id is skipped; the other three are translated');
   assert.deepEqual(
     publicAlerts(gdacs).map((a) => [a.id, a.sender, a.hazard, a.effective]),
     [['FL1001', 'GDACS', 'flood', '2026-11-06T06:00:00.000Z']],

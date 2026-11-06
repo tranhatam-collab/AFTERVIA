@@ -1,16 +1,21 @@
 import type { Alert } from './model.ts';
 
-// Translators from each source's records into the common alert model (GS-050). Records that lack an identifier, a
-// time or a headline are skipped, and a feed that is not the expected shape gives no alerts. Nothing here guesses.
-// The field names follow the sample records in tests/alerts.test.ts; check them against the live feeds before use
-// (GS-053 reads the live feeds through a job).
+// Translators from each source's records into the common alert model (GS-050, GS-053). A record without an identifier,
+// a time or the fields that make it an alert is skipped; a feed of the wrong shape gives no alerts. Nothing is guessed.
+//
+// GDACS: the field names below are those of the live GDACS RSS feed (https://www.gdacs.org/xml/rss.xml), checked on
+// 06/11/2026 for structure only. GDACS's rights flags in content/sources.json are "quote: false, summarize: false": the
+// headline here is composed from structured fields and never copies the feed's title or description text.
+// USGS: the GeoJSON summary feed fields are not yet checked against the live host (blocked by the sandbox proxy; see
+// docs/evidence/GS-053.md).
 
-// A UTC ISO 8601 time from a number (milliseconds) or a text. A text without a zone is read as UTC.
+// A UTC ISO 8601 time from a number (milliseconds) or a text. A text with a zone (Z, GMT, UTC or an offset) keeps it;
+// a text without one is read as UTC.
 export function toIso(value: unknown): string | null {
   if (typeof value === 'number' && Number.isFinite(value)) return new Date(value).toISOString();
   if (typeof value !== 'string' || value.trim() === '') return null;
   const text = value.trim();
-  const hasZone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(text);
+  const hasZone = /(?:Z|GMT|UTC|[+-]\d{2}:?\d{2})$/i.test(text);
   const time = Date.parse(hasZone ? text : `${text}Z`);
   return Number.isNaN(time) ? null : new Date(time).toISOString();
 }
@@ -33,9 +38,11 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
     const effective = toIso(p.time);
     if (!id || !headline || !sent || !effective) continue;
     const coords = (feature.geometry as { coordinates?: unknown } | undefined)?.coordinates;
-    const where = Array.isArray(coords) && typeof coords[0] === 'number' && typeof coords[1] === 'number'
-      ? { lat: coords[1], lon: coords[0] }
-      : undefined;
+    const where =
+      Array.isArray(coords) && typeof coords[0] === 'number' && typeof coords[1] === 'number'
+        ? { lat: coords[1], lon: coords[0] }
+        : undefined;
+    const url = typeof p.url === 'string' && p.url !== '' ? p.url : undefined;
     alerts.push({
       source: 'usgs',
       id,
@@ -51,15 +58,13 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
       effective,
       references: [],
       ...(where ? { where } : {}),
+      ...(url ? { url } : {}),
     });
   }
   return alerts;
 }
 
-// A position from a record's lat and lon fields, when both are numbers (the sample records use these field names).
-function placeOf(p: Record<string, unknown>): { where?: { lat: number; lon: number } } {
-  return typeof p.lat === 'number' && typeof p.lon === 'number' ? { where: { lat: p.lat, lon: p.lon } } : {};
-}
+// ---- GDACS RSS -------------------------------------------------------------------------------------------------------
 
 const GDACS_HAZARD: Record<string, string> = {
   EQ: 'earthquake',
@@ -68,37 +73,92 @@ const GDACS_HAZARD: Record<string, string> = {
   VO: 'volcano',
   DR: 'drought',
   WF: 'wildfire',
+  TS: 'tsunami',
 };
 
-// Disaster events from GDACS. A current event is a warning. An event that is no longer current is sent as a Cancel of
-// itself, so it is not shown.
-export function fromGdacs(feed: unknown, receivedAt: string): Alert[] {
+const GDACS_LABEL: Record<string, string> = {
+  EQ: 'earthquake',
+  TC: 'tropical cyclone',
+  FL: 'flood',
+  VO: 'volcano',
+  DR: 'drought',
+  WF: 'wildfire',
+  TS: 'tsunami',
+};
+
+const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'" };
+
+// Text of an XML value: CDATA is unwrapped and character references are decoded.
+function decode(text: string): string {
+  return text
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+    .replace(/&(#x[0-9a-fA-F]+|#\d+|amp|lt|gt|quot|apos);/g, (_all, ref: string) => {
+      if (ref.startsWith('#x') || ref.startsWith('#X')) return String.fromCodePoint(parseInt(ref.slice(2), 16));
+      if (ref.startsWith('#')) return String.fromCodePoint(parseInt(ref.slice(1), 10));
+      return ENTITIES[ref.toLowerCase()] ?? '';
+    })
+    .trim();
+}
+
+// The items of an RSS document, as the text between their tags.
+function rssItems(xml: string): string[] {
+  return [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/g)].map((m) => m[1] ?? '');
+}
+
+// The text of the first element with this name in one item. Namespaced names (gdacs:eventtype) match exactly.
+function tagText(item: string, name: string): string | null {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = item.match(new RegExp(`<${escaped}(?:\\s[^>]*)?>([\\s\\S]*?)</${escaped}>`));
+  return match ? decode(match[1] ?? '') : null;
+}
+
+// A number from an element's text; a missing or empty value is null, not 0.
+function numberOf(text: string | null): number | null {
+  if (text === null || text.trim() === '') return null;
+  const n = Number(text);
+  return Number.isFinite(n) ? n : null;
+}
+
+// The headline is composed here from structured fields. It is not the feed's own text.
+function composeHeadline(type: string, level: string, name: string): string {
+  const label = GDACS_LABEL[type] ?? type;
+  return [`${label} alert level ${level || 'unknown'}`, name].filter((part) => part !== '').join(' · ');
+}
+
+// Disaster events from the GDACS RSS feed. A current event is a warning. An event that is no longer current is sent as a
+// Cancel of itself, so it is not shown. Only events whose access level is Public may be shown to the public.
+export function fromGdacsRss(xml: string, receivedAt: string): Alert[] {
   const alerts: Alert[] = [];
-  for (const feature of featuresOf(feed)) {
-    const p = (feature.properties ?? {}) as Record<string, unknown>;
-    const type = typeof p.eventtype === 'string' ? p.eventtype : '';
-    const eventId = p.eventid;
-    const id = type !== '' && (typeof eventId === 'number' || typeof eventId === 'string') ? `${type}${eventId}` : '';
-    const headline = typeof p.name === 'string' ? p.name : '';
-    const sent = toIso(p.datemodified);
-    const effective = toIso(p.fromdate);
-    if (!id || !headline || !sent || !effective) continue;
-    const current = String(p.iscurrent).toLowerCase() === 'true';
+  for (const item of rssItems(xml)) {
+    const type = tagText(item, 'gdacs:eventtype') ?? '';
+    const eventId = tagText(item, 'gdacs:eventid') ?? '';
+    const sent = toIso(tagText(item, 'gdacs:datemodified'));
+    const effective = toIso(tagText(item, 'gdacs:fromdate'));
+    if (type === '' || eventId === '' || !sent || !effective) continue;
+    const id = `${type}${eventId}`;
+    const level = tagText(item, 'gdacs:alertlevel') ?? '';
+    const name = tagText(item, 'gdacs:eventname') ?? '';
+    const current = (tagText(item, 'gdacs:iscurrent') ?? '').toLowerCase() === 'true';
+    const access = tagText(item, 'gdacs:accesslevel') ?? '';
+    const lat = numberOf(tagText(item, 'geo:lat'));
+    const lon = numberOf(tagText(item, 'geo:long'));
+    const link = tagText(item, 'link') ?? '';
     alerts.push({
       source: 'gdacs',
       id,
       sender: 'GDACS',
       status: 'Actual',
       msgType: current ? 'Alert' : 'Cancel',
-      scope: 'Public',
+      scope: access === 'Public' ? 'Public' : 'Restricted',
       kind: 'warning',
-      headline,
+      headline: composeHeadline(type, level, name),
       hazard: GDACS_HAZARD[type] ?? '',
       sent,
       received: receivedAt,
       effective,
       references: current ? [] : [`gdacs:${id}`],
-      ...placeOf(p),
+      ...(lat !== null && lon !== null ? { where: { lat, lon } } : {}),
+      ...(link !== '' ? { url: link } : {}),
     });
   }
   return alerts;

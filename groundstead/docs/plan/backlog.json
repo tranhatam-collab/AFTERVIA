@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 20,
+    "iterations_used": 21,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -698,23 +698,6 @@
       "evidence": []
     },
     {
-      "id": "GS-053",
-      "gate": "T30",
-      "kind": "AUTO_EXT",
-      "title": "Job định kỳ lấy cảnh báo (Vercel Cron hoặc Supabase Edge Function) và thông báo đẩy web VAPID; chỉ gói miễn phí",
-      "deps": [
-        "GS-051",
-        "GS-080"
-      ],
-      "acceptance": [
-        "GT13",
-        "GT16"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
       "id": "GS-066",
       "gate": "T30",
       "kind": "AUTO_EXT",
@@ -950,14 +933,15 @@
         "GS-042",
         "GS-064",
         "GS-065",
-        "GS-053",
         "GS-095",
         "GS-037",
         "GS-054",
         "GS-071",
         "GS-072",
         "GS-073",
-        "GS-083"
+        "GS-083",
+        "GS-053a",
+        "GS-053b"
       ],
       "acceptance": [],
       "status": "TODO",
@@ -1049,8 +1033,9 @@
       "kind": "AUTO",
       "title": "Nhật ký độ trễ cảnh báo từ dấu thời gian thật; trang công khai",
       "deps": [
-        "GS-053",
-        "GS-G2"
+        "GS-G2",
+        "GS-053a",
+        "GS-053b"
       ],
       "acceptance": [
         "GT15"
@@ -1233,6 +1218,49 @@
       "evidence": [],
       "blocked_reason": "Chưa có nguồn chính thức đọc được và được phép tóm lược về mất điện. Đã thử: NWS (weather.gov/safety/*), USGS (usgs.gov), Red Cross (redcross.org, trang lũ và lốc). FEMA/CDC chặn truy cập tự động (403). Cần: chủ dự án mở và gửi lại nội dung từ FEMA hoặc CDC (GS-H11), hoặc chấp nhận nguồn khác.",
       "blocked_at": "2026-11-06T12:14:23.177Z"
+    },
+    {
+      "id": "GS-053a",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Lõi job làm mới bản chụp cảnh báo: bộ chuyển GDACS theo RSS thật (đã đối chiếu cấu trúc), USGS, trạng thái nguồn, CLI tools/alerts/refresh.mjs; không chạy theo lịch",
+      "deps": [
+        "GS-051",
+        "GS-080"
+      ],
+      "acceptance": [
+        "GT13",
+        "GT14",
+        "GT16"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; 18 kiểm thử cảnh báo xanh trước đột biến; 6 kiểm thử job mới (GT13, GT14, GT16)",
+        "đột biến đã hoàn tác: nguồn lỗi báo ok → GT14 đỏ; mục không công khai là công khai → GT13/GT15 đỏ; bỏ nhận diện GMT → GT13/14/15 đỏ",
+        "chạy thật: GDACS ok (198 cảnh báo công khai còn hiệu lực); USGS failed vì proxy chặn",
+        "docs/evidence/GS-053.md"
+      ],
+      "split_from": "GS-053",
+      "started_at": "2026-11-06T17:56:11.516Z",
+      "finished_at": "2026-11-06T17:56:11.567Z"
+    },
+    {
+      "id": "GS-053b",
+      "gate": "T30",
+      "kind": "HUMAN",
+      "title": "Chọn nơi chạy job định kỳ (Vercel Cron, Supabase Edge Function hoặc GitHub Actions; quyết định D-36) và cấp khóa VAPID cho thông báo đẩy web (chỉ gói miễn phí)",
+      "deps": [
+        "GS-053a"
+      ],
+      "acceptance": [
+        "GT13",
+        "GT16"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "GS-053"
     }
   ]
 }

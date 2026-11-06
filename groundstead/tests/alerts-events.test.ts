@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import type { Alert } from '../lib/alerts/model.ts';
 import { groupEvents, markPushed, notYetPushed } from '../lib/alerts/dedupe.ts';
 import { alertsNear, distanceKm, placeToStore, RADIUS_RANGE_KM, validRadius, type Place } from '../lib/alerts/location.ts';
-import { fromGdacs, fromUsgs } from '../lib/alerts/transform.ts';
+import { fromGdacsRss, fromUsgs } from '../lib/alerts/transform.ts';
+import { QUAKE_HANOI_GDACS } from './alerts-fixtures.ts';
 
 const RECEIVED = '2026-11-06T10:00:00.000Z';
 
@@ -32,27 +33,7 @@ const quakeUsgs = one(
     RECEIVED,
   ),
 );
-const quakeGdacs = one(
-  fromGdacs(
-    {
-      features: [
-        {
-          properties: {
-            eventtype: 'EQ',
-            eventid: 9,
-            name: 'Green earthquake alert near Hanoi',
-            fromdate: '2026-11-06T09:00:00',
-            datemodified: '2026-11-06T09:40:00',
-            iscurrent: 'true',
-            lat: 21.1,
-            lon: 105.9,
-          },
-        },
-      ],
-    },
-    RECEIVED,
-  ),
-);
+const quakeGdacs = one(fromGdacsRss(QUAKE_HANOI_GDACS, RECEIVED));
 const floodHanoi: Alert = { ...quakeGdacs, id: 'FL7', hazard: 'flood', headline: 'Flood alert near Hanoi' };
 const quakeHcmc: Alert = { ...quakeUsgs, id: 'us2', where: { lat: 10.82, lon: 106.63 } };
 const quakeNoPlace: Alert = { ...quakeUsgs, id: 'us3', where: undefined };
