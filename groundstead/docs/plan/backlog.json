@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 1,
+    "iterations_used": 2,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -41,9 +41,15 @@
         "GT01",
         "GT31"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm ci + npm run verify exit 0: next build 5 static pages, tsc OK, bundle scan 35 files OK, node tests 35 passed 0 failed; npm audit 0",
+        "matrix from-report: GT31 PASS (PARTIAL); 3 mutations each turned tests red, restored with sha256 match",
+        "docs/evidence/GS-010.md"
+      ],
+      "started_at": "2026-11-06T04:55:21.855Z",
+      "finished_at": "2026-11-06T05:00:15.114Z"
     },
     {
       "id": "GS-080",

@@ -10,9 +10,25 @@
   "scripts": {
     "check:secrets": "node tools/checks/secret-scan.mjs",
     "check:backlog": "node tools/loop/backlog.mjs validate",
-    "test:loop": "node tools/loop/run-node-tests.mjs --out .loop/node-tests.json tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs tools/checks/secret-scan.test.mjs",
+    "check:bundle-secrets": "node tools/checks/bundle-secret-scan.mjs out",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build && node tools/build/postbuild.mjs",
+    "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
+    "test": "node tools/loop/run-node-tests.mjs --out .loop/node-tests.json tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs tools/checks/secret-scan.test.mjs tests/seo.test.ts tests/i18n.test.ts tests/bundle-scan.test.ts",
     "loop": "node tools/loop/backlog.mjs",
     "matrix": "node tools/loop/matrix.mjs",
-    "verify": "npm run check:secrets && npm run check:backlog && npm run test:loop"
+    "verify": "npm run check:secrets && npm run check:backlog && npm run build && npm run typecheck && npm run check:bundle-secrets && npm run test"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "parse5": "8.0.1",
+    "typescript": "5.9.3"
   }
 }

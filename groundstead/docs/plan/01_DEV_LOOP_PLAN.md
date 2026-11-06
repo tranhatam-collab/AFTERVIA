@@ -45,7 +45,7 @@ Sau đó vòng lặp chuyển sang làm việc trong repo mới, trên một nh�
 | Web | Next.js (App Router), xuất tĩnh cho nội dung, `/[locale]/…` | Stack của chủ dự án; SEO; host trên Vercel |
 | Ngoại tuyến | Service worker viết tay, IndexedDB, gói nội dung có bản kê SHA-256 ký Ed25519 | Kiểm soát được hành vi khi tải thiếu hoặc hỏng (GT07) |
 | Nội dung | Markdown + frontmatter trong `content/`; JSON Schema kiểm bằng Ajv khi build | Git là nhật ký duyệt; build chặn nội dung thiếu hồ sơ (GT03) |
-| Kiểm thử | Vitest (đơn vị, tích hợp), Playwright với Chromium có sẵn (offline, axe), `node --test` cho công cụ vòng lặp | Có sẵn trong môi trường |
+| Kiểm thử | `node:test` cho mọi kiểm thử (Node 22 chạy thẳng tệp `.ts` nhờ type stripping), qua `tools/loop/run-node-tests.mjs` để ma trận đọc mã GT; Playwright với Chromium có sẵn cho offline và axe | Một trình chạy, ít dependency; Vitest 4.1.12 làm npm lỗi khi giải peer (D-13) |
 | Dữ liệu người dùng | Trên máy trước; Supabase (Postgres + RLS + Auth) cho đồng bộ tùy chọn, từ Cổng 2 | Dữ liệu tối thiểu |
 | Cảnh báo | Bộ chuyển theo nguồn → mô hình CAP chung; job định kỳ | §9 của kế hoạch |
 | Thương mại | Lớp kết nối nhà cung cấp; bộ dựng Gói; chuyển hướng `/go/<id>` | Không kho (D-03) |
@@ -72,7 +72,7 @@ groundstead/
     modules/{en,vi}/      bài lộ trình (lớp J)
     packs/                định nghĩa Gói
     schema/               JSON Schema
-  tests/                  Vitest và Playwright, tên kiểm thử bắt đầu bằng mã GT
+  tests/                  node:test (.ts) và Playwright, tên kiểm thử bắt đầu bằng mã GT
   tools/loop/             backlog.mjs, matrix.mjs (+ kiểm thử)
   tools/checks/           secret-scan.mjs, bundle-secret-scan, content-validate, translation-invariants
   docs/plan/              00–05 và backlog.json
@@ -111,8 +111,7 @@ Một task AUTO_EXT phụ thuộc HUMAN chỉ sẵn sàng khi chủ dự án bá
 
 ```bash
 npm run verify
-npx vitest run --reporter=json --outputFile=.loop/vitest.json   # khi đã có Vitest
-node tools/loop/matrix.mjs from-report .loop/vitest.json
+node tools/loop/matrix.mjs from-report .loop/node-tests.json   # báo cáo do npm test ghi
 ```
 
 **Bước 5 — Kết quả.**

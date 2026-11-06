@@ -13,6 +13,8 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-05 | Số hiệu văn bản pháp luật VN dùng trong kế hoạch | Luật TMĐT 122/2025/QH15 + NĐ 248/2026/NĐ-CP; Luật BVDLCN 91/2025/QH15 + NĐ 356/2025/NĐ-CP. Loại "NĐ 218/2026" (là nghị định vận tải đường bộ). Tra cứu ngày 06/11/2026, nguồn ở §20 của kế hoạch; chưa đối chiếu văn bản gốc trên Công báo. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
 | D-06 | Stack kỹ thuật | Next.js + Vercel + Supabase như bản A, cộng yêu cầu ngoại tuyến và ký số của bản B. Là mặc định theo stack sẵn có của chủ dự án. | 06/11/2026 | Claude (kỹ thuật) |
 | D-07 | Hệ quả của D-03 lên hai bản kế hoạch | Bỏ: đội thuê, chuyên gia duyệt trả phí, thực nghiệm thiết bị tại Đà Lạt, tồn kho, kit thương hiệu riêng, SMS/WhatsApp miễn phí cho Member, Circle có người điều phối. Thay bằng: nhãn trung thực `AI_DRAFT` và "Chưa được Groundstead thử thực tế", hồ sơ chứng nhận + tra thu hồi, kênh cảnh báo miễn phí, Circle chỉ mở khi có Lead ăn chia doanh thu. | 06/11/2026 | Claude (suy ra từ D-03; chủ dự án có thể sửa) |
+| D-13 | Trình chạy kiểm thử | Dùng `node:test` cho cả `.ts` (type stripping của Node 22.23), không dùng Vitest: cài `vitest@4.1.12` làm npm lỗi `Cannot read properties of null (reading 'edgesOut')` khi giải peer; không bật `legacy-peer-deps`. Kiểm thử giao diện chạy trên HTML build thật (parse5) và Playwright. | 06/11/2026 | Claude (kỹ thuật) |
+| D-14 | Phiên bản dependency | Ghim chính xác; chọn bản phát hành ít nhất 2 tuần: next 16.4.2 (15/10/2026), react và react-dom 19.3.1 (14/10/2026), typescript 5.9.3. `npm audit`: 0 lỗ hổng. | 06/11/2026 | Claude (kỹ thuật) |
 
 ## Đang mở
 

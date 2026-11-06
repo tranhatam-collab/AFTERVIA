@@ -1,5 +1,5 @@
 test_id,domain,severity,title,automation_class,coverage,mapped_tasks,test_status,last_run,note
-GT01,Repo,CRITICAL,verify xanh trên commit; không có bí mật trong tệp được theo dõi và trong bundle phía client,AUTO,PARTIAL,GS-000;GS-010;GS-001,PASS,2026-11-06,"Đã phủ: quét bí mật tệp theo dõi. Chưa phủ: quét bundle client (GS-010), CI riêng (GS-001)."
+GT01,Repo,CRITICAL,verify xanh trên commit; không có bí mật trong tệp được theo dõi và trong bundle phía client,AUTO,PARTIAL,GS-000;GS-010;GS-001,PASS,2026-11-06,Đã phủ: quét bí mật tệp theo dõi; quét bundle client (out/) gồm tên biến chỉ dành cho máy chủ. Chưa phủ: CI riêng (GS-001).
 GT02,Loop,HIGH,Backlog hợp lệ: không vòng phụ thuộc; DONE luôn có bằng chứng; vòng lặp không bao giờ bắt đầu task HUMAN,AUTO,FULL,GS-000,PASS,2026-11-06,
 GT03,Content,CRITICAL,"Build thất bại khi thẻ hoặc bài thiếu trường hồ sơ bắt buộc (nguồn, quyền sử dụng, địa bàn, đối tượng, phiên bản, ngày, trạng thái duyệt)",AUTO,NONE,GS-011;GS-031;GS-032;GS-037;GS-095;GS-102,NOT_RUN,,
 GT04,Content,CRITICAL,Nhãn trạng thái duyệt hiển thị đúng; không nội dung nào hiện 'đã duyệt' khi thiếu người duyệt; bản gốc đổi thì bản dịch chuyển STALE,AUTO,NONE,GS-011;GS-031;GS-032;GS-037;GS-095,NOT_RUN,,Bản B: không giữ nhãn đã duyệt cho bản dịch không còn khớp nguồn.
@@ -29,7 +29,7 @@ GT27,Commerce,HIGH,Công khai hoa hồng trên mọi trang có liên kết affil
 GT28,Commerce,MEDIUM,"Khi có cảnh báo cam/đỏ, Gói không hứa giao khẩn cấp và hiện giờ cập nhật tình trạng hàng",AUTO,NONE,GS-064,NOT_RUN,,
 GT29,Privacy,CRITICAL,Xóa và xuất dữ liệu một chạm; dữ liệu cá nhân không xuất hiện trong log,AUTO,NONE,GS-072,NOT_RUN,,
 GT30,Privacy,CRITICAL,RLS: người dùng chỉ đọc/ghi dữ liệu của mình và của vòng gia đình đã chấp nhận lời mời,AUTO,NONE,GS-070;GS-071;GS-103,NOT_RUN,,Kiểm trên Postgres cục bộ có tên kết thúc bằng _test.
-GT31,SEO,HIGH,"hreflang đầy đủ, x-default=/en, sitemap từng ngôn ngữ, dữ liệu có cấu trúc hợp lệ",AUTO,NONE,GS-010;GS-013;GS-081;GS-102,NOT_RUN,,
+GT31,SEO,HIGH,"hreflang đầy đủ, x-default=/en, sitemap từng ngôn ngữ, dữ liệu có cấu trúc hợp lệ",AUTO,PARTIAL,GS-010;GS-013;GS-081;GS-102,PASS,2026-11-06,"Đã phủ: hreflang, x-default, canonical, sitemap từng ngôn ngữ trên bản build thật. Chưa phủ: dữ liệu có cấu trúc (GS-081), các trang ngoài trang chủ."
 GT32,A11y,HIGH,Trang thiết yếu không có lỗi axe mức serious/critical; thao tác bàn phím được; sẵn sàng phải-trái,PARTIAL,NONE,GS-013;GS-014;GS-083,NOT_RUN,,Tự động chỉ phủ một phần WCAG 2.2 AA; không tuyên bố đạt chuẩn.
 GT33,Perf,MEDIUM,Tuyến khẩn cấp có ngân sách JavaScript ≤ 150 KB nén và chạy được khi giả lập máy tầm trung,PARTIAL,NONE,GS-083,NOT_RUN,,
 GT34,Directory,HIGH,Danh bạ và trú ẩn hiện nguồn và ngày kiểm; không ngụ ý nơi trú đang mở; không khẳng định tuyến đường an toàn; mục quá hạn kiểm có cảnh báo,AUTO,NONE,GS-015;GS-100,NOT_RUN,,
