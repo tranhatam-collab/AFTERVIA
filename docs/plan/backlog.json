@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 65,
-    "iterations_used": 62,
+    "iterations_used": 63,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1904,9 +1904,14 @@
       "acceptance": [
         "T25"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-EXP.md",
+        "verify exit 0: bundle 69/69; secrets 324 files; Vitest 473/473 pass, 1 skipped; JSON success 474 total, 473 pass; db:migrate applied 0021 on the existing E2E data (5 bodies, 0 sha mismatches); mutations M1 purge, M2 fetch expiry, M3 expiry guard each 1/7 red; E2E-WEB-01 12/12"
+      ],
+      "started_at": "2026-11-06T15:47:05.081Z",
+      "finished_at": "2026-11-06T15:53:11.105Z"
     },
     {
       "id": "WO11-02e-CONF",

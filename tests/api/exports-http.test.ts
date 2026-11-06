@@ -98,7 +98,8 @@ describe('WO10-03a exports over HTTP: only the caller items, one job per request
   it('T24 the stored export lists only the caller items and none of another account items', async () => {
     const admin = await connect();
     try {
-      const row = (await admin.query("select body from public.export_files where job_id = $1 and path = 'items.json'", [jobA])).rows[0];
+      // WO11-02e-EXP: nội dung nằm trong export_bodies (có hạn); export_files chỉ giữ tham chiếu và băm.
+      const row = (await admin.query("select body from public.export_bodies where job_id = $1 and path = 'items.json'", [jobA])).rows[0];
       const exported = (JSON.parse(row.body as string).items as Array<{ id: string }>).map((i) => i.id).sort();
       expect(exported).toEqual([...itemIds.aOwner].sort());
       expect(exported).not.toContain(itemIds.bOwner[0]);
