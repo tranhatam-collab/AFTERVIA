@@ -7,7 +7,7 @@ import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { MESSAGES } from '../../lib/i18n/messages.ts';
+import { LANDING, MESSAGES } from '../../lib/i18n/messages.ts';
 
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
@@ -139,5 +139,36 @@ test('GT11 E2E: the emergency page reports the browser connection and changes wh
     assert.match((await page.textContent('[role="status"]')) ?? '', /no connection/);
   } finally {
     await context.close();
+  }
+});
+
+test('GS-013 E2E: the English landing shows the preview notice and seven pillars, has no sign-up form, and reaches emergency guidance in one click', async () => {
+  const { page, problems, status } = await open('/en/');
+  try {
+    assert.equal(status, 200);
+    const main = (await page.textContent('main')) ?? '';
+    assert.ok(main.includes(LANDING.en.statusTitle), 'the preview notice is shown');
+    assert.equal(await page.locator('main ul.pillars li').count(), 7, 'all seven pillars are listed');
+    assert.equal(await page.locator('main form, main input').count(), 0, 'early sign-up is off: no form on the page');
+    await page.click('a[href="/en/emergency/"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/en/emergency/');
+    assert.deepEqual(problems, []);
+  } finally {
+    await page.close();
+  }
+});
+
+test('GS-013 E2E: the Vietnamese landing switches to the same page in English', async () => {
+  const { page, problems, status } = await open('/vi/');
+  try {
+    assert.equal(status, 200);
+    await page.click('header a[hreflang="en"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/en/');
+    assert.equal(await page.locator('h1').count(), 1);
+    assert.deepEqual(problems, []);
+  } finally {
+    await page.close();
   }
 });

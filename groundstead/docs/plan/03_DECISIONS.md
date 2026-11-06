@@ -22,6 +22,8 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-20 | Thẻ mất điện khi nguồn đã đọc không có hướng dẫn | Chưa viết thẻ. Hai thẻ có nguồn đã đọc (lũ lụt, nắng nóng) làm trước; thẻ mất điện là GS-031b, BLOCKED cho đến khi có trang chính thức đọc được có hướng dẫn mất điện. Không lấy nguồn khác để lấp chỗ trống. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
 | D-21 | Số khẩn cấp trong thẻ dùng chung | Thẻ dùng chung ghi "số khẩn cấp ở địa phương bạn", không nêu số cụ thể. Số 911 chỉ nằm trong gói Hoa Kỳ, theo trang NWS đã đọc ("Call 911"); ghi chú của nguồn yêu cầu không nêu 911 như số toàn cầu. | 06/11/2026 | Claude (kỹ thuật, theo nguồn) |
 | D-22 | Màn hình khẩn cấp có chọn quốc gia hoặc dùng vị trí không? | Không có bộ chọn địa phương và không dùng vị trí. Màn hình liệt kê mọi tình huống và mọi khối quốc gia; người dùng tự chọn khối phù hợp. Chủ dự án có thể đổi. | 06/11/2026 | Claude (kỹ thuật); chủ dự án có thể sửa |
+| D-24 | Câu định vị và phần mô tả hiện có trên landing | Câu định vị nói về việc đang xây dựng, không mô tả dịch vụ đã có. Trang nêu rõ hiện có hai hướng dẫn khẩn cấp và danh bạ của hai quốc gia, và hai hướng dẫn là bản tóm tắt từ NWS Hoa Kỳ. Bỏ 'có kiểm chứng' và 'cộng đồng có mặt đúng lúc' theo kế hoạch §1 và §2 mục 9. | 06/11/2026 | Claude (kỹ thuật, theo kế hoạch); chủ dự án có thể sửa |
+| D-25 | Đăng ký sớm và giá gói trả phí | Đăng ký sớm tắt; trang không có biểu mẫu. Trước khi mở, phải có chính sách riêng tư đã được duyệt và công bố. Gói Thành viên trả phí (kế hoạch §11: 39 USD/năm, giá kiểm lại sau 90 ngày) chưa đưa vào landing, vì giá là quyết định kinh doanh và phụ thuộc tài khoản Stripe (GS-H07). Khi mở đăng ký, trang phải nêu gói trả phí và giá. | 06/11/2026 | Claude (kỹ thuật); chủ dự án quyết giá |
 
 ## Đang mở
 
@@ -34,6 +36,7 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-12 | Brand OS IAI.ONE (design tokens) | Vòng lặp dùng token trung tính cho đến khi có tệp token. | Không chặn | Chủ dự án |
 | D-19 | Thêm `www.nchmf.gov.vn` (đích chuyển hướng của nchmf.gov.vn) và các tên miền chặn bot vào danh sách mạng? | Không cần ngay. Hai việc nhỏ: (a) thêm `www.nchmf.gov.vn` khi cần đọc điều khoản của cơ quan khí tượng VN; (b) với trang chặn bot (HTTP 403) thì nhờ người đọc giúp (GS-H11), không né chặn. | GS-H11 | Chủ dự án |
 | D-23 | Mở thêm tên miền để đọc số khẩn cấp? | Đề xuất: thêm bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn cho Việt Nam; fcc.gov, usa.gov cho Hoa Kỳ (các số ngoài 911). Đây là quyền của chủ dự án qua duyệt môi trường; vòng lặp không tự thêm. | Số khẩn cấp Việt Nam và các số Hoa Kỳ khác chưa xác minh | Chủ dự án |
+| D-26 | Phạm vi của hai hướng dẫn lũ lụt và nắng nóng | Metadata ghi phạm vi GLOBAL, nhưng nội dung là bản tóm tắt NWS Hoa Kỳ và có chi tiết chỉ áp dụng ở Hoa Kỳ: đài NOAA Weather Radio, đơn vị inch, nhiệt độ °F. Landing đã nêu nguồn Hoa Kỳ. Chủ dự án chọn: (a) đổi phạm vi thành Hoa Kỳ và ghi rõ trên trang thẻ; hoặc (b) đổi đơn vị, bỏ chi tiết chỉ dành cho Hoa Kỳ, rồi kiểm lại trích dẫn. | Dùng hai hướng dẫn này ngoài Hoa Kỳ | Chủ dự án |
 
 ## Bản ghi duyệt công khai
 

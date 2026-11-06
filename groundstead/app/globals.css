@@ -44,3 +44,7 @@ th, td { text-align: left; vertical-align: top; padding: .5rem .4rem; border-bot
 .situations li { margin-bottom: 1rem; }
 .firstaction { font-size: 1.1rem; background: var(--notice-bg); border-left: 4px solid var(--accent); padding: .5rem 1rem; }
 .country-help { border-top: 1px solid var(--notice-border); margin-top: 1.25rem; padding-top: .5rem; }
+
+.lead { font-size: 1.15rem; }
+.tag { display: inline-block; font-size: .9rem; font-weight: 600; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 .6rem; margin: 0 0 .5rem; }
+.pillars li, .path li { margin-bottom: .75rem; }
