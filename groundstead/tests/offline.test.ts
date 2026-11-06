@@ -1,0 +1,163 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { LOCALES, type Locale } from '../lib/i18n/locales.ts';
+import { sha256Hex } from '../lib/offline/digest.ts';
+import { assetRefs, buildManifest, inPack } from '../lib/offline/pack.ts';
+import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
+import { OUT, readOut } from './helpers.ts';
+
+const encode = (text: string) => new TextEncoder().encode(text);
+
+function manifestOf(locale: Locale): PackManifest {
+  const file = resolve(OUT, 'offline', `${locale}.json`);
+  if (!existsSync(file)) throw new Error(`missing ${locale} pack manifest: run npm run build`);
+  return JSON.parse(readFileSync(file, 'utf8')) as PackManifest;
+}
+
+// The file a browser gets for a path of the pack: a directory path is its index.html.
+function fileOnDisk(path: string): string {
+  return resolve(OUT, path.endsWith('/') ? `${path.slice(1)}index.html` : path.slice(1));
+}
+
+test('GT07 a pack is ready only when every listed file was found with its SHA-256', async () => {
+  const a = await sha256Hex(encode('page a'));
+  const b = await sha256Hex(encode('page b'));
+  const pack: PackManifest = {
+    id: 'en',
+    version: 'test',
+    updated: '2026-11-06',
+    files: [
+      { path: '/a/', sha256: a, size: 6 },
+      { path: '/b/', sha256: b, size: 6 },
+    ],
+  };
+  assert.deepEqual(verifyPack(pack, { '/a/': a, '/b/': b }), { ready: true, problems: [] });
+  assert.equal(verifyPack(pack, { '/a/': a, '/b/': b, '/left-over/': a }).ready, true, 'extra files do not matter');
+});
+
+test('GT07 a missing file, or a file with another SHA-256, makes the whole pack not ready', async () => {
+  const a = await sha256Hex(encode('page a'));
+  const b = await sha256Hex(encode('page b'));
+  const pack: PackManifest = {
+    id: 'en',
+    version: 'test',
+    updated: '2026-11-06',
+    files: [
+      { path: '/a/', sha256: a, size: 6 },
+      { path: '/b/', sha256: b, size: 6 },
+    ],
+  };
+  const missing = verifyPack(pack, { '/a/': a });
+  assert.equal(missing.ready, false);
+  assert.deepEqual(missing.problems, ['missing /b/']);
+  const changed = verifyPack(pack, { '/a/': a, '/b/': a });
+  assert.equal(changed.ready, false);
+  assert.deepEqual(changed.problems, ['hash mismatch /b/']);
+});
+
+test('GT07 a pack with no files, or with a malformed hash, is never ready', () => {
+  const empty = verifyPack({ id: 'en', version: 'v', updated: 'd', files: [] }, {});
+  assert.equal(empty.ready, false);
+  const malformed = verifyPack(
+    { id: 'en', version: 'v', updated: 'd', files: [{ path: '/a/', sha256: 'not-a-hash', size: 1 }] },
+    { '/a/': 'not-a-hash' },
+  );
+  assert.equal(malformed.ready, false);
+  assert.deepEqual(malformed.problems, ['bad hash format for /a/']);
+});
+
+test('GT07 build output: every pack file exists with its listed size and SHA-256, and each pack is ready', async () => {
+  for (const locale of LOCALES) {
+    const manifest = manifestOf(locale);
+    const found: Record<string, string> = {};
+    for (const file of manifest.files) {
+      const bytes = readFileSync(fileOnDisk(file.path));
+      assert.equal(bytes.byteLength, file.size, `size of ${file.path}`);
+      found[file.path] = await sha256Hex(bytes);
+    }
+    assert.deepEqual(verifyPack(manifest, found), { ready: true, problems: [] }, `${locale} pack`);
+  }
+});
+
+test('GT06 each pack holds the home page, the emergency section and both help directories of its locale only', () => {
+  for (const locale of LOCALES) {
+    const paths = manifestOf(locale).files.map((file) => file.path);
+    for (const required of [
+      `/${locale}/`,
+      `/${locale}/emergency/`,
+      `/${locale}/emergency/flood-safety/`,
+      `/${locale}/emergency/heat-safety/`,
+      `/${locale}/help/`,
+      `/${locale}/help/vn/`,
+      `/${locale}/help/us/`,
+    ]) {
+      assert.ok(paths.includes(required), `${locale} pack lists ${required}`);
+    }
+    assert.ok(paths.some((p) => p.endsWith('.js')), `${locale} pack has scripts`);
+    assert.ok(paths.some((p) => p.endsWith('.css')), `${locale} pack has styles`);
+    assert.equal(new Set(paths).size, paths.length, `${locale} pack lists no path twice`);
+    for (const other of LOCALES.filter((l) => l !== locale)) {
+      assert.ok(!paths.some((p) => p.startsWith(`/${other}/`)), `${locale} pack has no ${other} page`);
+    }
+    assert.ok(!paths.includes(`/${locale}/readiness/`), 'the readiness tool is not part of the emergency pack');
+  }
+});
+
+test('GT06 pack selection and asset references give fixed answers', () => {
+  assert.equal(inPack('/en/', 'en'), true);
+  assert.equal(inPack('/en/emergency/flood-safety/', 'en'), true);
+  assert.equal(inPack('/en/help/vn/', 'en'), true);
+  assert.equal(inPack('/vi/emergency/', 'en'), false);
+  assert.equal(inPack('/en/readiness/', 'en'), false);
+  assert.deepEqual(
+    assetRefs(
+      '<script src="/_next/static/chunks/a1.js"></script>' +
+        '<link href="/_next/static/css/b2.css" rel="stylesheet">' +
+        '<script src="https://example.com/x.js"></script>' +
+        '<script src="/_next/static/chunks/data.json"></script>',
+    ),
+    ['/_next/static/chunks/a1.js', '/_next/static/css/b2.css'],
+  );
+});
+
+test('GT06 buildManifest sorts its files, and its version changes when one byte changes', async () => {
+  const first = await buildManifest(
+    'en',
+    [
+      { path: '/b/', bytes: encode('2') },
+      { path: '/a/', bytes: encode('1') },
+    ],
+    '2026-11-06',
+  );
+  assert.deepEqual(
+    first.files.map((file) => file.path),
+    ['/a/', '/b/'],
+  );
+  assert.equal(first.files[0]?.size, 1);
+  const again = await buildManifest(
+    'en',
+    [
+      { path: '/a/', bytes: encode('1') },
+      { path: '/b/', bytes: encode('2') },
+    ],
+    '2026-11-06',
+  );
+  assert.equal(again.version, first.version, 'the same files give the same version');
+  const changed = await buildManifest(
+    'en',
+    [
+      { path: '/a/', bytes: encode('1') },
+      { path: '/b/', bytes: encode('3') },
+    ],
+    '2026-11-06',
+  );
+  assert.notEqual(changed.version, first.version);
+});
+
+test('GT06 the service worker is served at /sw.js and never stores a response itself', () => {
+  const sw = readOut('sw.js');
+  assert.match(sw, /addEventListener\('fetch'/);
+  assert.doesNotMatch(sw, /\.put\(|\.add\(|addAll\(/, 'only the page stores a file, after the check');
+});

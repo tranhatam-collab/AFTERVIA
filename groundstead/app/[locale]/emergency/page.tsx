@@ -4,6 +4,8 @@ import { cardsFor } from '../../../lib/emergency/cards.ts';
 import { isLocale, LOCALES, localePath, type Locale } from '../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../lib/i18n/messages.ts';
 import { NetworkStatus } from '../../../components/NetworkStatus.tsx';
+import { OfflinePack } from '../../../components/OfflinePack.tsx';
+import { OFFLINE } from '../../../lib/offline/text.ts';
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }));
@@ -36,6 +38,7 @@ export default async function EmergencyIndex({ params }: Params) {
         <NetworkStatus
           labels={{ checking: m.emergencyNetChecking, online: m.emergencyNetOnline, offline: m.emergencyNetOffline }}
         />
+        <OfflinePack locale={locale} labels={OFFLINE[locale]} />
         <p className="footnote">{m.emergencyUpdated}: {buildDate()}</p>
         <section aria-labelledby="cards-title">
           <h2 id="cards-title">{m.emergencyCardsTitle}</h2>

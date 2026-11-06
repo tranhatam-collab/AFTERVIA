@@ -317,10 +317,15 @@
         "GT07",
         "GT08"
       ],
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "attempts": 1,
-      "evidence": [],
-      "started_at": "2026-11-06T15:13:32.380Z"
+      "evidence": [
+        "npm run verify exit 0: 144 node tests passed (132 + 12: 8 đơn vị/build + 4 E2E Chromium)",
+        "mutations (đã hoàn tác, cmp xác nhận): bỏ kiểm tệp thiếu → GT07 đơn vị đỏ; ghi gói trước khi kiểm → 2 GT07 E2E đỏ; SW tự lưu → GT06 đơn vị đỏ; SW không dùng gói → GT06 E2E đỏ",
+        "docs/evidence/GS-021.md"
+      ],
+      "started_at": "2026-11-06T15:13:32.380Z",
+      "finished_at": "2026-11-06T15:26:05.017Z"
     },
     {
       "id": "GS-022",

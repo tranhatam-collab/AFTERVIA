@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "node tools/checks/content-validate.mjs && NEXT_TELEMETRY_DISABLED=1 next build && node tools/build/postbuild.mjs",
     "dev": "NEXT_TELEMETRY_DISABLED=1 next dev",
-    "test": "node tools/loop/run-node-tests.mjs --out .loop/node-tests.json tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs tools/checks/secret-scan.test.mjs tests/seo.test.ts tests/i18n.test.ts tests/bundle-scan.test.ts tests/content.test.ts tests/help.test.ts tests/emergency.test.ts tests/landing.test.ts tests/readiness.test.ts tests/boundary.test.ts tests/e2e/smoke.e2e.mjs tests/e2e/a11y.e2e.mjs",
+    "test": "node tools/loop/run-node-tests.mjs --out .loop/node-tests.json tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs tools/checks/secret-scan.test.mjs tests/seo.test.ts tests/i18n.test.ts tests/bundle-scan.test.ts tests/content.test.ts tests/help.test.ts tests/emergency.test.ts tests/landing.test.ts tests/readiness.test.ts tests/boundary.test.ts tests/offline.test.ts tests/e2e/smoke.e2e.mjs tests/e2e/offline.e2e.mjs tests/e2e/a11y.e2e.mjs",
     "loop": "node tools/loop/backlog.mjs",
     "matrix": "node tools/loop/matrix.mjs",
     "verify": "npm run check:secrets && npm run check:backlog && npm run build && npm run typecheck && npm run check:bundle-secrets && npm run test",
