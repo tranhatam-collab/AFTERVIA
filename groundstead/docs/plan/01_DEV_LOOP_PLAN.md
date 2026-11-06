@@ -119,7 +119,7 @@ node tools/loop/matrix.mjs from-report .loop/node-tests.json   # báo cáo do np
 - *Đỏ:* sửa nguyên nhân gốc, tối đa 3 lần cho cùng một lỗi; sau đó `backlog.mjs block <id> --reason "<lỗi, đường dẫn, mã lỗi>"`. Không tắt kiểm thử, không đổi kỳ vọng cho qua, không `skip`.
 - *Thiếu hạ tầng hoặc quyền:* `block` kèm lệnh và thông báo lỗi; không giả PASS.
 
-**Bước 6 — Cập nhật trạng thái, commit, đẩy.** Cập nhật `docs/plan/05_STATUS.md` (task vừa làm, kết quả verify, URL preview nếu có, việc kế tiếp). Commit `"<TASK-ID>: <mô tả ngắn>"` (không ghi tên model), đẩy lên nhánh làm việc, giữ PR nháp.
+**Bước 6 — Cập nhật trạng thái, commit, đẩy, cập nhật preview.** Cập nhật `docs/plan/05_STATUS.md` (task vừa làm, kết quả verify, URL preview nếu có, việc kế tiếp). Commit `"<TASK-ID>: <mô tả ngắn>"` (không ghi tên model), đẩy lên nhánh làm việc, giữ PR nháp. Nếu task đổi giao diện hoặc nội dung web: tạo deployment mới trên project Vercel `groundstead` bằng `gitSource` trỏ commit vừa đẩy (project chưa nối Git cho đến GS-001), chờ `READY`, ghi URL vào `05_STATUS.md`; deployment lỗi thì đọc log build và sửa trong cùng vòng.
 
 **Bước 7 — Lên lịch.** Chạy lại `decide`. Nếu `START` hoặc `RESUME`: `send_later` khoảng 2 phút với prompt ở §8. Nếu `STOP_*`: không lên lịch, viết báo cáo.
 

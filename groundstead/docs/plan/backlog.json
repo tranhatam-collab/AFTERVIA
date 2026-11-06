@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 2,
+    "iterations_used": 3,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -62,9 +62,15 @@
       "acceptance": [
         "GT01"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "Vercel project groundstead (prj_WYPoMXSf8Jng1RoNCq1eiUopcvze), Node 22.x, ssoProtection all, no custom domain, not git-linked",
+        "deployment dpl_581AZLn6CHbg4VwhbypWcWJZzM6s READY from commit 289d402; /vi/ fetched with access: 200, lang=vi, noindex, canonical/hreflang correct",
+        "docs/evidence/GS-080.md"
+      ],
+      "started_at": "2026-11-06T05:03:48.255Z",
+      "finished_at": "2026-11-06T06:02:38.053Z"
     },
     {
       "id": "GS-011",
