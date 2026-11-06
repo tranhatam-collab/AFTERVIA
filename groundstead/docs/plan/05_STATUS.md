@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 11 (GS-016; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
+- Cập nhật: 06/11/2026, sau vòng 12 (GS-035; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **CONTINUE** — vòng lặp tiếp tục theo `decide`. Có lịch kiểm tra an toàn cho PR #2 (`send_later`, khoảng 17:48Z).
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 11/100 vòng.
+- Ngân sách: 12/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -19,9 +19,12 @@
 | 9 | GS-014 Màn hình khẩn cấp | DONE — verify exit 0, 98/98 kiểm thử; GT09, GT10, GT11, GT32 PASS (PARTIAL); 5 đột biến bị bắt, 1 kiểm thử tự kiểm axe | `docs/evidence/GS-014.md` |
 | 10 | GS-013 Landing EN/VI | DONE — verify exit 0, 114/114 kiểm thử (gồm 13 landing, 1 i18n, 2 E2E); review độc lập `wf_46ed5969-973`: 30 FIX, 28 áp dụng, 2 từ chối có lý do (D-25); 3 đột biến bị bắt; GT31, GT32, GT10, GT09, GT04 PASS (PARTIAL) | `docs/evidence/GS-013.md` |
 | 11 | GS-016 Đo độ sẵn sàng (bước 0) | DONE — verify exit 0, 129/129 kiểm thử (gồm 12 readiness, 1 E2E GT21, 2 axe); 12 câu, 10 chấm điểm cho 7 trụ cột, nhãn quan tâm đổi được, chạy trên máy; 2 đột biến bị bắt; GT21 PASS (PARTIAL) | `docs/evidence/GS-016.md` |
+| 12 | GS-035 Bản DRAFT điều khoản, quyền riêng tư, miễn trừ, affiliate | DONE (AUTO_PREP) — bản DRAFT EN/VI trong `docs/legal/`, không được ứng dụng tham chiếu; GT36 vẫn MANUAL_PENDING cho đến khi chủ dự án duyệt | `docs/evidence/GS-035.md` |
+| — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
-- GS-034 Báo cáo tra nhãn hiệu sơ bộ (theo `decide`): cần truy cập cơ sở dữ liệu nhãn hiệu công khai; có thể bị chính sách mạng chặn.
+- GS-020 Tách kho hướng dẫn khẩn cấp khỏi thương mại (GT12) theo `decide`. Chưa có module thương mại; kiểm thử sẽ chứng minh module hướng dẫn không phụ thuộc vào mã thương mại.
+- GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".
 - Phát hiện cần ghi vào GS-081: canonical của trang con kế thừa từ layout (trỏ về trang chủ).
 - Môi trường: phiên đang dùng `groundstead-sources` (mạng giới hạn 19 tên miền).
 
@@ -40,7 +43,7 @@
 
 ## Preview
 - Alias của nhánh: `groundstead-git-ccr-8dbbf147-1ge7hc-tranhatam-6714s-projects.vercel.app` (cần đăng nhập Vercel; không công khai; `noindex`).
-- Deploy bằng `create_deployment` với `gitSource` (sha = commit mới nhất của nhánh). Commit đang deploy là commit GS-013 (xem `git log`).
+- Deploy bằng `create_deployment` với `gitSource` (sha = commit mới nhất của nhánh). Deployment mới nhất: `dpl_FiiXedJTQe1xUxwExjexA3XS7o5n` (commit `37b8751`, GS-016) READY, alias trên.
 
 ## Ma trận nghiệm thu
 PASS 10 · NOT_RUN 26 · MANUAL_PENDING 1 (tổng 37). Độ phủ: FULL 1 · PARTIAL 9 · NONE 27.

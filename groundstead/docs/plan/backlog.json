@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 11,
+    "iterations_used": 12,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -257,9 +257,11 @@
         "GS-000"
       ],
       "acceptance": [],
-      "status": "TODO",
+      "status": "BLOCKED",
       "attempts": 0,
-      "evidence": []
+      "evidence": [],
+      "blocked_reason": "Cần hai tên dự phòng do chủ dự án cung cấp: kế hoạch trong repo không liệt kê tên dự phòng nào. Báo cáo yêu cầu đủ ba tên (Groundstead và hai tên dự phòng). Khi có danh sách, vòng lặp tra cứu trên cơ sở dữ liệu công khai và ghi kết quả (không phải ý kiến pháp lý).",
+      "blocked_at": "2026-11-06T13:56:20.648Z"
     },
     {
       "id": "GS-035",
@@ -272,9 +274,14 @@
       "acceptance": [
         "GT36"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/legal/GS-035-draft.md: DRAFT EN/VI terms, privacy, safety disclaimer and affiliate disclosure, with open questions; not linked from app, components or lib; GT36 stays MANUAL_PENDING until the owner approves",
+        "docs/evidence/GS-035.md"
+      ],
+      "started_at": "2026-11-06T13:57:27.572Z",
+      "finished_at": "2026-11-06T13:57:27.620Z"
     },
     {
       "id": "GS-020",
