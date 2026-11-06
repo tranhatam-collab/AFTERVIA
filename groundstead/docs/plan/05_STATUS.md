@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 16 (GS-023; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
+- Cập nhật: 06/11/2026, sau vòng 17 (GS-033; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **CONTINUE** — vòng lặp tiếp tục theo `decide`. Có lịch kiểm tra an toàn cho PR #2 (`send_later`, khoảng 17:48Z).
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 16/100 vòng.
+- Ngân sách: 17/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -24,10 +24,11 @@
 | 14 | GS-021 Service worker và gói ngoại tuyến có kiểm SHA-256 | DONE — verify exit 0, 144/144 kiểm thử (gồm 8 đơn vị/build và 4 E2E Chromium); 4 đột biến bị bắt; GT06, GT07, GT08 PASS (PARTIAL); quyết định D-28 về cách phục vụ gói | `docs/evidence/GS-021.md` |
 | 15 | GS-022 Ký bản kê Ed25519; trình duyệt kiểm chữ ký bằng khóa đã nhúng | DONE — verify exit 0, 147/147 kiểm thử (gồm 2 đơn vị/build và 1 E2E cho chữ ký); 3 đột biến và 2 chốt postbuild bị bắt; chưa có khóa thật nên Preview chưa ký (D-30); GT07 PASS (PARTIAL) | `docs/evidence/GS-022.md` |
 | 16 | GS-023 Bản in theo ngôn ngữ, lưu trữ bền vững và câu trả lời của trình duyệt | DONE — verify exit 0, 151/151 kiểm thử (gồm 1 build, 1 E2E, 2 a11y cho bản in); 2 đột biến bị bắt; GT08 PASS (PARTIAL); quyết định D-31 | `docs/evidence/GS-023.md` |
+| 17 | GS-033 Bộ kiểm tra bất biến bản dịch (số, đơn vị, phủ định, tên riêng) | DONE — verify exit 0, 157/157 kiểm thử (gồm 6 GT05); kiểm trong build; 3 đột biến bị bắt; 1 từ tiếng Việt được sửa ("không rõ" → "líu nhíu"); 1 ngoại lệ có lý do (TV); GT05 PASS (PARTIAL); quyết định D-32 | `docs/evidence/GS-033.md` |
 | — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
-- GS-033 Bộ kiểm tra bất biến bản dịch (số, đơn vị, phủ định, địa danh, số điện thoại; GT05) là việc kế tiếp theo `decide`.
+- GS-032 Mở rộng lên 20 thẻ có hồ sơ là việc kế tiếp theo `decide`. Mỗi thẻ phải có nguồn có quyền sử dụng; thẻ nào không đọc được nguồn chính thức thì ghi BLOCKED, không viết thay nguồn.
 - Gói chưa ký trên Preview và Production cho đến khi chủ dự án cấp khóa (D-30). Ở trạng thái này gói bị từ chối và nút tải báo "không có chữ ký hợp lệ" (đúng GT07).
 - Khóa thật cho gói: xem D-30 và GS-H12 bên dưới.
 - GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".

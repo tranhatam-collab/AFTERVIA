@@ -7,6 +7,7 @@ import addFormats from 'ajv-formats';
 import { parse as parseYaml } from 'yaml';
 import { effectiveReview, reviewIssues } from './review.ts';
 import type { Article, Card, ContentIssue, CountryPack, Item, LoadedContent, Source, SourceRef, Spec } from './types.ts';
+import { fieldsOf, invariantProblems, type Exception } from './invariants.ts';
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const DEFAULT_CONTENT_DIR = resolve(PACKAGE_ROOT, 'content');
@@ -67,6 +68,41 @@ function listFiles(dir: string, ext: string): string[] {
 
 function daysBetween(from: string, to: string): number {
   return Math.floor((Date.parse(to) - Date.parse(from)) / 86_400_000);
+}
+
+// Reviewed exceptions to the translation invariants (GS-033). A missing file means none. Each entry needs its card,
+// field, term, the phrase the translation uses instead, and a reason.
+function readExceptions(contentDir: string, err: (file: string, message: string) => void): Exception[] {
+  const file = join(contentDir, 'translation-exceptions.json');
+  if (!existsSync(file)) return [];
+  let data: unknown;
+  try {
+    data = JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    err(file, 'translation-exceptions.json is not valid JSON');
+    return [];
+  }
+  if (!Array.isArray(data)) {
+    err(file, 'translation-exceptions.json must be a list');
+    return [];
+  }
+  const keys = ['card', 'field', 'term', 'vi', 'reason'] as const;
+  const valid: Exception[] = [];
+  data.forEach((entry: unknown, i: number) => {
+    const e = typeof entry === 'object' && entry !== null ? (entry as Record<string, unknown>) : {};
+    if (keys.some((k) => typeof e[k] !== 'string' || (e[k] as string).trim() === '')) {
+      err(file, `entry ${i + 1} needs card, field, term, vi and reason as text`);
+      return;
+    }
+    valid.push({
+      card: e.card as string,
+      field: e.field as string,
+      term: e.term as string,
+      vi: e.vi as string,
+      reason: e.reason as string,
+    });
+  });
+  return valid;
 }
 
 export function loadContent(options: ValidateOptions = {}): LoadedContent {
@@ -179,6 +215,7 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
     specs.push({ file: rel(file), data: spec, body: parsed.body });
   }
 
+  const exceptions = readExceptions(contentDir, err);
   // ---- safety cards (layer S)
   const cards: Item<Card>[] = [];
   const cardKeys = new Map<string, Item<Card>>();
@@ -216,6 +253,10 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
     }
     if (card.based_on.version > original.data.version) err(abs, `based_on.version ${card.based_on.version} is newer than the original (${original.data.version})`);
     if (original.data.hazard !== card.hazard) err(abs, `hazard "${card.hazard}" differs from the original ("${original.data.hazard}")`);
+    const exceptionsHere = exceptions.filter((e) => e.card === card.id);
+    for (const problem of invariantProblems(fieldsOf(original.data), fieldsOf(card), exceptionsHere)) {
+      err(abs, `translation: ${problem}`);
+    }
     const effective = effectiveReview(card, original.data);
     if (effective.status === 'STALE' && card.review.status !== 'STALE') {
       warn(abs, `stale translation: original is at version ${original.data.version}, this was based on ${card.based_on.version}; it will be shown as STALE`);

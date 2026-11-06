@@ -46,6 +46,9 @@ export const CARD_EN = {
 export const CARD_VI = {
   ...CARD_EN, locale: 'vi', title: 'Truoc khi lu', scope: { countries: ['VN'], audience: ['adult'] },
   first_action: 'Dua giay to va do co gia tri len cao hon muc nuoc du kien.',
+  avoid: ['Không đi bộ hoặc lái xe qua nước đang chảy.'],
+  steps: ['Sạc điện thoại và pin dự phòng.', 'Đổ đầy các thùng sạch bằng nước uống.'],
+  limits: 'Chỉ là hướng dẫn chung. Hãy làm theo lệnh của chính quyền địa phương.',
   based_on: { locale: 'en', version: 1 },
 };
 
