@@ -6,7 +6,7 @@ import {
   readLocalConfig,
   startLocalApi,
 } from '../../services/api/src/local/start-local';
-import { connect, testDatabaseUrl } from '../support/db';
+import { connect, resetTestDatabase, testDatabaseUrl } from '../support/db';
 
 // WO26-02: tệp khởi động API cục bộ. Các ràng buộc được kiểm ở mức hàm thuần, và một lần khởi động thật trên DB _test.
 const SECRET = ['local', 'test', 'signing', 'material', 'for', 'the', 'local', 'start', 'file'].join('-');
@@ -113,6 +113,8 @@ describe('WO26-02 local API start file on the test database', () => {
   let admin: pg.Client | null = null;
 
   beforeAll(async () => {
+    // Tự dựng schema và xóa dữ liệu còn sót: không phụ thuộc thứ tự chạy của các tệp khác (WO26-02).
+    await resetTestDatabase();
     admin = await connect();
     await admin.query('insert into auth.users (id, email) values ($1, $2) on conflict (id) do nothing', [
       SEEDED_USER,
