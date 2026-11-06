@@ -1,0 +1,1074 @@
+{
+  "meta": {
+    "schema": "groundstead.backlog.v1",
+    "source": "docs/plan/00_MASTER_PLAN.md (hợp nhất bản A và bản B, 06/11/2026) và docs/plan/01_DEV_LOOP_PLAN.md",
+    "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
+    "generated_on": "2026-11-06",
+    "iteration_budget": 100,
+    "iterations_used": 1,
+    "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
+  },
+  "tasks": [
+    {
+      "id": "GS-000",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Khung dự án groundstead/: package.json Node 22, công cụ vòng lặp (backlog, ma trận GT), quét bí mật, lệnh verify",
+      "deps": [],
+      "acceptance": [
+        "GT01",
+        "GT02"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: secret scan 16 files OK, backlog OK 68 tasks, node tests 23 passed 0 failed",
+        "matrix from-report: GT01 PASS (PARTIAL), GT02 PASS (FULL); 2 mutations each turned GT tests red, restored with sha256 match",
+        "docs/evidence/GS-000.md"
+      ],
+      "started_at": "2026-11-06T04:49:53.708Z",
+      "finished_at": "2026-11-06T04:51:21.036Z"
+    },
+    {
+      "id": "GS-010",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Next.js App Router xuất tĩnh: thư mục /en và /vi, hreflang, x-default=/en, sitemap từng ngôn ngữ; tên thương hiệu đọc từ một tệp cấu hình; Vitest + typecheck trong verify",
+      "deps": [
+        "GS-000"
+      ],
+      "acceptance": [
+        "GT01",
+        "GT31"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-080",
+      "gate": "G1",
+      "kind": "AUTO_EXT",
+      "title": "Preview riêng tư trên Vercel (có bảo vệ truy cập): project groundstead, deploy bản build hiện tại; ghi URL preview vào trạng thái. Không gắn domain, không nâng gói",
+      "deps": [
+        "GS-010"
+      ],
+      "acceptance": [
+        "GT01"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-011",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Lược đồ nội dung (JSON Schema + Ajv): thẻ an toàn (lớp S), bài lộ trình (lớp J), sổ nguồn và quyền, gói quốc gia; build thất bại khi thiếu hồ sơ; nhãn trạng thái duyệt AI_DRAFT/COMMUNITY_CHECKED/EXPERT_REVIEWED/STALE",
+      "deps": [
+        "GS-010"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT04"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-030",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Sổ quyền nguồn: 15–25 nguồn chính thức cho thẻ 72 giờ (VN, US, quốc tế) kèm điều kiện sử dụng; content spec EN cho 9 module (mục bắt buộc, điểm an toàn, nguồn tối thiểu)",
+      "deps": [
+        "GS-011"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-015",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Gói quốc gia VN và US: số khẩn cấp, cơ quan PCTT, khí tượng, Chữ thập đỏ, đơn vị, nguồn cảnh báo; mỗi mục có nguồn và ngày kiểm; trang \"Ai giúp tôi\" ngoại tuyến",
+      "deps": [
+        "GS-011"
+      ],
+      "acceptance": [
+        "GT11",
+        "GT34"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-031",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "3 thẻ an toàn đầu tiên EN/VI (ngập, mất điện, nắng nóng) tóm lược từ nguồn có quyền, nhãn AI_DRAFT, đủ hồ sơ",
+      "deps": [
+        "GS-030"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT04"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-014",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Màn hình khẩn cấp: chọn tình huống ≤ 3 thao tác, hành động đầu tiên, điều cần tránh, nút trợ giúp theo quốc gia (ghi rõ không gửi yêu cầu cứu hộ), trạng thái mạng và giờ cập nhật; không đăng nhập, không thương mại",
+      "deps": [
+        "GS-031",
+        "GS-015"
+      ],
+      "acceptance": [
+        "GT09",
+        "GT10",
+        "GT11",
+        "GT32"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-013",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Landing EN/VI: định vị, 7 trụ cột, cửa vào Chế độ 72 giờ, nhãn trung thực về trạng thái sản phẩm; đăng ký sớm tắt mặc định cho đến khi chính sách riêng tư được duyệt",
+      "deps": [
+        "GS-010"
+      ],
+      "acceptance": [
+        "GT31",
+        "GT32"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-016",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Công cụ bước 0 Đo độ sẵn sàng: 12 câu → điểm 7 trụ cột và phân khúc; chạy hoàn toàn trên máy; người dùng thấy và sửa được nhãn",
+      "deps": [
+        "GS-010"
+      ],
+      "acceptance": [
+        "GT21"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-034",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Tra nhãn hiệu sơ bộ \"Groundstead\" và 2 tên dự phòng trên cơ sở dữ liệu công khai; báo cáo cho chủ dự án (không phải ý kiến pháp lý)",
+      "deps": [
+        "GS-000"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-035",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Bản DRAFT EN/VI: điều khoản, quyền riêng tư (Luật 91/2025 + NĐ 356/2025, GDPR), miễn trừ nội dung an toàn, công khai affiliate",
+      "deps": [
+        "GS-000"
+      ],
+      "acceptance": [
+        "GT36"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-020",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Tách kho hướng dẫn khẩn cấp khỏi phần thương mại (route và bundle riêng); kiểm thử lỗi thương mại không làm hỏng hướng dẫn",
+      "deps": [
+        "GS-014"
+      ],
+      "acceptance": [
+        "GT12"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-021",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Service worker + gói ngoại tuyến theo ngôn ngữ và quốc gia, bản kê SHA-256, kiểm toàn vẹn; Chromium offline mở lại được nội dung thiết yếu",
+      "deps": [
+        "GS-020"
+      ],
+      "acceptance": [
+        "GT06",
+        "GT07",
+        "GT08"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-022",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Ký bản kê Ed25519 khi build, kiểm chữ ký phía máy khách; khóa riêng chỉ qua biến môi trường; kiểm thử dùng khóa sinh tạm",
+      "deps": [
+        "GS-021"
+      ],
+      "acceptance": [
+        "GT07"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-023",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Nút kiểm tra gói, yêu cầu lưu trữ bền vững, bản in HTML theo ngôn ngữ",
+      "deps": [
+        "GS-021"
+      ],
+      "acceptance": [
+        "GT08"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-033",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Bộ kiểm tra bất biến bản dịch (số, đơn vị, phủ định, địa danh, số điện thoại) chạy trong verify",
+      "deps": [
+        "GS-031"
+      ],
+      "acceptance": [
+        "GT05"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-032",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Mở rộng lên 20 thẻ 72 giờ EN/VI có hồ sơ (liên lạc, túi mang đi, dự trữ, CO, bão, lũ quét, sạt lở, nóng, lạnh, khói, nước, vệ sinh, y tế, động đất, sóng thần)",
+      "deps": [
+        "GS-031",
+        "GS-033"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT04",
+        "GT05"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-050",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Lõi cảnh báo: mô hình CAP chung; bộ chuyển GDACS và USGS với bản ghi mẫu; lọc status/msgType/scope; \"không dữ liệu ≠ an toàn\"; hiện cơ quan, giờ phát, giờ nhận, hiệu lực, loại",
+      "deps": [
+        "GS-011"
+      ],
+      "acceptance": [
+        "GT13",
+        "GT14",
+        "GT15"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-051",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Gộp trùng đa nguồn; khớp bán kính 5–100 km cho thành phố hiện tại và mảnh đất tương lai; địa bàn chọn thủ công",
+      "deps": [
+        "GS-050"
+      ],
+      "acceptance": [
+        "GT16",
+        "GT17"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-052",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Cảnh báo mở đúng thẻ 72 giờ theo hiểm họa",
+      "deps": [
+        "GS-051",
+        "GS-032"
+      ],
+      "acceptance": [
+        "GT18"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-081",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "SEO kỹ thuật: schema.org (HowTo, FAQPage, Organization), Open Graph, robots, kiểm thử hreflang và sitemap",
+      "deps": [
+        "GS-013"
+      ],
+      "acceptance": [
+        "GT31"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-G1",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Rà Cổng 1: chạy toàn bộ nghiệm thu, báo cáo đạt/chưa đạt theo §15.2, phần chờ chủ dự án; cập nhật preview",
+      "deps": [
+        "GS-010",
+        "GS-080",
+        "GS-011",
+        "GS-030",
+        "GS-015",
+        "GS-031",
+        "GS-014",
+        "GS-013",
+        "GS-016",
+        "GS-020",
+        "GS-021",
+        "GS-022",
+        "GS-023",
+        "GS-033",
+        "GS-032",
+        "GS-050",
+        "GS-051",
+        "GS-052",
+        "GS-081"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-082",
+      "gate": "G1",
+      "kind": "AUTO_EXT",
+      "title": "Đưa landing EN/VI lên groundstead.iai.one khi có bản ghi duyệt của chủ dự án và quyền DNS",
+      "deps": [
+        "GS-080",
+        "GS-013",
+        "GS-035",
+        "GS-H02",
+        "GS-H03"
+      ],
+      "acceptance": [
+        "GT35"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-001",
+      "gate": "G1",
+      "kind": "AUTO_EXT",
+      "title": "Tách lịch sử groundstead/ sang repo tranhatam-collab/groundstead (git subtree split), đẩy, CI riêng, PR nháp, nối Vercel với repo",
+      "deps": [
+        "GS-H01",
+        "GS-000"
+      ],
+      "acceptance": [
+        "GT01"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-040",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Kế hoạch gia đình: thành viên (trẻ nhỏ, người cao tuổi, khuyết tật, vật nuôi), liên lạc, điểm hẹn; lưu IndexedDB; xuất và in",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT19"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-041",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Tủ vật dụng: số lượng, nơi cất, hạn dùng, ngày kiểm; đánh dấu đã có; bỏ món trùng; xuất danh sách để mua ở bất kỳ đâu",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT19"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-042",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Ba bộ lập kế hoạch: túi mang đi, dự trữ tại nhà 2 tuần, duy trì cơ sở; dữ liệu tham chiếu có nguồn",
+      "deps": [
+        "GS-041"
+      ],
+      "acceptance": [
+        "GT20"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-060",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Lớp kết nối nhà cung cấp: giao diện chung, danh mục (nhà cung cấp, mã hàng, quốc gia, giá kèm thời điểm, liên kết); bộ chuyển với dữ liệu mẫu, không khóa thật",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-061",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Hồ sơ sản phẩm và cổng đưa vào Gói; bộ lọc tuyên bố chặn 4 sai lầm",
+      "deps": [
+        "GS-060"
+      ],
+      "acceptance": [
+        "GT23",
+        "GT24"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-062",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Tra thu hồi: US CPSC và EU Safety Gate với bản ghi mẫu; trùng thu hồi → chặn; lỗi nguồn thu hồi không làm hỏng hướng dẫn",
+      "deps": [
+        "GS-061"
+      ],
+      "acceptance": [
+        "GT23",
+        "GT12"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-063",
+      "gate": "T30",
+      "kind": "AUTO_PREP",
+      "title": "Thiết kế 10 Gói Groundstead (ô vật dụng, yêu cầu tối thiểu, đối tượng, thứ không phù hợp) cho VN và US; ứng viên sản phẩm từ dữ liệu công khai; nhãn \"Chưa được Groundstead thử thực tế\"",
+      "deps": [
+        "GS-061"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-064",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Trang Gói: có gì, thiếu gì, phù hợp với ai, giá kèm thời điểm, nút mua theo quốc gia; \"đủ 72 giờ\" chỉ khi phủ 100%; chế độ khi có cảnh báo cam/đỏ",
+      "deps": [
+        "GS-063",
+        "GS-062"
+      ],
+      "acceptance": [
+        "GT25",
+        "GT26",
+        "GT28"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-065",
+      "gate": "T30",
+      "kind": "AUTO",
+      "title": "Dòng công khai affiliate trên mọi trang có liên kết; chuyển hướng /go/<id> không ghi dữ liệu cá nhân",
+      "deps": [
+        "GS-064"
+      ],
+      "acceptance": [
+        "GT27"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-053",
+      "gate": "T30",
+      "kind": "AUTO_EXT",
+      "title": "Job định kỳ lấy cảnh báo (Vercel Cron hoặc Supabase Edge Function) và thông báo đẩy web VAPID; chỉ gói miễn phí",
+      "deps": [
+        "GS-051",
+        "GS-080"
+      ],
+      "acceptance": [
+        "GT13",
+        "GT16"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-066",
+      "gate": "T30",
+      "kind": "AUTO_EXT",
+      "title": "Bật bộ chuyển affiliate thật (khóa qua bí mật môi trường) và job cập nhật giá/tình trạng hằng ngày",
+      "deps": [
+        "GS-065",
+        "GS-H04",
+        "GS-H05"
+      ],
+      "acceptance": [
+        "GT26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-036",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Content spec EN chi tiết cho 8 module lộ trình (bước 1–8), gồm biến thể vùng khí hậu và câu hỏi pháp lý theo nước",
+      "deps": [
+        "GS-030",
+        "GS-G1"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-091",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Công cụ Nước Lành: lượng nước trữ theo người và ngày; dung tích thu nước mưa theo diện tích mái và lượng mưa",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT22"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-092",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Công cụ Điện Lành: tính tải, dung lượng pin, công suất tấm pin theo giờ nắng",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT22"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-093",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Công cụ Vườn Lành (calo, ngày dự trữ) và Vốn Lành (kế hoạch tài chính 24 tháng)",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT22"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-094",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Bảng chấm điểm lô đất và danh mục Nhà Lành theo hiểm họa",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT22"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-095",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "8 module lộ trình EN/VI bản 1 (bài + checklist) viết bản ngữ từ spec, đủ hồ sơ, nối công cụ tính và Gói liên quan",
+      "deps": [
+        "GS-036",
+        "GS-091",
+        "GS-092",
+        "GS-093",
+        "GS-094"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT04"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-037",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Mở rộng lên 40 thẻ 72 giờ EN/VI",
+      "deps": [
+        "GS-032",
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT04",
+        "GT05"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-054",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Thêm nguồn NWS, Meteoalarm, ReliefWeb với bản ghi mẫu",
+      "deps": [
+        "GS-051",
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT13",
+        "GT15"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-070",
+      "gate": "G2",
+      "kind": "AUTO_EXT",
+      "title": "Supabase: lược đồ, RLS, Auth; kiểm RLS trên Postgres cục bộ _test; project dev chỉ dữ liệu giả, chỉ gói miễn phí",
+      "deps": [
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT30"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-071",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Đồng bộ tùy chọn kế hoạch gia đình và tủ vật dụng; vòng gia đình theo lời mời",
+      "deps": [
+        "GS-070",
+        "GS-040",
+        "GS-041"
+      ],
+      "acceptance": [
+        "GT30"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-072",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Xóa và xuất dữ liệu một chạm; kiểm log không chứa dữ liệu cá nhân",
+      "deps": [
+        "GS-071"
+      ],
+      "acceptance": [
+        "GT29"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-073",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Quyền theo tầng Open/Member/Tổ chức; thanh toán tắt cho đến khi có Stripe; đăng ký và thanh toán idempotent",
+      "deps": [
+        "GS-070"
+      ],
+      "acceptance": [
+        "GT37"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-083",
+      "gate": "G2",
+      "kind": "AUTO",
+      "title": "Ngân sách hiệu năng tuyến khẩn cấp; kiểm axe trên mọi trang thiết yếu",
+      "deps": [
+        "GS-021",
+        "GS-G1"
+      ],
+      "acceptance": [
+        "GT32",
+        "GT33"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-G2",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Rà Cổng 2: chạy toàn bộ nghiệm thu, báo cáo theo §15.2",
+      "deps": [
+        "GS-040",
+        "GS-041",
+        "GS-042",
+        "GS-064",
+        "GS-065",
+        "GS-053",
+        "GS-095",
+        "GS-037",
+        "GS-054",
+        "GS-071",
+        "GS-072",
+        "GS-073",
+        "GS-083"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-100",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Gói quốc gia ES, BR, ID, PH, FR và danh bạ \"Ai giúp tôi\"",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT11",
+        "GT34"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-101",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Đợt 2 ngôn ngữ cho thẻ an toàn (ES, PT-BR, ID, FR) qua kiểm tra bất biến",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT05"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-102",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Đợt 2 ngôn ngữ cho 9 module, viết bản ngữ từ spec; hreflang và sitemap mở rộng",
+      "deps": [
+        "GS-G2",
+        "GS-100"
+      ],
+      "acceptance": [
+        "GT03",
+        "GT31"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-103",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Vòng an toàn gia đình: \"Tôi an toàn\", điểm hẹn, chia sẻ vị trí tạm thời có hạn",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT30",
+        "GT17"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-104",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Chế độ Tổ chức: nhiều cơ sở, phân công, nhắc hạn, diễn tập",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT20"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-105",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Nhật ký độ trễ cảnh báo từ dấu thời gian thật; trang công khai",
+      "deps": [
+        "GS-053",
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT15"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-106",
+      "gate": "G3",
+      "kind": "AUTO",
+      "title": "Thêm NASA EONET và OpenAQ; thẻ cháy và khói",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [
+        "GT13"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-G3",
+      "gate": "G3",
+      "kind": "AUTO_PREP",
+      "title": "Rà Cổng 3 và báo cáo bàn giao",
+      "deps": [
+        "GS-100",
+        "GS-101",
+        "GS-102",
+        "GS-103",
+        "GS-104",
+        "GS-105",
+        "GS-106"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H01",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Tạo repo trống tranhatam-collab/groundstead và cấp quyền Claude GitHub App",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H02",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Duyệt nội dung landing EN/VI để công khai",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H03",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Cho biết DNS của iai.one ở đâu hoặc cấp quyền tạo bản ghi groundstead.iai.one",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H04",
+      "gate": "T30",
+      "kind": "HUMAN",
+      "title": "Đăng ký tài khoản affiliate đứng tên IAI LLC và cấp khóa qua bí mật môi trường",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H05",
+      "gate": "T30",
+      "kind": "HUMAN",
+      "title": "Nâng Vercel lên Pro trước khi bật liên kết affiliate (gói Hobby là phi thương mại)",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H06",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Quyết định tên sau khi đọc báo cáo tra nhãn hiệu sơ bộ",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H07",
+      "gate": "G2",
+      "kind": "HUMAN",
+      "title": "Tài khoản Stripe đứng tên IAI LLC (nếu muốn thu phí Member)",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H08",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Duyệt các bản DRAFT điều khoản, quyền riêng tư, miễn trừ, công khai affiliate",
+      "deps": [],
+      "acceptance": [
+        "GT36"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H09",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Xác minh quyền sở hữu site trên Google Search Console",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H10",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Xác nhận định vị SI Bank (không chặn việc nào)",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "groundstead",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Groundstead / Đất Lành: chuẩn bị khẩn cấp và lộ trình sống tự chủ (tên làm việc, chưa tra nhãn hiệu xong).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12 <23"
+  },
+  "scripts": {
+    "check:secrets": "node tools/checks/secret-scan.mjs",
+    "check:backlog": "node tools/loop/backlog.mjs validate",
+    "test:loop": "node tools/loop/run-node-tests.mjs --out .loop/node-tests.json tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs tools/checks/secret-scan.test.mjs",
+    "loop": "node tools/loop/backlog.mjs",
+    "matrix": "node tools/loop/matrix.mjs",
+    "verify": "npm run check:secrets && npm run check:backlog && npm run test:loop"
+  }
+}

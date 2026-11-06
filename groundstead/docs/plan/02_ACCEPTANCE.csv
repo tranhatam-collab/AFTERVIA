@@ -1,0 +1,38 @@
+test_id,domain,severity,title,automation_class,coverage,mapped_tasks,test_status,last_run,note
+GT01,Repo,CRITICAL,verify xanh trên commit; không có bí mật trong tệp được theo dõi và trong bundle phía client,AUTO,PARTIAL,GS-000;GS-010;GS-001,PASS,2026-11-06,"Đã phủ: quét bí mật tệp theo dõi. Chưa phủ: quét bundle client (GS-010), CI riêng (GS-001)."
+GT02,Loop,HIGH,Backlog hợp lệ: không vòng phụ thuộc; DONE luôn có bằng chứng; vòng lặp không bao giờ bắt đầu task HUMAN,AUTO,FULL,GS-000,PASS,2026-11-06,
+GT03,Content,CRITICAL,"Build thất bại khi thẻ hoặc bài thiếu trường hồ sơ bắt buộc (nguồn, quyền sử dụng, địa bàn, đối tượng, phiên bản, ngày, trạng thái duyệt)",AUTO,NONE,GS-011;GS-031;GS-032;GS-037;GS-095;GS-102,NOT_RUN,,
+GT04,Content,CRITICAL,Nhãn trạng thái duyệt hiển thị đúng; không nội dung nào hiện 'đã duyệt' khi thiếu người duyệt; bản gốc đổi thì bản dịch chuyển STALE,AUTO,NONE,GS-011;GS-031;GS-032;GS-037;GS-095,NOT_RUN,,Bản B: không giữ nhãn đã duyệt cho bản dịch không còn khớp nguồn.
+GT05,Content,CRITICAL,"Bản dịch thẻ an toàn giữ nguyên số, đơn vị, phủ định, địa danh và số điện thoại so với bản gốc",AUTO,NONE,GS-033;GS-037;GS-101,NOT_RUN,,
+GT06,Offline,CRITICAL,"Sau khi tải gói, nội dung thiết yếu mở lại được khi mất mạng (trình duyệt ở chế độ offline)",AUTO,NONE,GS-021,NOT_RUN,,Kiểm bằng Chromium offline; thiết bị thật là việc riêng.
+GT07,Offline,CRITICAL,"Gói tải thiếu, sai SHA-256 hoặc chữ ký Ed25519 không hợp lệ không bao giờ được báo là sẵn sàng",AUTO,NONE,GS-021;GS-022,NOT_RUN,,
+GT08,Offline,HIGH,"Chế độ 72 giờ hiện phiên bản gói, ngày cập nhật, nút kiểm tra gói và bản in",AUTO,NONE,GS-021;GS-023,NOT_RUN,,
+GT09,Emergency,CRITICAL,"Tìm đúng thẻ trong không quá 3 thao tác cho các tình huống thử (ngập, mất điện, nắng nóng, bão, động đất, khói)",AUTO,NONE,GS-014,NOT_RUN,,Mục tiêu 30 giây với người thật là việc thí điểm.
+GT10,Emergency,CRITICAL,"Luồng khẩn cấp không cần đăng nhập, không có liên kết mua hàng hoặc cửa sổ chen ngang",AUTO,NONE,GS-014,NOT_RUN,,
+GT11,Emergency,HIGH,Nút trợ giúp mở đúng số khẩn cấp của quốc gia đã chọn và ghi rõ ứng dụng không gửi yêu cầu cứu hộ,AUTO,NONE,GS-014;GS-015;GS-100,NOT_RUN,,
+GT12,Emergency,CRITICAL,"Lỗi cửa hàng, kết nối nhà cung cấp hoặc thanh toán không làm hỏng hướng dẫn khẩn cấp",AUTO,NONE,GS-020;GS-062,NOT_RUN,,
+GT13,Alerts,CRITICAL,"Cảnh báo Test/Exercise/Draft, Private/Restricted và bản Cancel không hiển thị như cảnh báo công chúng",AUTO,NONE,GS-050;GS-053;GS-054;GS-106,NOT_RUN,,
+GT14,Alerts,CRITICAL,Nguồn lỗi hoặc dữ liệu cũ không tạo kết luận 'an toàn'; luôn hiện thời điểm cập nhật cuối,AUTO,NONE,GS-050,NOT_RUN,,
+GT15,Alerts,HIGH,"Mỗi cảnh báo hiện cơ quan phát, giờ phát, giờ nhận, hiệu lực và loại (quan trắc, dự báo, cảnh báo, lệnh)",AUTO,NONE,GS-050;GS-054;GS-105,NOT_RUN,,
+GT16,Alerts,HIGH,Một sự kiện từ nhiều nguồn chỉ hiện và chỉ đẩy một lần,AUTO,NONE,GS-051;GS-053,NOT_RUN,,
+GT17,Alerts,HIGH,Khớp vị trí theo bán kính cho hai địa điểm; địa bàn chọn thủ công; vị trí chỉ lưu khi người dùng bật cảnh báo,AUTO,NONE,GS-051;GS-103,NOT_RUN,,
+GT18,Alerts,MEDIUM,Cảnh báo mở đúng thẻ 72 giờ tương ứng với hiểm họa,AUTO,NONE,GS-052,NOT_RUN,,
+GT19,Planner,HIGH,"Kế hoạch gia đình và tủ vật dụng chạy không cần tài khoản, lưu trên máy, xuất và in được",AUTO,NONE,GS-040;GS-041,NOT_RUN,,
+GT20,Planner,HIGH,"Ba bộ lập kế hoạch (túi mang đi, dự trữ 2 tuần, duy trì cơ sở) tính đúng với dữ liệu tham chiếu có nguồn",AUTO,NONE,GS-042;GS-104,NOT_RUN,,
+GT21,Journey,HIGH,Công cụ bước 0 chấm điểm 7 trụ cột xác định; người dùng thấy và sửa được nhãn phân khúc,AUTO,NONE,GS-016,NOT_RUN,,
+GT22,Journey,HIGH,"Công cụ tính (nước, điện, lương thực, tài chính 24 tháng, chấm điểm đất) khớp giá trị tham chiếu",AUTO,NONE,GS-091;GS-092;GS-093;GS-094,NOT_RUN,,
+GT23,Commerce,CRITICAL,Sản phẩm thiếu hồ sơ hoặc trùng danh sách thu hồi bị chặn khỏi Gói,AUTO,NONE,GS-061;GS-062,NOT_RUN,,
+GT24,Commerce,CRITICAL,Bộ lọc tuyên bố chặn 4 sai lầm: lọc mọi chất ô nhiễm; khẩu trang lọc hạt chống khí độc; máy phát dùng trong nhà; đun sôi xử lý hóa chất,AUTO,NONE,GS-061,NOT_RUN,,
+GT25,Commerce,HIGH,"Trang Gói hiện có gì, thiếu gì, phù hợp với ai, giá kèm thời điểm; chỉ ghi 'đủ 72 giờ' khi phủ 100% ô bắt buộc",AUTO,NONE,GS-064,NOT_RUN,,
+GT26,Commerce,HIGH,Nút mua chỉ hiện khi quốc gia × nhà cung cấp × mã hàng × khả năng giao đã xác nhận,AUTO,NONE,GS-060;GS-064;GS-066,NOT_RUN,,
+GT27,Commerce,HIGH,Công khai hoa hồng trên mọi trang có liên kết affiliate; chuyển hướng không ghi dữ liệu cá nhân,AUTO,NONE,GS-065,NOT_RUN,,
+GT28,Commerce,MEDIUM,"Khi có cảnh báo cam/đỏ, Gói không hứa giao khẩn cấp và hiện giờ cập nhật tình trạng hàng",AUTO,NONE,GS-064,NOT_RUN,,
+GT29,Privacy,CRITICAL,Xóa và xuất dữ liệu một chạm; dữ liệu cá nhân không xuất hiện trong log,AUTO,NONE,GS-072,NOT_RUN,,
+GT30,Privacy,CRITICAL,RLS: người dùng chỉ đọc/ghi dữ liệu của mình và của vòng gia đình đã chấp nhận lời mời,AUTO,NONE,GS-070;GS-071;GS-103,NOT_RUN,,Kiểm trên Postgres cục bộ có tên kết thúc bằng _test.
+GT31,SEO,HIGH,"hreflang đầy đủ, x-default=/en, sitemap từng ngôn ngữ, dữ liệu có cấu trúc hợp lệ",AUTO,NONE,GS-010;GS-013;GS-081;GS-102,NOT_RUN,,
+GT32,A11y,HIGH,Trang thiết yếu không có lỗi axe mức serious/critical; thao tác bàn phím được; sẵn sàng phải-trái,PARTIAL,NONE,GS-013;GS-014;GS-083,NOT_RUN,,Tự động chỉ phủ một phần WCAG 2.2 AA; không tuyên bố đạt chuẩn.
+GT33,Perf,MEDIUM,Tuyến khẩn cấp có ngân sách JavaScript ≤ 150 KB nén và chạy được khi giả lập máy tầm trung,PARTIAL,NONE,GS-083,NOT_RUN,,
+GT34,Directory,HIGH,Danh bạ và trú ẩn hiện nguồn và ngày kiểm; không ngụ ý nơi trú đang mở; không khẳng định tuyến đường an toàn; mục quá hạn kiểm có cảnh báo,AUTO,NONE,GS-015;GS-100,NOT_RUN,,
+GT35,Release,CRITICAL,Landing công khai chỉ được deploy khi repo có bản ghi duyệt của chủ dự án,AUTO,NONE,GS-082,NOT_RUN,,
+GT36,Legal,HIGH,"Điều khoản, quyền riêng tư, miễn trừ và công khai affiliate ở trạng thái DRAFT cho đến khi chủ dự án duyệt",MANUAL,NONE,GS-035;GS-H08,MANUAL_PENDING,,Không phải tư vấn pháp lý.
+GT37,Payments,CRITICAL,Gửi lặp yêu cầu đăng ký hoặc thanh toán không tạo đơn hay thu tiền trùng,AUTO,NONE,GS-073,NOT_RUN,,Thanh toán thật chỉ khi có Stripe của IAI LLC (GS-H07).
