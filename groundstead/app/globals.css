@@ -48,3 +48,13 @@ th, td { text-align: left; vertical-align: top; padding: .5rem .4rem; border-bot
 .lead { font-size: 1.15rem; }
 .tag { display: inline-block; font-size: .9rem; font-weight: 600; color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: 0 .6rem; margin: 0 0 .5rem; }
 .pillars li, .path li { margin-bottom: .75rem; }
+fieldset { border: 0; margin: 1.25rem 0; padding: 0; }
+legend { font-weight: 600; margin-bottom: .4rem; padding: 0; }
+.opt { display: block; padding: .2rem 0; }
+.theme { margin-top: 2rem; }
+.actions { margin: 1.5rem 0; }
+button, select { font: inherit; padding: .45rem .9rem; border: 1px solid var(--accent); background: var(--bg); color: var(--fg); border-radius: 6px; }
+button { cursor: pointer; }
+.score { font-weight: 700; }
+.results { margin-top: 2rem; }
+.result { border-left: 4px solid var(--accent); padding: .25rem 1rem; margin: 1.25rem 0; }

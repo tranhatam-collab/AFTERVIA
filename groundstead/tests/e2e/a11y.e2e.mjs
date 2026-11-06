@@ -22,6 +22,8 @@ const PAGES = [
   '/vi/emergency/',
   '/en/emergency/heat-safety/',
   '/vi/emergency/flood-safety/',
+  '/en/readiness/',
+  '/vi/readiness/',
 ];
 
 let server;

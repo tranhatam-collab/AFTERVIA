@@ -159,6 +159,42 @@ test('GS-013 E2E: the English landing shows the preview notice and seven pillars
   }
 });
 
+test('GT21 E2E: the readiness check scores seven pillars on the device, shows no overall grade, sends nothing, and keeps a label the reader can change', async () => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const problems = [];
+  page.on('pageerror', (e) => problems.push(String(e)));
+  page.on('console', (msg) => {
+    if (msg.type() === 'error' && !/favicon/i.test(msg.text())) problems.push(msg.text());
+  });
+  const requests = [];
+  page.on('request', (r) => requests.push(r.url()));
+  try {
+    const response = await page.goto(`${base}/en/readiness/`, { waitUntil: 'load' });
+    assert.equal(response?.status(), 200);
+    for (let i = 1; i <= 12; i += 1) {
+      const name = `q${String(i).padStart(2, '0')}`;
+      await page.locator(`input[name="${name}"]`).nth(1).check();
+    }
+    await page.click('button[type="submit"]');
+    await page.waitForSelector('[data-pillar="community"]', { timeout: 10000 });
+    assert.equal(await page.locator('[data-pillar]').count(), 7, 'seven pillar scores are shown');
+    const main = (await page.textContent('main')) ?? '';
+    assert.doesNotMatch(main, /overall|total score/i, 'no single overall grade');
+    await page.selectOption('#interest', 'high');
+    assert.equal(await page.inputValue('#interest'), 'high');
+    await page.click('button:has-text("Save on this device")');
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForSelector('[data-pillar="community"]', { timeout: 10000 });
+    assert.equal(await page.inputValue('#interest'), 'high', 'the changed label is kept after a reload');
+    const external = requests.filter((u) => !u.startsWith(base));
+    assert.deepEqual(external, [], 'the page makes no requests outside this site');
+    assert.deepEqual(problems, []);
+  } finally {
+    await context.close();
+  }
+});
+
 test('GS-013 E2E: the Vietnamese landing switches to the same page in English', async () => {
   const { page, problems, status } = await open('/vi/');
   try {
