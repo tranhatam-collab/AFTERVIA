@@ -3,7 +3,9 @@ import { buildDate, getContent } from '../../../lib/content/load.ts';
 import { cardsFor } from '../../../lib/emergency/cards.ts';
 import { isLocale, LOCALES, localePath, type Locale } from '../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../lib/i18n/messages.ts';
+import type { Metadata } from 'next';
 import { NetworkStatus } from '../../../components/NetworkStatus.tsx';
+import { pageMetadata } from '../../../lib/seo/page.ts';
 import { OfflinePack } from '../../../components/OfflinePack.tsx';
 import { OFFLINE } from '../../../lib/offline/text.ts';
 
@@ -12,6 +14,17 @@ export function generateStaticParams(): { locale: Locale }[] {
 }
 
 type Params = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  return pageMetadata({
+    locale,
+    path: 'emergency/',
+    title: `${MESSAGES[locale].emergencyTitle} · ${BRAND.name}`,
+    description: MESSAGES[locale].emergencyLead,
+  });
+}
 
 export default async function EmergencyIndex({ params }: Params) {
   const { locale: rawLocale } = await params;

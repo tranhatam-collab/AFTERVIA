@@ -7,14 +7,23 @@ import { isLocale, LOCALES, localePath, type Locale } from '../../../../lib/i18n
 import { MESSAGES } from '../../../../lib/i18n/messages.ts';
 import { PRINT } from '../../../../lib/print/text.ts';
 import { PrintButton } from '../../../../components/PrintButton.tsx';
+import { pageMetadata } from '../../../../lib/seo/page.ts';
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }));
 }
 
-// A printed copy is not a search result: it duplicates the web pages on purpose.
-export async function generateMetadata(): Promise<Metadata> {
-  return { robots: { index: false, follow: false } };
+// A printed copy is not a search result: it duplicates the web pages on purpose, so it is not indexed.
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  return pageMetadata({
+    locale,
+    path: 'emergency/print/',
+    title: `${PRINT[locale].title} · ${BRAND.name}`,
+    description: PRINT[locale].lead,
+    index: false,
+  });
 }
 
 type Params = { params: Promise<{ locale: string }> };

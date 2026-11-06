@@ -5,6 +5,9 @@ import { reviewLabel } from '../../../../lib/content/review.ts';
 import { cardsFor } from '../../../../lib/emergency/cards.ts';
 import { isLocale, LOCALES, localePath, type Locale } from '../../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../../lib/i18n/messages.ts';
+import { howToLd, jsonLd } from '../../../../lib/seo/jsonld.ts';
+import { pageMetadata } from '../../../../lib/seo/page.ts';
+import type { Metadata } from 'next';
 
 export const dynamicParams = false;
 
@@ -13,6 +16,22 @@ export function generateStaticParams(): { locale: Locale; card: string }[] {
 }
 
 type Params = { params: Promise<{ locale: string; card: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw, card } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  const other: Locale = locale === 'en' ? 'vi' : 'en';
+  const view = cardsFor(locale).find((v) => v.item.data.id === card);
+  if (!view) return {};
+  const hasOther = cardsFor(other).some((v) => v.item.data.id === card);
+  return pageMetadata({
+    locale,
+    path: `emergency/${card}/`,
+    title: `${view.item.data.title} · ${BRAND.name}`,
+    description: view.item.data.first_action,
+    available: hasOther ? [locale, other] : [locale],
+  });
+}
 
 export default async function CardPage({ params }: Params) {
   const { locale: rawLocale, card } = await params;
@@ -73,6 +92,12 @@ export default async function CardPage({ params }: Params) {
         </ul>
         <p className="footnote">{m.emergencyUpdated}: {c.updated}</p>
         <p><a href={localePath(locale, 'help/')}>{m.homeHelpLink}</a></p>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: jsonLd(howToLd(c, locale, `${BRAND.siteUrl.replace(/\/+$/, '')}${localePath(locale, `emergency/${card}/`)}`)),
+          }}
+        />
       </main>
     </>
   );

@@ -5,6 +5,8 @@ import type { CountryPack } from '../../../../lib/content/types.ts';
 import { directoryStatus, type DirectoryState } from '../../../../lib/help/directory.ts';
 import { isLocale, LOCALES, localePath, type Locale } from '../../../../lib/i18n/locales.ts';
 import { MESSAGES, type Messages } from '../../../../lib/i18n/messages.ts';
+import { pageMetadata } from '../../../../lib/seo/page.ts';
+import type { Metadata } from 'next';
 
 type TextKey = Exclude<keyof Messages, 'coming'>;
 
@@ -40,6 +42,21 @@ export function generateStaticParams(): { locale: Locale; country: string }[] {
 }
 
 type Params = { params: Promise<{ locale: string; country: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw, country } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  const item = getContent().countries.find((c) => c.data.code.toLowerCase() === country);
+  if (!item) return {};
+  const pack = item.data;
+  const name = locale === 'vi' ? (pack.name.vi ?? pack.name.en) : pack.name.en;
+  return pageMetadata({
+    locale,
+    path: `help/${pack.code.toLowerCase()}/`,
+    title: `${MESSAGES[locale].helpTitle}: ${name} · ${BRAND.name}`,
+    description: MESSAGES[locale].helpLead,
+  });
+}
 
 export default async function CountryHelp({ params }: Params) {
   const { locale: rawLocale, country } = await params;

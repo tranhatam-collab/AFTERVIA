@@ -2,12 +2,25 @@ import { BRAND } from '../../../lib/brand.ts';
 import { getContent } from '../../../lib/content/load.ts';
 import { isLocale, LOCALES, localePath, type Locale } from '../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../lib/i18n/messages.ts';
+import { pageMetadata } from '../../../lib/seo/page.ts';
+import type { Metadata } from 'next';
 
 export function generateStaticParams(): { locale: Locale }[] {
   return LOCALES.map((locale) => ({ locale }));
 }
 
 type Params = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  return pageMetadata({
+    locale,
+    path: 'help/',
+    title: `${MESSAGES[locale].helpTitle} · ${BRAND.name}`,
+    description: MESSAGES[locale].helpLead,
+  });
+}
 
 export default async function HelpIndex({ params }: Params) {
   const { locale: rawLocale } = await params;

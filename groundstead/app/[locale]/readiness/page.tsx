@@ -1,10 +1,19 @@
 import { BRAND } from '../../../lib/brand.ts';
 import { isLocale, localePath, type Locale } from '../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../lib/i18n/messages.ts';
+import { pageMetadata } from '../../../lib/seo/page.ts';
+import type { Metadata } from 'next';
 import { READINESS } from '../../../lib/readiness/text.ts';
 import ReadinessCheck from '../../../components/ReadinessCheck.tsx';
 
 type Params = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
+  const t = READINESS[locale];
+  return pageMetadata({ locale, path: 'readiness/', title: `${t.title} · ${BRAND.name}`, description: t.intro });
+}
 
 export default async function Readiness({ params }: Params) {
   const { locale: raw } = await params;

@@ -9,6 +9,8 @@ import { LOCALES } from '../../lib/i18n/locales.ts';
 import { assetRefs, buildManifest, inPack, signManifest } from '../../lib/offline/pack.ts';
 import { PUBLIC_PATHS } from '../../lib/routes.ts';
 import { localeSitemapXml, sitemapIndexXml } from '../../lib/seo/sitemap.ts';
+import { robotsTxt } from '../../lib/seo/robots.ts';
+import { allowIndexing } from '../../lib/site.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const out = resolve(root, 'out');
@@ -20,6 +22,7 @@ for (const locale of LOCALES) {
   writeFileSync(resolve(out, `sitemap-${locale}.xml`), localeSitemapXml(BRAND.siteUrl, locale, PUBLIC_PATHS));
 }
 writeFileSync(resolve(out, 'sitemap.xml'), sitemapIndexXml(BRAND.siteUrl));
+writeFileSync(resolve(out, 'robots.txt'), robotsTxt(BRAND.siteUrl, allowIndexing()));
 console.log(`postbuild: sitemap.xml + ${LOCALES.length} locale sitemaps, ${PUBLIC_PATHS.length} path(s) each`);
 
 // Offline packs (GS-021). A pack is the pages of one locale that hold emergency content, every file those pages

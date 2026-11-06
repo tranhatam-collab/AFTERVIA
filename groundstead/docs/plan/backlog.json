@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 19,
+    "iterations_used": 20,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -483,9 +483,15 @@
       "acceptance": [
         "GT31"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 176 node tests passed (169 + 6 GT31 SEO kỹ thuật, gồm canonical theo trang, hreflang, OG, JSON-LD, robots)",
+        "mutations (đã hoàn tác, trên HTML đã build): canonical trang con về trang chủ → đỏ; thứ tự bước HowTo bị đảo → đỏ; robots.txt cho lập chỉ mục khi chưa duyệt → đỏ",
+        "docs/evidence/GS-081.md"
+      ],
+      "started_at": "2026-11-06T15:56:18.727Z",
+      "finished_at": "2026-11-06T15:56:18.762Z"
     },
     {
       "id": "GS-G1",
