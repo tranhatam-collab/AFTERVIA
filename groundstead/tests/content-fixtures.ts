@@ -17,14 +17,14 @@ export const SOURCES = {
     {
       id: 'example-flood-guide', organization: 'Example Agency', title: 'Flood safety guide', url: 'https://example.org/flood',
       language: 'en', accessed: '2026-11-06',
-      license: { kind: 'open-license', summary: 'Fictional open licence for tests' },
+      license: { kind: 'open-license', summary: 'Fictional open licence for tests', quote: 'Fictional licence text used only by the test fixtures.', checked_on: '2026-11-06', verified_via: 'official-page' },
       usage: { quote: true, summarize: true, translate: true, offline: true, commercial: true },
       scope: ['GLOBAL'],
     },
     {
       id: 'example-vn-notice', organization: 'Example Ministry', title: 'Thong bao mau', url: 'https://example.org/vn',
       language: 'vi', accessed: '2026-11-06',
-      license: { kind: 'permission-granted', summary: 'Fictional permission for tests' },
+      license: { kind: 'permission-granted', summary: 'Fictional permission for tests', quote: 'Fictional permission text used only by the test fixtures.', checked_on: '2026-11-06', verified_via: 'official-page' },
       usage: { quote: false, summarize: true, translate: false, offline: true, commercial: true },
       scope: ['VN'],
     },
@@ -52,9 +52,26 @@ export const CARD_VI = {
 export const ARTICLE = {
   layer: 'J', id: 'water-storage', locale: 'en', version: 1, title: 'Store water at home', module: 'water',
   slug: 'water-storage', summary: 'How much drinking water a household needs to store, and how to keep it safe.',
-  scope: { countries: ['GLOBAL'], climate: ['all'] }, spec_ref: 'spec-water-storage',
+  scope: { countries: ['GLOBAL'], climate: ['all'] }, spec_ref: 'spec-water',
   sources: [{ id: 'example-flood-guide' }], author: { kind: 'ai' }, updated: '2026-11-06', disclaimer: 'none',
   review: { status: 'AI_DRAFT' },
+};
+
+export const SPEC = {
+  layer: 'SPEC', id: 'spec-water', locale: 'en', version: 1, module: 'water',
+  purpose: 'Show how to secure drinking water for a household.',
+  audience: ['staying-in-city'],
+  required_sections: [
+    { id: 'how-much', heading: 'How much water', must_cover: ['The daily need, from the cited source.'] },
+    { id: 'store', heading: 'Store it', must_cover: ['Containers and rotation.'] },
+    { id: 'treat', heading: 'Treat it', must_cover: ['What each method removes and does not.'] },
+  ],
+  safety_points: ['A filter removes only what its certification says.'],
+  red_lines: ['Do not call water safe without stating the method.'],
+  minimum_sources: { count: 1 },
+  local_must_have: ['units'],
+  disclaimer: 'none',
+  updated: '2026-11-06',
 };
 
 export const COUNTRY_VN = {
@@ -67,6 +84,7 @@ export const COUNTRY_VN = {
 export function validFiles(): Files {
   return {
     'sources.json': JSON.stringify(SOURCES),
+    'specs/spec-water.md': md(SPEC, 'Writer notes.'),
     'cards/en/flood-before.md': md(CARD_EN, 'Extra detail for the card.'),
     'cards/vi/flood-before.md': md(CARD_VI),
     'modules/en/water-storage.md': md(ARTICLE, longBody),

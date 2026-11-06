@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 4,
+    "iterations_used": 5,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -103,9 +103,16 @@
         "GS-011"
       ],
       "acceptance": [],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: content OK 16 sources 10 specs, next build, tsc OK, bundle scan OK, node tests 61 passed 0 failed",
+        "3 WebFetch agents all ENOTFOUND, curl via proxy 403: only 4 US federal sources marked reusable (statute 17 USC 105 and NWS disclaimer via search results), 12 sources link-only; GS-038 added and BLOCKED on network",
+        "7 mutations each turned tests red (1 initially slipped, rule added), restored with sha256 match",
+        "docs/evidence/GS-030.md"
+      ],
+      "started_at": "2026-11-06T06:11:05.677Z",
+      "finished_at": "2026-11-06T06:19:45.151Z"
     },
     {
       "id": "GS-015",
@@ -1087,6 +1094,22 @@
       "status": "WAITING_HUMAN",
       "attempts": 0,
       "evidence": []
+    },
+    {
+      "id": "GS-038",
+      "wo": "GS-030",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Đọc điều khoản bản quyền của nguồn quốc tế, Việt Nam và các trang Mỹ trên chính trang của họ; cập nhật sổ nguồn (cần mở mạng tới các trang đó)",
+      "deps": [
+        "GS-030"
+      ],
+      "acceptance": [],
+      "status": "BLOCKED",
+      "attempts": 0,
+      "evidence": [],
+      "blocked_reason": "Cần mạng tới các trang nguồn. 06/11/2026: 3 tác tử WebFetch đều lỗi 'getaddrinfo ENOTFOUND' (www.ready.gov, www.cdc.gov, www.weather.gov, www.noaa.gov, www.usgs.gov, www.redcross.org, www.who.int, www.ifrc.org, www.undrr.org, reliefweb.int, www.gdacs.org, commission.europa.eu, wmo.int, moh.gov.vn, nchmf.gov.vn, chinhphu.vn, redcross.org.vn, vbpl.vn); curl qua proxy: 'CONNECT tunnel failed, response 403' (chính sách mạng của môi trường Default). Gỡ chặn: chủ dự án duyệt môi trường có các tên miền này (đề xuất create_environment).",
+      "blocked_at": "2026-11-06T06:19:22.491Z"
     }
   ]
 }

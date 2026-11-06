@@ -1,0 +1,182 @@
+{
+  "$id": "https://groundstead.iai.one/schema/spec.schema.json",
+  "description": "English content spec for one module. Native writers and the AI draft each locale from it; it never contains figures, only what each article must cover.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "layer",
+    "id",
+    "locale",
+    "version",
+    "module",
+    "purpose",
+    "audience",
+    "required_sections",
+    "safety_points",
+    "red_lines",
+    "minimum_sources",
+    "local_must_have",
+    "disclaimer",
+    "updated"
+  ],
+  "properties": {
+    "layer": {
+      "const": "SPEC"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^spec-[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "locale": {
+      "const": "en"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "module": {
+      "enum": [
+        "readiness",
+        "fund",
+        "land",
+        "water",
+        "power",
+        "food",
+        "shelter",
+        "health",
+        "community",
+        "mode72"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 20
+    },
+    "audience": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "urban-hesitant",
+          "decided-to-move",
+          "staying-in-city",
+          "vulnerable",
+          "organization"
+        ]
+      }
+    },
+    "required_sections": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "heading",
+          "must_cover"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "heading": {
+            "type": "string",
+            "minLength": 3
+          },
+          "must_cover": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 5
+            }
+          }
+        }
+      }
+    },
+    "safety_points": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "red_lines": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "legal_notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 5
+      }
+    },
+    "minimum_sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count"
+      ],
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "local_must_have": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "units",
+          "currency",
+          "emergency_numbers",
+          "authorities",
+          "laws",
+          "season",
+          "climate_variant",
+          "local_examples"
+        ]
+      }
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    },
+    "packs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^pack-[a-z0-9]+(-[a-z0-9]+)*$"
+      }
+    },
+    "disclaimer": {
+      "enum": [
+        "none",
+        "legal-land",
+        "medical-first-aid",
+        "electrical",
+        "financial"
+      ]
+    },
+    "updated": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}

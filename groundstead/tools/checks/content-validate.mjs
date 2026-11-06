@@ -17,4 +17,4 @@ if (report.errors.length > 0) {
   process.exit(1);
 }
 const c = report.counts;
-console.log(`content OK: ${c.sources} source(s), ${c.cards} card(s), ${c.articles} article(s), ${c.countries} country pack(s), ${report.warnings.length} warning(s)`);
+console.log(`content OK: ${c.sources} source(s), ${c.specs} spec(s), ${c.cards} card(s), ${c.articles} article(s), ${c.countries} country pack(s), ${report.warnings.length} warning(s)`);

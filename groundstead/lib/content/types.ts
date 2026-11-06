@@ -18,7 +18,14 @@ export type Source = {
   url: string;
   language: string;
   accessed: string;
-  license: { kind: 'public-domain' | 'open-license' | 'permission-granted' | 'link-only' | 'restricted'; summary: string; url?: string };
+  license: {
+    kind: 'public-domain' | 'open-license' | 'permission-granted' | 'link-only' | 'restricted';
+    summary: string;
+    url?: string;
+    quote?: string;
+    checked_on?: string;
+    verified_via?: 'official-page' | 'search-result' | 'statute-text';
+  };
   usage: { quote: boolean; summarize: boolean; translate: boolean; offline: boolean; commercial: boolean };
   scope: string[];
   notes?: string;
@@ -61,6 +68,26 @@ export type Article = {
   review: Review;
 };
 
+export type Spec = {
+  layer: 'SPEC';
+  id: string;
+  locale: 'en';
+  version: number;
+  module: string;
+  purpose: string;
+  audience: string[];
+  required_sections: { id: string; heading: string; must_cover: string[] }[];
+  safety_points: string[];
+  red_lines: string[];
+  legal_notes?: string[];
+  minimum_sources: { count: number; note?: string };
+  local_must_have: string[];
+  tools?: string[];
+  packs?: string[];
+  disclaimer: 'none' | 'legal-land' | 'medical-first-aid' | 'electrical' | 'financial';
+  updated: string;
+};
+
 export type CountryPack = {
   code: string;
   name: { en: string; vi?: string };
@@ -78,11 +105,12 @@ export type ContentIssue = { file: string; message: string };
 export type ContentReport = {
   errors: ContentIssue[];
   warnings: ContentIssue[];
-  counts: { sources: number; cards: number; articles: number; countries: number };
+  counts: { sources: number; specs: number; cards: number; articles: number; countries: number };
 };
 
 export type LoadedContent = {
   sources: Source[];
+  specs: Item<Spec>[];
   cards: Item<Card>[];
   articles: Item<Article>[];
   countries: Item<CountryPack>[];

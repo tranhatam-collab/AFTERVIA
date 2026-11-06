@@ -5,7 +5,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { effectiveReview, reviewLabel } from '../lib/content/review.ts';
 import { DEFAULT_CONTENT_DIR, loadContent, validateContent } from '../lib/content/validate.ts';
-import { ARTICLE, CARD_EN, edit, editJson, validFiles, writeContent, type Files } from './content-fixtures.ts';
+import { MODULES } from '../lib/content/modules.ts';
+import { ARTICLE, CARD_EN, SPEC, edit, editJson, validFiles, writeContent, type Files } from './content-fixtures.ts';
 import { ROOT } from './helpers.ts';
 
 const TODAY = '2026-11-06';
@@ -15,7 +16,7 @@ const messages = (files: Files): string => run(files).errors.map((e) => `${e.fil
 test('GT03 a complete set of fixtures validates with no errors', () => {
   const report = run(validFiles());
   assert.deepEqual(report.errors, []);
-  assert.deepEqual(report.counts, { sources: 2, cards: 2, articles: 1, countries: 1 });
+  assert.deepEqual(report.counts, { sources: 2, specs: 1, cards: 2, articles: 1, countries: 1 });
 });
 
 test('GT03 the real content directory validates', () => {
@@ -178,4 +179,81 @@ test('GT04 translation links are checked: no original, wrong version, wrong haza
   const orphan: Files = { ...validFiles() };
   delete orphan['cards/en/flood-before.md'];
   assert.match(messages(orphan), /based_on points to flood-before \(en\), which does not exist/);
+});
+
+test('GT03 a spec missing any required field fails the check and names the field', () => {
+  for (const field of Object.keys(SPEC).filter((k) => k !== 'layer')) {
+    const files = edit(validFiles(), 'specs/spec-water.md', (d) => void delete d[field]);
+    assert.match(messages(files), new RegExp(`missing required field "${field}"`), `spec without ${field} was accepted`);
+  }
+});
+
+test('GT03 a spec must be named after its id, be unique, and carry the disclaimer its module requires', () => {
+  const copy: Files = { ...validFiles(), 'specs/spec-copy.md': validFiles()['specs/spec-water.md'] ?? '' };
+  assert.match(messages(copy), /duplicate spec spec-water/);
+  assert.match(messages(copy), /file name must be "spec-water.md"/);
+  const health = edit(validFiles(), 'specs/spec-water.md', (d) => void (d.module = 'health'));
+  assert.match(messages(health), /module "health" requires disclaimer "medical-first-aid"/);
+});
+
+test('GT03 an article must point at a real spec of its own module, with the same disclaimer and enough sources', () => {
+  assert.match(messages(edit(validFiles(), 'modules/en/water-storage.md', (d) => void (d.spec_ref = 'spec-nowhere'))), /unknown spec_ref "spec-nowhere"/);
+  const otherModule = edit(validFiles(), 'modules/en/water-storage.md', (d) => void (d.module = 'food'));
+  assert.match(messages(otherModule), /module "food" differs from its spec's module "water"/);
+  const otherDisclaimer = edit(validFiles(), 'modules/en/water-storage.md', (d) => void (d.disclaimer = 'electrical'));
+  assert.match(messages(otherDisclaimer), /disclaimer "electrical" differs from its spec's "none"/);
+  const needsTwo = edit(validFiles(), 'specs/spec-water.md', (d) => void (d.minimum_sources = { count: 2 }));
+  assert.match(messages(needsTwo), /requires at least 2 source\(s\); the article lists 1/);
+});
+
+test('GT03 a source that allows any reuse must record its evidence: quote, check date and how it was verified', () => {
+  for (const field of ['quote', 'checked_on', 'verified_via']) {
+    const files = editJson(validFiles(), 'sources.json', (d) => void delete d.sources[0].license[field]);
+    assert.match(messages(files), new RegExp(`has no recorded evidence \\(missing license\\.${field}`), `reuse without ${field} was accepted`);
+  }
+  const linkOnly = editJson(validFiles(), 'sources.json', (d) => {
+    const src = d.sources[0];
+    src.license = { kind: 'link-only', summary: 'Terms not read.' };
+    src.usage = { quote: false, summarize: false, translate: false, offline: false, commercial: false };
+  });
+  assert.doesNotMatch(messages(linkOnly), /no recorded evidence/);
+});
+
+test('GT03 the module list, both schemas and the real specs agree on the ten modules', () => {
+  const schemaModules = (file: string): string[] => JSON.parse(readFileSync(join(DEFAULT_CONTENT_DIR, 'schema', file), 'utf8')).properties.module.enum;
+  assert.deepEqual(schemaModules('article.schema.json'), [...MODULES]);
+  assert.deepEqual(schemaModules('spec.schema.json'), [...MODULES]);
+  const real = loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: TODAY });
+  assert.deepEqual(real.specs.map((s) => s.data.module).sort(), [...MODULES].sort(), 'every module needs exactly one spec');
+  for (const { data: spec } of real.specs) {
+    assert.equal(spec.id, `spec-${spec.module === 'mode72' ? 'mode72' : spec.module}`);
+    assert.ok(spec.red_lines.length >= 4, `${spec.id} should carry the common red lines`);
+  }
+});
+
+test('GT03 the real source ledger: no reuse without evidence, every other source is link-only, and the reusable ones are US federal', () => {
+  const { sources } = loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: TODAY });
+  assert.ok(sources.length >= 15, `expected at least 15 sources, found ${sources.length}`);
+  assert.equal(new Set(sources.map((s) => s.id)).size, sources.length, 'source ids must be unique');
+  const reusable = sources.filter((s) => Object.values(s.usage).some(Boolean));
+  assert.ok(reusable.length >= 1);
+  for (const s of reusable) {
+    assert.ok(s.license.quote && s.license.checked_on && s.license.verified_via, `${s.id} allows reuse without evidence`);
+    assert.equal(s.license.kind, 'public-domain', `${s.id}: only public-domain sources are reusable until the other terms are read (GS-038)`);
+    assert.ok(s.id.startsWith('us-'), `${s.id}: only US federal sources are cleared so far`);
+  }
+  for (const s of sources.filter((x) => !reusable.includes(x))) {
+    assert.equal(s.license.kind, 'link-only', `${s.id} must be link-only while its terms are unread`);
+    assert.equal(s.license.checked_on, undefined, `${s.id} claims a check date but allows no reuse`);
+  }
+});
+
+test('GT03 a public-domain source cannot deny any use, and the real public-domain sources allow all five', () => {
+  const files = editJson(validFiles(), 'sources.json', (d) => {
+    d.sources[0].license.kind = 'public-domain';
+    d.sources[0].usage.commercial = false;
+  });
+  assert.match(messages(files), /is public-domain, so every usage flag must be true/);
+  const { sources } = loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: TODAY });
+  for (const s of sources.filter((x) => x.license.kind === 'public-domain')) assert.deepEqual(Object.values(s.usage), [true, true, true, true, true], s.id);
 });

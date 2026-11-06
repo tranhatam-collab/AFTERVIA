@@ -6,12 +6,12 @@ import type { ErrorObject, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
 import { parse as parseYaml } from 'yaml';
 import { effectiveReview, reviewIssues } from './review.ts';
-import type { Article, Card, ContentIssue, CountryPack, Item, LoadedContent, Source, SourceRef } from './types.ts';
+import type { Article, Card, ContentIssue, CountryPack, Item, LoadedContent, Source, SourceRef, Spec } from './types.ts';
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 export const DEFAULT_CONTENT_DIR = resolve(PACKAGE_ROOT, 'content');
 const SCHEMA_BASE = 'https://groundstead.iai.one/schema/';
-const SCHEMA_NAMES = ['review', 'source', 'card', 'article', 'country'] as const;
+const SCHEMA_NAMES = ['review', 'source', 'spec', 'card', 'article', 'country'] as const;
 const STALE_COUNTRY_DAYS = 92;
 const MIN_ARTICLE_BODY = 200;
 
@@ -38,7 +38,7 @@ function buildValidators(schemaDir: string): Record<(typeof SCHEMA_NAMES)[number
     if (!fn) throw new Error(`schema ${name} did not load`);
     return fn;
   };
-  return { review: get('review'), source: get('source'), card: get('card'), article: get('article'), country: get('country') };
+  return { review: get('review'), source: get('source'), spec: get('spec'), card: get('card'), article: get('article'), country: get('country') };
 }
 
 function describe(err: ErrorObject): string {
@@ -107,8 +107,17 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
           err(ledgerFile, `duplicate source id "${src.id}"`);
           continue;
         }
-        if ((src.license.kind === 'link-only' || src.license.kind === 'restricted') && Object.values(src.usage).some(Boolean)) {
+        const reuses = Object.values(src.usage).some(Boolean);
+        if ((src.license.kind === 'link-only' || src.license.kind === 'restricted') && reuses) {
           err(ledgerFile, `source "${src.id}" is ${src.license.kind} but allows reuse; link-only and restricted sources must have every usage flag false`);
+        }
+        if (src.license.kind === 'public-domain' && !Object.values(src.usage).every(Boolean)) {
+          err(ledgerFile, `source "${src.id}" is public-domain, so every usage flag must be true`);
+        }
+        // No reuse right without recorded evidence of where it comes from and when it was checked.
+        if (reuses) {
+          const missing = (['quote', 'checked_on', 'verified_via'] as const).filter((k) => !src.license[k]);
+          if (missing.length > 0) err(ledgerFile, `source "${src.id}" allows reuse but has no recorded evidence (missing license.${missing.join(', license.')})`);
         }
         byId.set(src.id, src);
         sources.push(src);
@@ -151,6 +160,24 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
     if (parent !== locale) err(file, `file is in "${parent}/" but declares locale "${locale}"`);
     if (basename(file, '.md') !== expectedName) err(file, `file name must be "${expectedName}.md" (the ${label})`);
   };
+
+  // ---- content specs (English, one per module)
+  const specs: Item<Spec>[] = [];
+  const specById = new Map<string, Spec>();
+  for (const file of listFiles(join(contentDir, 'specs'), '.md')) {
+    const parsed = readItem(file, err);
+    if (!parsed || !schemaOk(v.spec, parsed.data, file)) continue;
+    const spec = parsed.data as Spec;
+    if (specById.has(spec.id)) {
+      err(file, `duplicate spec ${spec.id}`);
+      continue;
+    }
+    if (basename(file, '.md') !== spec.id) err(file, `file name must be "${spec.id}.md"`);
+    const needed = REQUIRED_DISCLAIMER[spec.module];
+    if (needed && spec.disclaimer !== needed) err(file, `module "${spec.module}" requires disclaimer "${needed}" (found "${spec.disclaimer}")`);
+    specById.set(spec.id, spec);
+    specs.push({ file: rel(file), data: spec, body: parsed.body });
+  }
 
   // ---- safety cards (layer S)
   const cards: Item<Card>[] = [];
@@ -214,6 +241,15 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
     checkSources(file, article.sources, article.locale, article.scope.countries);
     if (parsed.body.length < MIN_ARTICLE_BODY) err(file, `article body is too short (${parsed.body.length} characters; minimum ${MIN_ARTICLE_BODY})`);
     if (article.author.kind === 'human' && !article.author.name) err(file, 'a human author needs a name');
+    const spec = specById.get(article.spec_ref);
+    if (!spec) err(file, `unknown spec_ref "${article.spec_ref}" (no such file in specs/)`);
+    else {
+      if (spec.module !== article.module) err(file, `module "${article.module}" differs from its spec's module "${spec.module}"`);
+      if (spec.disclaimer !== article.disclaimer) err(file, `disclaimer "${article.disclaimer}" differs from its spec's "${spec.disclaimer}"`);
+      if (article.sources.length < spec.minimum_sources.count) {
+        err(file, `spec ${spec.id} requires at least ${spec.minimum_sources.count} source(s); the article lists ${article.sources.length}`);
+      }
+    }
     const needed = REQUIRED_DISCLAIMER[article.module];
     if (needed && article.disclaimer !== needed) err(file, `module "${article.module}" requires disclaimer "${needed}" (found "${article.disclaimer}")`);
   }
@@ -244,10 +280,15 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
 
   return {
     sources,
+    specs,
     cards,
     articles,
     countries,
-    report: { errors, warnings, counts: { sources: sources.length, cards: cards.length, articles: articles.length, countries: countries.length } },
+    report: {
+      errors,
+      warnings,
+      counts: { sources: sources.length, specs: specs.length, cards: cards.length, articles: articles.length, countries: countries.length },
+    },
   };
 }
 
