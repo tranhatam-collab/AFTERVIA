@@ -32,6 +32,10 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
     const sent = toIso(p.updated);
     const effective = toIso(p.time);
     if (!id || !headline || !sent || !effective) continue;
+    const coords = (feature.geometry as { coordinates?: unknown } | undefined)?.coordinates;
+    const where = Array.isArray(coords) && typeof coords[0] === 'number' && typeof coords[1] === 'number'
+      ? { lat: coords[1], lon: coords[0] }
+      : undefined;
     alerts.push({
       source: 'usgs',
       id,
@@ -46,9 +50,15 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
       received: receivedAt,
       effective,
       references: [],
+      ...(where ? { where } : {}),
     });
   }
   return alerts;
+}
+
+// A position from a record's lat and lon fields, when both are numbers (the sample records use these field names).
+function placeOf(p: Record<string, unknown>): { where?: { lat: number; lon: number } } {
+  return typeof p.lat === 'number' && typeof p.lon === 'number' ? { where: { lat: p.lat, lon: p.lon } } : {};
 }
 
 const GDACS_HAZARD: Record<string, string> = {
@@ -88,6 +98,7 @@ export function fromGdacs(feed: unknown, receivedAt: string): Alert[] {
       received: receivedAt,
       effective,
       references: current ? [] : [`gdacs:${id}`],
+      ...placeOf(p),
     });
   }
   return alerts;

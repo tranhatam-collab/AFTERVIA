@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 18 (GS-050; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
+- Cập nhật: 06/11/2026, sau vòng 19 (GS-051; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **CONTINUE** — vòng lặp tiếp tục theo `decide`. Có lịch kiểm tra an toàn cho PR #2 (`send_later`, khoảng 17:48Z).
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 18/100 vòng.
+- Ngân sách: 19/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -26,10 +26,11 @@
 | 16 | GS-023 Bản in theo ngôn ngữ, lưu trữ bền vững và câu trả lời của trình duyệt | DONE — verify exit 0, 151/151 kiểm thử (gồm 1 build, 1 E2E, 2 a11y cho bản in); 2 đột biến bị bắt; GT08 PASS (PARTIAL); quyết định D-31 | `docs/evidence/GS-023.md` |
 | 17 | GS-033 Bộ kiểm tra bất biến bản dịch (số, đơn vị, phủ định, tên riêng) | DONE — verify exit 0, 157/157 kiểm thử (gồm 6 GT05); kiểm trong build; 3 đột biến bị bắt; 1 từ tiếng Việt được sửa ("không rõ" → "líu nhíu"); 1 ngoại lệ có lý do (TV); GT05 PASS (PARTIAL); quyết định D-32 | `docs/evidence/GS-033.md` |
 | 18 | GS-050 Lõi cảnh báo: mô hình CAP, lọc công khai, trạng thái nguồn, bộ chuyển USGS và GDACS (bản ghi mẫu) | DONE — verify exit 0, 163/163 kiểm thử (gồm 6 GT13–GT15); 3 đột biến bị bắt; GT13, GT14, GT15 PASS (PARTIAL); chưa nối vào trang nào; tên trường nguồn theo bản ghi mẫu; quyết định D-33 | `docs/evidence/GS-050.md` |
+| 19 | GS-051 Gộp trùng đa nguồn và khớp vị trí theo bán kính (5–100 km) | DONE — verify exit 0, 169/169 kiểm thử (gồm 6 GT16–GT17); 4 đột biến bị bắt; GT16, GT17 PASS (PARTIAL); địa bàn chọn thủ công chưa có (GS-103); quyết định D-34 | `docs/evidence/GS-051.md` |
 | — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
-- GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog). Việc kế tiếp theo `decide`: GS-051, gộp trùng nguồn và khớp vị trí theo bán kính (GT16, GT17).
+- GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog). Việc kế tiếp theo `decide`: GS-081, SEO kỹ thuật và sửa canonical của trang con (GT31).
 - Gói chưa ký trên Preview và Production cho đến khi chủ dự án cấp khóa (D-30). Ở trạng thái này gói bị từ chối và nút tải báo "không có chữ ký hợp lệ" (đúng GT07).
 - Khóa thật cho gói: xem D-30 và GS-H12 bên dưới.
 - GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".
@@ -55,6 +56,6 @@
 - Deploy bằng `create_deployment` với `gitSource` (sha = commit mới nhất của nhánh). Deployment mới nhất: `dpl_FiiXedJTQe1xUxwExjexA3XS7o5n` (commit `37b8751`, GS-016) READY, alias trên.
 
 ## Ma trận nghiệm thu
-PASS 19 · NOT_RUN 17 · MANUAL_PENDING 1 (tổng 37). Độ phủ: FULL 1 · PARTIAL 18 · NONE 18.
-Vòng 13–18: GT12 (GS-020), GT06 (GS-021), GT07 (GS-021, GS-022), GT08 (GS-021, GS-023), GT05 (GS-033), GT13–GT15 (GS-050) PASS (PARTIAL); phần còn thiếu ghi trong CSV và bằng chứng.
+PASS 21 · NOT_RUN 15 · MANUAL_PENDING 1 (tổng 37). Độ phủ: FULL 1 · PARTIAL 20 · NONE 16.
+Vòng 13–19: GT12 (GS-020), GT06 (GS-021), GT07 (GS-021, GS-022), GT08 (GS-021, GS-023), GT05 (GS-033), GT13–GT15 (GS-050), GT16–GT17 (GS-051) PASS (PARTIAL); phần còn thiếu ghi trong CSV và bằng chứng.
 Sửa CSV ở vòng 9: GT32 và GT33 có giá trị lệch cột (`PARTIAL` nằm ở cột `automation_class`); GT09, GT10, GT11 được ghi PARTIAL theo bằng chứng GS-014. Vòng 10 chỉ thêm ghi chú độ phủ cho GT04, GT09, GT10, GT31, GT32 (landing); không đổi trạng thái.

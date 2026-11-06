@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 18,
+    "iterations_used": 19,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -446,9 +446,15 @@
         "GT16",
         "GT17"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 169 node tests passed (163 + 6 GT16–GT17)",
+        "mutations (đã hoàn tác): bỏ khoảng cách → GT16 đỏ; bán kính ngoài khoảng được nhận → GT17 đỏ; lưu vị trí khi chưa bật → GT17 đỏ; đẩy lại sự kiện đã đẩy → GT16 đỏ",
+        "docs/evidence/GS-051.md"
+      ],
+      "started_at": "2026-11-06T15:52:17.377Z",
+      "finished_at": "2026-11-06T15:52:17.413Z"
     },
     {
       "id": "GS-052",

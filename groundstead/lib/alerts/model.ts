@@ -26,6 +26,7 @@ export type Alert = {
   received: string; // ISO 8601 (UTC): when this product received it
   effective: string; // ISO 8601 (UTC): when it takes effect
   references: string[]; // "source:id" of the alerts this message updates or cancels
+  where?: { lat: number; lon: number }; // the place of the event, when the source gives one
 };
 
 export function keyOf(alert: Pick<Alert, 'source' | 'id'>): string {
