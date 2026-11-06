@@ -12,10 +12,17 @@
   "units": "imperial",
   "status": "partial",
   "pending": {
-    "en": "Emergency numbers for the United States have not yet been checked against an official source in this build. Until they are, look up the number for where you are on an official government website, or ask local authorities.",
-    "vi": "Số khẩn cấp của Hoa Kỳ chưa được đối chiếu với nguồn chính thức trong bản dựng này. Trong lúc chờ, hãy tra số khẩn cấp tại nơi bạn đang ở trên trang chính phủ chính thức hoặc hỏi chính quyền địa phương."
+    "en": "Only the US emergency number 911 has been checked, on an official NWS page. Other US numbers (police, fire, poison and crisis lines) are not listed yet. Check the official government website for the number where you are.",
+    "vi": "Chỉ số khẩn cấp 911 của Hoa Kỳ đã được đối chiếu, trên một trang chính thức của NWS. Các số khác (công an, cứu hỏa, ngộ độc, đường dây hỗ trợ khủng hoảng) chưa được liệt kê. Hãy kiểm tra trang chính phủ chính thức để biết số tại nơi bạn đang ở."
   },
-  "emergency_numbers": [],
+  "emergency_numbers": [
+    {
+      "service": "general",
+      "number": "911",
+      "source": "us-nws-heat-illness",
+      "checked_on": "2026-11-06"
+    }
+  ],
   "authorities": [
     {
       "role": "weather-service",

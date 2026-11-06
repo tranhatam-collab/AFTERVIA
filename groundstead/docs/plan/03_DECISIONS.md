@@ -19,6 +19,9 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-16 | Thư viện nội dung | `ajv` 8.20.0, `ajv-formats` 3.0.1, `yaml` 2.9.1 (ghim chính xác, ≥ 2 tuần tuổi, `npm audit` 0). | 06/11/2026 | Claude (kỹ thuật) |
 | D-17 | Căn cứ tái sử dụng cho nguồn | 5 nguồn được phép tái sử dụng: NWS và USGS (đọc nguyên văn trên trang chính thức ngày 06/11/2026), Ủy ban châu Âu (CC BY 4.0, phải ghi nguồn và nêu thay đổi; đọc trên trang pháp lý), FEMA/Ready.gov và CDC (căn cứ 17 U.S.C. § 105 vì hai website chặn truy cập tự động, HTTP 403). WHO (CC BY-NC-SA 3.0 IGO), American Red Cross, ReliefWeb, WMO (chỉ trích đoạn ngắn), Chính phủ VN và Hội Chữ thập đỏ VN: đã đọc, **không** cho phép cách dùng thương mại của Groundstead. IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF: chưa đọc được (GS-H11). Không phải ý kiến pháp lý; chủ dự án hoặc luật sư nên rà lại trước khi công khai. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
 | D-18 | Mở mạng cho các trang nguồn chính thức | Chủ dự án đã duyệt môi trường riêng `groundstead-sources` (không sửa `Default`) với 19 tên miền chính xác; không biến môi trường, không script cài đặt; phiên này đã chuyển sang môi trường đó chỉ về mạng. Hết hạn duyệt kéo dài khoảng 4 giờ nên lịch vòng lặp bị chậm một lần; lần sau nên đề xuất đúng lúc chủ dự án đang theo dõi. | 06/11/2026 | Chủ dự án (duyệt qua thẻ môi trường) |
+| D-20 | Thẻ mất điện khi nguồn đã đọc không có hướng dẫn | Chưa viết thẻ. Hai thẻ có nguồn đã đọc (lũ lụt, nắng nóng) làm trước; thẻ mất điện là GS-031b, BLOCKED cho đến khi có trang chính thức đọc được có hướng dẫn mất điện. Không lấy nguồn khác để lấp chỗ trống. | 06/11/2026 | Claude (kỹ thuật, theo bằng chứng) |
+| D-21 | Số khẩn cấp trong thẻ dùng chung | Thẻ dùng chung ghi "số khẩn cấp ở địa phương bạn", không nêu số cụ thể. Số 911 chỉ nằm trong gói Hoa Kỳ, theo trang NWS đã đọc ("Call 911"); ghi chú của nguồn yêu cầu không nêu 911 như số toàn cầu. | 06/11/2026 | Claude (kỹ thuật, theo nguồn) |
+| D-22 | Màn hình khẩn cấp có chọn quốc gia hoặc dùng vị trí không? | Không có bộ chọn địa phương và không dùng vị trí. Màn hình liệt kê mọi tình huống và mọi khối quốc gia; người dùng tự chọn khối phù hợp. Chủ dự án có thể đổi. | 06/11/2026 | Claude (kỹ thuật); chủ dự án có thể sửa |
 
 ## Đang mở
 
@@ -30,6 +33,7 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-11 | Định vị SI Bank | Không đặt thương hiệu người dùng dưới `sibank.com`. | Không chặn | Chủ dự án |
 | D-12 | Brand OS IAI.ONE (design tokens) | Vòng lặp dùng token trung tính cho đến khi có tệp token. | Không chặn | Chủ dự án |
 | D-19 | Thêm `www.nchmf.gov.vn` (đích chuyển hướng của nchmf.gov.vn) và các tên miền chặn bot vào danh sách mạng? | Không cần ngay. Hai việc nhỏ: (a) thêm `www.nchmf.gov.vn` khi cần đọc điều khoản của cơ quan khí tượng VN; (b) với trang chặn bot (HTTP 403) thì nhờ người đọc giúp (GS-H11), không né chặn. | GS-H11 | Chủ dự án |
+| D-23 | Mở thêm tên miền để đọc số khẩn cấp? | Đề xuất: thêm bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn cho Việt Nam; fcc.gov, usa.gov cho Hoa Kỳ (các số ngoài 911). Đây là quyền của chủ dự án qua duyệt môi trường; vòng lặp không tự thêm. | Số khẩn cấp Việt Nam và các số Hoa Kỳ khác chưa xác minh | Chủ dự án |
 
 ## Bản ghi duyệt công khai
 

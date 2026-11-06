@@ -110,3 +110,34 @@ for (const path of ['/en/', '/vi/', '/en/help/', '/vi/help/', '/en/help/us/', '/
     }
   });
 }
+
+test('GT09 E2E: a visitor reaches a situation in two clicks from the home page and sees its first action at once', async () => {
+  const { page, problems, status } = await open('/en/');
+  try {
+    assert.equal(status, 200);
+    await page.click('a[href="/en/emergency/"]');
+    await page.waitForLoadState('load');
+    await page.click('a[href="/en/emergency/flood-safety/"]');
+    await page.waitForLoadState('load');
+    assert.equal(new URL(page.url()).pathname, '/en/emergency/flood-safety/');
+    const first = (await page.textContent('.firstaction')) ?? '';
+    assert.ok(first.length > 10, 'the first action is shown without any other click');
+    assert.deepEqual(problems, []);
+  } finally {
+    await page.close();
+  }
+});
+
+test('GT11 E2E: the emergency page reports the browser connection and changes when the connection drops', async () => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(`${base}/en/emergency/`, { waitUntil: 'load' });
+    await page.waitForSelector('[data-network="online"]', { timeout: 10000 });
+    await context.setOffline(true);
+    await page.waitForSelector('[data-network="offline"]', { timeout: 10000 });
+    assert.match((await page.textContent('[role="status"]')) ?? '', /no connection/);
+  } finally {
+    await context.close();
+  }
+});

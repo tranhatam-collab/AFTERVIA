@@ -36,6 +36,25 @@ export type Messages = {
   helpFooter: string;
   helpBackHome: string;
   helpPackChecked: string;
+  homeEmergencyLink: string;
+  emergencyTitle: string;
+  emergencyLead: string;
+  emergencyCardsTitle: string;
+  emergencyHelpTitle: string;
+  emergencyNoRescue: string;
+  emergencyUpdated: string;
+  emergencyNetChecking: string;
+  emergencyNetOnline: string;
+  emergencyNetOffline: string;
+  emergencyFirstAction: string;
+  emergencyAvoid: string;
+  emergencySteps: string;
+  emergencyLimits: string;
+  emergencySources: string;
+  emergencyBackEmergency: string;
+  emergencyNoVerifiedNumbers: string;
+  emergencyOpenDirectory: string;
+  emergencyCallNumber: string;
 };
 
 const en: Messages = {
@@ -81,6 +100,26 @@ const en: Messages = {
     'This page only lists contacts. It does not send rescue requests, and it does not say whether any place is safe or has room.',
   helpBackHome: 'Back to home',
   helpPackChecked: 'This country page was last checked on',
+  homeEmergencyLink: 'Emergency guidance: what to do first',
+  emergencyTitle: 'Emergency guidance',
+  emergencyLead: 'Pick your situation. Each guide starts with the first thing to do, then what to avoid.',
+  emergencyCardsTitle: 'Situations',
+  emergencyHelpTitle: 'Who to contact',
+  emergencyNoRescue:
+    'Groundstead does not send rescue requests. To ask for help, call your local emergency number from your phone.',
+  emergencyUpdated: 'Content last updated',
+  emergencyNetChecking: 'Checking your connection…',
+  emergencyNetOnline: 'Your browser reports a connection. That does not prove that any service is reachable.',
+  emergencyNetOffline: 'Your browser reports no connection. The information here may be out of date.',
+  emergencyFirstAction: 'First action',
+  emergencyAvoid: 'Avoid',
+  emergencySteps: 'Steps',
+  emergencyLimits: 'About this guide',
+  emergencySources: 'Sources',
+  emergencyBackEmergency: 'Back to emergency guidance',
+  emergencyNoVerifiedNumbers: 'No emergency number has been checked against an official source yet.',
+  emergencyOpenDirectory: 'Open the contact list for this country',
+  emergencyCallNumber: 'Call',
 };
 
 const vi: Messages = {
@@ -126,6 +165,26 @@ const vi: Messages = {
     'Trang này chỉ liệt kê nơi liên hệ. Nó không gửi yêu cầu cứu hộ, và không cho biết nơi nào đang an toàn hay còn chỗ.',
   helpBackHome: 'Về trang chủ',
   helpPackChecked: 'Trang quốc gia này được kiểm gần nhất vào',
+  homeEmergencyLink: 'Hướng dẫn khẩn cấp: việc đầu tiên cần làm',
+  emergencyTitle: 'Hướng dẫn khẩn cấp',
+  emergencyLead: 'Chọn tình huống của bạn. Mỗi hướng dẫn bắt đầu bằng việc đầu tiên cần làm, rồi đến những việc cần tránh.',
+  emergencyCardsTitle: 'Tình huống',
+  emergencyHelpTitle: 'Liên hệ ai',
+  emergencyNoRescue:
+    'Groundstead không gửi yêu cầu cứu hộ. Để xin trợ giúp, hãy gọi số khẩn cấp tại nơi bạn ở bằng điện thoại của bạn.',
+  emergencyUpdated: 'Nội dung cập nhật lần cuối',
+  emergencyNetChecking: 'Đang kiểm tra kết nối…',
+  emergencyNetOnline: 'Trình duyệt báo đang có kết nối. Điều này không chứng minh rằng dịch vụ nào đó truy cập được.',
+  emergencyNetOffline: 'Trình duyệt báo không có kết nối. Thông tin ở đây có thể đã cũ.',
+  emergencyFirstAction: 'Việc đầu tiên cần làm',
+  emergencyAvoid: 'Cần tránh',
+  emergencySteps: 'Các bước',
+  emergencyLimits: 'Về hướng dẫn này',
+  emergencySources: 'Nguồn',
+  emergencyBackEmergency: 'Về trang hướng dẫn khẩn cấp',
+  emergencyNoVerifiedNumbers: 'Chưa có số khẩn cấp nào được đối chiếu với nguồn chính thức.',
+  emergencyOpenDirectory: 'Mở danh bạ của quốc gia này',
+  emergencyCallNumber: 'Gọi',
 };
 
 export const MESSAGES: Record<Locale, Messages> = { en, vi };

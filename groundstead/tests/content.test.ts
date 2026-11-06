@@ -251,7 +251,7 @@ test('GT03 the real source ledger: reuse only with evidence, non-commercial term
   }
   for (const s of reusable) assert.ok(['public-domain', 'open-license', 'permission-granted'].includes(s.license.kind), `${s.id}: reuse needs a licence that grants it`);
   const cleared = reusable.filter((s) => s.usage.summarize && s.usage.offline && s.usage.commercial).map((s) => s.id).sort();
-  assert.deepEqual(cleared, ['eu-commission-preparedness', 'us-cdc-emergency', 'us-fema-ready', 'us-nws-safety', 'us-usgs-hazards'].sort(), 'sources cleared for cards changed: review the ledger');
+  assert.deepEqual(cleared, ['eu-commission-preparedness', 'us-cdc-emergency', 'us-fema-ready', 'us-nws-heat-illness', 'us-nws-safety', 'us-usgs-hazards'].sort(), 'sources cleared for cards changed: review the ledger');
 });
 
 test('GT03 a public-domain source cannot deny any use, and the real public-domain sources allow all five', () => {

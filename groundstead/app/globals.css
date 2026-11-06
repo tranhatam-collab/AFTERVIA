@@ -40,3 +40,7 @@ table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 th, td { text-align: left; vertical-align: top; padding: .5rem .4rem; border-bottom: 1px solid var(--notice-border); }
 .footnote { color: var(--muted); font-size: .95rem; margin-top: 2rem; }
 .contacts li { margin-bottom: 1.25rem; }
+
+.situations li { margin-bottom: 1rem; }
+.firstaction { font-size: 1.1rem; background: var(--notice-bg); border-left: 4px solid var(--accent); padding: .5rem 1rem; }
+.country-help { border-top: 1px solid var(--notice-border); margin-top: 1.25rem; padding-top: .5rem; }

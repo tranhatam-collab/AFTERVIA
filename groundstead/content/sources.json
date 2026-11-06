@@ -415,6 +415,34 @@
         "VN"
       ],
       "notes": "Only the footer of the home page was read on 2026-11-06. The emblem is protected."
+    },
+    {
+      "id": "us-nws-heat-illness",
+      "organization": "National Weather Service (NOAA)",
+      "title": "Heat cramps, exhaustion and stroke: first aid",
+      "url": "https://www.weather.gov/safety/heat-illness",
+      "language": "en",
+      "accessed": "2026-11-06",
+      "license": {
+        "kind": "public-domain",
+        "summary": "US federal government work (NWS web page): public domain under the NWS conditions",
+        "url": "https://www.weather.gov/disclaimer",
+        "quote": "The information on National Weather Service (NWS) Web pages are in the public domain, unless specifically noted otherwise, and may be used without charge for any lawful purpose so long as you do not: 1) claim it is your own (e.g., by claiming copyright for NWS information -- see below), 2) use it in a manner that implies an endorsement or affiliation with NOAA/NWS, or 3) modify its content and then present it as official government material. You also cannot present information of your own in a way that makes it appear to be official government information.",
+        "checked_on": "2026-11-06",
+        "verified_via": "official-page"
+      },
+      "usage": {
+        "quote": true,
+        "summarize": true,
+        "translate": true,
+        "offline": true,
+        "commercial": true
+      },
+      "scope": [
+        "US",
+        "GLOBAL"
+      ],
+      "notes": "Page read on 2026-11-06. It gives warning signs of heat illness and first-aid steps, and says for heat stroke: 'Call 911 or get the victim to a hospital immediately.' Groundstead summaries must not present 911 as a global number: say 'your local emergency number'. Same NWS conditions as us-nws-safety apply."
     }
   ]
 }

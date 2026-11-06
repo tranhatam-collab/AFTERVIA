@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 7,
+    "iterations_used": 9,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -169,9 +169,15 @@
         "GT03",
         "GT04"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: content OK 17 sources, 10 specs, 4 cards (flood-safety, heat-safety in EN and VI); tests 86 passed",
+        "scope: 2 of 3 planned cards. Power-outage card split to GS-031b (BLOCKED): no readable, cleared official source found yet",
+        "docs/evidence/GS-031.md"
+      ],
+      "started_at": "2026-11-06T12:14:23.060Z",
+      "finished_at": "2026-11-06T12:14:23.099Z"
     },
     {
       "id": "GS-014",
@@ -188,9 +194,15 @@
         "GT11",
         "GT32"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 98 tests passed (emergency 7, directory 6, browser 10, accessibility 12 with axe self-check 1)",
+        "matrix: GT09, GT10, GT11, GT32 PASS (PARTIAL); 7 mutations each turned tests red or were checked by source rebuild",
+        "docs/evidence/GS-014.md"
+      ],
+      "started_at": "2026-11-06T12:14:38.912Z",
+      "finished_at": "2026-11-06T12:16:29.698Z"
     },
     {
       "id": "GS-013",
@@ -1133,6 +1145,23 @@
       "status": "TODO",
       "attempts": 0,
       "evidence": []
+    },
+    {
+      "id": "GS-031b",
+      "wo": "GS-031",
+      "gate": "G1",
+      "kind": "AUTO",
+      "title": "Thẻ mất điện (EN/VI): cần nguồn chính thức đọc được và được phép tóm lược; các trang NWS và USGS đã đọc không có hướng dẫn mất điện",
+      "deps": [],
+      "acceptance": [
+        "GT03",
+        "GT04"
+      ],
+      "status": "BLOCKED",
+      "attempts": 0,
+      "evidence": [],
+      "blocked_reason": "Chưa có nguồn chính thức đọc được và được phép tóm lược về mất điện. Đã thử: NWS (weather.gov/safety/*), USGS (usgs.gov), Red Cross (redcross.org, trang lũ và lốc). FEMA/CDC chặn truy cập tự động (403). Cần: chủ dự án mở và gửi lại nội dung từ FEMA hoặc CDC (GS-H11), hoặc chấp nhận nguồn khác.",
+      "blocked_at": "2026-11-06T12:14:23.177Z"
     }
   ]
 }
