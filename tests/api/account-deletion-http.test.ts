@@ -14,6 +14,7 @@ const USERS = {
   cOwner: '00000000-0000-4000-8000-0000000000c1',
   dOther: '00000000-0000-4000-8000-0000000000d1',
   soleOwner: '00000000-0000-4000-8000-0000000000b1',
+  reauth: '00000000-0000-4000-8000-0000000000b2',
 } as const;
 type UserName = keyof typeof USERS;
 const REQUEST_ID = 'erase-c1-request-0001';
@@ -151,5 +152,36 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
     expect(refused.status).toBe(409);
     expect(refused.json.code).toBe('invalid_state');
     expect(await profileStatus(USERS.soleOwner)).toBe('ACTIVE');
+  });
+
+  it('T25 a sign-in lasts 15 minutes: expires_in is 900, and the token expires 900 seconds after it is issued', async () => {
+    const signIn = await api(h.url, 'POST', '/v1/dev/sign-in', null, { user_id: USERS.reauth });
+    expect(signIn.status).toBe(200);
+    expect(signIn.json.expires_in).toBe(900);
+    const claims = JSON.parse(Buffer.from(String(signIn.json.access_token).split('.')[1] ?? '', 'base64url').toString('utf8')) as {
+      iat: number;
+      exp: number;
+    };
+    expect(claims.exp - claims.iat).toBe(900);
+  });
+
+  it('T25 a deletion request needs a session issued within the last 5 minutes: an older session is refused with 401, and it still reads items', async () => {
+    // Mốc 360 giây thay vì 301 để kết quả không phụ thuộc đồng hồ. Ranh giới 300 giây nằm trong mã và được đọc ở đó.
+    const now = Math.floor(Date.now() / 1000);
+    const stale = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 360, exp: now + 600, simulated: true }, SECRET);
+    expect((await api(h.url, 'GET', '/v1/items', stale)).status).toBe(200);
+    const refused = await api(h.url, 'POST', '/v1/account/deletion', stale, { request_id: 'erase-reauth-stale-0001' });
+    expect(refused.status).toBe(401);
+    expect(refused.json.code).toBe('unauthenticated');
+    expect(await profileStatus(USERS.reauth)).toBe('ACTIVE');
+  });
+
+  it('T25 a session issued within the last 5 minutes can request deletion, and the profile moves to PENDING_DELETION', async () => {
+    const now = Math.floor(Date.now() / 1000);
+    const recent = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 240, exp: now + 600, simulated: true }, SECRET);
+    const accepted = await api(h.url, 'POST', '/v1/account/deletion', recent, { request_id: 'erase-reauth-recent-0001' });
+    expect(accepted.status).toBe(200);
+    expect(accepted.json).toMatchObject({ request_id: 'erase-reauth-recent-0001', status: 'PENDING_POLICY' });
+    expect(await profileStatus(USERS.reauth)).toBe('PENDING_DELETION');
   });
 });

@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 65,
-    "iterations_used": 61,
+    "iterations_used": 62,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1883,9 +1883,14 @@
       "acceptance": [
         "T25"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02f-SESS.md",
+        "verify exit 0: bundle 69/69; secrets 320 files; Vitest 466/466 pass, 1 skipped; JSON success 467 total, 466 pass, 0 fail; tests/api 92/92; mutations M1 2/9 red, M2 1/9 red, app.ts restored by sha256; E2E-WEB-01 passed 12/12"
+      ],
+      "started_at": "2026-11-06T15:38:02.820Z",
+      "finished_at": "2026-11-06T15:42:54.813Z"
     },
     {
       "id": "WO11-02e-EXP",

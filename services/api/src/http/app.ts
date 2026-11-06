@@ -19,7 +19,9 @@ export interface AppConfig {
 
 const DEV_ENVS = new Set(['local', 'test']);
 const MAX_BODY_BYTES = 16 * 1024;
-const TOKEN_TTL_SECONDS = 3600;
+// Thời hạn phiên 15 phút (Q3, phương án C). Yêu cầu xóa tài khoản chỉ nhận phiên phát trong DELETION_REAUTH_SECONDS gần nhất.
+const TOKEN_TTL_SECONDS = 900;
+const DELETION_REAUTH_SECONDS = 300;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export class HttpError extends Error {
@@ -71,7 +73,7 @@ async function deletionCutoff(pool: pg.Pool, userId: string): Promise<number | n
   });
 }
 
-async function authenticateSession(req: IncomingMessage, config: AppConfig): Promise<{ userId: string; simulated: boolean }> {
+async function authenticateSession(req: IncomingMessage, config: AppConfig): Promise<{ userId: string; simulated: boolean; issuedAt: number | null }> {
   const match = /^Bearer (.+)$/.exec(req.headers.authorization ?? '');
   if (!match || !match[1]) throw new HttpError(401, 'unauthenticated');
   const result = verifyHs256(match[1], config.jwtSecret);
@@ -79,7 +81,12 @@ async function authenticateSession(req: IncomingMessage, config: AppConfig): Pro
   const { sub, iat } = result.claims;
   const cutoff = await deletionCutoff(config.pool, sub);
   if (cutoff !== null && (typeof iat !== 'number' || iat <= cutoff)) throw new HttpError(401, 'unauthenticated');
-  return { userId: sub, simulated: result.claims.simulated === true };
+  return { userId: sub, simulated: result.claims.simulated === true, issuedAt: typeof iat === 'number' ? iat : null };
+}
+
+// Yêu cầu xóa tài khoản chỉ nhận phiên phát trong DELETION_REAUTH_SECONDS gần nhất. Phiên thiếu iat bị từ chối.
+function issuedRecently(issuedAt: number | null): boolean {
+  return issuedAt !== null && Math.floor(Date.now() / 1000) - issuedAt <= DELETION_REAUTH_SECONDS;
 }
 
 // Đổi lỗi cơ sở dữ liệu thành lỗi HTTP. Chỉ dùng mã SQLSTATE và thông điệp ổn định, không lộ chi tiết nội bộ.
@@ -609,14 +616,18 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
 async function handleContract(req: IncomingMessage, res: ServerResponse, config: AppConfig, match: ContractMatch): Promise<void> {
   const requestId = randomUUID();
   res.setHeader('x-request-id', requestId);
-  let userId: string;
+  let session: { userId: string; issuedAt: number | null };
   try {
-    userId = (await authenticateSession(req, config)).userId;
+    session = await authenticateSession(req, config);
   } catch {
     return sendContractError(res, 401, 'unauthenticated', requestId);
   }
+  // Xóa tài khoản là thao tác nhạy cảm: phải có phiên phát trong 5 phút gần nhất (xác thực lại trước khi xóa, Q3-C).
+  if (match.route.operationId === 'requestDeletion' && !issuedRecently(session.issuedAt)) {
+    return sendContractError(res, 401, 'unauthenticated', requestId);
+  }
   try {
-    return send(res, 200, await runContract(req, config, userId, match));
+    return send(res, 200, await runContract(req, config, session.userId, match));
   } catch (error) {
     if (error instanceof HttpError) return sendContractError(res, error.status, error.code, requestId);
     const mapped = contractDbError(error);
