@@ -2,17 +2,24 @@
 
 import { useEffect, useState } from 'react';
 import { sha256Hex } from '../lib/offline/digest.ts';
+import { PACK_PUBLIC_KEY } from '../lib/offline/keys.ts';
+import { verifySignature } from '../lib/offline/signature.ts';
 import type { OfflineText } from '../lib/offline/text.ts';
 import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
 
-// The offline copy panel (GS-021). It downloads a locale pack, checks every file against the manifest, and stores
-// the pack only when all files match. A stored pack that fails the check is removed, so the service worker never
-// answers from a damaged copy. The worker is public/sw.js.
+// The offline copy panel (GS-021, GS-022). It downloads a locale pack, checks the manifest's Ed25519 signature
+// against the key built into the site, checks every file against the manifest, and stores the pack only when all of
+// that holds. A stored pack that fails the check is removed, so the service worker never answers from a damaged or
+// unsigned copy. The worker is public/sw.js.
 
 type Phase = 'checking' | 'busy' | 'none' | 'ready' | 'notReady' | 'unsupported' | 'removed';
 type Info = { version: string; updated: string };
 type Check = { kind: 'none' } | { kind: 'notReady' } | { kind: 'ready'; info: Info };
 type Body = { bytes: ArrayBuffer; type: string | null };
+type Fetched =
+  | { kind: 'ok'; manifest: PackManifest; bodies: Map<string, Body> }
+  | { kind: 'unsigned' }
+  | { kind: 'failed' };
 
 const PREFIX = 'groundstead-pack-';
 
@@ -51,7 +58,7 @@ async function dropPacks(locale: string, keep?: string): Promise<void> {
   }
 }
 
-// Reads the stored manifest and hashes every stored file again. Ready only when every file matches.
+// Reads the stored manifest, checks its signature, and hashes every stored file again. Ready only when all hold.
 async function checkStored(locale: string): Promise<Check> {
   for (const name of await packNames(locale)) {
     const cache = await caches.open(name);
@@ -64,6 +71,7 @@ async function checkStored(locale: string): Promise<Check> {
       continue;
     }
     if (!isManifest(manifest)) continue;
+    if (!(await verifySignature(manifest, manifest.signature, PACK_PUBLIC_KEY))) return { kind: 'notReady' };
     const found: Record<string, string> = {};
     for (const file of manifest.files) {
       const stored = await cache.match(absolute(file.path));
@@ -75,17 +83,19 @@ async function checkStored(locale: string): Promise<Check> {
   return { kind: 'none' };
 }
 
-// Downloads the manifest and every file it lists. Returns the bodies only when every file matches.
-async function fetchPack(locale: string): Promise<{ manifest: PackManifest; bodies: Map<string, Body> } | null> {
+// Downloads the manifest, checks its signature, then downloads every file it lists. The result is 'ok' only when the
+// signature is valid and every file matches.
+async function fetchPack(locale: string): Promise<Fetched> {
   let manifest: unknown;
   try {
     const response = await fetch(`/offline/${locale}.json`, { cache: 'no-store' });
-    if (!response.ok) return null;
+    if (!response.ok) return { kind: 'failed' };
     manifest = await response.json();
   } catch {
-    return null;
+    return { kind: 'failed' };
   }
-  if (!isManifest(manifest)) return null;
+  if (!isManifest(manifest)) return { kind: 'failed' };
+  if (!(await verifySignature(manifest, manifest.signature, PACK_PUBLIC_KEY))) return { kind: 'unsigned' };
   const found: Record<string, string> = {};
   const bodies = new Map<string, Body>();
   for (const file of manifest.files) {
@@ -99,7 +109,7 @@ async function fetchPack(locale: string): Promise<{ manifest: PackManifest; bodi
       // unreadable: left out of `found`, so verifyPack reports that file as missing
     }
   }
-  return verifyPack(manifest, found).ready ? { manifest, bodies } : null;
+  return verifyPack(manifest, found).ready ? { kind: 'ok', manifest, bodies } : { kind: 'failed' };
 }
 
 async function storePack(locale: string, manifest: PackManifest, bodies: Map<string, Body>): Promise<void> {
@@ -159,7 +169,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
   const [info, setInfo] = useState<Info | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
-  // Shows what is stored after checking every stored file. A stored pack that fails the check is removed.
+  // Shows what is stored after checking it. A stored pack that fails the check is removed.
   async function settle(): Promise<Check['kind']> {
     const check = await checkStored(locale);
     if (check.kind === 'ready') {
@@ -192,14 +202,14 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
     setNotice(null);
     setPhase('busy');
     try {
-      const pack = await fetchPack(locale).catch(() => null);
-      if (!pack) {
-        setNotice(labels.statusFailed);
+      const fetched = await fetchPack(locale).catch((): Fetched => ({ kind: 'failed' }));
+      if (fetched.kind !== 'ok') {
+        setNotice(fetched.kind === 'unsigned' ? labels.statusUnsigned : labels.statusFailed);
         await settle();
         return;
       }
       try {
-        await storePack(locale, pack.manifest, pack.bodies);
+        await storePack(locale, fetched.manifest, fetched.bodies);
       } catch {
         await dropPacks(locale);
         setInfo(null);
@@ -210,7 +220,7 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
         setPhase('unsupported');
         return;
       }
-      setInfo({ version: pack.manifest.version, updated: pack.manifest.updated });
+      setInfo({ version: fetched.manifest.version, updated: fetched.manifest.updated });
       setPhase('ready');
     } catch {
       setPhase('unsupported');

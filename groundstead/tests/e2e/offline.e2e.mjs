@@ -114,6 +114,34 @@ test('GT07 a missing file or a missing manifest leaves no pack behind', async ()
   }
 });
 
+test('GT07 a manifest without a valid signature is refused, even when every file matches', async () => {
+  const changes = [
+    (manifest) => {
+      manifest.signature = Buffer.alloc(64).toString('base64');
+    },
+    (manifest) => {
+      manifest.signature = null;
+    },
+  ];
+  for (const change of changes) {
+    const s = await session();
+    try {
+      await s.context.route('**/offline/en.json', async (route) => {
+        const response = await route.fetch();
+        const manifest = await response.json();
+        change(manifest);
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(manifest) });
+      });
+      await s.page.goto(`${s.base}/en/emergency/`, { waitUntil: 'load' });
+      await button(s.page, OFFLINE.en.download).click();
+      await waitForStatus(s.page, OFFLINE.en.statusUnsigned);
+      assert.deepEqual(await packNames(s.page), []);
+    } finally {
+      await s.close();
+    }
+  }
+});
+
 test('GT08 the emergency page shows the pack version and date, and the check button finds a changed stored file', async () => {
   const s = await session();
   try {

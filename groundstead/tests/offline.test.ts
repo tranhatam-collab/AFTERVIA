@@ -1,10 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { generateKeyPairSync } from 'node:crypto';
 import { resolve } from 'node:path';
 import { LOCALES, type Locale } from '../lib/i18n/locales.ts';
 import { sha256Hex } from '../lib/offline/digest.ts';
-import { assetRefs, buildManifest, inPack } from '../lib/offline/pack.ts';
+import { base64ToBytes, verifySignature } from '../lib/offline/signature.ts';
+import { assetRefs, buildManifest, inPack, signManifest } from '../lib/offline/pack.ts';
 import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
 import { OUT, readOut } from './helpers.ts';
 
@@ -160,4 +162,58 @@ test('GT06 the service worker is served at /sw.js and never stores a response it
   const sw = readOut('sw.js');
   assert.match(sw, /addEventListener\('fetch'/);
   assert.doesNotMatch(sw, /\.put\(|\.add\(|addAll\(/, 'only the page stores a file, after the check');
+});
+
+// A new Ed25519 pair for one test, created in memory. Nothing is stored.
+function testKey(): { pem: string; publicKey: string } {
+  const { privateKey, publicKey } = generateKeyPairSync('ed25519');
+  return {
+    pem: privateKey.export({ format: 'pem', type: 'pkcs8' }).toString(),
+    publicKey: Buffer.from(publicKey.export({ format: 'jwk' }).x ?? '', 'base64url').toString('base64'),
+  };
+}
+
+// Every JavaScript file the build wrote, as one string.
+function readJavaScript(dir: string): string {
+  return readdirSync(dir, { withFileTypes: true })
+    .map((entry) => {
+      const path = resolve(dir, entry.name);
+      if (entry.isDirectory()) return readJavaScript(path);
+      return entry.name.endsWith('.js') ? readFileSync(path, 'utf8') : '';
+    })
+    .join('\n');
+}
+
+test('GT07 an Ed25519 signature verifies a manifest only under the key that made it, and only unchanged', async () => {
+  const key = testKey();
+  const manifest = await buildManifest('en', [{ path: '/a/', bytes: encode('page a') }], '2026-11-06');
+  const signed = signManifest(manifest, key.pem);
+  assert.equal(await verifySignature(signed, signed.signature, key.publicKey), true);
+  assert.equal(await verifySignature(signed, signed.signature, testKey().publicKey), false, 'another key');
+  const other = await sha256Hex(encode('other page'));
+  const changedFile = { ...signed, files: signed.files.map((file) => ({ ...file, sha256: other })) };
+  assert.equal(await verifySignature(changedFile, signed.signature, key.publicKey), false, 'a changed file');
+  const changedVersion = { ...signed, version: 'other' };
+  assert.equal(await verifySignature(changedVersion, signed.signature, key.publicKey), false, 'a changed version');
+  assert.equal(await verifySignature(signed, null, key.publicKey), false, 'no signature');
+  assert.equal(await verifySignature(signed, undefined, key.publicKey), false, 'no signature field');
+  assert.equal(await verifySignature(signed, signed.signature, ''), false, 'no key');
+  assert.equal(await verifySignature(signed, 'not base64!', key.publicKey), false, 'malformed signature');
+  assert.equal(await verifySignature(signed, Buffer.alloc(64).toString('base64'), key.publicKey), false, 'zero signature');
+  assert.equal(await verifySignature(signed, signed.signature, Buffer.alloc(31).toString('base64')), false, 'short key');
+  assert.equal(base64ToBytes('AAE=')?.byteLength, 2);
+  assert.equal(base64ToBytes('A'), null);
+});
+
+test('GT07 build output: every pack is signed, the signature verifies, and the site ships the public key that signed it', async () => {
+  const bundle = readJavaScript(resolve(OUT, '_next', 'static'));
+  for (const locale of LOCALES) {
+    const manifest = manifestOf(locale);
+    assert.ok(
+      manifest.signature && manifest.publicKey,
+      `${locale} pack is signed: build with npm run build:test, or set the signing keys for npm run build`,
+    );
+    assert.equal(await verifySignature(manifest, manifest.signature, manifest.publicKey), true, `${locale} signature`);
+    assert.ok(bundle.includes(manifest.publicKey), `${locale}: the site's JavaScript contains that public key`);
+  }
 });

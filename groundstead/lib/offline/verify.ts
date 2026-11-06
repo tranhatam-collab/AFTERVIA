@@ -1,7 +1,16 @@
 // Offline pack checks (GS-021, GT07). Pure functions: the browser computes SHA-256 with crypto.subtle and the
 // tests compute it with node:crypto; the rule below is the same in both places.
 export type PackFile = { path: string; sha256: string; size: number };
-export type PackManifest = { id: string; version: string; updated: string; files: PackFile[] };
+// signature and publicKey are set by the build (Ed25519, base64). A reader's browser trusts only the key built into
+// the site, never the publicKey that a manifest carries.
+export type PackManifest = {
+  id: string;
+  version: string;
+  updated: string;
+  files: PackFile[];
+  signature?: string | null;
+  publicKey?: string | null;
+};
 export type Verdict = { ready: boolean; problems: string[] };
 
 const HEX64 = /^[0-9a-f]{64}$/;

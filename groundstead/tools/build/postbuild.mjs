@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { BRAND } from '../../lib/brand.ts';
 import { buildDate } from '../../lib/content/load.ts';
 import { LOCALES } from '../../lib/i18n/locales.ts';
-import { assetRefs, buildManifest, inPack } from '../../lib/offline/pack.ts';
+import { assetRefs, buildManifest, inPack, signManifest } from '../../lib/offline/pack.ts';
 import { PUBLIC_PATHS } from '../../lib/routes.ts';
 import { localeSitemapXml, sitemapIndexXml } from '../../lib/seo/sitemap.ts';
 
@@ -69,8 +69,24 @@ async function packFor(locale) {
 }
 
 mkdirSync(join(out, 'offline'), { recursive: true });
+// Signing (GS-022): the private key comes only from the environment. Set both keys or neither. A pack signed with a
+// key the site does not trust is never accepted, so a mismatch stops the build instead of failing silently later.
+const privateKey = process.env.GROUNDSTEAD_PACK_PRIVATE_KEY ?? '';
+const publicKey = process.env.NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY ?? '';
+if (Boolean(privateKey) !== Boolean(publicKey)) {
+  console.error('postbuild: set both GROUNDSTEAD_PACK_PRIVATE_KEY and NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY, or neither');
+  process.exit(1);
+}
 for (const locale of LOCALES) {
-  const manifest = await packFor(locale);
+  let manifest = await packFor(locale);
+  if (privateKey) {
+    manifest = signManifest(manifest, privateKey);
+    if (manifest.publicKey !== publicKey) {
+      console.error('postbuild: the signing key does not match NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY');
+      process.exit(1);
+    }
+  }
   writeFileSync(join(out, 'offline', `${locale}.json`), `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`postbuild: offline pack ${locale}: ${manifest.files.length} file(s), version ${manifest.version}`);
+  const state = privateKey ? 'signed' : 'UNSIGNED (no signing key: readers will not accept this pack)';
+  console.log(`postbuild: offline pack ${locale}: ${manifest.files.length} file(s), version ${manifest.version}, ${state}`);
 }

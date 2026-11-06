@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 14,
+    "iterations_used": 15,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -338,9 +338,15 @@
       "acceptance": [
         "GT07"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: 147 node tests passed (144 + 3 chữ ký: 2 đơn vị/build, 1 E2E)",
+        "mutations (đã hoàn tác, cmp xác nhận): verifySignature luôn đúng → đơn vị đỏ; out/ không có chữ ký → build đỏ; component bỏ kiểm chữ ký → E2E đỏ; postbuild chỉ có một khóa và khóa không khớp → exit 1",
+        "docs/evidence/GS-022.md"
+      ],
+      "started_at": "2026-11-06T15:35:14.521Z",
+      "finished_at": "2026-11-06T15:35:14.555Z"
     },
     {
       "id": "GS-023",

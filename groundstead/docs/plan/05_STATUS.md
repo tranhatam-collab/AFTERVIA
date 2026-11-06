@@ -1,9 +1,9 @@
 # Groundstead — Trạng thái vòng lặp
 
-- Cập nhật: 06/11/2026, sau vòng 14 (GS-021; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
+- Cập nhật: 06/11/2026, sau vòng 15 (GS-022; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **CONTINUE** — vòng lặp tiếp tục theo `decide`. Có lịch kiểm tra an toàn cho PR #2 (`send_later`, khoảng 17:48Z).
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 14/100 vòng.
+- Ngân sách: 15/100 vòng.
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
@@ -22,12 +22,13 @@
 | 12 | GS-035 Bản DRAFT điều khoản, quyền riêng tư, miễn trừ, affiliate | DONE (AUTO_PREP) — bản DRAFT EN/VI trong `docs/legal/`, không được ứng dụng tham chiếu; GT36 vẫn MANUAL_PENDING cho đến khi chủ dự án duyệt | `docs/evidence/GS-035.md` |
 | 13 | GS-020 Tách kho hướng dẫn khẩn cấp khỏi thương mại | DONE — verify exit 0, 132/132 kiểm thử (gồm 2 ranh giới và 1 E2E GT12); 2 đột biến (import thương mại bị bắt; fetch ra ngoài bị bắt sau khi thêm E2E trang chỉ mục); GT12 PASS (PARTIAL) | `docs/evidence/GS-020.md` |
 | 14 | GS-021 Service worker và gói ngoại tuyến có kiểm SHA-256 | DONE — verify exit 0, 144/144 kiểm thử (gồm 8 đơn vị/build và 4 E2E Chromium); 4 đột biến bị bắt; GT06, GT07, GT08 PASS (PARTIAL); quyết định D-28 về cách phục vụ gói | `docs/evidence/GS-021.md` |
+| 15 | GS-022 Ký bản kê Ed25519; trình duyệt kiểm chữ ký bằng khóa đã nhúng | DONE — verify exit 0, 147/147 kiểm thử (gồm 2 đơn vị/build và 1 E2E cho chữ ký); 3 đột biến và 2 chốt postbuild bị bắt; chưa có khóa thật nên Preview chưa ký (D-30); GT07 PASS (PARTIAL) | `docs/evidence/GS-022.md` |
 | — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
-- GS-022 Ký bản kê Ed25519 (GT07) là việc kế tiếp theo `decide`. Khóa thật do chủ dự án giữ và cấp; vòng lặp chỉ dùng khóa sinh tạm trong kiểm thử.
-- Rủi ro đến khi có GS-022: bản kê gói chưa ký, nên ai có quyền ghi vào máy chủ có thể thay cả tệp lẫn bản kê. Gói tải về vẫn được kiểm bằng SHA-256 với bản kê, nhưng không xác thực được bản kê.
-- GS-023 (bản in và nút kiểm tra, GT08) sau GS-022.
+- GS-023 Bản in theo ngôn ngữ và yêu cầu lưu trữ bền vững (GT08) là việc kế tiếp theo `decide`. Nút kiểm tra gói đã có từ GS-021.
+- Gói chưa ký trên Preview và Production cho đến khi chủ dự án cấp khóa (D-30). Ở trạng thái này gói bị từ chối và nút tải báo "không có chữ ký hợp lệ" (đúng GT07).
+- Khóa thật cho gói: xem D-30 và GS-H12 bên dưới.
 - GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".
 - Phát hiện cần ghi vào GS-081: canonical của trang con kế thừa từ layout (trỏ về trang chủ).
 - Môi trường: phiên đang dùng `groundstead-sources` (mạng giới hạn 19 tên miền).
@@ -38,6 +39,7 @@
 - **D-23:** mở thêm tên miền để đọc số khẩn cấp (VN: bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn; Hoa Kỳ: fcc.gov, usa.gov). Không tự thêm.
 
 ## Chờ chủ dự án (đang chặn đường chính)
+- **D-30 / GS-H12 (chặn gói ngoại tuyến sẵn sàng trên Preview và Production):** sinh cặp khóa Ed25519; đặt khóa riêng làm secret của build (không commit, không ghi ra đĩa); đặt khóa công khai làm `NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY`. Đến lúc đó gói bị từ chối (đúng GT07). Vòng lặp không tự sinh khóa thật.
 - **GS-H11 (không gấp):** 5 website chặn truy cập tự động hoặc không kết nối (IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF) và FEMA/CDC cũng chặn: nhờ anh mở bằng trình duyệt, chép câu bản quyền/tái sử dụng gửi lại để ghi vào sổ nguồn.
 - **GS-H01:** tạo repo trống `tranhatam-collab/groundstead` (chặn tách repo và CI riêng; không chặn các task khác).
 - **GS-H02, GS-H03:** duyệt nội dung landing và DNS `iai.one` (chặn landing công khai, cần trước 20/11).
