@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 60,
-    "iterations_used": 57,
+    "iterations_used": 58,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1012,30 +1012,6 @@
       "finished_at": "2026-10-31T20:01:22.225Z"
     },
     {
-      "id": "WO16-01",
-      "wo": "WO16",
-      "gate": "P0",
-      "kind": "AUTO",
-      "title": "Sao lưu DB và manifest object; khôi phục sang DB cô lập; so số dòng, hash, chính sách, tombstone",
-      "deps": [
-        "WO03-03",
-        "WO11-02a",
-        "WO11-02b",
-        "WO11-02c",
-        "WO11-02d",
-        "WO11-02e",
-        "WO11-02f",
-        "WO11-02g"
-      ],
-      "acceptance": [
-        "T39",
-        "T26"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
       "id": "WO16-02",
       "wo": "WO16",
       "gate": "P0",
@@ -1110,36 +1086,14 @@
       "finished_at": "2026-10-31T20:32:53.638Z"
     },
     {
-      "id": "WO17-01",
-      "wo": "WO17",
-      "gate": "G2",
-      "kind": "AUTO_PREP",
-      "title": "Gói bằng chứng bảo mật: threat model sang test, rủi ro còn lại, kịch bản DAST khi có server đang chạy",
-      "deps": [
-        "WO16-03",
-        "WO12-03",
-        "WO10-03a",
-        "WO10-03b",
-        "WO10-03c",
-        "WO10-03d"
-      ],
-      "acceptance": [
-        "T37",
-        "T38",
-        "T41"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
       "id": "HUM-WO17-02",
       "wo": "WO17",
       "gate": "G2",
       "kind": "HUMAN",
       "title": "Đánh giá bảo mật độc lập bởi người không phải tác giả AI (DEC05); mọi CRITICAL/HIGH phải được đóng",
       "deps": [
-        "WO17-01"
+        "WO17-01a",
+        "WO17-01b"
       ],
       "acceptance": [
         "T04",
@@ -1196,7 +1150,8 @@
       "kind": "INFRA",
       "title": "Staging độc lập: diễn tập khôi phục DB và object, đo RPO/RTO thật, rollback có migration",
       "deps": [
-        "WO16-01"
+        "WO16-01a",
+        "WO16-01b"
       ],
       "acceptance": [
         "T39",
@@ -1297,8 +1252,10 @@
       "kind": "AUTO_PREP",
       "title": "Checklist phát hành G4 và kịch bản rollback trên staging; không chạm production",
       "deps": [
-        "WO16-01",
-        "WO17-01"
+        "WO16-01a",
+        "WO16-01b",
+        "WO17-01a",
+        "WO17-01b"
       ],
       "acceptance": [
         "T44"
@@ -1783,6 +1740,105 @@
       ],
       "started_at": "2026-11-04T00:54:45.892Z",
       "finished_at": "2026-11-04T01:16:44.615Z"
+    },
+    {
+      "id": "WO16-01a",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Diễn tập khôi phục DB cục bộ: sao lưu logic DB _test thành tệp có manifest SHA-256, khôi phục sang DB _test cô lập, so số dòng, hash nội dung, chính sách RLS, trigger và hàm; object storage, RPO/RTO thật và staging (INF-01) chưa có",
+      "deps": [
+        "WO03-03"
+      ],
+      "acceptance": [
+        "T39"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-01a.md"
+      ],
+      "split_from": "WO16-01",
+      "started_at": "2026-11-06T10:32:25.585Z",
+      "finished_at": "2026-11-06T10:37:40.466Z"
+    },
+    {
+      "id": "WO16-01b",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Đối chiếu tombstone và chính sách xóa trong bản khôi phục, sau khi chủ dự án chốt danh mục xóa và các quyết định WO11-02d..g",
+      "deps": [
+        "WO16-01a",
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02d",
+        "WO11-02e",
+        "WO11-02f",
+        "WO11-02g"
+      ],
+      "acceptance": [
+        "T26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO16-01"
+    },
+    {
+      "id": "WO17-01a",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Gói bằng chứng bảo mật, phần tài liệu: threat model (spec engineering/05) ánh xạ sang kiểm thử hiện có, rủi ro còn lại, phần chưa có bằng chứng (thanh toán, kho byte, scanner, staging), kịch bản DAST để chạy khi có server",
+      "deps": [
+        "WO16-03",
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO17-01"
+    },
+    {
+      "id": "WO17-01b",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Phần còn lại của gói bằng chứng bảo mật: chạy DAST khi có server và HAWK_API_KEY, đối chiếu thanh toán và kho byte sau khi WO12-03 và WO10-03d xong",
+      "deps": [
+        "WO17-01a",
+        "WO12-03",
+        "WO10-03d"
+      ],
+      "acceptance": [
+        "T37",
+        "T38",
+        "T41"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO17-01"
+    },
+    {
+      "id": "WO10-03d-prep",
+      "wo": "WO10-03d",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Đề xuất, không quyết định, cho WO10-03d và HUM-WO10-03a: kho byte cho tài liệu (DEC06) và cách trả link gói xuất 24 giờ; mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống",
+      "deps": [
+        "WO10-03a",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }
