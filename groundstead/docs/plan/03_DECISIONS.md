@@ -15,6 +15,8 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-07 | Hệ quả của D-03 lên hai bản kế hoạch | Bỏ: đội thuê, chuyên gia duyệt trả phí, thực nghiệm thiết bị tại Đà Lạt, tồn kho, kit thương hiệu riêng, SMS/WhatsApp miễn phí cho Member, Circle có người điều phối. Thay bằng: nhãn trung thực `AI_DRAFT` và "Chưa được Groundstead thử thực tế", hồ sơ chứng nhận + tra thu hồi, kênh cảnh báo miễn phí, Circle chỉ mở khi có Lead ăn chia doanh thu. | 06/11/2026 | Claude (suy ra từ D-03; chủ dự án có thể sửa) |
 | D-13 | Trình chạy kiểm thử | Dùng `node:test` cho cả `.ts` (type stripping của Node 22.23), không dùng Vitest: cài `vitest@4.1.12` làm npm lỗi `Cannot read properties of null (reading 'edgesOut')` khi giải peer; không bật `legacy-peer-deps`. Kiểm thử giao diện chạy trên HTML build thật (parse5) và Playwright. | 06/11/2026 | Claude (kỹ thuật) |
 | D-14 | Phiên bản dependency | Ghim chính xác; chọn bản phát hành ít nhất 2 tuần: next 16.4.2 (15/10/2026), react và react-dom 19.3.1 (14/10/2026), typescript 5.9.3. `npm audit`: 0 lỗ hổng. | 06/11/2026 | Claude (kỹ thuật) |
+| D-15 | Luật quyền của sổ nguồn | Thẻ và bài chỉ được trích nguồn cho phép `summarize`, `offline` và `commercial` (site có affiliate là thương mại); nguồn khác ngôn ngữ phải cho `translate`; nguồn `link-only`/`restricted` chỉ để dẫn liên kết. Dựa trên §8.3 của kế hoạch; **không phải ý kiến pháp lý** — cờ quyền của từng nguồn do vòng lặp điền từ điều khoản công khai và chủ dự án/luật sư nên rà lại trước khi công khai (GS-030). | 06/11/2026 | Claude (kỹ thuật) |
+| D-16 | Thư viện nội dung | `ajv` 8.20.0, `ajv-formats` 3.0.1, `yaml` 2.9.1 (ghim chính xác, ≥ 2 tuần tuổi, `npm audit` 0). | 06/11/2026 | Claude (kỹ thuật) |
 
 ## Đang mở
 

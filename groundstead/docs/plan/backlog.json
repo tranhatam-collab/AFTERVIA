@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 3,
+    "iterations_used": 4,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -84,9 +84,15 @@
         "GT03",
         "GT04"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: content OK, next build, tsc OK, bundle scan OK, node tests 54 passed 0 failed; npm audit 0",
+        "matrix from-report: GT03 PASS (PARTIAL), GT04 PASS (PARTIAL); 7 mutations each turned tests red, restored with sha256 match",
+        "docs/evidence/GS-011.md"
+      ],
+      "started_at": "2026-11-06T06:05:15.164Z",
+      "finished_at": "2026-11-06T06:10:15.023Z"
     },
     {
       "id": "GS-030",

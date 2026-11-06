@@ -1,0 +1,42 @@
+{
+  "$id": "https://groundstead.iai.one/schema/source.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "organization", "title", "url", "language", "accessed", "license", "usage", "scope"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "organization": { "type": "string", "minLength": 2 },
+    "title": { "type": "string", "minLength": 2 },
+    "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "language": { "type": "string", "pattern": "^[a-z]{2}$" },
+    "accessed": { "type": "string", "format": "date" },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "summary"],
+      "properties": {
+        "kind": { "enum": ["public-domain", "open-license", "permission-granted", "link-only", "restricted"] },
+        "summary": { "type": "string", "minLength": 5 },
+        "url": { "type": "string", "format": "uri", "pattern": "^https://" }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quote", "summarize", "translate", "offline", "commercial"],
+      "properties": {
+        "quote": { "type": "boolean" },
+        "summarize": { "type": "boolean" },
+        "translate": { "type": "boolean" },
+        "offline": { "type": "boolean" },
+        "commercial": { "type": "boolean" }
+      }
+    },
+    "scope": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^([A-Z]{2}|GLOBAL)$" }
+    },
+    "notes": { "type": "string" }
+  }
+}

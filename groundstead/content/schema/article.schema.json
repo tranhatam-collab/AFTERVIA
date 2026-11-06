@@ -1,0 +1,47 @@
+{
+  "$id": "https://groundstead.iai.one/schema/article.schema.json",
+  "description": "Layer J: journey and SEO article. Written natively per locale from an English content spec; never a sentence-by-sentence translation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["layer", "id", "locale", "version", "title", "module", "slug", "summary", "scope", "spec_ref", "sources", "author", "updated", "review", "disclaimer"],
+  "properties": {
+    "layer": { "const": "J" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "locale": { "enum": ["en", "vi"] },
+    "version": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 3, "maxLength": 120 },
+    "module": { "enum": ["readiness", "fund", "land", "water", "power", "food", "shelter", "health", "community", "mode72"] },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "summary": { "type": "string", "minLength": 20, "maxLength": 300 },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["countries", "climate"],
+      "properties": {
+        "countries": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^([A-Z]{2}|GLOBAL)$" } },
+        "climate": { "type": "array", "minItems": 1, "items": { "enum": ["tropical-monsoon", "arid", "temperate", "cold", "all"] } }
+      }
+    },
+    "spec_ref": { "type": "string", "pattern": "^spec-[a-z0-9]+(-[a-z0-9]+)*$" },
+    "keywords": { "type": "array", "items": { "type": "string", "minLength": 2 } },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": { "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" }, "note": { "type": "string" } }
+      }
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": { "kind": { "enum": ["ai", "human"] }, "name": { "type": "string", "minLength": 2 } }
+    },
+    "updated": { "type": "string", "format": "date" },
+    "disclaimer": { "enum": ["none", "legal-land", "medical-first-aid", "electrical", "financial"] },
+    "review": { "$ref": "review.schema.json" }
+  }
+}

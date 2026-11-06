@@ -1,0 +1,45 @@
+{
+  "$id": "https://groundstead.iai.one/schema/country.schema.json",
+  "description": "Country pack: emergency numbers, authorities and alert sources. Every entry names its source and the date it was last checked.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["code", "name", "locales", "currency", "units", "emergency_numbers", "authorities", "checked_on"],
+  "properties": {
+    "code": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "name": { "type": "object", "additionalProperties": false, "required": ["en"], "properties": { "en": { "type": "string" }, "vi": { "type": "string" } } },
+    "locales": { "type": "array", "minItems": 1, "items": { "enum": ["en", "vi"] } },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+    "units": { "enum": ["metric", "imperial"] },
+    "emergency_numbers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["service", "number", "source", "checked_on"],
+        "properties": {
+          "service": { "enum": ["general", "police", "fire", "ambulance", "disaster", "poison"] },
+          "number": { "type": "string", "pattern": "^[0-9+]{2,15}$" },
+          "source": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "checked_on": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "authorities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "name", "url", "source", "checked_on"],
+        "properties": {
+          "role": { "enum": ["disaster-agency", "weather-service", "red-cross", "health-ministry", "other"] },
+          "name": { "type": "string", "minLength": 2 },
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "source": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "checked_on": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "checked_on": { "type": "string", "format": "date" }
+  }
+}
