@@ -1,0 +1,11 @@
+{
+  "command": [
+    "gh",
+    "api",
+    "repos/tranhatam-collab/AFTERVIA/actions/runs?head_sha=9a76185498c2e945e30ceb159cd8eaab8838eee2&per_page=20"
+  ],
+  "cwd": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA",
+  "started_at": "2026-11-02T23:46:18.548008+00:00",
+  "ended_at": "2026-11-02T23:46:19.246971+00:00",
+  "exit_code": 0
+}

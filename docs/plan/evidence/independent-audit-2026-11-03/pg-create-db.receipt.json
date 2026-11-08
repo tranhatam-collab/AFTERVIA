@@ -1,0 +1,19 @@
+{
+  "id": "pg-create-db",
+  "command": [
+    "/Applications/Postgres.app/Contents/Versions/17/bin/createdb",
+    "-h",
+    "127.0.0.1",
+    "-p",
+    "55439",
+    "aftervia_independent_20261103_test"
+  ],
+  "cwd": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA",
+  "sha": "9a76185498c2e945e30ceb159cd8eaab8838eee2",
+  "started_at": "2026-11-02T23:44:31.552642+00:00",
+  "ended_at": "2026-11-02T23:44:31.686797+00:00",
+  "exit_code": 0,
+  "raw_log": "/private/tmp/aftervia-independent-audit-20261103-4flk3tvo/evidence/pg-create-db.log",
+  "environment": "isolated local PostgreSQL 17, port 55439, synthetic DB only",
+  "test_counts": "unknown unless raw log supplies them"
+}

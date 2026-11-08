@@ -1,0 +1,1042 @@
+openapi: 3.0.3
+info:
+  title: AFTERVIA API DESIGN
+  version: 0.1.0
+  description: Contract draft; no endpoint is implemented or publicly available. All
+    operations require server-side tenant/object authorization.
+servers:
+- url: http://localhost:3000
+  description: Planned local sandbox only
+security:
+- bearerAuth: []
+paths:
+  /v1/items:
+    post:
+      operationId: createItem
+      summary: Create an owner-scoped item
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemInput'
+  /v1/items/{item_id}:
+    get:
+      operationId: getItem
+      summary: Read only owned or explicitly shared item
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: item_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /v1/documents/upload-ticket:
+    post:
+      operationId: createUploadTicket
+      summary: Create private quarantine upload URL
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadTicket'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadRequest'
+  /v1/documents/{document_id}/extract:
+    post:
+      operationId: extractDocument
+      summary: Queue schema-bound extraction
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: document_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+  /v1/extractions/{extraction_id}/review:
+    post:
+      operationId: reviewExtraction
+      summary: Persist human-confirmed fields with provenance
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: extraction_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+  /v1/cases:
+    post:
+      operationId: createCase
+      summary: Create case and explicit document grants transactionally
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaseInput'
+  /v1/cases/{case_id}:
+    get:
+      operationId: getCase
+      summary: Read authorized case
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: case_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /v1/cases/{case_id}/transitions:
+    post:
+      operationId: transitionCase
+      summary: Validate role, state, version and required evidence
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: case_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transition'
+  /v1/cases/{case_id}/grants:
+    post:
+      operationId: grantDocument
+      summary: Grant one document to one participant
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grant'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: case_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantInput'
+  /v1/cases/{case_id}/grants/{grant_id}:
+    delete:
+      operationId: revokeGrant
+      summary: Revoke subsequent authorized reads
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grant'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: case_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: grant_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+  /v1/exports:
+    post:
+      operationId: createExport
+      summary: Export only currently authorized objects
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRequest'
+  /v1/account/deletion:
+    post:
+      operationId: requestDeletion
+      summary: Queue verified deletion with retention review
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: header
+        name: Idempotency-Key
+        required: true
+        schema:
+          type: string
+          minLength: 8
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobRequest'
+  /v1/jobs/{job_id}:
+    get:
+      operationId: getJob
+      summary: Read own job status
+      responses:
+        '200':
+          description: Authorized result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not found or inaccessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflict/version mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate/usage limit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-authorization: Validate current membership, object ownership and active grants
+        on server.
+      parameters:
+      - in: path
+        name: job_id
+        required: true
+        schema:
+          type: string
+          format: uuid
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      required:
+      - code
+      - request_id
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
+    Item:
+      type: object
+      required:
+      - id
+      - title
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        purchased_on:
+          type: string
+          format: date
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+    ItemInput:
+      type: object
+      additionalProperties: false
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        purchased_on:
+          type: string
+          format: date
+          nullable: true
+        currency:
+          type: string
+          pattern: ^[A-Z]{3}$
+          nullable: true
+    Case:
+      type: object
+      required:
+      - id
+      - status
+      - version
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - draft
+          - submitted
+          - triaged
+          - waiting_customer
+          - waiting_merchant
+          - waiting_partner
+          - in_progress
+          - resolved
+          - closed
+          - withdrawn
+        version:
+          type: integer
+          minimum: 1
+    CaseInput:
+      type: object
+      additionalProperties: false
+      required:
+      - item_id
+      - organization_id
+      - description
+      - shared_document_ids
+      properties:
+        item_id:
+          type: string
+          format: uuid
+        organization_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          minLength: 1
+          maxLength: 4000
+        shared_document_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    Transition:
+      type: object
+      additionalProperties: false
+      required:
+      - next_state
+      - reason
+      - expected_version
+      properties:
+        next_state:
+          type: string
+        reason:
+          type: string
+          minLength: 1
+        expected_version:
+          type: integer
+        evidence_document_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    UploadRequest:
+      type: object
+      additionalProperties: false
+      required:
+      - mime
+      - size_bytes
+      - sha256
+      properties:
+        mime:
+          enum:
+          - image/jpeg
+          - image/png
+          - application/pdf
+        size_bytes:
+          type: integer
+          minimum: 1
+          maximum: 10485760
+        sha256:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+    UploadTicket:
+      type: object
+      properties:
+        document_id:
+          type: string
+          format: uuid
+        upload_url:
+          type: string
+          format: uri
+        expires_at:
+          type: string
+          format: date-time
+    Job:
+      type: object
+      required:
+      - id
+      - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          enum:
+          - queued
+          - running
+          - succeeded
+          - failed
+          - canceled
+    GrantInput:
+      type: object
+      additionalProperties: false
+      required:
+      - document_id
+      - recipient_id
+      - expires_at
+      - can_download
+      properties:
+        document_id:
+          type: string
+          format: uuid
+        recipient_id:
+          type: string
+          format: uuid
+        expires_at:
+          type: string
+          format: date-time
+        can_download:
+          type: boolean
+    Grant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          enum:
+          - active
+          - revoked
+          - expired
+    JobRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        scope:
+          type: string
+        confirmation_token:
+          type: string
+    Review:
+      type: object
+      additionalProperties: false
+      required:
+      - schema_version
+      - confirmed_fields
+      properties:
+        schema_version:
+          type: string
+        confirmed_fields:
+          type: object
+          description: Validated field names/values; not arbitrary SQL or instructions

@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 65,
-    "iterations_used": 65,
+    "iterations_used": 66,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1954,6 +1954,29 @@
       ],
       "started_at": "2026-11-06T16:11:06.494Z",
       "finished_at": "2026-11-06T16:17:36.453Z"
+    },
+    {
+      "id": "AV-DQ-05-FIX",
+      "wo": "AV-DQ-05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Siet cong E2E-WEB-01: kiem consoleErrors va version cuoi (tu AV-DQ-05, audit 04/11)",
+      "deps": [],
+      "acceptance": [
+        "T24",
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run e2e:web (TEST_DATABASE_URL thuc, Playwright+Chromium moi cai): E2E-WEB-01 dat, version 6",
+        "npm run verify: exit 0, khong gi do them",
+        "Vuot ngan sach 65 theo chi thi truc tiep cua chu du an trong chat, xem docs/plan/evidence/AV-DQ-05-FIX.md"
+      ],
+      "started_at": "2026-11-08T10:14:29.105Z",
+      "finished_at": "2026-11-08T10:14:29.160Z"
     }
   ]
 }

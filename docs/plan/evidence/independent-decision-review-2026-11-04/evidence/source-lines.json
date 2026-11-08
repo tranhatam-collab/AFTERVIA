@@ -1,0 +1,112 @@
+{
+  "tools/e2e/web-e2e.mjs": [
+    {
+      "line": 40,
+      "text": "async function resetDatabase(dbUrl) {"
+    },
+    {
+      "line": 187,
+      "text": "    if (message.type() === 'error') summary.consoleErrors.push(`${label}: ${message.text()}`);"
+    },
+    {
+      "line": 206,
+      "text": "  assertTestDatabase(dbUrl);"
+    },
+    {
+      "line": 217,
+      "text": "    await resetDatabase(dbUrl);"
+    },
+    {
+      "line": 293,
+      "text": "    if (caseRow.status !== 'closed' || caseRow.outcome !== 'repaired') throw new Error(`the case is ${caseRow.status}/${caseRow.outcome}, not closed/repaired`);"
+    },
+    {
+      "line": 309,
+      "text": "    summary.ok = summary.pageErrors.length === 0;"
+    }
+  ],
+  "tools/db/migrate.mjs": [
+    {
+      "line": 24,
+      "text": "  if (!name.endsWith('_test')) {"
+    }
+  ],
+  "services/api/src/http/app.ts": [
+    {
+      "line": 22,
+      "text": "const TOKEN_TTL_SECONDS = 3600;"
+    },
+    {
+      "line": 74,
+      "text": "async function authenticateSession(req: IncomingMessage, config: AppConfig): Promise<{ userId: string; simulated: boolean }> {"
+    },
+    {
+      "line": 161,
+      "text": "    const token = signHs256({ sub: userId, role: 'authenticated', iat: now, exp: now + TOKEN_TTL_SECONDS, simulated: true }, config.jwtSecret);"
+    },
+    {
+      "line": 162,
+      "text": "    return send(res, 200, { access_token: token, token_type: 'Bearer', expires_in: TOKEN_TTL_SECONDS, simulated: true });"
+    },
+    {
+      "line": 265,
+      "text": "        'select public.create_item($1, $2, $3, $4, $5) as id',"
+    },
+    {
+      "line": 500,
+      "text": "      idempotencyKey(req); // hợp đồng yêu cầu khóa; việc cấp grant chưa có khóa lặp (ghi trong evidence)"
+    },
+    {
+      "line": 527,
+      "text": "    case 'requestDeletion': {"
+    },
+    {
+      "line": 534,
+      "text": "    case 'createExport': {"
+    }
+  ],
+  "supabase/migrations/0013_exports.sql": [
+    {
+      "line": 37,
+      "text": "create trigger export_files_append_only"
+    },
+    {
+      "line": 229,
+      "text": "create function public.fetch_export_file(p_job uuid, p_token_hash text, p_path text)"
+    },
+    {
+      "line": 246,
+      "text": "  if not found or v_job.owner_user_id <> v_uid or v_job.token_hash <> p_token_hash or v_job.expires_at <= now() then"
+    }
+  ],
+  "docs/plan/04_DECISIONS.md": [
+    {
+      "line": 28,
+      "text": "| 2 | Builder là Claude Code trong repo (DEC-ENG-01) | Đồng ý |"
+    },
+    {
+      "line": 55,
+      "text": "| Builder | Claude Code trong repo. Wron chỉ là thử nghiệm tùy chọn | Không đổi builder khi chưa có bằng chứng kỹ thuật |"
+    }
+  ],
+  "docs/plan/06_DECISION_QUEUE.md": [
+    {
+      "line": 19,
+      "text": "| D13 | Công khai landing page tại AFTERVIA.iai.one khi tên AFTERVIA chưa clearance | Công khai / chờ clearance | Chủ dự án chốt AFTERVIA là tên làm việc, chưa xác nhận độc quyền. Chỉ công khai khi có quyền hosting và DNS, và nội dung đã duyệt (HUM-WEB-03, luật sư) | PARTIAL: tên làm việc đã chốt; công khai còn chờ duyệt | Chủ dự án |"
+    }
+  ],
+  "docs/plan/00_EXECUTION_PLAN.md": [
+    {
+      "line": 65,
+      "text": "| DEC01 | Tên làm việc AFTERVIA | PROPOSED, chưa clearance |"
+    },
+    {
+      "line": 67,
+      "text": "| DEC03 | Pháp nhân và tài khoản hạ tầng | UNASSIGNED |"
+    },
+    {
+      "line": 70,
+      "text": "| DEC06 | Vendor AI, vùng dữ liệu, privacy | NOT_APPROVED |"
+    }
+  ]
+}

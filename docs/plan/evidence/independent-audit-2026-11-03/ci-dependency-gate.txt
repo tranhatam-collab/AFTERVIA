@@ -1,0 +1,176 @@
+2026-11-02T03:36:59.6812485Z  Test Files  46 passed | 1 skipped (47)
+2026-11-02T03:36:59.6813813Z       Tests  353 passed | 1 skipped (354)
+2026-11-02T03:36:59.9657618Z # tests 18
+2026-11-02T03:36:59.9658039Z # pass 18
+2026-11-02T03:36:59.9658255Z # fail 0
+2026-11-02T03:36:59.9842261Z ##[group]Run npm audit --omit=dev --audit-level=high
+2026-11-02T03:36:59.9842584Z npm audit --omit=dev --audit-level=high
+2026-11-02T03:36:59.9860729Z shell: /usr/bin/bash -e {0}
+2026-11-02T03:36:59.9860933Z env:
+2026-11-02T03:36:59.9861334Z   TEST_DATABASE_URL: ***localhost:5432/aftervia_test
+2026-11-02T03:36:59.9861584Z ##[endgroup]
+2026-11-02T03:37:01.3165351Z # npm audit report
+2026-11-02T03:37:01.3165981Z 
+2026-11-02T03:37:01.3168627Z decode-uri-component  <=0.5.0
+2026-11-02T03:37:01.3169155Z Severity: high
+2026-11-02T03:37:01.3170365Z decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input - https://github.com/advisories/GHSA-vcc3-ghjq-m6fr
+2026-11-02T03:37:01.3172082Z decode-uri-component vulnerable to denial of service via quadratic replacement of percent-encoded runs - https://github.com/advisories/GHSA-qr28-fpjm-wq7f
+2026-11-02T03:37:01.3173246Z fix available via `npm audit fix --force`
+2026-11-02T03:37:01.3174053Z Will install expo-router@58.0.29, which is a breaking change
+2026-11-02T03:37:01.3174727Z node_modules/decode-uri-component
+2026-11-02T03:37:01.3175183Z   query-string  5.0.0 - 9.4.1
+2026-11-02T03:37:01.3175688Z   Depends on vulnerable versions of decode-uri-component
+2026-11-02T03:37:01.3176208Z   node_modules/query-string
+2026-11-02T03:37:01.3176929Z     expo-router  1.2.2 - 3.1.2 || 5.2.0-canary-20250611-f0afe80 - 58.0.12
+2026-11-02T03:37:01.3177536Z     Depends on vulnerable versions of query-string
+2026-11-02T03:37:01.3178036Z     node_modules/expo-router
+2026-11-02T03:37:01.3178308Z 
+2026-11-02T03:37:01.3178525Z deepmerge  >=4.2.0
+2026-11-02T03:37:01.3179340Z deepmerge mergeObject() allows prototype poisoning of returned objects - https://github.com/advisories/GHSA-gcqx-w48m-w2h4
+2026-11-02T03:37:01.3180131Z fix available via `npm audit fix --force`
+2026-11-02T03:37:01.3180727Z Will install expo-constants@58.0.14, which is a breaking change
+2026-11-02T03:37:01.3181248Z node_modules/deepmerge
+2026-11-02T03:37:01.3182492Z   @expo/config  >=9.1.0-canary-20240628-1ba8152
+2026-11-02T03:37:01.3182965Z   Depends on vulnerable versions of @expo/config-plugins
+2026-11-02T03:37:01.3183410Z   Depends on vulnerable versions of deepmerge
+2026-11-02T03:37:01.3183816Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3184221Z   node_modules/@expo/config
+2026-11-02T03:37:01.3184953Z     @expo/prebuild-config  7.0.9-canary-20240719-83ee47b - 7.0.9-canary-20240814-ce0f7d5 || >=7.1.0-canary-20240904-69100c1
+2026-11-02T03:37:01.3185719Z     Depends on vulnerable versions of @expo/config
+2026-11-02T03:37:01.3186201Z     Depends on vulnerable versions of @expo/config-plugins
+2026-11-02T03:37:01.3188068Z     node_modules/@expo/prebuild-config
+2026-11-02T03:37:01.3188842Z     expo-constants  16.0.3-canary-20240625-2333e70 - 55.0.14 || 56.0.0-canary-20260212-4f61309 - 56.0.0-canary-20260506-964f25d
+2026-11-02T03:37:01.3189574Z     Depends on vulnerable versions of @expo/config
+2026-11-02T03:37:01.3189989Z     node_modules/expo-constants
+2026-11-02T03:37:01.3190303Z       expo  >=50.0.0-alpha.0
+2026-11-02T03:37:01.3190677Z       Depends on vulnerable versions of @expo/cli
+2026-11-02T03:37:01.3191123Z       Depends on vulnerable versions of @expo/config
+2026-11-02T03:37:01.3191603Z       Depends on vulnerable versions of @expo/config-plugins
+2026-11-02T03:37:01.3192121Z       Depends on vulnerable versions of @expo/fingerprint
+2026-11-02T03:37:01.3192519Z       Depends on vulnerable versions of @expo/metro-config
+2026-11-02T03:37:01.3192845Z       Depends on vulnerable versions of babel-preset-expo
+2026-11-02T03:37:01.3193159Z       Depends on vulnerable versions of expo-asset
+2026-11-02T03:37:01.3193461Z       Depends on vulnerable versions of expo-constants
+2026-11-02T03:37:01.3193726Z       node_modules/expo
+2026-11-02T03:37:01.3195345Z       expo-asset  10.0.11-canary-20240625-2333e70 - 55.0.0-canary-20260223-05214f1 || 55.0.3-canary-20260128-67ce8d5 || 55.0.8-canary-20260424-7bedc9d - 55.0.8-canary-20260429-a5e59cf || 55.0.11-canary-20260327-0789fbc - 55.0.11-canary-20260402-9da566b || 56.0.0-canary-20260212-4f61309 - 56.0.0-canary-20260506-964f25d
+2026-11-02T03:37:01.3197176Z       Depends on vulnerable versions of expo-constants
+2026-11-02T03:37:01.3197532Z       node_modules/expo-asset
+2026-11-02T03:37:01.3199601Z       expo-linking  6.3.2-canary-20240625-2333e70 - 55.0.0-canary-20260223-05214f1 || 55.0.4-canary-20260128-67ce8d5 || 55.0.8-canary-20260424-7bedc9d - 55.0.8-canary-20260429-a5e59cf || 55.0.10-canary-20260327-0789fbc - 55.0.10-canary-20260402-9da566b || 56.0.0-canary-20260212-4f61309 - 56.0.0-canary-20260506-964f25d || 57.0.0-canary-20260526-13e89ca - 57.0.0-canary-20260623-1c70a78 || 58.0.0-canary-20260806-8c2d007 - 58.0.0-canary-20260908-e343e6e
+2026-11-02T03:37:01.3201578Z       Depends on vulnerable versions of expo-constants
+2026-11-02T03:37:01.3201935Z       node_modules/expo-linking
+2026-11-02T03:37:01.3202101Z 
+2026-11-02T03:37:01.3202224Z glob  3.0.0 - 14.0.1
+2026-11-02T03:37:01.3202491Z Severity: moderate
+2026-11-02T03:37:01.3203303Z Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal - https://github.com/advisories/GHSA-3g3m-2fjr-6pw4
+2026-11-02T03:37:01.3204062Z Depends on vulnerable versions of minimatch
+2026-11-02T03:37:01.3204465Z fix available via `npm audit fix --force`
+2026-11-02T03:37:01.3204914Z Will install react-native@0.88.1, which is a breaking change
+2026-11-02T03:37:01.3205413Z node_modules/@react-native/codegen/node_modules/glob
+2026-11-02T03:37:01.3205668Z node_modules/glob
+2026-11-02T03:37:01.3205887Z node_modules/react-native/node_modules/glob
+2026-11-02T03:37:01.3206158Z node_modules/rimraf/node_modules/glob
+2026-11-02T03:37:01.3206422Z node_modules/test-exclude/node_modules/glob
+2026-11-02T03:37:01.3207444Z   @expo/cli  <=0.0.0-canary-20231123-1b19f96-4 || 0.0.1-canary-20231125-d600e44 - 0.0.1-canary-20240418-8d74597 || >=0.8.0
+2026-11-02T03:37:01.3208176Z   Depends on vulnerable versions of @expo/config
+2026-11-02T03:37:01.3208668Z   Depends on vulnerable versions of @expo/config-plugins
+2026-11-02T03:37:01.3209339Z   Depends on vulnerable versions of @expo/metro-config
+2026-11-02T03:37:01.3209826Z   Depends on vulnerable versions of @expo/prebuild-config
+2026-11-02T03:37:01.3210360Z   Depends on vulnerable versions of @react-native/dev-middleware
+2026-11-02T03:37:01.3210812Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3211199Z   Depends on vulnerable versions of minimatch
+2026-11-02T03:37:01.3211561Z   node_modules/@expo/cli
+2026-11-02T03:37:01.3212240Z   @expo/config-plugins  8.0.9-canary-20240719-83ee47b - 8.0.9-canary-20240814-ce0f7d5 || >=8.1.0-canary-20240904-69100c1
+2026-11-02T03:37:01.3212912Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3213265Z   node_modules/@expo/config-plugins
+2026-11-02T03:37:01.3213573Z   @expo/fingerprint  *
+2026-11-02T03:37:01.3213889Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3214284Z   Depends on vulnerable versions of minimatch
+2026-11-02T03:37:01.3214662Z   node_modules/@expo/fingerprint
+2026-11-02T03:37:01.3215112Z   @expo/metro-config  <=0.0.1-canary-20240418-8d74597 || >=0.8.0
+2026-11-02T03:37:01.3215582Z   Depends on vulnerable versions of @expo/config
+2026-11-02T03:37:01.3215976Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3216351Z   Depends on vulnerable versions of postcss
+2026-11-02T03:37:01.3217067Z   node_modules/@expo/metro-config
+2026-11-02T03:37:01.3217640Z   @react-native/codegen  0.72.8 || 0.73.2 - 0.74.0-nightly-20240220-e9351f0f8 || 0.74.1 - 0.84.0-rc.5
+2026-11-02T03:37:01.3218197Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3218558Z   node_modules/@react-native/codegen
+2026-11-02T03:37:01.3219537Z     @react-native/babel-plugin-codegen  0.73.0-nightly-20230603-fd9e295be - 0.73.0-nightly-20230922-52104c6ee || 0.73.2 - 0.74.0-nightly-20240220-e9351f0f8 || 0.74.1 - 0.84.0-rc.5
+2026-11-02T03:37:01.3220517Z     Depends on vulnerable versions of @react-native/codegen
+2026-11-02T03:37:01.3221145Z     node_modules/@react-native/babel-plugin-codegen
+2026-11-02T03:37:01.3221953Z       @react-native/babel-preset  <=0.73.0-nightly-20230922-52104c6ee || 0.73.19 - 0.74.0-nightly-20240220-e9351f0f8 || 0.74.1 - 0.84.0-rc.5
+2026-11-02T03:37:01.3222799Z       Depends on vulnerable versions of @react-native/babel-plugin-codegen
+2026-11-02T03:37:01.3223310Z       node_modules/@react-native/babel-preset
+2026-11-02T03:37:01.3223930Z         babel-preset-expo  <=0.0.1-canary-20240418-8d74597 || 11.0.0 - 56.0.0-canary-20260402-87c5ce2
+2026-11-02T03:37:01.3224698Z         Depends on vulnerable versions of @react-native/babel-preset
+2026-11-02T03:37:01.3225203Z         node_modules/babel-preset-expo
+2026-11-02T03:37:01.3225646Z     react-native  0.28.0-rc.0 - 0.59.10 || 0.72.8 - 0.85.0-rc.7
+2026-11-02T03:37:01.3226150Z     Depends on vulnerable versions of @react-native/codegen
+2026-11-02T03:37:01.3226853Z     Depends on vulnerable versions of @react-native/community-cli-plugin
+2026-11-02T03:37:01.3227391Z     Depends on vulnerable versions of babel-jest
+2026-11-02T03:37:01.3227809Z     Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3228147Z     node_modules/react-native
+2026-11-02T03:37:01.3228475Z   rimraf  2.3.0 - 3.0.2 || >=4.2.0
+2026-11-02T03:37:01.3228820Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3229145Z   node_modules/rimraf
+2026-11-02T03:37:01.3229461Z     chromium-edge-launcher  <=0.2.0 || 1.0.0
+2026-11-02T03:37:01.3229849Z     Depends on vulnerable versions of rimraf
+2026-11-02T03:37:01.3230223Z     node_modules/chromium-edge-launcher
+2026-11-02T03:37:01.3230912Z       @react-native/dev-middleware  <=0.73.0-nightly-20231002-0371014a3 || 0.73.2 - 0.74.0 || 0.75.0-main - 0.84.1
+2026-11-02T03:37:01.3231641Z       Depends on vulnerable versions of chromium-edge-launcher
+2026-11-02T03:37:01.3232113Z       node_modules/@react-native/dev-middleware
+2026-11-02T03:37:01.3232965Z         @react-native/community-cli-plugin  <=0.73.0-nightly-20231002-0371014a3 || 0.73.2 - 0.74.0-nightly-20240220-e9351f0f8 || 0.75.0-main - 0.84.1
+2026-11-02T03:37:01.3233988Z         Depends on vulnerable versions of @react-native/dev-middleware
+2026-11-02T03:37:01.3234526Z         node_modules/@react-native/community-cli-plugin
+2026-11-02T03:37:01.3234929Z   test-exclude  4.2.2 || >=5.0.0
+2026-11-02T03:37:01.3235276Z   Depends on vulnerable versions of glob
+2026-11-02T03:37:01.3235663Z   Depends on vulnerable versions of minimatch
+2026-11-02T03:37:01.3236011Z   node_modules/test-exclude
+2026-11-02T03:37:01.3236341Z     babel-plugin-istanbul  >=5.0.1
+2026-11-02T03:37:01.3236844Z     Depends on vulnerable versions of test-exclude
+2026-11-02T03:37:01.3237265Z     node_modules/babel-plugin-istanbul
+2026-11-02T03:37:01.3237587Z       @jest/transform  *
+2026-11-02T03:37:01.3237976Z       Depends on vulnerable versions of babel-plugin-istanbul
+2026-11-02T03:37:01.3238410Z       node_modules/@jest/transform
+2026-11-02T03:37:01.3238763Z         babel-jest  >=24.0.0-alpha.0
+2026-11-02T03:37:01.3239164Z         Depends on vulnerable versions of @jest/transform
+2026-11-02T03:37:01.3239673Z         Depends on vulnerable versions of babel-plugin-istanbul
+2026-11-02T03:37:01.3240098Z         node_modules/babel-jest
+2026-11-02T03:37:01.3240289Z 
+2026-11-02T03:37:01.3240415Z image-size  0.6.3 - 2.0.2
+2026-11-02T03:37:01.3240706Z Severity: high
+2026-11-02T03:37:01.3241520Z image-size: JXL and HEIF parsers allow denial of service through infinite loops - https://github.com/advisories/GHSA-5p2g-fcmc-qvqq
+2026-11-02T03:37:01.3242804Z image-size: ICNS parser allows denial of service through an infinite loop - https://github.com/advisories/GHSA-w3rx-r6r6-pgpr
+2026-11-02T03:37:01.3243539Z fix available via `npm audit fix`
+2026-11-02T03:37:01.3243861Z node_modules/image-size
+2026-11-02T03:37:01.3244056Z 
+2026-11-02T03:37:01.3244175Z minimatch  <11.0.1
+2026-11-02T03:37:01.3244435Z Severity: moderate
+2026-11-02T03:37:01.3245198Z minimatch has potential denial of service via globparts amplification - https://github.com/advisories/GHSA-g3hv-75wg-m249
+2026-11-02T03:37:01.3246085Z fix available via `npm audit fix --force`
+2026-11-02T03:37:01.3246838Z Will install react-native@0.88.1, which is a breaking change
+2026-11-02T03:37:01.3247413Z node_modules/@expo/fingerprint/node_modules/minimatch
+2026-11-02T03:37:01.3247938Z node_modules/@react-native/codegen/node_modules/minimatch
+2026-11-02T03:37:01.3248402Z node_modules/glob/node_modules/minimatch
+2026-11-02T03:37:01.3248750Z node_modules/minimatch
+2026-11-02T03:37:01.3249133Z node_modules/react-native/node_modules/minimatch
+2026-11-02T03:37:01.3249570Z node_modules/rimraf/node_modules/minimatch
+2026-11-02T03:37:01.3250013Z node_modules/test-exclude/node_modules/minimatch
+2026-11-02T03:37:01.3250274Z 
+2026-11-02T03:37:01.3250396Z postcss  <=8.5.22
+2026-11-02T03:37:01.3250645Z Severity: high
+2026-11-02T03:37:01.3251416Z PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+2026-11-02T03:37:01.3252882Z PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments - https://github.com/advisories/GHSA-6g55-p6wh-862q
+2026-11-02T03:37:01.3255093Z PostCSS: incomplete fix of GHSA-6g55-p6wh-862q — attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset - https://github.com/advisories/GHSA-fxqj-rqcc-2cmp
+2026-11-02T03:37:01.3257474Z PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure - https://github.com/advisories/GHSA-r28c-9q8g-f849
+2026-11-02T03:37:01.3258488Z fix available via `npm audit fix --force`
+2026-11-02T03:37:01.3258982Z Will install expo@51.0.39, which is a breaking change
+2026-11-02T03:37:01.3259493Z node_modules/@expo/metro-config/node_modules/postcss
+2026-11-02T03:37:01.3259757Z 
+2026-11-02T03:37:01.3259998Z 31 vulnerabilities (1 low, 25 moderate, 5 high)
+2026-11-02T03:37:01.3260264Z 
+2026-11-02T03:37:01.3260502Z To address issues that do not require attention, run:
+2026-11-02T03:37:01.3260872Z   npm audit fix
+2026-11-02T03:37:01.3261234Z 
+2026-11-02T03:37:01.3261492Z To address all issues (including breaking changes), run:
+2026-11-02T03:37:01.3261884Z   npm audit fix --force
+2026-11-02T03:37:01.3362461Z ##[error]Process completed with exit code 1.

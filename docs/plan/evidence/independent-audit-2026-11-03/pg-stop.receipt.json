@@ -1,0 +1,20 @@
+{
+  "id": "pg-stop",
+  "command": [
+    "/Applications/Postgres.app/Contents/Versions/17/bin/pg_ctl",
+    "-D",
+    "/private/tmp/aftervia-independent-audit-20261103-4flk3tvo/pgdata",
+    "-m",
+    "fast",
+    "-w",
+    "stop"
+  ],
+  "cwd": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA",
+  "sha": "9a76185498c2e945e30ceb159cd8eaab8838eee2",
+  "started_at": "2026-11-02T23:50:00.043145+00:00",
+  "ended_at": "2026-11-02T23:50:00.621418+00:00",
+  "exit_code": 0,
+  "raw_log": "/private/tmp/aftervia-independent-audit-20261103-4flk3tvo/evidence/pg-stop.log",
+  "environment": "isolated local PostgreSQL 17, port 55439, synthetic DB only",
+  "test_counts": "unknown unless raw log supplies them"
+}

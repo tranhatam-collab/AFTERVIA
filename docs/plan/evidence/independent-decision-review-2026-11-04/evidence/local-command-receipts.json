@@ -1,0 +1,72 @@
+[
+  {
+    "name": "loop-decide",
+    "argv": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "decide"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+    "started_at": "2026-11-04T00:46:09.911329+00:00",
+    "ended_at": "2026-11-04T00:46:09.985667+00:00",
+    "exit": 0,
+    "bytes": 252,
+    "sha256": "59e57faa2af32008505255e60bcf3ea0e1ec156ec8245b58369ab39e03f7d5dd"
+  },
+  {
+    "name": "loop-status",
+    "argv": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "status"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+    "started_at": "2026-11-04T00:46:09.985821+00:00",
+    "ended_at": "2026-11-04T00:46:10.020958+00:00",
+    "exit": 0,
+    "bytes": 848,
+    "sha256": "4685fa8f0b05584c5896814e2025e3d29af9cc78aac4f932039370b236fd9adc"
+  },
+  {
+    "name": "loop-validate",
+    "argv": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "validate"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+    "started_at": "2026-11-04T00:46:10.021060+00:00",
+    "ended_at": "2026-11-04T00:46:10.050546+00:00",
+    "exit": 0,
+    "bytes": 21,
+    "sha256": "dadf9ced73a01c7a332c5880c9af1dffae9042a2e2dc3d16068c53dc10118019"
+  },
+  {
+    "name": "bundle",
+    "argv": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/checks/bundle-verify.mjs"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+    "started_at": "2026-11-04T00:46:10.050638+00:00",
+    "ended_at": "2026-11-04T00:46:10.084900+00:00",
+    "exit": 0,
+    "bytes": 44,
+    "sha256": "b7290494f0516069f62b9e70a9d6d6dad75ef794dafef739c9851aad32db9bf6"
+  },
+  {
+    "name": "loop-tests",
+    "argv": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "--test",
+      "tools/loop/backlog.test.mjs",
+      "tools/loop/matrix.test.mjs"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+    "started_at": "2026-11-04T00:46:10.084994+00:00",
+    "ended_at": "2026-11-04T00:46:10.163318+00:00",
+    "exit": 0,
+    "bytes": 3794,
+    "sha256": "54d407f6f7768502d55200d842dcde0639068b3453f9ab8f04a40017f9dc1b00"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "command": [
+      "git",
+      "fetch",
+      "--no-tags",
+      "origin",
+      "e3d55e05462454dd604559d611865976451772fd"
+    ],
+    "exit": 0,
+    "stderr": "From https://github.com/tranhatam-collab/AFTERVIA\n * branch            e3d55e05462454dd604559d611865976451772fd -> FETCH_HEAD\n",
+    "checked_at": "2026-11-04T01:01:26.384874+00:00"
+  },
+  {
+    "command": [
+      "git",
+      "worktree",
+      "add",
+      "--detach",
+      "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source-e3d55e0",
+      "e3d55e05462454dd604559d611865976451772fd"
+    ],
+    "exit": 0,
+    "stderr": "Preparing worktree (detached HEAD e3d55e0)\n",
+    "checked_at": "2026-11-04T01:01:26.447163+00:00"
+  },
+  {
+    "command": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/actions/runs?head_sha=e3d55e05462454dd604559d611865976451772fd&per_page=10"
+    ],
+    "exit": 0,
+    "stderr": "",
+    "checked_at": "2026-11-04T01:01:27.064049+00:00"
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "name": "ci-jobs",
+    "argv": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/actions/runs/41583398903/jobs"
+    ],
+    "started_at": "2026-11-04T00:44:05.093513+00:00",
+    "ended_at": "2026-11-04T00:44:05.879845+00:00",
+    "exit": 0,
+    "bytes": 2874,
+    "sha256": "8bc378c95d1262b77ffee1016ce230a86cfbc72df7f1c89dff75fca0b3be3e62"
+  },
+  {
+    "name": "ci-log",
+    "argv": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/actions/runs/41583398903/logs"
+    ],
+    "started_at": "2026-11-04T00:44:05.879940+00:00",
+    "ended_at": "2026-11-04T00:44:07.620566+00:00",
+    "exit": 0,
+    "bytes": 31022,
+    "sha256": "ab945496e167c8339f59354a08137fd89bdcfb03de541f6e0ca4a87d9379a127"
+  }
+]

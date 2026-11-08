@@ -1,0 +1,67 @@
+{
+  "scope": "SOURCE_LOGIC_PROBES_ONLY; not a browser E2E replay or product benchmark",
+  "cases": 6,
+  "results": [
+    {
+      "id": "GATE-clean",
+      "expectedThrow": false,
+      "actualThrow": false,
+      "matched": true,
+      "summary": {
+        "pageErrors": [],
+        "consoleErrors": [],
+        "ok": true
+      },
+      "method": "execute exact final-gate source excerpt in VM; no browser/DB"
+    },
+    {
+      "id": "GATE-page-error",
+      "expectedThrow": true,
+      "actualThrow": true,
+      "matched": true,
+      "summary": {
+        "pageErrors": [
+          "synthetic page error"
+        ],
+        "consoleErrors": [],
+        "ok": false
+      },
+      "method": "execute exact final-gate source excerpt in VM; no browser/DB"
+    },
+    {
+      "id": "GATE-console-error",
+      "expectedThrow": true,
+      "actualThrow": false,
+      "matched": false,
+      "summary": {
+        "pageErrors": [],
+        "consoleErrors": [
+          "synthetic console.error"
+        ],
+        "ok": true
+      },
+      "method": "execute exact final-gate source excerpt in VM; no browser/DB"
+    },
+    {
+      "id": "GATE-api-500",
+      "expectedThrow": true,
+      "actualThrow": true,
+      "matched": true,
+      "method": "execute actual apiJson function with local fetch stub; no network"
+    },
+    {
+      "id": "GATE-case-wrong-status",
+      "expectedThrow": true,
+      "actualThrow": true,
+      "matched": true,
+      "method": "execute exact final case assertion; version=6 is the declared fixture expectation, not a production invariant"
+    },
+    {
+      "id": "GATE-case-wrong-version",
+      "expectedThrow": true,
+      "actualThrow": false,
+      "matched": false,
+      "method": "execute exact final case assertion; version=6 is the declared fixture expectation, not a production invariant"
+    }
+  ]
+}
