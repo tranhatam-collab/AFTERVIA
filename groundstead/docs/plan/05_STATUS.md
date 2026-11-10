@@ -7,10 +7,11 @@
 - Task đã làm: **G-21**, bộ quét bundle thiếu tên khóa ký thật. Commit `c1f0bc3`. Test đỏ trước (1 lỗi), xanh sau (3/3 trong `tests/bundle-scan.test.ts`). Quét `out/`: 122 tệp, sạch.
 - Cổng: `npm run verify` trong `groundstead/` trên `c1f0bc3`: exit 0. Secret scan 149 tệp; backlog 72 task; content 0 cảnh báo; bundle 122 tệp; node test 197/197 (196 trước đó, thêm 1 test G-21). Thời lượng không đo trong lượt này.
 - Còn mở trong G-21: luật cho khóa JWK (tham số `d`) và seed.
-- SYNC-01: chưa có commit SYNC-01 trên `ccr-4544c9f7-b1t50m` (đang ở `b2763e2`, gồm hai commit docs của phiên khác). Chưa merge. Khi có SYNC-01: `merge --no-ff`; xung đột ở phần gốc xem từng nội dung, không lấy nguyên một phía. Lấy phía PR #1 có thể làm mất sửa đã kiểm toán: Expo 58, migration 0024 và 0025, sửa hàng đợi APP-01, quét bí mật.
+- OWN-G-01 SYNC: đã merge PR #1 (`e447c3e`) vào nhánh, commit `dc9e1bb`, hai parent. Phần gốc ngoài `groundstead/` bằng đúng `e447c3e`: `git diff origin/ccr-4544c9f7-b1t50m HEAD -- . ':!groundstead'` rỗng. Bốn xung đột (CSV, migrations.test.ts, secret-scan.mjs, migrate.mjs) và các phần còn lại lấy bản PR #1; bốn tệp nén bằng chứng cũ được gỡ theo PR #1. `groundstead/` không đổi.
+- Cổng cục bộ trên `dc9e1bb`: `npm ci` exit 0; root `npm run verify` exit 0 (86 tệp đạt, 1 bỏ qua; 662 test đạt); `npm audit --omit=dev --audit-level=high` exit 0; `groundstead` `npm run verify` exit 0 (197/197 node test, secret scan 150 tệp, bundle 122 tệp).
 - Chờ chủ dự án xác nhận: G-22 và G-20 (đổi cổng phát hành production và khóa ký), và nhãn quyết định ủy quyền.
 - Việc kế tiếp, mỗi lượt một việc: G-21 phần JWK và seed; G-08 phần `accesslevel`; G-09 tính lại trạng thái nguồn lúc đọc.
-- Blocker kỹ thuật: không có. Chờ xác nhận chủ dự án cho G-22 và G-20.
+- Blocker CI: PR #2 đỏ tại `dc9e1bb`. `verify`, `groundstead-verify` và `e2e-web` (run 42858669998) kết thúc trong khoảng 3 giây, không có log (HTTP 404), nên có vẻ dừng ở bước khởi tạo chứ không ở lệnh nào. Re-run bị từ chối (403 "Resource not accessible by integration"). Đã đăng một comment trên PR #2 (6773491049). Không có review thread nào mở. Cần một lần chạy mới hoặc người có quyền Actions chạy lại.
 
 - Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
