@@ -6,6 +6,7 @@ import { asActor, connect, resetTestDatabase } from '../support/db';
 const CUSTOMER = '00000000-0000-4000-8000-0000000002c1';
 const OWNER = '00000000-0000-4000-8000-0000000002c2';
 const OUTSIDER = '00000000-0000-4000-8000-0000000002c3';
+const PARTNER = '00000000-0000-4000-8000-0000000002c4';
 const REASON = 'Máy không lên nguồn';
 
 let caseId = '';
@@ -32,13 +33,15 @@ const HISTORY = 'select e.type, r.reason from public.case_events e left join pub
 describe('WO11-02e-CASE case history reasons: editable, while the events stay append-only', () => {
   beforeAll(async () => {
     await resetTestDatabase();
-    await adminRows('insert into auth.users (id, email) values ($1, $2), ($3, $4), ($5, $6)', [
+    await adminRows('insert into auth.users (id, email) values ($1, $2), ($3, $4), ($5, $6), ($7, $8)', [
       CUSTOMER,
       'customer-cr@test.invalid',
       OWNER,
       'owner-cr@test.invalid',
       OUTSIDER,
       'outsider-cr@test.invalid',
+      PARTNER,
+      'partner-cr@test.invalid',
     ]);
     const org = (await asActor(OWNER, async (c) => (await c.query("select public.create_organization('Cửa hàng CR', 'VN') as id")).rows[0].id)) as string;
     const item = (await asActor(CUSTOMER, async (c) => (await c.query("select public.create_item('Máy CR', null, null, null, 'VND') as id")).rows[0].id)) as string;
@@ -74,6 +77,23 @@ describe('WO11-02e-CASE case history reasons: editable, while the events stay ap
     const outside = first(await asActor(OUTSIDER, async (c) => (await c.query('select count(*)::int as n from public.case_event_reasons')).rows));
     expect(outside).toEqual({ n: 0 });
     await expect(asActor(null, (c) => c.query('select count(*) from public.case_event_reasons'))).rejects.toMatchObject({ code: '42501' });
+  });
+
+  it('AV-DB-04 an active case participant reads the reasons, like the events; a non-participant and a revoked participant read none', async () => {
+    const outsiderBefore = await asActor(PARTNER, async (c) => (await c.query(HISTORY, [caseId])).rows);
+    expect(outsiderBefore).toEqual([]);
+    const participant = (await asActor(CUSTOMER, async (c) =>
+      (await c.query("select public.invite_case_participant($1::uuid, $2::uuid, now() + interval '7 days') as id", [caseId, PARTNER])).rows[0].id,
+    )) as string;
+    const partnerSees = await asActor(PARTNER, async (c) => (await c.query(HISTORY, [caseId])).rows);
+    expect(partnerSees).toEqual([{ type: 'created', reason: REASON }]);
+    const outsiderSees = await asActor(OUTSIDER, async (c) => (await c.query(HISTORY, [caseId])).rows);
+    expect(outsiderSees).toEqual([]);
+    const outsiderReasons = first(await asActor(OUTSIDER, async (c) => (await c.query('select count(*)::int as n from public.case_event_reasons')).rows));
+    expect(outsiderReasons).toEqual({ n: 0 });
+    await asActor(CUSTOMER, (c) => c.query('select public.revoke_case_participant($1::uuid)', [participant]));
+    const revokedReasons = first(await asActor(PARTNER, async (c) => (await c.query('select count(*)::int as n from public.case_event_reasons')).rows));
+    expect(revokedReasons).toEqual({ n: 0 });
   });
 
   it('T25 the database owner may correct a reason, and the events stay append-only', async () => {

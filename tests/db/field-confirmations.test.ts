@@ -1,3 +1,4 @@
+import type pg from 'pg';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { asActor, connect, resetTestDatabase } from '../support/db';
 
@@ -20,9 +21,30 @@ async function adminRows(sql: string, params: unknown[] = []): Promise<Array<Rec
   }
 }
 
+// API-F03 (migration 0024): record_field_confirmation is server-only until an extraction table can prove ownership.
+// The server connects as service_role and passes the user's claims, so the actor still comes from auth.uid().
+async function asServerFor<T>(userId: string, run: (client: pg.Client) => Promise<T>): Promise<T> {
+  const client = await connect();
+  try {
+    await client.query('begin');
+    await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: userId, role: 'service_role' })]);
+    await client.query('set local role service_role');
+    try {
+      const result = await run(client);
+      await client.query('commit');
+      return result;
+    } catch (error) {
+      await client.query('rollback');
+      throw error;
+    }
+  } finally {
+    await client.end();
+  }
+}
+
 // Ghi một xác nhận dưới danh nghĩa actor. JS null là SQL NULL (giá trị cũ rỗng hoặc giá trị mới vắng mặt).
 async function confirm(
-  actor: string | null,
+  actor: string,
   field: string,
   oldValue: unknown,
   newValue: unknown,
@@ -30,7 +52,7 @@ async function confirm(
 ): Promise<string> {
   const oldJson = oldValue === null ? null : JSON.stringify(oldValue);
   const newJson = newValue === null ? null : JSON.stringify(newValue);
-  return asActor(actor, async (c) =>
+  return asServerFor(actor, async (c) =>
     (
       await c.query(
         'select public.record_field_confirmation($1::uuid, $2::text, $3::jsonb, $4::jsonb, $5::text) as id',
@@ -94,11 +116,11 @@ describe('WO06-05 field confirmations are append-only and keep actor, time and v
     await expect(confirm(ALICE, 'Purchase.Amount', null, 1)).rejects.toMatchObject({ code: '22023' });
     await expect(confirm(ALICE, 'a'.repeat(121), null, 1)).rejects.toMatchObject({ code: '22023' });
     await expect(
-      asActor(ALICE, (c) => c.query("select public.record_field_confirmation($1::uuid, 'purchase.amount', null, 'null'::jsonb, null)", [EXTRACTION])),
+      asServerFor(ALICE, (c) => c.query("select public.record_field_confirmation($1::uuid, 'purchase.amount', null, 'null'::jsonb, null)", [EXTRACTION])),
     ).rejects.toMatchObject({ code: '22023' });
     await expect(confirm(ALICE, 'purchase.note', null, 'x'.repeat(9000))).rejects.toMatchObject({ code: '22023' });
     await expect(
-      asActor(ALICE, (c) => c.query("select public.record_field_confirmation(null::uuid, 'purchase.amount', null, '1'::jsonb, null)")),
+      asServerFor(ALICE, (c) => c.query("select public.record_field_confirmation(null::uuid, 'purchase.amount', null, '1'::jsonb, null)")),
     ).rejects.toMatchObject({ code: '22023' });
   });
 
@@ -120,6 +142,31 @@ describe('WO06-05 field confirmations are append-only and keep actor, time and v
     await expect(
       asActor(null, (c) => c.query("select public.record_field_confirmation($1::uuid, 'purchase.amount', null, '1'::jsonb, null)", [EXTRACTION])),
     ).rejects.toMatchObject({ code: '42501' });
+  });
+
+  it('API-F03 a signed-in client cannot record a confirmation for any extraction, including one another user confirmed; only the server path can', async () => {
+    const bobId = await confirm(BOB, 'purchase.model', null, 'X-1');
+    expect(bobId).toMatch(/^[0-9a-f-]{36}$/);
+    await expect(
+      asActor(ALICE, (c) => c.query("select public.record_field_confirmation($1::uuid, 'purchase.model', null, '\"Y-2\"'::jsonb, null)", [EXTRACTION])),
+    ).rejects.toMatchObject({ code: '42501' });
+    const count = first(await adminRows("select count(*)::int as n from public.field_confirmations where field_path = 'purchase.model'"));
+    expect(count).toEqual({ n: 1 });
+  });
+
+  it('API-F03 the server path refuses a call without a user in the claims', async () => {
+    const client = await connect();
+    try {
+      await client.query('begin');
+      await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ role: 'service_role' })]);
+      await client.query('set local role service_role');
+      await expect(
+        client.query("select public.record_field_confirmation($1::uuid, 'purchase.amount', null, '1'::jsonb, null)", [EXTRACTION]),
+      ).rejects.toMatchObject({ code: '42501' });
+      await client.query('rollback');
+    } finally {
+      await client.end();
+    }
   });
 
   it('T14 each confirmation writes one audit event that names the extraction and field, not the values', async () => {

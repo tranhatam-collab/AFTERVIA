@@ -1,3 +1,4 @@
+import type pg from 'pg';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { asActor, connect, resetTestDatabase } from '../support/db';
 
@@ -25,11 +26,32 @@ async function adminRows(sql: string, params: unknown[] = []): Promise<Array<Rec
   }
 }
 
+// API-F03 (migration 0024): record_field_confirmation is server-only until an extraction table can prove ownership.
+// The server connects as service_role and passes the user's claims, so the actor still comes from auth.uid().
+async function asServerFor<T>(userId: string, run: (client: pg.Client) => Promise<T>): Promise<T> {
+  const client = await connect();
+  try {
+    await client.query('begin');
+    await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: userId, role: 'service_role' })]);
+    await client.query('set local role service_role');
+    try {
+      const result = await run(client);
+      await client.query('commit');
+      return result;
+    } catch (error) {
+      await client.query('rollback');
+      throw error;
+    }
+  } finally {
+    await client.end();
+  }
+}
+
 // Ghi một xác nhận dưới danh nghĩa actor. JS null là SQL NULL.
 async function confirm(actor: string, field: string, oldValue: unknown, newValue: unknown, absentReason: string | null = null): Promise<string> {
   const oldJson = oldValue === null ? null : JSON.stringify(oldValue);
   const newJson = newValue === null ? null : JSON.stringify(newValue);
-  return asActor(actor, async (c) =>
+  return asServerFor(actor, async (c) =>
     (
       await c.query('select public.record_field_confirmation($1::uuid, $2::text, $3::jsonb, $4::jsonb, $5::text) as id', [
         EXTRACTION,
