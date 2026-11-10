@@ -6,6 +6,7 @@ import { signHs256 } from '../../services/api/src/auth/jwt';
 import { createPool } from '../../services/api/src/db/session';
 import { createHttpServer } from '../../services/api/src/http/app';
 import { connect, resetTestDatabase } from '../support/db';
+import { sessionAfterCutoff } from '../support/session-fixtures';
 
 // WO11-02a qua HTTP: yêu cầu xóa tài khoản, và phiên phát trước yêu cầu bị từ chối ở mọi route.
 // Dữ liệu tổng hợp. Mốc cắt phiên là requested_at trong account_deletion_requests (bảng chỉ thêm).
@@ -68,17 +69,11 @@ async function cutoffOf(userId: string): Promise<number | null> {
   });
 }
 
-// Phiên phát sau mốc cắt (iat > mốc). Dùng để kiểm đường đi hợp lệ sau yêu cầu xóa, không phụ thuộc đồng hồ.
+// Phiên phát sau mốc cắt (iat > mốc). Luật về iat và tuổi thọ nằm trong tests/support/session-fixtures.ts.
 async function freshSession(userId: string): Promise<string> {
   const cutoff = await cutoffOf(userId);
   if (cutoff === null) throw new Error('no deletion request for this user');
-  // iat chỉ cần đứng SAU mốc cắt, và mốc cắt lấy từ cơ sở dữ liệu nên so sánh đó không phụ thuộc đồng hồ
-  // của máy chạy test. Nhưng OWN-A-08 thêm kiểm "iat không ở tương lai quá 60 giây" theo đồng hồ của Node,
-  // nên khoảng cách phải nhỏ: với `cutoff + 60`, chỉ cần đồng hồ Postgres nhanh hơn runner vài giây là
-  // token bị coi là ở tương lai và trả 401. Trên CI hai đồng hồ là hai container khác nhau, nên lỗi chỉ
-  // xuất hiện ở đó. `cutoff + 5` giữ đúng ý định và chịu được lệch tới khoảng 55 giây.
-  // Tuổi thọ cũng phải nằm trong thời hạn phiên 900 giây (D-09).
-  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 5, exp: cutoff + 5 + 900, simulated: true }, SECRET);
+  return sessionAfterCutoff(userId, cutoff, SECRET);
 }
 
 let h: Harness;

@@ -6,6 +6,7 @@ import { createPool } from '../../services/api/src/db/session';
 import { createHttpServer } from '../../services/api/src/http/app';
 import { MIN_JWT_SECRET_LENGTH, signHs256, verifyHs256 } from '../../services/api/src/auth/jwt';
 import { asActor, connect, resetTestDatabase } from '../support/db';
+import { AFTER_CUTOFF_SECONDS, SESSION_TTL_SECONDS, sessionAfterCutoff } from '../support/session-fixtures';
 
 // OWN-A-08 (audit 10/11, D-08 and D-09). Error mapping on the legacy path and the gaps in the JWT verifier.
 const SECRET = ['local', 'test', 'signing', 'material', 'own', 'a', '08'].join('-');
@@ -62,6 +63,13 @@ describe('OWN-A-08 the JWT verifier closes its gaps (D-09)', () => {
     expect(verifyHs256(token, SECRET, NOW)).toMatchObject({ ok: true });
   });
 
+  it('the offset used after a deletion cutoff stays inside the clock-skew tolerance', () => {
+    // Raising this past the 60-second tolerance in verifyHs256 turns every such token into a future-dated
+    // one whenever the Postgres clock runs ahead of the runner, which is the normal case on CI.
+    expect(AFTER_CUTOFF_SECONDS).toBeLessThan(60);
+    expect(SESSION_TTL_SECONDS).toBe(900);
+  });
+
   it('a server cannot be built with a short signing key', () => {
     const pool = createPool(process.env.TEST_DATABASE_URL ?? '');
     try {
@@ -108,7 +116,7 @@ describe('OWN-A-08 error mapping on the legacy path (D-08)', () => {
     } finally {
       await admin.end();
     }
-    const token = signHs256({ sub: PENDING, role: 'authenticated', iat: cutoff + 60, exp: cutoff + 60 + 900, simulated: true }, SECRET);
+    const token = sessionAfterCutoff(PENDING, cutoff, SECRET);
     const created = await api(h.url, 'POST', '/v1/items', token, { title: 'Lò nướng' });
     expect(created.status).toBe(409);
     expect(created.json).toMatchObject({ error: 'invalid_state' });

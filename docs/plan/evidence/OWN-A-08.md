@@ -101,3 +101,26 @@ Sửa fixture thành `iat = cutoff + 5` và `exp = cutoff + 5 + 900`. Ý định
 
 Bài học cho các lượt sau: `npm run verify` xanh ở máy này không chứng minh CI xanh, khi kiểm thử so
 sánh thời gian lấy từ hai nguồn đồng hồ khác nhau.
+
+### Lần thứ hai, và cách chặn cả lớp lỗi
+
+Bản sửa đầu chỉ sửa `freshSession` trong `tests/api/account-deletion-http.test.ts`. Nhưng chính tôi đã
+sao chép đúng mẫu `iat = cutoff + 60` sang tệp kiểm thử mới `tests/api/error-mapping-and-jwt.test.ts`,
+nên CI lại đỏ ở head `a6d9b6a`, lần này ở dòng 113: nhận 401 thay vì 409.
+
+Đáng chú ý: ở head `4285949` thì chính kiểm thử đó **xanh**, còn `account-deletion-http` đỏ; ở
+`a6d9b6a` thì ngược lại. Đó là dấu hiệu của kiểm thử phụ thuộc đồng hồ: lệch giữa hai container thay
+đổi theo từng lần chạy, nên lỗi xuất hiện lúc chỗ này lúc chỗ khác.
+
+Vì vậy không sửa từng chỗ nữa mà đưa luật về một nơi: `tests/support/session-fixtures.ts` với
+`sessionAfterCutoff(userId, cutoff, secret)`, `AFTER_CUTOFF_SECONDS = 5` và
+`SESSION_TTL_SECONDS = 900`. Cả hai tệp kiểm thử nay gọi helper đó. Ba luật được ghi ngay trong tệp:
+`iat` phải sau mốc cắt; `iat` không được quá 60 giây trước đồng hồ runner; `exp - iat` không vượt 900.
+
+Thêm một chốt trong `error-mapping-and-jwt.test.ts`: `AFTER_CUTOFF_SECONDS` phải nhỏ hơn 60 và
+`SESSION_TTL_SECONDS` phải bằng 900. Ai nâng hằng số vượt dung sai sẽ làm đỏ ngay ở máy mình, không
+phải chờ CI.
+
+Đã kiểm lại toàn bộ repo: không còn chỗ nào ký token với `iat` lấy từ dấu thời gian của cơ sở dữ liệu
+cộng một khoảng lớn. Các chỗ `iat` khác đều dùng cùng một đồng hồ ở hai phía, hoặc có biên dư rộng
+(400 so với 300 giây, 600 so với 60 giây), nên không phụ thuộc lệch đồng hồ thực tế.
