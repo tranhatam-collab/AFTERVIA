@@ -41,6 +41,16 @@ function carryExpired(alert: Alert, now: Date): boolean {
   return now.getTime() - received > CARRY_FORWARD_HOURS * 3_600_000;
 }
 
+// G-09: a stored state is what the job saw when it ran. A reader decides each source's state again, from its last good
+// update and the time of reading. A source whose last run failed stays 'failed' until a newer good run.
+export function statusesAt(snapshot: Snapshot, now: Date, maxAgeMinutes = 30): SourceStatus[] {
+  return snapshot.sources.map((s) => ({
+    source: s.source,
+    lastUpdated: s.lastUpdated,
+    state: sourceState({ lastUpdated: s.lastUpdated, failed: s.state === 'failed' }, now, maxAgeMinutes),
+  }));
+}
+
 const STATES: readonly SourceState[] = ['ok', 'stale', 'failed', 'never'];
 const STATUSES: readonly Status[] = ['Actual', 'Exercise', 'System', 'Test', 'Draft'];
 const MSG_TYPES: readonly MsgType[] = ['Alert', 'Update', 'Cancel', 'Ack', 'Error'];
