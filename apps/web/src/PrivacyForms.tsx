@@ -137,6 +137,22 @@ function DeleteAccountForm({ locale, base, token }: { locale: Locale; base: stri
   );
 }
 
+// WO12-02 (T46). Hủy gói và xóa tài khoản là hai việc khác nhau, và chúng khác nhau theo từng nơi mua.
+// Nói nhầm chỗ này nghĩa là người dùng xóa tài khoản rồi vẫn bị cửa hàng ứng dụng tính tiền, nên cả hai
+// trường hợp đều được nói ra, không chỉ trường hợp thuận lợi.
+function PlanNotice({ locale }: { locale: Locale }) {
+  const headingId = useId();
+  return (
+    <section className="desk-form" aria-labelledby={headingId}>
+      <h2 id={headingId}>{t(locale, 'privacy.plan.heading')}</h2>
+      <p>{t(locale, 'privacy.plan.dataKept')}</p>
+      <p>{t(locale, 'privacy.plan.cancelNotDelete')}</p>
+      <p>{t(locale, 'privacy.plan.deleteNotCancelStore')}</p>
+      <p>{t(locale, 'privacy.plan.deleteNotCancelInApp')}</p>
+    </section>
+  );
+}
+
 export function PrivacyForms(props: { locale: Locale; base: string; token: string | null; activeCase: CaseSummary | null }) {
   const headingId = useId();
   return (
@@ -144,6 +160,7 @@ export function PrivacyForms(props: { locale: Locale; base: string; token: strin
       <h2 id={headingId}>{t(props.locale, 'privacy.heading')}</h2>
       <p>{t(props.locale, 'privacy.intro')}</p>
       <SharingForms locale={props.locale} base={props.base} token={props.token} activeCase={props.activeCase} />
+      <PlanNotice locale={props.locale} />
       <DeleteAccountForm locale={props.locale} base={props.base} token={props.token} />
     </div>
   );

@@ -6,6 +6,7 @@
 // Khử trùng và quy tắc thứ tự nằm trong hàm SQL record_billing_event, không nằm ở đây: một lần gọi là một
 // câu lệnh, nên nó nguyên tử, và hai webhook tới cùng lúc không chen được vào giữa.
 import type pg from 'pg';
+import { classifyTransition, isEntitlementState, type TransitionVerdict } from '@aftervia/domain';
 import { verifyWebhook, type WebhookRejection } from './webhook';
 
 export const BILLING_PROVIDERS = ['sandbox_b2b', 'sandbox_app_store', 'sandbox_play'] as const;
@@ -38,7 +39,17 @@ export interface BillingWebhookBody {
 export type IngestRejection = WebhookRejection | 'unknown_provider' | 'invalid_payload';
 
 export type IngestResult =
-  | { kind: 'accepted'; recorded: boolean; duplicate: boolean; entitlementChanged: boolean; state: string | null }
+  | {
+      kind: 'accepted';
+      recorded: boolean;
+      duplicate: boolean;
+      entitlementChanged: boolean;
+      previousState: string | null;
+      state: string | null;
+      // WO12-02: bước chuyển có nằm trong những bước nhà cung cấp thường gửi không. Bước lạ KHÔNG bị từ
+      // chối (nhà cung cấp là nguồn đúng) nhưng phải nổi lên để người vận hành nhìn thấy.
+      transition: TransitionVerdict | null;
+    }
   | { kind: 'rejected'; reason: IngestRejection };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -84,6 +95,14 @@ export interface IngestInput {
   nowSeconds?: number;
 }
 
+// Chỉ phân loại khi cả hai đầu là trạng thái đã biết. Trạng thái lạ (bản máy chủ mới hơn) trả null,
+// vì đoán bừa một bước chuyển còn tệ hơn là nói thẳng rằng chưa biết.
+function verdictOf(previous: string | null, next: string | null): TransitionVerdict | null {
+  if (!isEntitlementState(next)) return null;
+  if (previous === null) return classifyTransition(null, next);
+  return isEntitlementState(previous) ? classifyTransition(previous, next) : null;
+}
+
 export async function ingestBillingWebhook(pool: pg.Pool, input: IngestInput): Promise<IngestResult> {
   if (!isBillingProvider(input.provider)) return { kind: 'rejected', reason: 'unknown_provider' };
   const verified = verifyWebhook(input.secret, input.rawBody, input.signatureHeader, input.nowSeconds);
@@ -105,7 +124,7 @@ export async function ingestBillingWebhook(pool: pg.Pool, input: IngestInput): P
     ],
   );
   const receipt = result.rows[0]?.receipt as
-    | { recorded: boolean; duplicate: boolean; entitlement_changed: boolean; state: string | null }
+    | { recorded: boolean; duplicate: boolean; entitlement_changed: boolean; previous_state: string | null; state: string | null }
     | undefined;
   if (receipt === undefined) return { kind: 'rejected', reason: 'invalid_payload' };
   return {
@@ -113,6 +132,8 @@ export async function ingestBillingWebhook(pool: pg.Pool, input: IngestInput): P
     recorded: receipt.recorded,
     duplicate: receipt.duplicate,
     entitlementChanged: receipt.entitlement_changed,
+    previousState: receipt.previous_state,
     state: receipt.state,
+    transition: verdictOf(receipt.previous_state, receipt.state),
   };
 }

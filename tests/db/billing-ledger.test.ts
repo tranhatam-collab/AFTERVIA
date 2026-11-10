@@ -138,13 +138,29 @@ describe('T28 one ledger entry per event, and the state follows the provider', (
   it('T28 records a purchase once; sending the very same event again adds no row and moves nothing', async () => {
     const purchase: EventInput = { eventId: 'evt-p-0001', type: 'purchase', state: 'active', effectiveAt: '2026-11-10T10:00:00.000Z', seq: 10 };
 
-    expect(await send(purchase)).toEqual({ kind: 'accepted', recorded: true, duplicate: false, entitlementChanged: true, state: 'active' });
+    expect(await send(purchase)).toEqual({
+      kind: 'accepted',
+      recorded: true,
+      duplicate: false,
+      entitlementChanged: true,
+      previousState: null,
+      state: 'active',
+      transition: 'initial',
+    });
     expect(await ledgerCount('evt-p-0001')).toBe(1);
     expect(await entitlement()).toEqual({ state: 'active', source_event_id: 'evt-p-0001' });
 
     // Phát lại đúng sự kiện đó, kể cả ký lại với mốc thời gian mới.
     const replay = await send(purchase, { now: NOW + 60 });
-    expect(replay).toEqual({ kind: 'accepted', recorded: false, duplicate: true, entitlementChanged: false, state: 'active' });
+    expect(replay).toEqual({
+      kind: 'accepted',
+      recorded: false,
+      duplicate: true,
+      entitlementChanged: false,
+      previousState: 'active',
+      state: 'active',
+      transition: 'unchanged',
+    });
     expect(await ledgerCount('evt-p-0001')).toBe(1);
     expect(await entitlement()).toEqual({ state: 'active', source_event_id: 'evt-p-0001' });
   });
@@ -153,7 +169,15 @@ describe('T28 one ledger entry per event, and the state follows the provider', (
     // Sự kiện cũ hơn (kỳ trước) tới muộn.
     const lateCancel: EventInput = { eventId: 'evt-c-0001', type: 'cancel', state: 'expired', effectiveAt: '2026-11-09T10:00:00.000Z', seq: 9 };
     const result = await send(lateCancel);
-    expect(result).toEqual({ kind: 'accepted', recorded: true, duplicate: false, entitlementChanged: false, state: 'active' });
+    expect(result).toEqual({
+      kind: 'accepted',
+      recorded: true,
+      duplicate: false,
+      entitlementChanged: false,
+      previousState: 'active',
+      state: 'active',
+      transition: 'unchanged',
+    });
     // Sổ vẫn ghi: sự kiện đã xảy ra, không được giấu.
     expect(await ledgerCount('evt-c-0001')).toBe(1);
     // Trạng thái vẫn theo sự kiện mới nhất của nhà cung cấp.
@@ -167,7 +191,9 @@ describe('T28 one ledger entry per event, and the state follows the provider', (
       recorded: true,
       duplicate: false,
       entitlementChanged: true,
+      previousState: 'active',
       state: 'canceled_at_period_end',
+      transition: 'expected',
     });
     expect(await entitlement()).toEqual({ state: 'canceled_at_period_end', source_event_id: 'evt-c-0002' });
   });
@@ -200,7 +226,17 @@ describe('T28 one ledger entry per event, and the state follows the provider', (
       signatureHeader: `t=${NOW},v1=${signWebhook(SECRET, raw, NOW)}`,
       nowSeconds: NOW,
     });
-    expect(result).toEqual({ kind: 'accepted', recorded: true, duplicate: false, entitlementChanged: true, state: 'trial' });
+    // WO12-02: active -> trial không nằm trong các bước nhà cung cấp thường gửi (quay lại dùng thử sau
+    // khi đã trả tiền). Vẫn được ghi, vì nhà cung cấp là nguồn đúng, nhưng được đánh dấu là lạ.
+    expect(result).toEqual({
+      kind: 'accepted',
+      recorded: true,
+      duplicate: false,
+      entitlementChanged: true,
+      previousState: 'active',
+      state: 'trial',
+      transition: 'unexpected',
+    });
     expect(await ledgerCount('evt-p-0001')).toBe(2);
 
     expect((await send({ eventId: 'evt-o-0001', type: 'purchase', state: 'active', effectiveAt: '2026-11-12T11:00:00.000Z', seq: 1, user: OTHER })).kind).toBe('accepted');

@@ -27,7 +27,7 @@ T25,Deletion,HIGH,Xóa tài khoản,AUTO,PARTIAL,WO11-02a;WO11-02b;WO11-02c;WO11
 T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02a;WO11-02b;WO11-02c;WO11-02e-EXP;WO11-02e-CONF;WO11-02e-CASE;WO11-02f-SESS;WO11-02g-MEM;WO16-01a,MANUAL_PARTIAL,2026-11-06,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA; tombstone ngoài backup chưa làm (WO16-01b TODO) nên không PASS theo đính chính 10/11 của kiểm toán.,docs/plan/evidence/WO11-02a.md;docs/plan/evidence/WO11-02b.md;docs/plan/evidence/WO11-02c.md;docs/plan/evidence/WO11-02e-EXP.md;docs/plan/evidence/WO11-02e-CONF.md;docs/plan/evidence/WO11-02e-CASE.md;docs/plan/evidence/WO11-02f-SESS.md;docs/plan/evidence/WO11-02g-MEM.md;docs/plan/evidence/WO16-01a.md
 T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,PASS,2026-11-10,Chỉ fixture sandbox; không dùng khóa live.,docs/plan/evidence/WO12-01.md
 T28,Billing,CRITICAL,Replay/out of order,AUTO,PARTIAL,WO12-01,PASS,2026-11-10,,docs/plan/evidence/WO12-01.md
-T29,Billing,HIGH,Refund/expiry,AUTO,PARTIAL,WO12-02,NOT_RUN,,,
+T29,Billing,HIGH,Refund/expiry,AUTO,PARTIAL,WO12-02,PASS,2026-11-10,,docs/plan/evidence/WO12-02.md
 T30,Billing,HIGH,Reconciliation,AUTO,PARTIAL,WO12-03,NOT_RUN,,Đối soát với báo cáo provider thật là HUMAN/INFRA.,
 T31,Family,HIGH,Scope family,AUTO,PARTIAL,WO13-01,PASS,2026-11-10,,docs/plan/evidence/WO13-01.md
 T32,Localization,MEDIUM,VI/EN dài,AUTO,PARTIAL,WO07-04;WO10-01,PASS,2026-11-10,Kiểm chữ dài và đổi ngôn ngữ bằng trình duyệt; thiết bị thật ở DEV-01.,docs/plan/evidence/WO07-04.md;docs/plan/evidence/WO10-01.md
@@ -44,4 +44,4 @@ T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,PASS,2026-11-10,,docs/plan
 T43,Analytics,HIGH,Không metric giả,AUTO,PARTIAL,WO14-01,PASS,2026-11-10,,docs/plan/evidence/WO14-01.md
 T44,Release,HIGH,Rollback,PARTIAL,PARTIAL,WO03-02;WO20-01;INF-01,NOT_RUN,,Rollback có migration cần staging thật (INFRA).,docs/plan/evidence/WO03-02.md
 T45,Privacy,CRITICAL,AI data scope,AUTO,PARTIAL,WO06-02,PASS,2026-11-10,,docs/plan/evidence/WO06-02.md
-T46,Billing,HIGH,Hủy/xóa độc lập,PARTIAL,PARTIAL,WO12-02;HUM-WO18-02,NOT_RUN,,Bước hủy trên store là hành vi bên ngoài; cần kiểm trên tài khoản store thật.,
+T46,Billing,HIGH,Hủy/xóa độc lập,PARTIAL,PARTIAL,WO12-02;HUM-WO18-02,PASS,2026-11-10,Chỉ phần hướng dẫn trong ứng dụng là tự động; bước hủy trên store là hành vi bên ngoài, cần tài khoản store thật.,docs/plan/evidence/WO12-02.md

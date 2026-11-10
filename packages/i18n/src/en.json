@@ -135,5 +135,10 @@
   "privacy.delete.refused.rate_limited": "Too many attempts. Try again later.",
   "privacy.delete.refused.other": "The result could not be confirmed. The request may have been recorded; check before sending again.",
   "privacy.mobile.export": "Exports are created on the web app. This mobile build has no sign-in yet, so it cannot call the server.",
-  "privacy.mobile.share": "Sharing and revoking document access is done on the web app, inside each case."
+  "privacy.mobile.share": "Sharing and revoking document access is done on the web app, inside each case.",
+  "privacy.plan.heading": "Your plan and cancelling",
+  "privacy.plan.dataKept": "Expiry, cancellation and refunds never remove your records. You can still read them and still create an export.",
+  "privacy.plan.cancelNotDelete": "Cancelling a plan does not delete your account.",
+  "privacy.plan.deleteNotCancelStore": "If you subscribed through the App Store or Google Play: deleting your account here does NOT cancel that subscription. You must cancel it in the store yourself, or you will keep being charged.",
+  "privacy.plan.deleteNotCancelInApp": "If you bought the plan directly on the web app: deleting your account ends that plan."
 }

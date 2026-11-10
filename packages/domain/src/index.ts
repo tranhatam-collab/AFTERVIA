@@ -11,3 +11,4 @@ export * from './reminder-schedule';
 export * from './case-state';
 export * from './country-pack';
 export * from './privacy';
+export * from './entitlement';

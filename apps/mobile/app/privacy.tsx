@@ -82,6 +82,14 @@ export default function PrivacyScreen() {
       <Text style={styles.note}>{t('privacy.mobile.share')}</Text>
 
       <Text accessibilityRole="header" style={styles.heading}>
+        {t('privacy.plan.heading')}
+      </Text>
+      <Text style={styles.body}>{t('privacy.plan.dataKept')}</Text>
+      <Text style={styles.body}>{t('privacy.plan.cancelNotDelete')}</Text>
+      <Text style={styles.body}>{t('privacy.plan.deleteNotCancelStore')}</Text>
+      <Text style={styles.body}>{t('privacy.plan.deleteNotCancelInApp')}</Text>
+
+      <Text accessibilityRole="header" style={styles.heading}>
         {t('privacy.delete.heading')}
       </Text>
       <Text style={styles.body}>{t('privacy.delete.explain')}</Text>

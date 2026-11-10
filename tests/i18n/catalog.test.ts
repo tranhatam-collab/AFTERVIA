@@ -165,6 +165,12 @@ describe('WO07-04 Vietnamese and English messages, dates and money', () => {
       'privacy.delete.refused.other',
       'privacy.mobile.export',
       'privacy.mobile.share',
+      // WO12-02 (T46): hủy gói và xóa tài khoản là hai việc khác nhau; phải nói đúng.
+      'privacy.plan.heading',
+      'privacy.plan.dataKept',
+      'privacy.plan.cancelNotDelete',
+      'privacy.plan.deleteNotCancelStore',
+      'privacy.plan.deleteNotCancelInApp',
     ];
     expect(new Set(required)).toEqual(new Set(Object.keys(vi)));
     for (const key of required) {

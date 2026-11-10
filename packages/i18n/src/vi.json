@@ -135,5 +135,10 @@
   "privacy.delete.refused.rate_limited": "Bạn đã gửi quá nhiều lần. Thử lại sau.",
   "privacy.delete.refused.other": "Chưa xác nhận được kết quả. Yêu cầu có thể đã được ghi; kiểm tra trước khi gửi lại.",
   "privacy.mobile.export": "Gói xuất dữ liệu được tạo trên bản web. Bản di động này chưa có đăng nhập nên chưa gọi được.",
-  "privacy.mobile.share": "Chia và thu hồi quyền xem tài liệu được làm trên bản web, trong từng case."
+  "privacy.mobile.share": "Chia và thu hồi quyền xem tài liệu được làm trên bản web, trong từng case.",
+  "privacy.plan.heading": "Gói dịch vụ và việc hủy",
+  "privacy.plan.dataKept": "Hết hạn, hủy hay hoàn tiền đều không làm mất hồ sơ của bạn. Bạn vẫn đọc được và vẫn tạo được gói xuất.",
+  "privacy.plan.cancelNotDelete": "Hủy gói không xóa tài khoản.",
+  "privacy.plan.deleteNotCancelStore": "Nếu bạn đăng ký qua App Store hoặc Google Play: xóa tài khoản ở đây KHÔNG hủy đăng ký đó. Bạn phải vào cửa hàng ứng dụng hủy riêng, nếu không vẫn bị tính tiền.",
+  "privacy.plan.deleteNotCancelInApp": "Nếu bạn mua gói trực tiếp trên bản web: xóa tài khoản sẽ kết thúc gói đó."
 }

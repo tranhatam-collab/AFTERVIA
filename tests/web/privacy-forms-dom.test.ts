@@ -220,3 +220,25 @@ describe('WO11-03 what the server answers is reported as it is', () => {
     expect(container.querySelector('img')).toBeNull();
   });
 });
+
+// WO12-02 (T46): hủy gói và xóa tài khoản là hai việc khác nhau. Nếu màn này nói sai, người dùng xóa
+// tài khoản xong vẫn bị cửa hàng ứng dụng tính tiền, nên cả hai trường hợp phải có mặt, ở cả hai ngôn ngữ.
+describe('T46 the privacy screen explains cancelling and deleting as separate things', () => {
+  it('T46 says the records survive, that cancelling is not deleting, and that a store subscription needs its own cancellation', async () => {
+    await render();
+    expect(container.textContent).toContain('Hủy gói không xóa tài khoản.');
+    expect(container.textContent).toContain('KHÔNG hủy đăng ký đó');
+    expect(container.textContent).toContain('vẫn bị tính tiền');
+    expect(container.textContent).toContain('không làm mất hồ sơ của bạn');
+    // Trường hợp mua thẳng trên web cũng phải nói, không chỉ trường hợp cửa hàng.
+    expect(container.textContent).toContain('mua gói trực tiếp trên bản web');
+  });
+
+  it('T46 says the same thing in English', async () => {
+    await render({ locale: 'en' });
+    expect(container.textContent).toContain('Cancelling a plan does not delete your account.');
+    expect(container.textContent).toContain('does NOT cancel that subscription');
+    expect(container.textContent).toContain('keep being charged');
+    expect(container.textContent).toContain('never remove your records');
+  });
+});
