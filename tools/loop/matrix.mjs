@@ -61,8 +61,20 @@ export function toRecords(text) {
   return body.map((cells) => Object.fromEntries(header.map((h, i) => [h, cells[i] ?? ''])));
 }
 
-export function fromRecords(records) {
-  return stringifyCsv([COLUMNS, ...records.map((r) => COLUMNS.map((c) => r[c] ?? ''))]);
+// Cột lạ (ví dụ `evidence`, thêm sau khi công cụ này được viết) phải được giữ nguyên. Nếu chỉ ghi
+// COLUMNS thì một lần chạy from-report sẽ xóa sạch cột đó khỏi cả bảng, mà không ai thấy gì báo lỗi.
+export function columnsOf(records, known = COLUMNS) {
+  const extra = [];
+  for (const record of records) {
+    for (const key of Object.keys(record)) {
+      if (!known.includes(key) && !extra.includes(key)) extra.push(key);
+    }
+  }
+  return [...known, ...extra];
+}
+
+export function fromRecords(records, columns = columnsOf(records)) {
+  return stringifyCsv([columns, ...records.map((r) => columns.map((c) => r[c] ?? ''))]);
 }
 
 // Reads a Vitest JSON report and returns the derived status per T-id.

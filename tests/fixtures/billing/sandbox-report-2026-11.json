@@ -1,0 +1,13 @@
+{
+  "_note": "Báo cáo GIẢ ĐỊNH của nhà cung cấp sandbox, dùng cho T30 (WO12-03). Không phải tiền thật, không phải doanh thu. Mọi số tiền ở đây mang nguồn gốc 'sandbox' và không bao giờ được cộng vào doanh thu đã xác nhận.",
+  "provider": "sandbox_b2b",
+  "period": "2026-11",
+  "currency": "USD",
+  "amount_kind": "sandbox",
+  "rows": [
+    { "event_id": "rep-0001", "event_type": "purchase", "provider_state": "active", "effective_at": "2026-11-01T09:00:00.000Z", "amount_minor": 14900 },
+    { "event_id": "rep-0002", "event_type": "renew", "provider_state": "active", "effective_at": "2026-11-05T09:00:00.000Z", "amount_minor": 14900 },
+    { "event_id": "rep-0003", "event_type": "cancel", "provider_state": "canceled_at_period_end", "effective_at": "2026-11-20T09:00:00.000Z", "amount_minor": 0 },
+    { "event_id": "rep-0004", "event_type": "refund", "provider_state": "refunded", "effective_at": "2026-11-25T09:00:00.000Z", "amount_minor": -14900 }
+  ]
+}

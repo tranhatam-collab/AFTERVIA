@@ -1,14 +1,14 @@
 // Hàng đợi dùng chung cho các màn hình (WO10-02). Nạp lưu trữ bền, phát lại thay đổi cho giao diện.
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ItemFields } from '@aftervia/domain';
-import { API_BASE } from '../config';
+import { API_BASE, SESSION_TOKEN } from '../config';
 import { asyncStorageStore } from './async-store';
 import { Outbox, type OutboxEntry } from './outbox';
 import { isOnline } from './network';
 import { makeItemSender } from './send-item';
 
 // Đăng nhập thật chưa có trong WO10-02: không có token, nên mọi lượt gửi dừng ở "chờ đồng bộ".
-const SESSION_TOKEN: string | null = null;
+// Token nằm ở src/config.ts để màn Quyền riêng tư (WO11-03) đọc cùng một nguồn.
 
 export type OutboxStatusValue = 'loading' | 'ready' | 'error';
 

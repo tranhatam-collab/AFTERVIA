@@ -6,11 +6,15 @@ import type { Server } from 'node:http';
 import type pg from 'pg';
 import { createPool } from '../db/session';
 import { createHttpServer } from '../http/app';
+import { checkLocalTestDatabaseUrl } from '../../../../tools/db/db-target-guard.mjs';
 
 export const LOCAL_HOST = '127.0.0.1';
 export const LOCAL_APP_ENV = 'test';
 export const DEFAULT_LOCAL_PORT = 8787;
-export const MIN_JWT_SECRET_LENGTH = 32;
+// Một nguồn duy nhất cho độ dài khóa tối thiểu (D-09).
+import { MIN_JWT_SECRET_LENGTH } from '../auth/jwt';
+
+export { MIN_JWT_SECRET_LENGTH };
 
 export const LOCAL_ENV = {
   databaseUrl: 'AFTERVIA_LOCAL_DATABASE_URL',
@@ -19,8 +23,6 @@ export const LOCAL_ENV = {
   appEnv: 'AFTERVIA_LOCAL_APP_ENV',
 } as const;
 
-const LOOPBACK_NAMES = new Set(['localhost', '127.0.0.1', '[::1]', '::1']);
-const HOST_MESSAGE = `${LOCAL_ENV.databaseUrl} must point to this machine only (localhost, 127.0.0.1, ::1 or a Unix socket path)`;
 
 export type LocalEnv = Readonly<Record<string, string | undefined>>;
 
@@ -42,10 +44,6 @@ export interface LocalApiDeps {
   createPool?: (connectionString: string) => pg.Pool;
 }
 
-function isLocalTarget(value: string): boolean {
-  return value.split(',').every((part) => part.startsWith('/') || LOOPBACK_NAMES.has(part));
-}
-
 // Trả về lý do từ chối, hoặc null nếu URL được chấp nhận. Không bao giờ in URL vì có thể chứa mật khẩu.
 export function checkLocalDatabaseUrl(raw: string): string | null {
   let url: URL;
@@ -57,24 +55,10 @@ export function checkLocalDatabaseUrl(raw: string): string | null {
   if (url.protocol !== 'postgres:' && url.protocol !== 'postgresql:') {
     return `${LOCAL_ENV.databaseUrl} must use the postgres:// or postgresql:// scheme`;
   }
-  // Tham số dbname có thể đổi DB đích; tên DB chỉ lấy từ đường dẫn để kiểm được.
-  if (url.searchParams.has('dbname')) {
-    return `${LOCAL_ENV.databaseUrl} must not use a dbname parameter; the name comes from the path`;
-  }
-  let name: string;
-  try {
-    name = decodeURIComponent(url.pathname.replace(/^\//, ''));
-  } catch {
-    return `${LOCAL_ENV.databaseUrl} has an invalid database name`;
-  }
-  if (!name.endsWith('_test')) {
-    return `refusing to use database "${name}": its name must end with _test`;
-  }
-  const targets = [url.hostname, url.searchParams.get('host'), url.searchParams.get('hostaddr')];
-  for (const target of targets) {
-    if (target !== null && target !== '' && !isLocalTarget(target)) return HOST_MESSAGE;
-  }
-  return null;
+  // Tên DB, tham số dbname và máy đích dùng cùng một bộ luật với các công cụ DB
+  // (tools/db/db-target-guard.mjs), nên start-local và migrate không thể lệch nhau. Bộ luật đó cũng từ
+  // chối URL không có host, vì khi đó PGHOST, PGHOSTADDR hoặc PGSERVICE mới chọn máy chủ (D-07).
+  return checkLocalTestDatabaseUrl(raw);
 }
 
 export function readLocalConfig(env: LocalEnv): LocalConfigResult {

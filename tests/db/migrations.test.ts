@@ -55,7 +55,11 @@ describe('T03 migration state is durable and guarded', () => {
   });
 
   it('T03 refuses a test-named database on a remote host, and accepts the local ones', () => {
-    expect(() => assertTestDatabase('postgres://user:pw@db.example.com:5432/aftervia_test')).toThrow(/only localhost/);
+    // OWN-A-07: the message now comes from the shared guard (tools/db/db-target-guard.mjs) and names every
+    // accepted form, so match the rule rather than the old wording. Intent is unchanged: a remote host is refused.
+    expect(() => assertTestDatabase('postgres://user:pw@db.example.com:5432/aftervia_test')).toThrow(/must point to this machine only/);
+    // A URL with no host is refused too: libpq would take the server from PGHOST (D-07).
+    expect(() => assertTestDatabase('postgres:///aftervia_test')).toThrow(/has no host/);
     expect(() => assertTestDatabase('postgres://user:pw@localhost:5432/aftervia_test')).not.toThrow();
     expect(() => assertTestDatabase('postgres://user:pw@[::1]:5432/aftervia_test')).not.toThrow();
   });

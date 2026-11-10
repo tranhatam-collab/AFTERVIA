@@ -49,9 +49,15 @@ export function matchContract(method: string, pathname: string): ContractMatch |
     const found = new RegExp(`^${source}$`).exec(pathname);
     if (!found) continue;
     const params: Record<string, string> = {};
-    names.forEach((name, index) => {
-      params[name] = decodeURIComponent(found[index + 1] ?? '');
-    });
+    // Một escape phần trăm sai làm decodeURIComponent ném lỗi. Trước đây lỗi đó thoát ra ngoài và thành
+    // 500; một đường dẫn không giải mã được thì đơn giản là không khớp route nào, nên trả 404 (D-08).
+    try {
+      names.forEach((name, index) => {
+        params[name] = decodeURIComponent(found[index + 1] ?? '');
+      });
+    } catch {
+      return null;
+    }
     return { route, params };
   }
   return null;

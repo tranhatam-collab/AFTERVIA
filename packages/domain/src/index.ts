@@ -10,3 +10,6 @@ export * from './ai-resilience';
 export * from './reminder-schedule';
 export * from './case-state';
 export * from './country-pack';
+export * from './privacy';
+export * from './entitlement';
+export * from './reconciliation';

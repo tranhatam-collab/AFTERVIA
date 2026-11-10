@@ -7,12 +7,26 @@ export interface JwtClaims {
   role?: string;
   exp: number;
   iat?: number;
+  nbf?: number;
   simulated?: boolean;
+}
+
+// Độ dài tối thiểu của khóa ký. HMAC-SHA256 nhận khóa rỗng, nên phải tự kiểm (D-09).
+export const MIN_JWT_SECRET_LENGTH = 32;
+
+export interface VerifyOptions {
+  // Chặn trên cho exp - iat. Chính sách của tầng gọi, không phải của JWT, nên mặc định là không chặn.
+  maxLifetimeSeconds?: number;
+  // Dung sai đồng hồ cho nbf và iat.
+  clockSkewSeconds?: number;
 }
 
 export type VerifyResult =
   | { ok: true; claims: JwtClaims }
-  | { ok: false; reason: 'malformed' | 'bad_alg' | 'bad_signature' | 'expired' | 'missing_sub' };
+  | {
+      ok: false;
+      reason: 'malformed' | 'bad_alg' | 'bad_signature' | 'expired' | 'missing_sub' | 'not_yet_valid' | 'bad_iat' | 'lifetime_too_long';
+    };
 
 export function signHs256(payload: Record<string, unknown>, secret: string): string {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
@@ -21,7 +35,12 @@ export function signHs256(payload: Record<string, unknown>, secret: string): str
   return `${header}.${body}.${signature}`;
 }
 
-export function verifyHs256(token: string, secret: string, nowSeconds: number = Math.floor(Date.now() / 1000)): VerifyResult {
+export function verifyHs256(
+  token: string,
+  secret: string,
+  nowSeconds: number = Math.floor(Date.now() / 1000),
+  options: VerifyOptions = {},
+): VerifyResult {
   const parts = token.split('.');
   if (parts.length !== 3) return { ok: false, reason: 'malformed' };
   const [header64, body64, signature64] = parts as [string, string, string];
@@ -41,7 +60,22 @@ export function verifyHs256(token: string, secret: string, nowSeconds: number = 
   const given = Buffer.from(signature64, 'base64url');
   if (given.length !== expected.length || !timingSafeEqual(given, expected)) return { ok: false, reason: 'bad_signature' };
   const claims = payload as Partial<JwtClaims>;
+  const skew = options.clockSkewSeconds ?? 60;
+  // nbf và iat chỉ được kiểm khi có mặt: hệ thống này vẫn phát token không có iat ở một số đường.
+  if (claims.nbf !== undefined && (typeof claims.nbf !== 'number' || claims.nbf > nowSeconds + skew)) {
+    return { ok: false, reason: 'not_yet_valid' };
+  }
+  if (claims.iat !== undefined && (typeof claims.iat !== 'number' || claims.iat > nowSeconds + skew)) {
+    return { ok: false, reason: 'bad_iat' };
+  }
   if (typeof claims.exp !== 'number' || claims.exp <= nowSeconds) return { ok: false, reason: 'expired' };
+  if (
+    options.maxLifetimeSeconds !== undefined &&
+    typeof claims.iat === 'number' &&
+    claims.exp - claims.iat > options.maxLifetimeSeconds
+  ) {
+    return { ok: false, reason: 'lifetime_too_long' };
+  }
   if (typeof claims.sub !== 'string' || claims.sub.length === 0) return { ok: false, reason: 'missing_sub' };
   return { ok: true, claims: claims as JwtClaims };
 }

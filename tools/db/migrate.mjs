@@ -7,6 +7,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
+import { assertLocalTestDatabase } from './db-target-guard.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const ROOT = resolve(here, '..', '..');
@@ -14,25 +15,11 @@ export const MIGRATIONS_DIR = join(ROOT, 'supabase', 'migrations');
 export const SHIM_PATH = join(ROOT, 'tests', 'support', 'local-auth-shim.sql');
 const FILE_PATTERN = /^\d{4}_[a-z0-9_]+\.sql$/;
 
-export function databaseNameOf(url) {
-  return decodeURIComponent(new URL(url).pathname.replace(/^\//, ''));
-}
-
-// Only a database on this machine may be reset (DOC-05). The name check alone does not stop a reset of a remote
-// database whose name happens to end in _test.
-const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
+// Một bộ luật duy nhất cho mọi công cụ chạm vào cơ sở dữ liệu (D-07, A-10, D-11).
+export { databaseNameOf } from './db-target-guard.mjs';
 
 export function assertTestDatabase(url) {
-  if (!url) throw new Error('database URL is missing');
-  const name = databaseNameOf(url);
-  if (!name.endsWith('_test')) {
-    throw new Error(`refusing to use database "${name}": its name must end with _test`);
-  }
-  const host = new URL(url).hostname;
-  if (!LOCAL_HOSTS.has(host)) {
-    throw new Error(`refusing to use database on host "${host}": only localhost, 127.0.0.1 or [::1] is allowed`);
-  }
-  return name;
+  return assertLocalTestDatabase(url);
 }
 
 export function checksumOf(text) {

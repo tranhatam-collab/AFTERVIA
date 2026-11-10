@@ -5,7 +5,6 @@ import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } fr
 import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
 import { t, type Locale, type MessageKey } from '@aftervia/i18n';
 import { addItem, openCase, transitionCase, type ActionOptions, type ActionResult, type CaseSummary } from './actions';
-import { SharingForms } from './SharingForms';
 import {
   DEFAULT_CURRENCY,
   OUTCOME_KEY,
@@ -311,13 +310,13 @@ function TransitionForm({
 }
 
 // Ba biểu mẫu của Web Desk, đặt dưới danh sách. Trạng thái case đang làm việc nằm ở App.
+// Chia tài liệu, thu hồi quyền và tạo gói xuất nằm ở màn Quyền riêng tư (WO11-03), không lặp lại ở đây.
 export function DeskForms(props: DeskFormsProps) {
   return (
     <div className="desk-forms">
       <ItemForm locale={props.locale} base={props.base} token={props.token} onAdded={props.onItemAdded} />
       <CaseOpenForm locale={props.locale} base={props.base} token={props.token} onOpened={props.onCaseChanged} />
       <TransitionForm locale={props.locale} base={props.base} token={props.token} activeCase={props.activeCase} onMoved={props.onCaseChanged} />
-      <SharingForms locale={props.locale} base={props.base} token={props.token} activeCase={props.activeCase} />
     </div>
   );
 }

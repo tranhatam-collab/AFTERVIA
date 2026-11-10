@@ -39,7 +39,9 @@ export async function asActor<T>(userId: string | null, run: (client: pg.Client)
   const client = await connect();
   try {
     await client.query('begin');
-    const claims = userId ? { sub: userId, role: 'authenticated' } : { role: 'anon' };
+    // Một JWT thật luôn có iat. Hàm chỉ máy chủ gọi được có thể đòi phiên còn mới (ví dụ xóa tài khoản),
+    // nên actor kiểm thử phải mang iat giống PostgREST, nếu không bộ test không phản ánh đúng thực tế.
+    const claims = userId ? { sub: userId, role: 'authenticated', iat: Math.floor(Date.now() / 1000) } : { role: 'anon' };
     await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify(claims)]);
     await client.query(`set local role ${userId ? 'authenticated' : 'anon'}`);
     try {

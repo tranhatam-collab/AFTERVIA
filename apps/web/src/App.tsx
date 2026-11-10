@@ -4,6 +4,7 @@ import { t, type Locale } from '@aftervia/i18n';
 import { loadItems, type Item, type ListResult } from './state';
 import { ItemsView } from './view';
 import { DeskForms } from './DeskForms';
+import { PrivacyForms } from './PrivacyForms';
 import type { CaseSummary } from './actions';
 
 export interface AppProps {
@@ -74,6 +75,7 @@ export function App({ base, token, initialLocale }: AppProps) {
         onItemAdded={() => void reload()}
         onCaseChanged={setActiveCase}
       />
+      <PrivacyForms locale={locale} base={base} token={token} activeCase={activeCase} />
     </main>
   );
 }

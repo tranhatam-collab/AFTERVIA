@@ -134,11 +134,48 @@ describe('WO07-04 Vietnamese and English messages, dates and money', () => {
       'desk.export.submit',
       'desk.export.created',
       'desk.export.status.succeeded',
+      // WO11-03: màn Quyền riêng tư (xuất, chia sẻ, xóa tài khoản) trên web và di động.
+      'privacy.heading',
+      'privacy.intro',
+      'privacy.delete.heading',
+      'privacy.delete.explain',
+      'privacy.delete.legalPending',
+      'privacy.delete.reauthNote',
+      'privacy.delete.requestId.label',
+      'privacy.delete.requestId.hint',
+      'privacy.delete.confirm.label',
+      'privacy.delete.confirm.word',
+      'privacy.delete.submit',
+      'privacy.delete.requested',
+      'privacy.delete.pendingHeading',
+      'privacy.delete.pending.primary_data_erasure',
+      'privacy.delete.pending.retention_policy',
+      'privacy.delete.pending.append_only_erasure',
+      'privacy.delete.pending.session_revocation',
+      'privacy.delete.pending.identity_verification',
+      'privacy.delete.pending.tombstone_registry_outside_backup',
+      'privacy.delete.pending.unknown',
+      'privacy.delete.error.requestId',
+      'privacy.delete.error.confirm',
+      'privacy.delete.reauth',
+      'privacy.delete.signedOut',
+      'privacy.delete.refused.invalid_state',
+      'privacy.delete.refused.invalid_input',
+      'privacy.delete.refused.rate_limited',
+      'privacy.delete.refused.other',
+      'privacy.mobile.export',
+      'privacy.mobile.share',
+      // WO12-02 (T46): hủy gói và xóa tài khoản là hai việc khác nhau; phải nói đúng.
+      'privacy.plan.heading',
+      'privacy.plan.dataKept',
+      'privacy.plan.cancelNotDelete',
+      'privacy.plan.deleteNotCancelStore',
+      'privacy.plan.deleteNotCancelInApp',
     ];
     expect(new Set(required)).toEqual(new Set(Object.keys(vi)));
     for (const key of required) {
       for (const locale of LOCALES) {
-        expect(t(locale, key, { actor: 'Hà', source: 'Hóa đơn', id: 'x', status: 'Nháp', version: 1 })).not.toBe('');
+        expect(t(locale, key, { actor: 'Hà', source: 'Hóa đơn', id: 'x', status: 'Nháp', version: 1, count: 2 })).not.toBe('');
       }
     }
   });

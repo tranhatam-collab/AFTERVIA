@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyReport, parseCsv, stringifyCsv, statusesFromReport, toRecords, fromRecords } from './matrix.mjs';
+import { COLUMNS, applyReport, parseCsv, stringifyCsv, statusesFromReport, toRecords, fromRecords } from './matrix.mjs';
 
 test('parseCsv handles BOM, quoted commas, escaped quotes and CRLF', () => {
   const text = '﻿a,b,c\r\n1,"x, y","say ""hi"""\r\n';
@@ -47,4 +47,26 @@ test('applyReport updates derived statuses and never overwrites manual results',
   assert.equal(records[0].last_run, '2026-10-31');
   assert.equal(records[1].test_status, 'MANUAL_PENDING');
   assert.match(fromRecords(records), /Khách A đọc item B/);
+});
+
+// Cột `evidence` được thêm vào CSV sau khi matrix.mjs được viết. Trước bản sửa này, from-report ghi lại
+// bảng chỉ với COLUMNS, nên cột đó biến mất khỏi cả 46 dòng mà không có lời báo nào.
+test('fromRecords keeps a column the tool does not know about', () => {
+  const text = `${COLUMNS.join(',')},evidence\nT99,G0,HIGH,Thử,AUTO,PARTIAL,WO99,NOT_RUN,,ghi chú,docs/plan/evidence/WO99.md\n`;
+  const records = toRecords(text);
+  assert.equal(records[0].evidence, 'docs/plan/evidence/WO99.md');
+  const written = fromRecords(records);
+  assert.match(written.split('\n')[0], /,evidence$/);
+  assert.match(written, /docs\/plan\/evidence\/WO99\.md/);
+  // Vòng đi vòng về không làm mất gì.
+  assert.deepEqual(toRecords(written), records);
+});
+
+test('applyReport then fromRecords still carries the evidence column', () => {
+  const text = `${COLUMNS.join(',')},evidence\nT27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,NOT_RUN,,,docs/plan/evidence/WO12-01.md\n`;
+  const records = toRecords(text);
+  const report = { testResults: [{ assertionResults: [{ title: 'T27 a forged webhook is refused', status: 'passed' }] }] };
+  applyReport(records, report, '2026-11-10');
+  const written = fromRecords(records);
+  assert.match(written, /T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,PASS,2026-11-10,,docs\/plan\/evidence\/WO12-01\.md/);
 });

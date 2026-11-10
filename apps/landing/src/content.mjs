@@ -87,7 +87,7 @@ const vi = {
       { title: 'Không thay thế quyết định pháp lý', text: 'AFTERVIA không tự quyết định người dùng có đủ quyền bảo hành hay không và không thay thế tư vấn pháp lý.' },
       { title: 'Dữ liệu tách theo tài khoản', text: 'Mỗi tổ chức và tài khoản chỉ thấy dữ liệu được cấp quyền. Điều này được kiểm thử tự động trong bản phát triển; chưa có kiểm định độc lập.' },
       { title: 'Thay đổi có nhật ký', text: 'Các thay đổi quyền truy cập và dữ liệu được ghi vào nhật ký chỉ thêm, không sửa và không xóa.' },
-      { title: 'Trang này không thu thập dữ liệu', text: 'Trang giới thiệu không có biểu mẫu, không thu email và không dùng công cụ theo dõi cá nhân.' },
+      { title: 'Trang này không thu thập dữ liệu của bạn', text: 'Trang giới thiệu không có biểu mẫu, không thu email và không dùng công cụ theo dõi cá nhân. Máy chủ lưu trữ vẫn có thể ghi nhật ký truy cập như mọi trang web.' },
       { title: 'Không có lời chứng thực hay số liệu giả', text: 'Trang này không có lời chứng thực, đánh giá khách hàng hay số liệu tăng trưởng.' },
     ],
   },
@@ -110,7 +110,12 @@ const vi = {
       testing: {
         label: 'Đang thử',
         sub: 'Đang được xây dựng và kiểm thử; chưa mở cho khách hàng',
-        items: ['Kiểm tra tệp theo chữ ký nhị phân cho JPEG, PNG và PDF, giới hạn 10 MB'],
+        items: [
+          'Kiểm tra tệp theo chữ ký nhị phân cho JPEG, PNG và PDF, giới hạn 10 MB',
+          'Ứng dụng web (AFTERVIA Desk) và vỏ ứng dụng di động',
+          'Quy trình xử lý hồ sơ cho cửa hàng',
+          'Xuất và xóa dữ liệu theo yêu cầu',
+        ],
       },
       planned: {
         label: 'Dự kiến',
@@ -118,11 +123,8 @@ const vi = {
         items: [
           'Lưu trữ tệp chứng từ thật (chưa chọn nhà cung cấp)',
           'Đăng nhập thật qua nhà cung cấp danh tính',
-          'Ứng dụng web và di động',
-          'Quy trình xử lý hồ sơ cho cửa hàng (AFTERVIA Desk)',
           'Không gian đối tác dịch vụ (AFTERVIA Partner)',
           'Thanh toán và gói dịch vụ (chưa mở, chưa có giao dịch thật)',
-          'Xuất và xóa dữ liệu theo yêu cầu',
           'Đọc chứng từ bằng AI (mặc định tắt, cần người duyệt)',
         ],
       },
@@ -220,7 +222,7 @@ const en = {
       { title: 'Not a legal decision', text: 'AFTERVIA does not decide whether a user is entitled to a warranty and does not replace legal advice.' },
       { title: 'Data is separated by account', text: 'Each organization and account sees only the data it has been granted. This is tested automatically in the development build; there is no independent audit yet.' },
       { title: 'Changes are logged', text: 'Access changes and data changes are written to an append-only log that cannot be edited or deleted.' },
-      { title: 'This page collects no data', text: 'The page has no forms, takes no email address and uses no personal tracking tools.' },
+      { title: 'This page collects no data about you', text: 'The page has no forms, takes no email address and uses no personal tracking tools. The host may still keep access logs, as any website does.' },
       { title: 'No fake testimonials or figures', text: 'The page has no testimonials, customer reviews or growth figures.' },
     ],
   },
@@ -243,7 +245,12 @@ const en = {
       testing: {
         label: 'Being tested',
         sub: 'Being built and tested; not open to customers',
-        items: ['File checks by binary signature for JPEG, PNG and PDF, with a 10 MB limit'],
+        items: [
+          'File checks by binary signature for JPEG, PNG and PDF, with a 10 MB limit',
+          'The web app (AFTERVIA Desk) and the mobile shell',
+          'Case workflow for retailers',
+          'Export and deletion of data on request',
+        ],
       },
       planned: {
         label: 'Planned',
@@ -251,11 +258,8 @@ const en = {
         items: [
           'Storage for real document files (no provider chosen yet)',
           'Real sign-in through an identity provider',
-          'Web and mobile apps',
-          'Case workflow for retailers (AFTERVIA Desk)',
           'Workspace for service partners (AFTERVIA Partner)',
           'Payments and subscription plans (not open; no real transactions)',
-          'Export and deletion of data on request',
           'Reading documents with AI (off by default; needs human review)',
         ],
       },

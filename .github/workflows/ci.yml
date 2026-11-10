@@ -36,3 +36,64 @@ jobs:
       - run: npm run verify
       - name: Dependency audit (production, high+)
         run: npm audit --omit=dev --audit-level=high
+
+  # OWN-A-10 (audit 10/11, A-03). Cổng e2e trước đây không chạy ở đâu: nó không nằm trong `npm run verify`
+  # và không có job nào gọi. Job này cài Chromium đúng bản mà Playwright trong lockfile cần.
+  e2e-web:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aftervia_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/aftervia_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # tag v4, ghim 2026-11-01 (WO24-01)
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # tag v4, ghim 2026-11-01 (WO24-01)
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Install the browser Playwright expects
+        run: npx playwright install --with-deps chromium
+      - run: npm run e2e:web
+
+  # OWN-A-10 (audit 10/11, G-25). Groundstead có bộ cổng riêng (`groundstead/package.json`) mà không job
+  # nào chạy. Thư mục chỉ tồn tại trên nhánh của Lane G, nên job tự bỏ qua khi không có nó.
+  groundstead-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # tag v4, ghim 2026-11-01 (WO24-01)
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # tag v4, ghim 2026-11-01 (WO24-01)
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Is there a groundstead project on this branch?
+        id: probe
+        run: |
+          if [ -f groundstead/package.json ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No groundstead/ on this branch: nothing to verify."
+          fi
+      - name: Install the browser the groundstead e2e tests use
+        if: steps.probe.outputs.present == 'true'
+        run: npx playwright install --with-deps chromium
+      - name: npm ci
+        if: steps.probe.outputs.present == 'true'
+        working-directory: groundstead
+        run: npm ci
+      - name: npm run verify
+        if: steps.probe.outputs.present == 'true'
+        working-directory: groundstead
+        run: npm run verify
