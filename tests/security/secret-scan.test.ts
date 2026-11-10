@@ -38,6 +38,19 @@ describe('T37 secret and log leak guard', () => {
     expect(output).not.toContain(secret);
   });
 
+  it('T37 a NUL byte does not hide a private key block', () => {
+    expect(scanText('fixture.bin', `\u0000${pemHeader}`).map((f) => f.rule)).toEqual(['private-key-block']);
+  });
+
+  it('T37 flags underscore-prefixed assigned secrets such as JWT_SECRET and DB_PASSWORD', () => {
+    const text = [`JWT_SECRET = "${'b'.repeat(20)}"`, `DB_PASSWORD="${'c'.repeat(16)}"`].join('\n');
+    expect(scanText('fixture.env', text).map((f) => f.rule)).toEqual(['assigned-secret-literal', 'assigned-secret-literal']);
+  });
+
+  it('T37 a longer identifier that only ends in a keyword is not an assigned secret', () => {
+    expect(scanText('clean.ts', `const tokenizer = "${'d'.repeat(20)}"`)).toEqual([]);
+  });
+
   it('T37 a clean fixture passes', () => {
     expect(scanText('clean.ts', 'const name = "AFTERVIA";\nconst count = 3;')).toEqual([]);
   });
