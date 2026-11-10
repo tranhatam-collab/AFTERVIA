@@ -54,6 +54,12 @@ describe('T03 migration state is durable and guarded', () => {
     expect(() => assertTestDatabase('postgres://user:pw@127.0.0.1:5432/aftervia_test')).not.toThrow();
   });
 
+  it('T03 refuses a test-named database on a remote host, and accepts the local ones', () => {
+    expect(() => assertTestDatabase('postgres://user:pw@db.example.com:5432/aftervia_test')).toThrow(/only localhost/);
+    expect(() => assertTestDatabase('postgres://user:pw@localhost:5432/aftervia_test')).not.toThrow();
+    expect(() => assertTestDatabase('postgres://user:pw@[::1]:5432/aftervia_test')).not.toThrow();
+  });
+
   it('T03 the reset helper refuses a non-test database before opening a connection', async () => {
     await expect(resetTestDatabase('postgres://user:pw@127.0.0.1:1/aftervia_dev')).rejects.toThrow(/must end with _test/);
   });
