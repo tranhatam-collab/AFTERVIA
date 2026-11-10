@@ -75,3 +75,29 @@ Chặn trên tuổi thọ làm hai fixture cũ không còn hợp lệ, vì chún
 `MIN_JWT_SECRET_LENGTH` sang `auth/jwt.ts` (phần của OWN-A-08) vì thế đã đi cùng commit của
 OWN-A-07, không tách ra được mà không phải can thiệp vào index. Ghi lại ở đây để người đọc lịch sử
 không mất dấu.
+
+## Lỗi chỉ xuất hiện trên CI, và cách tìm ra
+
+Sau khi đẩy, CI đỏ ở bước `npm run verify` tại head `4197492` và `4285949`, cùng một nguyên nhân, dù
+`npm run verify` ở máy phát triển exit 0. Lỗi: `tests/api/account-deletion-http.test.ts` dòng 107 và
+118 nhận 401 thay vì 200.
+
+Nguyên nhân là tương tác giữa bản sửa D-09 và một fixture: helper `freshSession` ký token với
+`iat = cutoff + 60`, trong đó `cutoff` đọc từ Postgres, còn kiểm "iat không ở tương lai quá 60 giây"
+so với đồng hồ của Node. Trên máy phát triển, Postgres và Node dùng **cùng một đồng hồ**, nên
+`iat - now` đúng 60 và vừa đủ lọt. Trên CI, Postgres là một container riêng và runner là máy khác, nên
+chỉ cần đồng hồ Postgres nhanh hơn vài giây là `iat` vượt biên và API trả 401.
+
+Đã đo dung sai bằng một phép tính nhỏ trong lượt:
+
+| Khoảng cách sau mốc cắt | Lệch 0s | 5s | 30s | 55s |
+|---|---|---|---|---|
+| `cutoff + 60` | nhận | **401** | **401** | **401** |
+| `cutoff + 5` | nhận | nhận | nhận | nhận |
+
+Sửa fixture thành `iat = cutoff + 5` và `exp = cutoff + 5 + 900`. Ý định của kiểm thử giữ nguyên:
+`iat` vẫn đứng sau mốc cắt, và so sánh đó lấy từ cơ sở dữ liệu nên không phụ thuộc đồng hồ runner.
+**Không nới** dung sai 60 giây trong `verifyHs256`: nới nó sẽ là sửa mã sản phẩm để vừa một fixture.
+
+Bài học cho các lượt sau: `npm run verify` xanh ở máy này không chứng minh CI xanh, khi kiểm thử so
+sánh thời gian lấy từ hai nguồn đồng hồ khác nhau.
