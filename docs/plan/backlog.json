@@ -1312,8 +1312,8 @@
       "attempts": 1,
       "evidence": [],
       "started_at": "2026-10-31T20:37:42.089Z",
-      "blocked_reason": "T46 NOT_RUN: kiểm hủy và xóa subscription trên tài khoản store thật cần tài khoản store (HUMAN/INFRA) và DEC09 đang NOT_AUTHORIZED; không chạy được trong môi trường này. Phần AUTO_PREP đã xong ở mức DRAFT: docs/legal (hai bản nháp v0.2 và hai checklist) và docs/plan/evidence/WO18-01.md. Chờ HUM-WO18-02 và tài khoản store.",
-      "blocked_at": "2026-10-31T20:45:41.567Z"
+      "blocked_reason": "T46 nay PASS cho phần hướng dẫn TRONG ỨNG DỤNG (WO12-02: hủy gói không xóa tài khoản; xóa tài khoản không hủy đăng ký ở store, nói rõ cả hai trường hợp trên web và di động). Phần còn thiếu không đổi: hủy thật trên tài khoản App Store/Google Play cần tài khoản store (HUMAN/INFRA), và DEC09 (thanh toán và store) vẫn KHÔNG CẤP. Phần AUTO_PREP đã xong ở mức DRAFT: docs/legal (hai bản nháp v0.2 và hai checklist) và docs/plan/evidence/WO18-01.md. Chờ HUM-WO18-02 và tài khoản store.",
+      "blocked_at": "2026-11-10T12:07:31.835Z"
     },
     {
       "id": "HUM-WO18-02",
