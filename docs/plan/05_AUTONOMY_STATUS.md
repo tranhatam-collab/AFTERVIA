@@ -17,6 +17,21 @@ OD-08 (nới phụ thuộc pháp lý).
 | OWN-A-10, A-11 | `7c852c9` | CI thêm job `e2e-web` và `groundstead-verify`; quét bí mật bắt giá trị không nháy và bỏ loại trừ `docs/spec`; gỡ 4 tệp nén |
 | OWN-A-15, A-16 | `4285949` | Header bảo mật cho Desk; regex sink mở rộng; test `escapeHtml`; sửa ma trận, ngày ngân sách, nội dung landing |
 
+**CI xanh cả ba job** ở head `487d084` (run 42803201074, 10/11 10:57Z):
+
+| Job | Kết quả |
+|---|---|
+| `verify` | đạt, **gồm bước 7 "Dependency audit (production, high+)" đạt** — cổng P1 hết đỏ trên CI, không chỉ ở máy phát triển |
+| `e2e-web` | đạt — job mới của OWN-A-10; cài Chromium rồi chạy `npm run e2e:web` thật |
+| `groundstead-verify` | đạt — job mới của OWN-A-10; dò đúng là nhánh này không có `groundstead/` và bỏ qua ba bước phụ thuộc |
+
+CodeRabbit: `skipped`, vì PR là bản nháp.
+
+Trước khi xanh, CI đỏ hai lần ở bước `npm run verify` do kiểm `iat` tương lai của OWN-A-08 gặp chênh
+đồng hồ giữa container Postgres và runner. Lỗi không tái lập ở máy phát triển vì hai bên dùng cùng một
+đồng hồ. Đã sửa bằng `tests/support/session-fixtures.ts` (một nơi giữ luật, kèm chốt hằng số), không
+nới dung sai trong `verifyHs256`. Chi tiết trong `docs/plan/evidence/OWN-A-08.md`.
+
 Cổng ở head `4285949`: `npm run verify` exit 0 với **573 test đạt** và 1 bỏ qua (trước SYNC-01: 485);
 `npm audit --omit=dev --audit-level=high` exit 0, **0 cảnh báo high**; `npm run e2e:web` exit 0;
 quét bí mật 540 tệp, 6 luật. Ma trận: PASS 31, MANUAL_PARTIAL 3, NOT_RUN 12, FAIL 0.
