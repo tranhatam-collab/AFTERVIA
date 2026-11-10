@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 126,
-    "iterations_used": 70,
+    "iterations_used": 71,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
     "budget_history": [
       {
@@ -1917,10 +1917,17 @@
       "acceptance": [
         "T26"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": [],
-      "split_from": "WO16-01"
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-01b.md",
+        "7 kiểm thử mới dựng lại đúng lỗ hổng: sao lưu trước khi xóa, khôi phục xong tài khoản về ACTIVE và reapply trả 0; nạp sổ ngoài backup thì về PENDING_DELETION",
+        "npm run verify exit 0: 662 pass / 1 skipped; e2e:web exit 0",
+        "T26 GIỮ MANUAL_PARTIAL: nơi lưu sổ còn là thư mục cục bộ, staging và object storage là INF-01; đổi sang PASS là quyết định của chủ dự án"
+      ],
+      "split_from": "WO16-01",
+      "started_at": "2026-11-10T12:00:14.183Z",
+      "finished_at": "2026-11-10T12:06:31.136Z"
     },
     {
       "id": "WO17-01a",
