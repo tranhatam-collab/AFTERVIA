@@ -12,14 +12,13 @@ export const RULES = [
   { name: 'aws-access-key-id', re: /\bAKIA[0-9A-Z]{16}\b/ },
   { name: 'stripe-live-key', re: /\b(?:sk|rk)_live_[0-9A-Za-z]{16,}\b/ },
   { name: 'jwt-like-token', re: /\beyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{10,}\b/ },
-  { name: 'assigned-secret-literal', re: /\b(?:api[_-]?key|secret|token|password|service[_-]?role[_-]?key)\s*[:=]\s*["'][^"'\s]{12,}["']/i },
+  { name: 'assigned-secret-literal', re: /(?<![A-Za-z0-9])(?:api[_-]?key|secret|token|password|service[_-]?role[_-]?key)\s*[:=]\s*["'][^"'\s]{12,}["']/i },
 ];
 
 const SKIP = [/^package-lock\.json$/];
 
 export function scanText(file, text) {
   const findings = [];
-  if (text.includes('\u0000')) return findings;
   text.split(/\r?\n/).forEach((line, index) => {
     for (const rule of RULES) if (rule.re.test(line)) findings.push({ file, line: index + 1, rule: rule.name });
   });

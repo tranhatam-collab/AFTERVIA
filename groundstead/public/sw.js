@@ -43,7 +43,9 @@ async function answer(request) {
   const stored = await storedCopy(request);
   if (!stored) return fetch(request);
   try {
-    return await networkWithinWait(request);
+    const response = await networkWithinWait(request);
+    // A server error must not replace the stored offline copy.
+    return response.ok ? response : stored;
   } catch {
     return stored;
   }
