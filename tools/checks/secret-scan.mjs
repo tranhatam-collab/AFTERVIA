@@ -13,9 +13,16 @@ export const RULES = [
   { name: 'stripe-live-key', re: /\b(?:sk|rk)_live_[0-9A-Za-z]{16,}\b/ },
   { name: 'jwt-like-token', re: /\beyJ[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{15,}\.[A-Za-z0-9_-]{10,}\b/ },
   { name: 'assigned-secret-literal', re: /(?<![A-Za-z0-9])(?:api[_-]?key|secret|token|password|service[_-]?role[_-]?key)\s*[:=]\s*["'][^"'\s]{12,}["']/i },
+  // OWN-A-11: giá trị KHÔNG có nháy, dạng `KEY=giá-trị` trong tệp .env hoặc script. Đòi ít nhất 20 ký tự
+  // thuộc bộ base64/hex để tránh bắt sai câu văn thường, và không khớp khi giá trị là một biểu thức
+  // (ví dụ `token: process.env.FOO`, vì dấu chấm không thuộc bộ ký tự).
+  {
+    name: 'assigned-secret-unquoted',
+    re: /(?<![A-Za-z0-9])(?:api[_-]?key|secret|token|password|service[_-]?role[_-]?key)\s*[:=]\s*[A-Za-z0-9+/=_-]{20,}(?![A-Za-z0-9+/=_-])/i,
+  },
 ];
 
-const SKIP = [/^docs\/spec\//, /^package-lock\.json$/];
+const SKIP = [/^package-lock\.json$/];
 
 export function scanText(file, text) {
   const findings = [];
