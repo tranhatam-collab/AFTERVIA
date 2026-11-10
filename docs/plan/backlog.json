@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 126,
-    "iterations_used": 66,
+    "iterations_used": 67,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
     "budget_history": [
       {
@@ -963,9 +963,16 @@
       "acceptance": [
         "T25"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-03.md",
+        "npm run verify exit 0: 603 pass / 1 skipped; test:loop 25/25",
+        "npm run e2e:web exit 0: bước T25 mới trên Chromium thật, profiles.deletion_status=PENDING_DELETION, biên nhận liệt kê 6 việc chưa làm",
+        "đột biến M1/M2/M3 giết 3/1/5 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:04:42.798Z",
+      "finished_at": "2026-11-10T11:28:29.995Z"
     },
     {
       "id": "WO12-01",

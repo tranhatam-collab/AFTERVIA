@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // E2E Chromium (E2E-WEB-01): luồng web đầy đủ qua API cục bộ thật và Web Desk (Vite dev server, /v1 đi cùng gốc qua proxy).
 // Bước: thêm món, mở case, gắn bằng chứng và mời người tham gia (chỉ metadata, qua hàm cơ sở dữ liệu), chia tài liệu,
-// Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24).
+// Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24), yêu cầu xóa tài khoản (T25).
 // Chạy: npm run e2e:web. Cần TEST_DATABASE_URL trỏ tới DB _test (DB bị đặt lại) và Playwright
 // (đặt AFTERVIA_E2E_PLAYWRIGHT tới thư mục gói 'playwright' nếu không cài trong repo).
 // Dữ liệu tổng hợp. Không in URL DB, khóa hay token. Ảnh và tóm tắt ghi vào .loop/e2e (không commit).
@@ -28,6 +28,7 @@ const USERS = {
   partner: '00000000-0000-4000-8000-0000000000a2',
   merchantOwner: '00000000-0000-4000-8000-0000000000a3',
   merchantAgent: '00000000-0000-4000-8000-0000000000a4',
+  deleter: '00000000-0000-4000-8000-0000000000a5',
 };
 const STATUS_LABEL = {
   submitted: 'Đã gửi',
@@ -305,6 +306,32 @@ async function main() {
     const [{ n: jobs }] = await adminQuery(dbUrl, 'select count(*)::int as n from public.export_jobs where id = $1', [jobId]);
     if (jobs !== 1) throw new Error('the export job is not stored');
     log(`xuất gói ${jobId} (T24): trạng thái Đã xong, lưu trong export_jobs, không có liên kết tải`);
+
+    // T25: màn Quyền riêng tư trên trình duyệt thật, với phiên vừa được cấp (xóa đòi phiên trong 5 phút).
+    // Dùng người dùng riêng và chạy cuối cùng, vì tài khoản chuyển sang PENDING_DELETION sau bước này.
+    const deleterToken = await signIn(USERS.deleter);
+    const deleter = await newDeskPage(browser, deleterToken, summary, 'deleter');
+    const dpage = deleter.page;
+    await dpage.goto(DESK);
+    await dpage.getByRole('heading', { name: 'Xóa tài khoản', exact: true }).waitFor();
+    const deletionRequestId = `erase-e2e-${randomBytes(6).toString('hex')}`;
+    await dpage.locator('[name="deletionRequestId"]').fill(deletionRequestId);
+    await dpage.locator('[name="deletionConfirm"]').fill('XÓA');
+    await dpage.getByRole('button', { name: 'Yêu cầu xóa tài khoản', exact: true }).click();
+    const recorded = dpage.getByText(`Đã ghi nhận yêu cầu xóa ${deletionRequestId}. Trạng thái: PENDING_POLICY.`);
+    await recorded.waitFor();
+    // Biên nhận phải liệt kê đủ sáu việc chưa làm: không bao giờ hiển thị như "đã xóa xong".
+    const deletionSection = dpage.locator('section', { has: dpage.getByRole('heading', { name: 'Xóa tài khoản', exact: true }) });
+    const pendingCount = await deletionSection.locator('li').count();
+    if (pendingCount !== 6) throw new Error(`the receipt lists ${pendingCount} outstanding steps, expected 6`);
+    const [requestRow] = await adminQuery(dbUrl, 'select user_id from public.account_deletion_requests where request_id = $1', [deletionRequestId]);
+    if (requestRow?.user_id !== USERS.deleter) throw new Error('the deletion request is not stored for the caller');
+    const [profileRow] = await adminQuery(dbUrl, 'select deletion_status from public.profiles where id = $1', [USERS.deleter]);
+    if (profileRow?.deletion_status !== 'PENDING_DELETION') throw new Error(`the profile is ${profileRow?.deletion_status}, expected PENDING_DELETION`);
+    if ((await deletionSection.locator('a[href]').count()) !== 0) throw new Error('the deletion section renders a link');
+    await dpage.screenshot({ path: join(OUT, 'deleter-final.png'), fullPage: true });
+    summary.deletionRequestId = deletionRequestId;
+    log(`yêu cầu xóa tài khoản ${deletionRequestId} (T25): PENDING_DELETION, biên nhận liệt kê 6 việc chưa làm`);
 
     await page.screenshot({ path: join(OUT, 'customer-final.png'), fullPage: true });
     await mpage.screenshot({ path: join(OUT, 'merchant-final.png'), fullPage: true });

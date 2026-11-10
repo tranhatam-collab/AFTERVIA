@@ -1,13 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import type { Locale } from '@aftervia/i18n';
 import { useLocale } from '../../src/locale';
 import { COLORS, SPACING } from '../../src/ui/theme';
 
 const CHOICES: readonly Locale[] = ['vi', 'en'];
 
-// Cài đặt: chọn ngôn ngữ. Các mục khác (quyền riêng tư, xuất dữ liệu) thuộc WO11.
+// Cài đặt: chọn ngôn ngữ và lối vào màn Quyền riêng tư (xuất, chia sẻ, xóa tài khoản — WO11-03).
 export default function SettingsScreen() {
   const { t, locale, setLocale } = useLocale();
+  const router = useRouter();
   return (
     <View style={styles.page}>
       <Text style={styles.label}>{t('settings.language')}</Text>
@@ -29,6 +31,9 @@ export default function SettingsScreen() {
           );
         })}
       </View>
+      <Pressable accessibilityRole="button" onPress={() => router.push('/privacy')} style={styles.link}>
+        <Text style={styles.linkText}>{t('privacy.heading')}</Text>
+      </Pressable>
     </View>
   );
 }
@@ -49,5 +54,14 @@ const styles = StyleSheet.create({
   },
   choiceSelected: { backgroundColor: COLORS.primary },
   choiceText: { color: COLORS.primary, fontSize: 16, fontWeight: '600' },
+  link: {
+    minHeight: 44,
+    justifyContent: 'center',
+    marginTop: SPACING.gutter,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.primary,
+    paddingTop: SPACING.gap,
+  },
+  linkText: { color: COLORS.primary, fontSize: 16, fontWeight: '600' },
   choiceTextSelected: { color: COLORS.onPrimary },
 });
