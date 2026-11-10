@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { addTask, blockTask, decide, finishTask, splitTask, startTask, unblockTask, validateBacklog, readyTasks } from './backlog.mjs';
+import { addTask, blockTask, decide, finishTask, setBudget, setDeps, splitTask, startTask, unblockTask, validateBacklog, readyTasks } from './backlog.mjs';
 
 const task = (over) => ({
   id: 'X',
@@ -170,4 +170,59 @@ test('split refuses a shape that would create a dependency cycle, via the normal
   assert.equal(created.length, 2);
   const errors = validateBacklog(data, { acceptanceIds: new Set(['T01']) });
   assert.match(errors.join('\n'), /dependency cycle/);
+});
+
+// OWN-A-02 (audit 10/11, A-15): ngân sách và phụ thuộc chỉ được đổi qua công cụ, có lý do và có dấu vết.
+test('setBudget refuses a value that is not a positive whole number', () => {
+  for (const bad of [0, -1, 2.5, Number.NaN, '7']) {
+    assert.throws(() => setBudget(sample(), bad, 'why'), /positive whole number/);
+  }
+});
+
+test('setBudget refuses a change with no reason, and a value below the iterations already used', () => {
+  assert.throws(() => setBudget(sample(), 9, ''), /needs a reason/);
+  assert.throws(() => setBudget(sample(), 9, '   '), /needs a reason/);
+  const used = sample();
+  used.meta.iterations_used = 8;
+  assert.throws(() => setBudget(used, 7, 'why'), /below the 8 iterations already used/);
+});
+
+test('setBudget refuses a change that changes nothing', () => {
+  assert.throws(() => setBudget(sample(), 5, 'why'), /already 5/);
+});
+
+test('setBudget records who asked and why, and keeps earlier entries', () => {
+  const data = sample();
+  assert.deepEqual(setBudget(data, 9, ' owner approved in chat ', '2026-01-01T00:00:00.000Z'), { from: 5, to: 9 });
+  assert.equal(data.meta.iteration_budget, 9);
+  assert.deepEqual(data.meta.budget_history, [
+    { at: '2026-01-01T00:00:00.000Z', from: 5, to: 9, reason: 'owner approved in chat' },
+  ]);
+  setBudget(data, 11, 'second raise', '2026-01-02T00:00:00.000Z');
+  assert.equal(data.meta.budget_history.length, 2);
+  assert.equal(data.meta.iteration_budget, 11);
+});
+
+test('setDeps refuses an unknown task, an unknown dependency, a self dependency and no reason', () => {
+  assert.throws(() => setDeps(sample(), 'NOPE', [], 'why'), /NOPE/);
+  assert.throws(() => setDeps(sample(), 'B', ['GHOST'], 'why'), /unknown dependency GHOST/);
+  assert.throws(() => setDeps(sample(), 'B', ['B'], 'why'), /cannot depend on itself/);
+  assert.throws(() => setDeps(sample(), 'B', ['A'], ''), /needs a reason/);
+});
+
+test('setDeps replaces the list, removes duplicates and records the change', () => {
+  const data = sample();
+  const moved = setDeps(data, 'C', ['A', 'A', 'B'], 'legal gate moved to the release task', '2026-01-03T00:00:00.000Z');
+  assert.deepEqual(moved, { id: 'C', from: ['H'], to: ['A', 'B'] });
+  assert.deepEqual(data.tasks.find((t) => t.id === 'C').deps, ['A', 'B']);
+  assert.deepEqual(data.meta.deps_history, [
+    { at: '2026-01-03T00:00:00.000Z', id: 'C', from: ['H'], to: ['A', 'B'], reason: 'legal gate moved to the release task' },
+  ]);
+});
+
+test('setDeps can clear a dependency list, and the backlog stays valid', () => {
+  const data = sample();
+  setDeps(data, 'C', [], 'no longer blocked');
+  assert.deepEqual(data.tasks.find((t) => t.id === 'C').deps, []);
+  assert.deepEqual(validateBacklog(data, { acceptanceIds: new Set(['T01']) }), []);
 });

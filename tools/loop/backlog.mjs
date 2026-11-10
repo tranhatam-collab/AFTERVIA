@@ -220,6 +220,35 @@ export function addTask(data, spec) {
   return task;
 }
 
+// OWN-A-02 (audit 10/11, A-15). Ngân sách vòng lặp từng bị sửa tay trực tiếp trong backlog.json, ngoài công
+// cụ, nên không có dấu vết ai đổi và vì sao. Hai hàm dưới đây là đường duy nhất để đổi ngân sách và đổi phụ
+// thuộc: cả hai đòi lý do và ghi lại lịch sử trong meta.
+export function setBudget(data, next, reason, now = new Date().toISOString()) {
+  if (!Number.isInteger(next) || next <= 0) throw new Error('budget must be a positive whole number');
+  if (typeof reason !== 'string' || reason.trim().length === 0) throw new Error('budget change needs a reason');
+  const used = Number(data.meta?.iterations_used ?? 0);
+  if (next < used) throw new Error(`budget ${next} is below the ${used} iterations already used`);
+  const from = Number(data.meta?.iteration_budget ?? 0);
+  if (next === from) throw new Error(`budget is already ${from}`);
+  data.meta.iteration_budget = next;
+  data.meta.budget_history = [...(data.meta.budget_history ?? []), { at: now, from, to: next, reason: reason.trim() }];
+  return { from, to: next };
+}
+
+export function setDeps(data, id, deps, reason, now = new Date().toISOString()) {
+  if (typeof reason !== 'string' || reason.trim().length === 0) throw new Error('dependency change needs a reason');
+  const target = findTask(data, id);
+  const next = [...new Set(deps)];
+  for (const dep of next) {
+    if (dep === id) throw new Error(`${id}: cannot depend on itself`);
+    if (!data.tasks.some((t) => t.id === dep)) throw new Error(`${id}: unknown dependency ${dep}`);
+  }
+  const from = [...(target.deps ?? [])];
+  target.deps = next;
+  data.meta.deps_history = [...(data.meta.deps_history ?? []), { at: now, id, from, to: next, reason: reason.trim() }];
+  return { id, from, to: next };
+}
+
 export function loadAcceptanceIds(matrixPath) {
   if (!existsSync(matrixPath)) return null;
   const text = readFileSync(matrixPath, 'utf8').replace(/^﻿/, '');
@@ -251,6 +280,7 @@ function parseArgs(argv) {
     else if (arg === '--reason') flags.reason = rest[++i];
     else if (arg === '--file') flags.file = rest[++i];
     else if (arg === '--spec') flags.spec = rest[++i];
+    else if (arg === '--deps') flags.deps = rest[++i];
     else positional.push(arg);
   }
   return { command, positional, flags };
@@ -307,6 +337,26 @@ function main(argv) {
       splitTask(data, positional[0], children);
       break;
     }
+    case 'budget': {
+      if (!flags.reason) {
+        console.error('budget needs --reason "why"');
+        process.exit(2);
+      }
+      const next = Number(positional[0]);
+      const moved = setBudget(data, next, flags.reason);
+      console.log(`budget ${moved.from} -> ${moved.to}`);
+      break;
+    }
+    case 'deps': {
+      if (flags.deps === undefined || !flags.reason) {
+        console.error('deps needs <id> --deps a,b,c --reason "why" (use --deps "" to clear)');
+        process.exit(2);
+      }
+      const list = flags.deps.split(',').map((x) => x.trim()).filter((x) => x.length > 0);
+      const moved = setDeps(data, positional[0], list, flags.reason);
+      console.log(`deps ${moved.id}: [${moved.from.join(', ')}] -> [${moved.to.join(', ')}]`);
+      break;
+    }
     case 'add': {
       if (!flags.spec) {
         console.error('add needs --spec <path-to-json-task-object>');
@@ -317,7 +367,7 @@ function main(argv) {
       break;
     }
     default:
-      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock|split|add> [id] [--evidence txt]... [--reason txt] [--spec file]');
+      console.error('usage: backlog.mjs <validate|decide|next|status|start|done|block|unblock|split|add|budget|deps> [id] [--evidence txt]... [--reason txt] [--spec file]');
       process.exit(2);
   }
   const errors = validateBacklog(data, { acceptanceIds });

@@ -4,9 +4,113 @@
     "source": "docs/spec/AFTERVIA_AZ_2026-10-31/ops/02_BACKLOG_WORK_ORDERS.csv (WO01–WO22) và engineering/10_REPO_FILE_MANIFEST.csv",
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
-    "iteration_budget": 65,
+    "iteration_budget": 126,
     "iterations_used": 66,
-    "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
+    "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
+    "budget_history": [
+      {
+        "at": "2026-11-10T11:03:39.113Z",
+        "from": 65,
+        "to": 126,
+        "reason": "OD-03: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Thêm 60 lượt cho Lane A."
+      }
+    ],
+    "deps_history": [
+      {
+        "at": "2026-11-10T11:03:39.208Z",
+        "id": "WO11-03",
+        "from": [
+          "WO10-02",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO10-02",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Cổng pháp lý chuyển sang HUM-LEGAL-DEL-01 (chặn WO20-01); mã liên quan danh mục xóa gắn cờ LEGAL_PENDING."
+      },
+      {
+        "at": "2026-11-10T11:03:39.248Z",
+        "id": "WO12-01",
+        "from": [
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08."
+      },
+      {
+        "at": "2026-11-10T11:03:39.298Z",
+        "id": "WO16-01b",
+        "from": [
+          "WO16-01a",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO16-01a",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08."
+      },
+      {
+        "at": "2026-11-10T11:03:39.342Z",
+        "id": "WO20-01",
+        "from": [
+          "WO16-01a",
+          "WO16-01b",
+          "WO17-01a",
+          "WO17-01b"
+        ],
+        "to": [
+          "WO16-01a",
+          "WO16-01b",
+          "WO17-01a",
+          "WO17-01b",
+          "HUM-LEGAL-DEL-01"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Cổng pháp lý nằm ở đây, không còn chặn các task dev phía trước."
+      }
+    ]
   },
   "tasks": [
     {
@@ -850,10 +954,11 @@
         "WO11-02a",
         "WO11-02b",
         "WO11-02c",
-        "WO11-02d",
-        "WO11-02e",
-        "WO11-02f",
-        "WO11-02g"
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
       ],
       "acceptance": [
         "T25"
@@ -872,10 +977,11 @@
         "WO11-02a",
         "WO11-02b",
         "WO11-02c",
-        "WO11-02d",
-        "WO11-02e",
-        "WO11-02f",
-        "WO11-02g"
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
       ],
       "acceptance": [
         "T27",
@@ -1255,7 +1361,8 @@
         "WO16-01a",
         "WO16-01b",
         "WO17-01a",
-        "WO17-01b"
+        "WO17-01b",
+        "HUM-LEGAL-DEL-01"
       ],
       "acceptance": [
         "T44"
@@ -1773,10 +1880,11 @@
         "WO11-02a",
         "WO11-02b",
         "WO11-02c",
-        "WO11-02d",
-        "WO11-02e",
-        "WO11-02f",
-        "WO11-02g"
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
       ],
       "acceptance": [
         "T26"
@@ -1977,6 +2085,18 @@
       ],
       "started_at": "2026-11-08T10:14:29.105Z",
       "finished_at": "2026-11-08T10:14:29.160Z"
+    },
+    {
+      "id": "HUM-LEGAL-DEL-01",
+      "wo": "WO11",
+      "gate": "G4",
+      "kind": "HUMAN",
+      "title": "HUMAN: luật sư xác nhận danh mục xóa và giữ lại dữ liệu (legal/04) trước khi phát hành; chặn WO20-01",
+      "deps": [],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }
