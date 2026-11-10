@@ -35,6 +35,14 @@ Quyết định không phải là phê duyệt pháp lý, và không có gì đ�
 - DEC06 lưu trữ tệp tài liệu và scanner mã độc: chưa chọn nhà cung cấp, vì cần tài khoản và duyệt riêng tư. Đề xuất: lưu trữ riêng tư cùng nhà cung cấp danh tính. **CHỜ NGƯỜI**.
 - DEC06 AI: giữ tắt, `AI_PROVIDER=disabled`, không chọn vendor. **QUYẾT**.
 
+> **Lưu ý 10/11 — hai dòng trên dùng cùng một mã cho hai việc khác nhau, với hai trạng thái khác nhau.**
+> Đặc tả bất biến `ops/03_FOUNDER_DECISIONS.md` chỉ có một DEC06 = "Vendor AI/data region và privacy"
+> (NOT_APPROVED), và không có mục nào cho lưu trữ tệp tài liệu. Vì vậy câu "duyệt DEC06" là **không rõ
+> nghĩa**: một việc (AI) đã QUYẾT, việc kia (kho byte) còn CHỜ NGƯỜI.
+> Kho byte nay được theo dõi riêng ở `docs/plan/06_DECISION_QUEUE.md` dòng **D16**, kèm ba dữ kiện mới
+> phát hiện sau đề xuất 06/11. Đặc tả không bị sửa; chỉ hồ sơ kế hoạch được ghi rõ. Việc cấp mã chính
+> thức cho kho byte là quyết định của chủ dự án.
+
 ## 5. Landing, Cloudflare, DNS
 - Chủ dự án cho phép tạo Cloudflare Pages và `aftervia.iai.one`, **khi nội dung đã duyệt**. Điều kiện duyệt gồm luật sư (HUM-WEB-03). Hiện chưa có luật sư duyệt, nên **chưa tạo project, chưa công khai**. **ĐIỀU KIỆN CHƯA ĐỦ**.
 - Token đọc từ biến môi trường `CLOUDFLARE_API_TOKEN`, không dán vào chat. Hiện biến này chưa có trong môi trường, nên chưa gọi được API. **CHỜ NGƯỜI**.

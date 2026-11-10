@@ -19,3 +19,34 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, đề xuất, trạng 
 | D13 | Công khai landing page tại AFTERVIA.iai.one khi tên AFTERVIA chưa clearance | Công khai / chờ clearance | Chủ dự án chốt AFTERVIA là tên làm việc, chưa xác nhận độc quyền. Chỉ công khai khi có quyền hosting và DNS, và nội dung đã duyệt (HUM-WEB-03, luật sư) | PARTIAL: tên làm việc đã chốt; công khai còn chờ duyệt | Chủ dự án |
 | D14 | Nhà cung cấp hosting và DNS cho AFTERVIA.iai.one | Cloudflare Pages (nếu iai.one ở Cloudflare) hoặc nhà cung cấp khác | Chủ dự án chọn Cloudflare Pages làm hosting ưu tiên. Chưa biết DNS của iai.one đang ở đâu; cần xác nhận trước WEB-02 | PARTIAL: hosting đã chọn; DNS chưa xác nhận | Chủ dự án |
 | D15 | Cách cấp quyền triển khai | Cloudflare connector trên claude.ai (mở phiên mới sau khi thêm) hoặc API token trong biến môi trường | Biến môi trường, không dán vào chat, không ghi vào repo. Chưa cấp token nào; chưa có connector Cloudflare trong phiên | DECIDED (cơ chế); CHƯA CẤP QUYỀN | Chủ dự án |
+| D16 | Kho byte cho tài liệu (ảnh, PDF, tối đa 10 MiB) — đang chặn WO10-03d | (A) kho object riêng tư của nhà cung cấp danh tính; (B) byte trong Postgres theo mẫu `export_bodies`, chỉ cho dữ liệu tổng hợp; (C) object storage tự vận hành | A, quyết cùng DEC03. Dùng B tạm nếu cần kiểm thử đường tải lên/tải xuống trước khi có tài khoản. Đề xuất đầy đủ: `docs/plan/evidence/WO10-03d-prep.md`; dữ kiện mới 10/11 ở mục dưới bảng | OPEN, HUMAN_REQUIRED | Chủ dự án |
+| D17 | Cách trả liên kết tải gói xuất trong 24 giờ — đang chặn HUM-WO10-03a | (1) route tải có phiên, chỉ chủ job; (2) mã truy cập một lần; (3) gửi qua email; (4) trả nội dung ngay | (1): không có bí mật mang đi được, kiểm quyền mỗi lần tải. Cần chủ dự án duyệt thêm route vào hợp đồng OpenAPI | OPEN, HUMAN_REQUIRED | Chủ dự án |
+| D18 | Danh mục xóa và giữ lại dữ liệu — đang chặn HUM-LEGAL-DEL-01 và WO20-01 | Luật sư duyệt từng bảng: xóa / che nội dung / giữ lại; nếu giữ thì bao lâu, căn cứ nào, ai được xem | Gói cho luật sư đã dựng sẵn và **sinh từ lược đồ thật**: `docs/legal/DRAFT_danh-muc-xoa-va-giu-lai.md`. 28/32 bảng chưa quyết, trong đó 6 bảng rủi ro cao | OPEN, HUMAN_REQUIRED | Chủ dự án + luật sư |
+
+## Dữ kiện mới cho D16, phát hiện sau khi viết đề xuất 06/11
+
+Ba điều dưới đây đổi cách cân nhắc, nên ghi lại thay vì để người quyết tự đoán:
+
+1. **Xóa hàng trong `documents` KHÔNG xóa tệp.** Bản kiểm kê pháp lý sinh ngày 10/11 xếp `documents` vào
+   nhóm rủi ro cao đúng vì lý do này. Nghĩa là kho được chọn **phải** xóa được tệp trong một thời hạn, và
+   thời hạn đó là câu hỏi dành cho luật sư (D18). Một kho chỉ cho ghi thêm, hoặc chỉ xóa mềm, sẽ làm lời
+   hứa xóa thành lời hứa suông.
+2. **Phiên bản hóa và xóa mềm là bẫy.** WO16-01b đã chứng minh trên bản sao lưu: dữ liệu đã xóa vẫn còn
+   trong bản sao lưu đến khi hết vòng, và chỉ cơ chế tombstone giữ cho nó không trở lại hoạt động. Kho
+   object có versioning hoặc thùng rác mặc định sẽ có đúng vấn đề đó. Tiêu chí mới cho D16: **xóa cứng
+   được, tắt được versioning**.
+3. **Phương án B nay có tiền lệ trong repo.** `export_bodies` là bảng sửa được, có hạn 24 giờ và có hàm dọn
+   (`purge_expired_export_bodies`). Nếu chọn B, hình dáng triển khai đã biết, và chi phí bản sao lưu đo được
+   vì diễn tập khôi phục đã có (T39). Điều này **không** làm B tốt hơn A cho dữ liệu thật; nó chỉ làm B rẻ
+   hơn như một bước tạm cho dữ liệu tổng hợp.
+
+## Mã quyết định DEC06 đang trỏ vào hai việc khác nhau
+
+`docs/plan/06_DECISIONS_DELEGATED.md` dùng **DEC06** cho cả lưu trữ tệp (đang **CHỜ NGƯỜI**) và AI
+(đã **QUYẾT**: giữ tắt). Đặc tả gốc `ops/03_FOUNDER_DECISIONS.md` chỉ có một DEC06 = "Vendor AI/data
+region và privacy" (NOT_APPROVED), và **không có mục nào cho lưu trữ tệp**.
+
+Hệ quả thực tế: nếu chủ dự án viết "duyệt DEC06", không ai biết là duyệt việc nào, và một trong hai việc
+đó đã được quyết từ trước. Đề xuất của vòng lặp (chưa phải quyết định): cấp mã riêng cho kho byte —
+`D16` ở bảng trên dùng tạm làm mã trong hồ sơ kế hoạch. Đặc tả là bất biến nên **không** sửa; chỉ hồ sơ
+kế hoạch được ghi rõ.
