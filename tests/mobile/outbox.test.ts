@@ -188,6 +188,39 @@ describe('WO10-02 offline draft queue: logic only (device network loss is not cl
     expect(calls).toEqual([]);
   });
 
+  it('APP-01 a draft whose save fails is not kept in the queue, so no later resume sends it, and only the retry is sent', async () => {
+    let failNext = false;
+    const store = memoryStore();
+    const flaky = {
+      load: store.load,
+      save: async (state: OutboxState) => {
+        if (failNext) {
+          failNext = false;
+          throw new Error('disk full');
+        }
+        await store.save(state);
+      },
+    };
+    const outbox = await Outbox.open(flaky);
+    failNext = true;
+    await expect(addDraft(outbox, 'd1')).rejects.toThrow('disk full');
+    expect(outbox.state.entries).toHaveLength(0);
+    const { send, calls } = scripted(() => ({ kind: 'ok', serverId: 'srv-1' }));
+    await outbox.resume(send, ONLINE);
+    expect(calls).toHaveLength(0);
+    await addDraft(outbox, 'd2');
+    await outbox.resume(send, ONLINE);
+    expect(calls.map((call) => call.id)).toEqual(['d2']);
+  });
+
+  it('APP-01 changes made at the same time are applied one after another, so none is lost', async () => {
+    const store = memoryStore();
+    const outbox = await Outbox.open(store);
+    await Promise.all([addDraft(outbox, 'd1'), addDraft(outbox, 'd2'), addDraft(outbox, 'd3')]);
+    expect(outbox.state.entries.map((entry) => entry.id)).toEqual(['d1', 'd2', 'd3']);
+    expect((await store.load()).entries.map((entry) => entry.id)).toEqual(['d1', 'd2', 'd3']);
+  });
+
   it('drafts survive a restart: reopening the stored queue shows the same drafts, still pending', async () => {
     const store = memoryStore();
     const first = await Outbox.open(store);
