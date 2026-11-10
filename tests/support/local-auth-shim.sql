@@ -34,3 +34,8 @@ as $$
 $$;
 
 grant usage on schema public, auth to anon, authenticated, service_role;
+
+-- Supabase cấp sẵn EXECUTE cho anon và authenticated trên hàm mới trong schema public.
+-- Shim phải mô phỏng việc đó TRƯỚC khi chạy migration, nếu không bộ kiểm thử không thấy được
+-- lớp lỗ hổng "hàm nội bộ chỉ thu quyền từ PUBLIC" (audit 10/11, D-01).
+alter default privileges in schema public grant execute on functions to anon, authenticated;
