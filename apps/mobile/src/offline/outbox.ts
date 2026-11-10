@@ -117,6 +117,8 @@ export class Outbox {
   private readonly store: OutboxStore;
   private current: OutboxState;
   private running: Promise<void> | null = null;
+  // Các thay đổi nối tiếp nhau trên hàng đợi này; xem update().
+  private queue: Promise<void> = Promise.resolve();
   private readonly listeners = new Set<(state: OutboxState) => void>();
 
   private constructor(store: OutboxStore, initial: OutboxState) {
@@ -143,15 +145,15 @@ export class Outbox {
   }
 
   async add(input: { id: string; draft: ItemFields; idempotencyKey: string; createdAt: string }): Promise<void> {
-    await this.commit(enqueue(this.current, input));
+    await this.update((state) => enqueue(state, input));
   }
 
   async cancel(id: string): Promise<void> {
-    await this.commit(cancel(this.current, id));
+    await this.update((state) => cancel(state, id));
   }
 
   async confirmRetry(id: string): Promise<void> {
-    await this.commit(confirmRetry(this.current, id));
+    await this.update((state) => confirmRetry(state, id));
   }
 
   // Gọi nhiều lần cùng lúc vẫn chỉ chạy một lượt gửi. Các lần gọi sau nhận kết quả của lượt đang chạy.
@@ -169,21 +171,29 @@ export class Outbox {
     for (;;) {
       const next = this.current.entries.find((entry) => entry.status === 'pending');
       if (next === undefined) return;
-      await this.commit(markSyncing(this.current, next.id));
+      await this.update((state) => markSyncing(state, next.id));
       let outcome: SendOutcome;
       try {
         outcome = await send(next);
       } catch {
         outcome = { kind: 'unknown' };
       }
-      await this.commit(applyOutcome(this.current, next.id, outcome));
+      await this.update((state) => applyOutcome(state, next.id, outcome));
       if (outcome.kind === 'deferred') return;
     }
   }
 
-  private async commit(state: OutboxState): Promise<void> {
-    this.current = state;
-    await this.store.save(state);
-    for (const listener of this.listeners) listener(state);
+  // Mọi thay đổi đi qua đây: nối tiếp nhau và luôn bắt đầu từ trạng thái mới nhất. Trạng thái trong bộ nhớ chỉ đổi
+  // sau khi lưu thành công. Nếu lưu lỗi, bản nháp không nằm trong hàng đợi và không được gửi sau đó (APP-01): người
+  // dùng thấy lỗi, bấm lưu lại, và chỉ bản mới được gửi.
+  private update(change: (state: OutboxState) => OutboxState): Promise<void> {
+    const done = this.queue.then(async () => {
+      const state = change(this.current);
+      await this.store.save(state);
+      this.current = state;
+      for (const listener of this.listeners) listener(state);
+    });
+    this.queue = done.catch(() => undefined);
+    return done;
   }
 }
