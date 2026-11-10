@@ -24,7 +24,7 @@ T22,Dates,HIGH,Múi giờ/đổi ngày,AUTO,PARTIAL,WO07-02,PASS,2026-11-06,
 T23,Offline,HIGH,Queue mất mạng,DEVICE,PARTIAL,WO10-02;DEV-01,NOT_RUN,,Hàng đợi offline có unit test; mất mạng thật cần thiết bị.
 T24,Export,CRITICAL,Export phạm vi,AUTO,PARTIAL,WO11-01,PASS,2026-11-06,
 T25,Deletion,HIGH,Xóa tài khoản,AUTO,PARTIAL,WO11-02;WO11-03,PASS,2026-11-06,
-T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02;WO16-01,PASS,2026-11-06,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA.
+T26,Deletion,HIGH,Restore tombstone,AUTO,PARTIAL,WO11-02;WO16-01,MANUAL_PARTIAL,2026-11-06,Khôi phục thử ở DB cô lập cục bộ; staging thật là INFRA; tombstone ngoài backup chưa làm (WO16-01b TODO) nên không PASS theo đính chính 10/11 của kiểm toán.
 T27,Billing,CRITICAL,Webhook giả,AUTO,PARTIAL,WO12-01,NOT_RUN,,Chỉ fixture sandbox; không dùng khóa live.
 T28,Billing,CRITICAL,Replay/out of order,AUTO,PARTIAL,WO12-01,NOT_RUN,,
 T29,Billing,HIGH,Refund/expiry,AUTO,PARTIAL,WO12-02,NOT_RUN,,
