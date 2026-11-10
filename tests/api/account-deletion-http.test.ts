@@ -72,8 +72,13 @@ async function cutoffOf(userId: string): Promise<number | null> {
 async function freshSession(userId: string): Promise<string> {
   const cutoff = await cutoffOf(userId);
   if (cutoff === null) throw new Error('no deletion request for this user');
-  // Tuổi thọ phải nằm trong thời hạn phiên (900 giây), vì API từ chối token sống dài hơn thế (D-09).
-  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 60, exp: cutoff + 60 + 900, simulated: true }, SECRET);
+  // iat chỉ cần đứng SAU mốc cắt, và mốc cắt lấy từ cơ sở dữ liệu nên so sánh đó không phụ thuộc đồng hồ
+  // của máy chạy test. Nhưng OWN-A-08 thêm kiểm "iat không ở tương lai quá 60 giây" theo đồng hồ của Node,
+  // nên khoảng cách phải nhỏ: với `cutoff + 60`, chỉ cần đồng hồ Postgres nhanh hơn runner vài giây là
+  // token bị coi là ở tương lai và trả 401. Trên CI hai đồng hồ là hai container khác nhau, nên lỗi chỉ
+  // xuất hiện ở đó. `cutoff + 5` giữ đúng ý định và chịu được lệch tới khoảng 55 giây.
+  // Tuổi thọ cũng phải nằm trong thời hạn phiên 900 giây (D-09).
+  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 5, exp: cutoff + 5 + 900, simulated: true }, SECRET);
 }
 
 let h: Harness;
