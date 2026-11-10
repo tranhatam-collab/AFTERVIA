@@ -458,7 +458,13 @@ async function caseSummary(client: pg.PoolClient, caseId: string): Promise<Recor
   return { id: row.id, status: row.status, version: row.version, outcome: row.outcome };
 }
 
-async function runContract(req: IncomingMessage, config: AppConfig, userId: string, match: ContractMatch): Promise<unknown> {
+async function runContract(
+  req: IncomingMessage,
+  config: AppConfig,
+  userId: string,
+  match: ContractMatch,
+  issuedAt: number | null,
+): Promise<unknown> {
   const { params, route } = match;
   switch (route.operationId) {
     case 'createCase': {
@@ -552,7 +558,13 @@ async function runContract(req: IncomingMessage, config: AppConfig, userId: stri
       const body = await readJson(req);
       contractBody(body, ['request_id'], []);
       const requestId = boundedText(body.request_id, 128);
-      return withUser(config.pool, userId, async (c) => (await c.query('select public.request_account_deletion($1::text) as receipt', [requestId])).rows[0]?.receipt);
+      // Hàm SQL cũng kiểm xác thực lại (0028), nên phiên phải mang iat vào claims.
+      return withUser(
+        config.pool,
+        userId,
+        async (c) => (await c.query('select public.request_account_deletion($1::text) as receipt', [requestId])).rows[0].receipt,
+        { iat: issuedAt },
+      );
     }
     case 'createExport': {
       // Xuất gói: chỉ món đồ của người gọi và tài liệu có grant còn hiệu lực. store_export kiểm phạm vi và băm khi lưu.
@@ -627,7 +639,7 @@ async function handleContract(req: IncomingMessage, res: ServerResponse, config:
     return sendContractError(res, 401, 'unauthenticated', requestId);
   }
   try {
-    return send(res, 200, await runContract(req, config, session.userId, match));
+    return send(res, 200, await runContract(req, config, session.userId, match, session.issuedAt));
   } catch (error) {
     if (error instanceof HttpError) return sendContractError(res, error.status, error.code, requestId);
     const mapped = contractDbError(error);

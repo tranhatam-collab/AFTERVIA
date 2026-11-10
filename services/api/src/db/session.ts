@@ -9,11 +9,20 @@ export function createPool(connectionString: string): pg.Pool {
   return new pg.Pool({ connectionString, max: 4 });
 }
 
-export async function withUser<T>(pool: pg.Pool, userId: string, run: (client: pg.PoolClient) => Promise<T>): Promise<T> {
+// extraClaims đi vào request.jwt.claims cùng sub và role. Dùng cho thao tác mà hàm SQL cần biết thêm về
+// phiên, ví dụ iat để kiểm xác thực lại trước khi xóa tài khoản (D-05).
+export async function withUser<T>(
+  pool: pg.Pool,
+  userId: string,
+  run: (client: pg.PoolClient) => Promise<T>,
+  extraClaims: Record<string, unknown> = {},
+): Promise<T> {
   const client = await pool.connect();
   try {
     await client.query('begin');
-    await client.query("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ sub: userId, role: 'authenticated' })]);
+    await client.query("select set_config('request.jwt.claims', $1, true)", [
+      JSON.stringify({ sub: userId, role: 'authenticated', ...extraClaims }),
+    ]);
     await client.query('set local role authenticated');
     try {
       const result = await run(client);
