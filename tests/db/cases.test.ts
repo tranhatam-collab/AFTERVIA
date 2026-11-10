@@ -206,7 +206,7 @@ describe('WO08-02 cases: versioned transitions, append-only history, evidence an
     expect(
       first(
         await adminRows(
-          'select type, from_state, to_state, outcome_after, reason from public.case_events where case_id = $1 order by sequence desc limit 1',
+          'select e.type, e.from_state, e.to_state, e.outcome_after, r.reason from public.case_events e left join public.case_event_reasons r on r.event_id = e.id where e.case_id = $1 order by e.sequence desc limit 1',
           [caseId],
         ),
       ),

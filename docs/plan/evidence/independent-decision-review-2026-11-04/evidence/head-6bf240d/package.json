@@ -1,0 +1,55 @@
+{
+  "name": "aftervia",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AFTERVIA: nền tảng phối hợp hậu mãi có chứng cứ (tên làm việc, chưa clearance).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12 <23"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "typecheck:mobile": "tsc -p apps/mobile/tsconfig.json",
+    "test": "vitest run",
+    "test:loop": "node --test tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs",
+    "check:bundle": "node tools/checks/bundle-verify.mjs",
+    "check:secrets": "node tools/checks/secret-scan.mjs",
+    "db:migrate": "node tools/db/migrate.mjs",
+    "api:local": "node tools/dev/api-local.mjs",
+    "e2e:web": "node tools/e2e/web-e2e.mjs",
+    "loop": "node tools/loop/backlog.mjs",
+    "build:landing": "node apps/landing/build.mjs",
+    "build:web": "vite build --config apps/web/vite.config.ts",
+    "verify": "npm run check:bundle && npm run check:secrets && npm run typecheck && npm run typecheck:mobile && npm run build:landing && npm run build:web && npm run test && npm run test:loop"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.7",
+    "axe-core": "4.14.0",
+    "jsdom": "29.1.1",
+    "parse5": "8.0.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.5",
+    "vitest": "4.1.12"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "6.1.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "expo": "54.0.37",
+    "expo-constants": "18.0.14",
+    "expo-linking": "8.0.12",
+    "expo-network": "8.0.8",
+    "expo-router": "6.0.24",
+    "expo-status-bar": "3.0.9",
+    "pg": "8.23.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "5.6.0",
+    "react-native-screens": "4.16.0"
+  }
+}

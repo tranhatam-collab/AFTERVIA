@@ -1,0 +1,91 @@
+# Quyết định
+
+## A. Quyết định kỹ thuật do vòng lặp đề xuất (có thể đảo bằng lệnh của chủ dự án)
+
+| ID | Quyết định | Lý do | Rủi ro còn lại |
+|---|---|---|---|
+| DEC-ENG-01 | Builder là Claude Code trong repo này. Wron không dùng trong vòng lặp. | Repo thuộc chủ dự án (`tranhatam-collab`). Vòng lặp chạy được và kiểm được ngay. Lối thoát đã được bản đặc tả nêu: repo đã xuất và môi trường lập trình độc lập. | Quyền IP của mã do AI viết cần được luật sư xác nhận (HUM-G0-01). Không thay thế được việc kiểm quyền. |
+| DEC-ENG-02 | TypeScript strict, Node 22, PostgreSQL 16 với RLS và shim `auth.uid()` tương thích Supabase khi kiểm thử cục bộ. Vitest 4.1.12, pg 8.23.1, ajv 8.20.0, typescript 5.9.3. | Ghim phiên bản, đã kiểm ngày phát hành (Vitest 4.1.12 phát hành 15/10/2026). Postgres thật cho kết quả RLS đáng tin hơn mô phỏng. | Supabase thật cần tài khoản (DEC03). Shim không bằng Supabase; cần kiểm lại trên staging. |
+| DEC-ENG-03 | Một package, cấu trúc thư mục theo `10_REPO_FILE_MANIFEST.csv` (`packages/domain`, `services/api`, `supabase/migrations`, `tests/security`). `apps/web` và `apps/mobile` thêm ở WO10. | Tránh cấu hình workspace khi chưa cần. | Manifest liệt kê `apps/` từ đầu; sẽ tạo khi tới WO10. |
+| DEC-ENG-04 | `.npmrc` có `legacy-peer-deps=true`. | npm 10.9.9 gặp lỗi `Cannot read properties of null (reading 'edgesOut')` khi giải quyết peer của bộ phụ thuộc này (đã tái hiện). | Cần thử lại khi nâng npm; CI dùng cùng `.npmrc`. |
+| DEC-ENG-05 | Vòng lặp làm code tổng hợp trước khi WO01 (G0) đóng. Không có dữ liệu thật và không production cho đến khi G0 đóng. | Bản đặc tả cho phép prototype synthetic khi chưa xác minh quyền. Chờ người mới bắt đầu sẽ làm đứng vòng lặp. | G0 vẫn là cổng release. Nếu G0 không đạt, sản phẩm chỉ là prototype. |
+| DEC-ENG-06 | Trạng thái kiểm thử chỉ đến từ báo cáo Vitest; manual có tiền tố `MANUAL_` và không bị ghi đè. | Ngăn PASS tự khai. | Kiểm thử thiết bị và pháp lý vẫn phải ghi thủ công, có bằng chứng. |
+| DEC-ENG-07 | Commit và PR không có tên model. Trailer dùng `Claude <noreply@anthropic.com>` và dòng `Claude-Session`. PR kết thúc bằng dòng "Generated with Claude Code". | Quy tắc hệ thống cấm đưa định danh model vào artifact đẩy lên repo; trailer chung vẫn ghi nhận AI đã đóng góp. | Nếu chủ dự án muốn tên model trong trailer, họ phải ghi quyết định riêng. |
+| DEC-ENG-08 | Vòng lặp tự lên lịch bằng `send_later`, mỗi vòng một lượt. Dừng khi `decide` trả `STOP_*`, khi hết ngân sách 60 lượt, hoặc khi chủ dự án yêu cầu. | Đáp ứng yêu cầu "tự tạo vòng lặp liên tục cho tới khi xong". | Vòng lặp chạy khi chủ dự án vắng mặt. Hủy bằng yêu cầu trong phiên hoặc hủy lịch đã đặt. |
+| DEC-ENG-09 | HawkScan DAST chạy khi có máy chủ HTTP (sau WO09-03). Hiện Docker daemon không chạy và `HAWK_API_KEY` không có: ghi `BLOCKED` với bằng chứng. | Quy tắc hook bảo mật yêu cầu quét sau thay đổi có ý nghĩa. | Không có DAST trước khi Docker và máy chủ sẵn sàng. |
+
+## B. Quyết định cần chủ dự án (DEC01–DEC12)
+
+Xem bảng trạng thái trong `00_EXECUTION_PLAN.md` mục 6. Không quyết định nào trong số này được coi là đã duyệt vì file này tồn tại.
+
+## C. Phê duyệt của chủ dự án
+
+Ngày 31/10/2026, chủ dự án trả lời "All" cho câu hỏi 1–5 trong phiên. Ghi nhận như sau:
+
+| Câu | Nội dung | Phê duyệt |
+|---|---|---|
+| 1 | Tạo `main` làm base cho PR nháp | Đồng ý về ý định. Cách thực hiện đã đề xuất không dùng được, xem `docs/plan/evidence/PR-STATUS.md`. Chờ chọn phương án A hoặc B. |
+| 2 | Builder là Claude Code trong repo (DEC-ENG-01) | Đồng ý |
+| 3 | Vòng lặp tự chạy đến khi hết việc máy làm được, tối đa 60 lượt (DEC-ENG-08) | Đồng ý. Dừng khi chủ dự án nói "dừng vòng lặp" |
+| 4 | Viết mã synthetic trước khi G0 đóng (DEC-ENG-05) | Đồng ý. Không dữ liệu thật, không production, không thanh toán live khi chưa đủ G0 |
+| 5 | Stack TypeScript, Node 22, PostgreSQL 16, Vitest; Expo cho mobile khi tới WO10 (DEC-ENG-02) | Đồng ý |
+| 6 | Danh sách phỏng vấn và hạn mức chi cho người tham gia (DEC04) | Chưa trả lời |
+| 7 | Bật HawkScan DAST | Chưa trả lời. Cần Docker chạy được và `HAWK_API_KEY` đặt trong môi trường, không dán vào chat |
+| 8 | Phiên bản trình duyệt mục tiêu (T36) | Chưa trả lời |
+
+Phê duyệt này không bao gồm: production, dữ liệu thật, thanh toán live, tài khoản dịch vụ, mua tên miền, nộp store, gửi tin cho khách. Những việc đó vẫn cần phê duyệt riêng.
+
+## D. Cập nhật câu 6–8 (31/10/2026)
+
+Chủ dự án trả lời "Ok all" cho câu 6–8. Câu 7 có thể ghi là đồng ý. Câu 6 và 8 cần nội dung cụ thể nên chưa ghi là đã duyệt.
+
+| Câu | Nội dung | Trạng thái | Điều kiện hoặc việc còn lại |
+|---|---|---|---|
+| 6 | Danh sách phỏng vấn và hạn mức chi cho người tham gia (DEC04) | CHỜ THÔNG TIN | Cần: số người và kênh tuyển (không mua danh sách email), và có trả tiền hay không. Nếu có, cần mức tối đa. Đề xuất mặc định: không trả tiền; chỉ quà tặng nhỏ nếu anh ghi rõ mức. |
+| 7 | Bật HawkScan DAST | ĐỒNG Ý CÓ ĐIỀU KIỆN, đang BLOCKED | (a) Thêm biến môi trường `HAWK_API_KEY` trong cài đặt môi trường, không dán vào chat; phiên mới mới đọc được biến. (b) Môi trường có Docker đang chạy. Hiện daemon không chạy. (c) Có máy chủ HTTP để quét, tức là sau WO09-03. |
+| 8 | Phiên bản Chrome, Safari, Firefox mục tiêu (T36) | CHỜ THÔNG TIN | Đề xuất mặc định để anh đồng ý hoặc sửa: Chrome hai bản ổn định mới nhất; Safari hai bản mới nhất trên macOS và iOS; Firefox bản ổn định mới nhất và bản ESR. |
+
+Trạng thái kiểm tra lúc ghi nhận: `HAWK_API_KEY` chưa đặt; Docker daemon không chạy; repo chưa có máy chủ HTTP (`services/api/src` chưa có tệp server).
+
+## E. Quyết định của chủ dự án sau câu hỏi 1–8
+
+| Mục | Quyết định | Ghi chú |
+|---|---|---|
+| Git và PR | Phương án C: `main` là commit gốc rỗng; nhánh liên kết bằng merge `-s ours`; không force-push | Đã thực hiện. PR #1 (nháp), xem `docs/plan/evidence/PR-STATUS.md` |
+| Builder | Claude Code trong repo. Wron chỉ là thử nghiệm tùy chọn | Không đổi builder khi chưa có bằng chứng kỹ thuật |
+| Phỏng vấn (câu 6) | Chuẩn bị danh sách, kịch bản và tiêu chí. Chưa chi tiền, chưa liên hệ bên ngoài khi chưa có quyền | Danh sách người do chủ dự án cung cấp. Vòng lặp không tự tìm kiếm hay thu thập thông tin cá nhân. Hạn mức chi: chưa đặt |
+| HawkScan DAST (câu 7) | Giữ BLOCKED. Không giả lập PASS. Không dán key vào chat | Cần `HAWK_API_KEY` trong môi trường, Docker chạy được, máy chủ HTTP (sau WO09-03) |
+| Trình duyệt (câu 8) | Chrome và Firefox: hai phiên bản stable gần nhất. Safari: các phiên bản macOS và iOS được hỗ trợ. Ghim phiên bản chính xác khi chạy | Thay cho đề xuất có ESR trước đó |
+| Vòng lặp | Tiếp tục tác vụ nội bộ đã duyệt. Không tự merge, release, thanh toán, hay dùng dữ liệu khách hàng thật | Không tự mở rộng sang quyền quản trị, chi tiêu hay phát hành |
+| Mốc ưu tiên | Lát cắt: đăng nhập, dữ liệu tồn tại sau kết nối lại, cách ly giữa hai tài khoản | Xem DEC-ENG-10 |
+| "Dữ liệu thật" | Hiểu là dữ liệu được lưu vào DB thử nghiệm, không mock. Không phải dữ liệu khách hàng thật | Ranh giới về dữ liệu khách hàng không đổi |
+| Công cụ quản lý | Không thêm hệ thống quản lý mới. Giữ backlog và ma trận hiện có | |
+
+### DEC-ENG-10: đưa lát cắt lên trước
+
+- WO07-01 (items nhập tay) không còn phụ thuộc WO06-05 và được đưa lên trước WO05-01 trong `backlog.json`.
+- Lý do: đường nhập tay (US14) độc lập với trích xuất AI. WO06 vẫn là điều kiện trước khi bật AI cho item.
+- Đăng nhập thật cần nhà cung cấp danh tính (DEC03). Môi trường cục bộ sẽ dùng token giả lập ở tầng API (WO04-02 và WO09-03). Mọi chỗ dùng token giả lập phải ghi rõ là mô phỏng.
+
+### DEC-ENG-11: lát cắt cần API HTTP mỏng
+
+- Thêm WO04-04 (AUTO) vào backlog ngay sau WO04-03: API HTTP mỏng bằng `node:http`, không thêm thư viện.
+- Đăng nhập trong môi trường cục bộ là giả lập: JWT ký HMAC bằng khóa cục bộ, chỉ dùng trong kiểm thử và phát triển. Tài liệu và báo cáo phải ghi rõ đây là mô phỏng. Đăng nhập thật cần nhà cung cấp danh tính (DEC03).
+- API này cũng là nền cho DAST khi có Docker và `HAWK_API_KEY` (DEC-ENG-09).
+
+### DEC-ENG-12: landing page và web tại AFTERVIA.iai.one
+
+- Yêu cầu của chủ dự án: áp dụng landing page và web cho dự án này trên `AFTERVIA.iai.one`.
+- Phần dựng trang (WEB-01) là việc nội bộ, làm được ngay: landing tĩnh VI/EN, không form thu thập dữ liệu, không lời chứng thực giả, quyền riêng tư và điều khoản ở trạng thái DRAFT.
+- Đưa lên domain (WEB-02) cần quyền DNS của `iai.one`, tài khoản hosting và token đặt trong biến môi trường. Chưa có các quyền này nên chưa làm.
+- Tên AFTERVIA chưa clearance (DEC01, DEC12). Công khai tên này trên domain là quyết định của chủ dự án (xem `06_DECISION_QUEUE.md`, D13).
+- Ưu tiên: WEB-01 được đặt trước WO05-02 trong backlog, theo yêu cầu trực tiếp của chủ dự án.
+
+### DEC-ENG-13: chỉ thị 31/10/2026 về hosting, landing và phát triển web
+
+- Hosting ưu tiên: Cloudflare Pages (D14). Landing VI/EN xây ngay (WEB-01, DONE trên nhánh, chưa công bố).
+- Web App (AFTERVIA Personal và Desk) phát triển sau lớp phân quyền và dữ liệu P0, không thay bằng giao diện giả. Đăng nhập thật cần nhà cung cấp danh tính (D3), chưa có.
+- Email liên hệ không hiển thị khi chưa có địa chỉ đã xác thực. Landing không bật form, analytics theo dõi cá nhân hay thanh toán.
+- Công khai chỉ khi có quyền hosting và DNS, và nội dung đã được duyệt (HUM-WEB-03). Không đổi nameserver của cả `iai.one` khi chỉ cần một subdomain.
+- Quyền triển khai đưa qua biến môi trường, không dán vào chat và không ghi vào repo (D15). Không tạo token giả.
+- Tên AFTERVIA là thương hiệu làm việc, chưa xác nhận độc quyền (D13).

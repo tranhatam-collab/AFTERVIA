@@ -24,7 +24,7 @@ Quyết định không phải là phê duyệt pháp lý, và không có gì đ�
 - Q1 danh mục xóa: phương án A (dùng `legal/04` làm nháp). Grace: 30 ngày. Merchant giữ chứng từ: theo `legal/04`, tách riêng. **QUYẾT TẠM**: luật sư xác nhận từng dòng.
 - Q2 nội dung cá nhân trong bảng chỉ thêm: phương án C (chuyển sang bảng sửa được, bảng chỉ thêm giữ mã tham chiếu). **QUYẾT**: triển khai trong task riêng.
 - Q3 xác minh danh tính và phiên: C ngay (thời hạn phiên 15 phút, xác thực lại trước khi xóa). Khi chọn nhà cung cấp, chuyển sang A. **QUYẾT TẠM**.
-- Q4 thành viên tổ chức khi khách xóa: A (đánh dấu REVOKED; từ chối nếu là owner duy nhất). **QUYẾT**: triển khai trong task riêng.
+- Q4 thành viên tổ chức khi khách xóa: A (đánh dấu REVOKED; từ chối nếu là owner duy nhất). **QUYẾT**: triển khai trong task riêng. **Đã triển khai**: WO11-02g-MEM (migration `0020`, T25 và T26; chờ reviewer độc lập).
 - Q5 quyền bên nhận: A cho quyền truy cập tài liệu; C cho bản ghi case của merchant. **QUYẾT TẠM**: luật sư xác nhận.
 - Q6 xuất dữ liệu trong lúc chờ xóa: A (cho phép). **QUYẾT**. Không cần đổi mã.
 

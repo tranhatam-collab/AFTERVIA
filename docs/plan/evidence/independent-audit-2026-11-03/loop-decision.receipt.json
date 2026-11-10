@@ -1,0 +1,16 @@
+{
+  "id": "loop-decision",
+  "command": [
+    "node",
+    "tools/loop/backlog.mjs",
+    "decide"
+  ],
+  "cwd": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA",
+  "sha": "9a76185498c2e945e30ceb159cd8eaab8838eee2",
+  "started_at": "2026-11-02T23:45:15.226976+00:00",
+  "ended_at": "2026-11-02T23:45:15.306211+00:00",
+  "exit_code": 0,
+  "raw_log": "/private/tmp/aftervia-independent-audit-20261103-4flk3tvo/evidence/loop-decision.log",
+  "environment": "isolated local PostgreSQL 17, port 55439, synthetic DB only",
+  "test_counts": "unknown unless raw log supplies them"
+}

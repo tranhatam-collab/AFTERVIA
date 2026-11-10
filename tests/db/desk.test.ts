@@ -158,7 +158,7 @@ describe('WO08-03 Desk inbox and assignment: organization scope, role checks and
     expect(
       first(
         await adminRows(
-          'select type, actor_role, from_state, to_state, reason from public.case_events where case_id = $1 order by sequence desc limit 1',
+          'select e.type, e.actor_role, e.from_state, e.to_state, r.reason from public.case_events e left join public.case_event_reasons r on r.event_id = e.id where e.case_id = $1 order by e.sequence desc limit 1',
           [caseA],
         ),
       ),

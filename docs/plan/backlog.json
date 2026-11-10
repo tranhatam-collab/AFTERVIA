@@ -4,8 +4,8 @@
     "source": "docs/spec/AFTERVIA_AZ_2026-10-31/ops/02_BACKLOG_WORK_ORDERS.csv (WO01–WO22) và engineering/10_REPO_FILE_MANIFEST.csv",
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
-    "iteration_budget": 60,
-    "iterations_used": 57,
+    "iteration_budget": 65,
+    "iterations_used": 66,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live."
   },
   "tasks": [
@@ -1012,30 +1012,6 @@
       "finished_at": "2026-10-31T20:01:22.225Z"
     },
     {
-      "id": "WO16-01",
-      "wo": "WO16",
-      "gate": "P0",
-      "kind": "AUTO",
-      "title": "Sao lưu DB và manifest object; khôi phục sang DB cô lập; so số dòng, hash, chính sách, tombstone",
-      "deps": [
-        "WO03-03",
-        "WO11-02a",
-        "WO11-02b",
-        "WO11-02c",
-        "WO11-02d",
-        "WO11-02e",
-        "WO11-02f",
-        "WO11-02g"
-      ],
-      "acceptance": [
-        "T39",
-        "T26"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
       "id": "WO16-02",
       "wo": "WO16",
       "gate": "P0",
@@ -1110,36 +1086,14 @@
       "finished_at": "2026-10-31T20:32:53.638Z"
     },
     {
-      "id": "WO17-01",
-      "wo": "WO17",
-      "gate": "G2",
-      "kind": "AUTO_PREP",
-      "title": "Gói bằng chứng bảo mật: threat model sang test, rủi ro còn lại, kịch bản DAST khi có server đang chạy",
-      "deps": [
-        "WO16-03",
-        "WO12-03",
-        "WO10-03a",
-        "WO10-03b",
-        "WO10-03c",
-        "WO10-03d"
-      ],
-      "acceptance": [
-        "T37",
-        "T38",
-        "T41"
-      ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
-    },
-    {
       "id": "HUM-WO17-02",
       "wo": "WO17",
       "gate": "G2",
       "kind": "HUMAN",
       "title": "Đánh giá bảo mật độc lập bởi người không phải tác giả AI (DEC05); mọi CRITICAL/HIGH phải được đóng",
       "deps": [
-        "WO17-01"
+        "WO17-01a",
+        "WO17-01b"
       ],
       "acceptance": [
         "T04",
@@ -1196,7 +1150,8 @@
       "kind": "INFRA",
       "title": "Staging độc lập: diễn tập khôi phục DB và object, đo RPO/RTO thật, rollback có migration",
       "deps": [
-        "WO16-01"
+        "WO16-01a",
+        "WO16-01b"
       ],
       "acceptance": [
         "T39",
@@ -1297,8 +1252,10 @@
       "kind": "AUTO_PREP",
       "title": "Checklist phát hành G4 và kịch bản rollback trên staging; không chạm production",
       "deps": [
-        "WO16-01",
-        "WO17-01"
+        "WO16-01a",
+        "WO16-01b",
+        "WO17-01a",
+        "WO17-01b"
       ],
       "acceptance": [
         "T44"
@@ -1783,6 +1740,243 @@
       ],
       "started_at": "2026-11-04T00:54:45.892Z",
       "finished_at": "2026-11-04T01:16:44.615Z"
+    },
+    {
+      "id": "WO16-01a",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Diễn tập khôi phục DB cục bộ: sao lưu logic DB _test thành tệp có manifest SHA-256, khôi phục sang DB _test cô lập, so số dòng, hash nội dung, chính sách RLS, trigger và hàm; object storage, RPO/RTO thật và staging (INF-01) chưa có",
+      "deps": [
+        "WO03-03"
+      ],
+      "acceptance": [
+        "T39"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-01a.md"
+      ],
+      "split_from": "WO16-01",
+      "started_at": "2026-11-06T10:32:25.585Z",
+      "finished_at": "2026-11-06T10:37:40.466Z"
+    },
+    {
+      "id": "WO16-01b",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Đối chiếu tombstone và chính sách xóa trong bản khôi phục, sau khi chủ dự án chốt danh mục xóa và các quyết định WO11-02d..g",
+      "deps": [
+        "WO16-01a",
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02d",
+        "WO11-02e",
+        "WO11-02f",
+        "WO11-02g"
+      ],
+      "acceptance": [
+        "T26"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO16-01"
+    },
+    {
+      "id": "WO17-01a",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Gói bằng chứng bảo mật, phần tài liệu: threat model (spec engineering/05) ánh xạ sang kiểm thử hiện có, rủi ro còn lại, phần chưa có bằng chứng (thanh toán, kho byte, scanner, staging), kịch bản DAST để chạy khi có server",
+      "deps": [
+        "WO16-03",
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO17-01a.md"
+      ],
+      "split_from": "WO17-01",
+      "started_at": "2026-11-06T10:42:17.733Z",
+      "finished_at": "2026-11-06T10:47:41.403Z"
+    },
+    {
+      "id": "WO17-01b",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Phần còn lại của gói bằng chứng bảo mật: chạy DAST khi có server và HAWK_API_KEY, đối chiếu thanh toán và kho byte sau khi WO12-03 và WO10-03d xong",
+      "deps": [
+        "WO17-01a",
+        "WO12-03",
+        "WO10-03d"
+      ],
+      "acceptance": [
+        "T37",
+        "T38",
+        "T41"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO17-01"
+    },
+    {
+      "id": "WO10-03d-prep",
+      "wo": "WO10-03d",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Đề xuất, không quyết định, cho WO10-03d và HUM-WO10-03a: kho byte cho tài liệu (DEC06) và cách trả link gói xuất 24 giờ; mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống",
+      "deps": [
+        "WO10-03a",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-03d-prep.md"
+      ],
+      "started_at": "2026-11-06T10:51:28.485Z",
+      "finished_at": "2026-11-06T10:55:48.609Z"
+    },
+    {
+      "id": "WO11-02g-MEM",
+      "wo": "WO11-02g",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Thành viên tổ chức khi khách yêu cầu xóa (Q4, phương án A, đã QUYẾT): đánh dấu REVOKED mọi thành viên ACTIVE của khách; từ chối yêu cầu xóa nếu khách là owner duy nhất của một tổ chức",
+      "deps": [
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02g-MEM.md",
+        "verify exit 0 (bundle 69/69; secrets 318 files; Vitest 463/463 pass, 1 skipped); JSON success 464 total, 463 pass, 0 fail; db:migrate applied 0020 on aftervia_test; mutations: no sole-owner check 5/14 red, no owner-row lock 2/8 red in 5/5 runs; migration restored sha256 match"
+      ],
+      "started_at": "2026-11-06T15:20:04.865Z",
+      "finished_at": "2026-11-06T15:32:37.867Z"
+    },
+    {
+      "id": "WO11-02f-SESS",
+      "wo": "WO11-02f",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Phiên và xác thực lại trước khi xóa (Q3, phương án C, đã QUYẾT TẠM): thời hạn phiên 15 phút; yêu cầu xóa tài khoản chỉ nhận phiên phát trong 5 phút gần nhất; chưa chọn nhà cung cấp danh tính (DEC03)",
+      "deps": [
+        "WO11-02a"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02f-SESS.md",
+        "verify exit 0: bundle 69/69; secrets 320 files; Vitest 466/466 pass, 1 skipped; JSON success 467 total, 466 pass, 0 fail; tests/api 92/92; mutations M1 2/9 red, M2 1/9 red, app.ts restored by sha256; E2E-WEB-01 passed 12/12"
+      ],
+      "started_at": "2026-11-06T15:38:02.820Z",
+      "finished_at": "2026-11-06T15:42:54.813Z"
+    },
+    {
+      "id": "WO11-02e-EXP",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Nội dung gói xuất (Q2, phương án C, đã QUYẾT): đưa export_files.body sang bảng sửa được có hạn 24 giờ; export_files chỉ giữ tham chiếu và SHA-256; có hàm dọn nội dung đã hết hạn",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-EXP.md",
+        "verify exit 0: bundle 69/69; secrets 324 files; Vitest 473/473 pass, 1 skipped; JSON success 474 total, 473 pass; db:migrate applied 0021 on the existing E2E data (5 bodies, 0 sha mismatches); mutations M1 purge, M2 fetch expiry, M3 expiry guard each 1/7 red; E2E-WEB-01 12/12"
+      ],
+      "started_at": "2026-11-06T15:47:05.081Z",
+      "finished_at": "2026-11-06T15:53:11.105Z"
+    },
+    {
+      "id": "WO11-02e-CONF",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Giá trị xác nhận trường (Q2, phương án C, đã QUYẾT): đưa field_confirmations.old_value và new_value sang bảng sửa được; bảng chỉ thêm giữ tham chiếu; T14 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-CONF.md",
+        "verify exit 0: bundle 69/69; secrets 328 files; Vitest 479/479 pass, 1 skipped; JSON success 480 total, 479 pass; db:migrate applied 0022 on real seeded confirmations (2 rows, 0 inconsistencies); T14 7 tests kept expectations; mutations M1 1/13, M2b 1/6, M3 4/13 red; M2 masked by RLS on the reference table (defense in depth, documented)"
+      ],
+      "started_at": "2026-11-06T15:57:32.641Z",
+      "finished_at": "2026-11-06T16:03:47.158Z"
+    },
+    {
+      "id": "WO11-02e-CASE",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Lý do trong lịch sử case (Q2, phương án C, đã QUYẾT): đưa case_events.reason sang bảng sửa được; case_events giữ tham chiếu; ghi và đọc lịch sử vẫn đúng; T17 và T19 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-CASE.md",
+        "verify exit 0: bundle 69/69; secrets 332 files; Vitest 485/485 pass, 1 skipped; JSON success 486 total, 485 pass; db:migrate applied 0023; scrub path verified on a scratch database with a seeded reason (digest equal); targeted 35/35; mutations M1 4/6 red, M2c 1/6 red, M3 1/6 red; M2/M2b masked by RLS of referenced tables (documented); E2E-WEB-01 12/12"
+      ],
+      "started_at": "2026-11-06T16:11:06.494Z",
+      "finished_at": "2026-11-06T16:17:36.453Z"
+    },
+    {
+      "id": "AV-DQ-05-FIX",
+      "wo": "AV-DQ-05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Siet cong E2E-WEB-01: kiem consoleErrors va version cuoi (tu AV-DQ-05, audit 04/11)",
+      "deps": [],
+      "acceptance": [
+        "T24",
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run e2e:web (TEST_DATABASE_URL thuc, Playwright+Chromium moi cai): E2E-WEB-01 dat, version 6",
+        "npm run verify: exit 0, khong gi do them",
+        "Vuot ngan sach 65 theo chi thi truc tiep cua chu du an trong chat, xem docs/plan/evidence/AV-DQ-05-FIX.md"
+      ],
+      "started_at": "2026-11-08T10:14:29.105Z",
+      "finished_at": "2026-11-08T10:14:29.160Z"
     }
   ]
 }

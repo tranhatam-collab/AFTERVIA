@@ -1,0 +1,11 @@
+{
+  "total": 46,
+  "byStatus": {
+    "NOT_RUN": 13,
+    "PASS": 33
+  },
+  "byCoverage": {
+    "NONE": 4,
+    "PARTIAL": 42
+  }
+}

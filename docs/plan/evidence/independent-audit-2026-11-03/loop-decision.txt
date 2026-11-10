@@ -1,0 +1,13 @@
+{
+  "action": "STOP_STUCK",
+  "reason": "automatable tasks remain but none is ready (blocked dependency or unresolved gate)",
+  "task_ids": [
+    "WO11-03",
+    "WO12-01",
+    "WO12-02",
+    "WO12-03",
+    "WO16-01",
+    "WO17-01",
+    "WO20-01"
+  ]
+}

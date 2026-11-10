@@ -57,7 +57,7 @@ describe('WO06-05 field confirmations are append-only and keep actor, time and v
     const t1 = first(await adminRows('select now() as t')).t as Date;
     const row = first(
       await adminRows(
-        'select actor_user_id, old_value, new_value, new_absent_reason, confirmed_at from public.field_confirmations where id = $1',
+        'select f.actor_user_id, v.old_value, v.new_value, f.new_absent_reason, f.confirmed_at from public.field_confirmations f join public.field_confirmation_values v on v.confirmation_id = f.id where f.id = $1',
         [id],
       ),
     );
@@ -82,7 +82,7 @@ describe('WO06-05 field confirmations are append-only and keep actor, time and v
 
   it('T14 an absent value is confirmed only with the confirmed_absent reason, and a present value cannot carry one', async () => {
     const id = await confirm(ALICE, 'purchase.serial', null, null, 'confirmed_absent');
-    const row = first(await adminRows('select new_value, new_absent_reason from public.field_confirmations where id = $1', [id]));
+    const row = first(await adminRows('select v.new_value, f.new_absent_reason from public.field_confirmations f join public.field_confirmation_values v on v.confirmation_id = f.id where f.id = $1', [id]));
     expect(row.new_value).toBeNull();
     expect(row.new_absent_reason).toBe('confirmed_absent');
     await expect(confirm(ALICE, 'purchase.serial', null, null, null)).rejects.toMatchObject({ code: '22023' });
@@ -104,17 +104,17 @@ describe('WO06-05 field confirmations are append-only and keep actor, time and v
 
   it('T14 the records are append-only: update, delete and truncate are refused with 42501, even for the table owner', async () => {
     const id = await confirm(ALICE, 'purchase.date', null, '2026-04-30');
-    await expect(adminRows('update public.field_confirmations set new_value = $2::jsonb where id = $1', [id, '"2026-05-01"'])).rejects.toMatchObject({ code: '42501' });
+    await expect(adminRows("update public.field_confirmations set field_path = 'purchase.other' where id = $1", [id])).rejects.toMatchObject({ code: '42501' });
     await expect(adminRows('delete from public.field_confirmations where id = $1', [id])).rejects.toMatchObject({ code: '42501' });
     await expect(adminRows('truncate public.field_confirmations')).rejects.toMatchObject({ code: '42501' });
-    const kept = first(await adminRows('select count(*)::int as n, min(new_value::text) as v from public.field_confirmations where id = $1', [id]));
+    const kept = first(await adminRows('select count(*)::int as n, min(v.new_value::text) as v from public.field_confirmations f join public.field_confirmation_values v on v.confirmation_id = f.id where f.id = $1', [id]));
     expect(kept).toEqual({ n: 1, v: '"2026-04-30"' });
   });
 
   it('T14 the authenticated role cannot write the table directly, and an anonymous caller cannot record a confirmation', async () => {
     await expect(
       asActor(ALICE, (c) =>
-        c.query("insert into public.field_confirmations (extraction_id, field_path, new_value, actor_user_id) values ($1, 'purchase.amount', '1'::jsonb, $2)", [EXTRACTION, ALICE]),
+        c.query("insert into public.field_confirmations (extraction_id, field_path, actor_user_id) values ($1, 'purchase.amount', $2)", [EXTRACTION, ALICE]),
       ),
     ).rejects.toMatchObject({ code: '42501' });
     await expect(

@@ -291,6 +291,9 @@ async function main() {
 
     const [caseRow] = await adminQuery(dbUrl, 'select status, outcome, version from public.cases where id = $1', [caseId]);
     if (caseRow.status !== 'closed' || caseRow.outcome !== 'repaired') throw new Error(`the case is ${caseRow.status}/${caseRow.outcome}, not closed/repaired`);
+    // 5 chuyển trạng thái từ draft (v1): submitted, triaged, in_progress, resolved, closed -> v6.
+    // Không kiểm version thì một luồng replay/trùng bước vẫn qua được gate này dù closed/repaired đúng.
+    if (caseRow.version !== 6) throw new Error(`the case version is ${caseRow.version}, expected 6 after five transitions`);
     log(`cơ sở dữ liệu: case đã đóng với outcome repaired, phiên bản ${caseRow.version}`);
 
     await page.getByRole('button', { name: 'Tạo gói xuất', exact: true }).click();
@@ -306,8 +309,8 @@ async function main() {
     await page.screenshot({ path: join(OUT, 'customer-final.png'), fullPage: true });
     await mpage.screenshot({ path: join(OUT, 'merchant-final.png'), fullPage: true });
     summary.ids = { caseId, docId, grantId, jobId };
-    summary.ok = summary.pageErrors.length === 0;
-    if (!summary.ok) throw new Error(`page errors: ${summary.pageErrors.length}`);
+    summary.ok = summary.pageErrors.length === 0 && summary.consoleErrors.length === 0;
+    if (!summary.ok) throw new Error(`page errors: ${summary.pageErrors.length}; console errors: ${summary.consoleErrors.length}`);
   } finally {
     await browser?.close().catch(() => {});
     await vite?.close().catch(() => {});
