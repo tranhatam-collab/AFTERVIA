@@ -72,7 +72,8 @@ async function cutoffOf(userId: string): Promise<number | null> {
 async function freshSession(userId: string): Promise<string> {
   const cutoff = await cutoffOf(userId);
   if (cutoff === null) throw new Error('no deletion request for this user');
-  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 60, exp: cutoff + 3600, simulated: true }, SECRET);
+  // Tuổi thọ phải nằm trong thời hạn phiên (900 giây), vì API từ chối token sống dài hơn thế (D-09).
+  return signHs256({ sub: userId, role: 'authenticated', iat: cutoff + 60, exp: cutoff + 60 + 900, simulated: true }, SECRET);
 }
 
 let h: Harness;
@@ -168,7 +169,8 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
   it('T25 a deletion request needs a session issued within the last 5 minutes: an older session is refused with 401, and it still reads items', async () => {
     // Mốc 360 giây thay vì 301 để kết quả không phụ thuộc đồng hồ. Ranh giới 300 giây nằm trong mã và được đọc ở đó.
     const now = Math.floor(Date.now() / 1000);
-    const stale = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 360, exp: now + 600, simulated: true }, SECRET);
+    // exp cách iat 860 giây, dưới chặn trên 900 giây của D-09, nên token vẫn hợp lệ và chỉ bị từ chối vì cũ.
+    const stale = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 360, exp: now + 500, simulated: true }, SECRET);
     expect((await api(h.url, 'GET', '/v1/items', stale)).status).toBe(200);
     const refused = await api(h.url, 'POST', '/v1/account/deletion', stale, { request_id: 'erase-reauth-stale-0001' });
     expect(refused.status).toBe(401);

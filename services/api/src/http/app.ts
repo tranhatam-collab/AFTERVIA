@@ -3,7 +3,7 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import type pg from 'pg';
 import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@aftervia/domain';
-import { signHs256, verifyHs256 } from '../auth/jwt';
+import { MIN_JWT_SECRET_LENGTH, signHs256, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
@@ -76,7 +76,8 @@ async function deletionCutoff(pool: pg.Pool, userId: string): Promise<number | n
 async function authenticateSession(req: IncomingMessage, config: AppConfig): Promise<{ userId: string; simulated: boolean; issuedAt: number | null }> {
   const match = /^Bearer (.+)$/.exec(req.headers.authorization ?? '');
   if (!match || !match[1]) throw new HttpError(401, 'unauthenticated');
-  const result = verifyHs256(match[1], config.jwtSecret);
+  // Tuổi thọ token không được vượt thời hạn phiên, kể cả khi exp bị ký dài hơn (D-09).
+  const result = verifyHs256(match[1], config.jwtSecret, undefined, { maxLifetimeSeconds: TOKEN_TTL_SECONDS });
   if (!result.ok) throw new HttpError(401, 'unauthenticated');
   const { sub, iat } = result.claims;
   const cutoff = await deletionCutoff(config.pool, sub);
@@ -99,6 +100,10 @@ function fromDbError(error: unknown): HttpError | null {
       return new HttpError(404, 'not_found');
     case '23505':
       return new HttpError(409, 'already_member');
+    // 55000 là trạng thái không cho phép thao tác. Đường hợp đồng đã ánh xạ sang 409; đường cũ trước đây
+    // để lọt xuống 500 (D-08).
+    case '55000':
+      return new HttpError(409, 'invalid_state');
     case '23514':
       return e.message?.includes('at least one active owner') ? new HttpError(409, 'last_owner') : new HttpError(400, 'invalid_input');
     case '22023':
@@ -650,6 +655,10 @@ async function handleContract(req: IncomingMessage, res: ServerResponse, config:
 }
 
 export function createHttpServer(config: AppConfig): Server {
+  // createHmac nhận cả khóa rỗng, nên độ dài khóa phải được kiểm khi dựng server (D-09).
+  if (config.jwtSecret.length < MIN_JWT_SECRET_LENGTH) {
+    throw new Error(`jwtSecret must be at least ${MIN_JWT_SECRET_LENGTH} characters`);
+  }
   return createServer((req, res) => {
     handle(req, res, config).catch((error: unknown) => {
       if (error instanceof HttpError) return send(res, error.status, { error: error.code });

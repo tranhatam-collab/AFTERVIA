@@ -1,0 +1,77 @@
+# OWN-A-08: ánh xạ lỗi đường cũ và các khoảng trống của JWT (D-08, D-09)
+
+- Ngày 10/11/2026. Test mới: `tests/api/error-mapping-and-jwt.test.ts` (8 kiểm thử).
+- Không có migration. Chỉ đổi mã TypeScript.
+
+## D-08: ánh xạ lỗi
+
+1. `fromDbError` (`app.ts`) không có nhánh `55000`. Đường hợp đồng ánh xạ 55000 sang 409 từ trước,
+   nhưng đường cũ đi qua `runRead`/`runWrite` thì `fromDbError` trả `null`, lỗi được ném tiếp và tầng
+   ngoài trả **500**. Cụ thể: một tài khoản đang chờ xóa gọi `POST /v1/items` sẽ chạm trigger của
+   0018, hàm raise 55000, và người dùng nhận 500. Nay thêm `case '55000': 409 invalid_state`.
+2. `decodeURIComponent` trong `contract.ts` nằm ngoài `try`. Một escape phần trăm sai (ví dụ
+   `/v1/items/%E0%A4%A`) làm hàm ném lỗi và tầng ngoài trả **500**. Nay bọc trong `try`, và một đường
+   dẫn không giải mã được thì coi như không khớp route nào, nên trả **404**.
+
+## D-09: JWT
+
+`verifyHs256` trước đây chỉ kiểm `alg`, chữ ký, `exp` và `sub`. Thêm:
+
+1. `nbf`: nếu có, phải là số và không ở tương lai quá dung sai đồng hồ → `not_yet_valid`.
+2. `iat`: nếu có, phải là số và không ở tương lai quá dung sai → `bad_iat`.
+3. Chặn trên tuổi thọ: tham số `maxLifetimeSeconds` của người gọi. `exp - iat` vượt mức thì
+   `lifetime_too_long`. Mặc định **không chặn**, vì đây là chính sách của tầng gọi chứ không phải của
+   JWT. `authenticateSession` truyền `TOKEN_TTL_SECONDS` (900), nên token ký với `exp` dài hơn thời
+   hạn phiên bị từ chối ở đường API.
+4. Dung sai đồng hồ 60 giây cho `nbf` và `iat`.
+5. `MIN_JWT_SECRET_LENGTH = 32` chuyển vào `auth/jwt.ts` làm một nguồn duy nhất; `start-local.ts`
+   import và export lại. `createHttpServer` nay **ném lỗi** nếu khóa ngắn hơn 32 ký tự, vì
+   `createHmac` nhận cả khóa rỗng.
+
+`iat` **không** bị bắt buộc: hệ thống vẫn có đường phát token không có `iat`, và
+`tests/api/account-deletion-http.test.ts` có một kiểm thử cố ý dùng token thiếu `iat`. Thiếu `iat`
+vẫn bị từ chối ở hai chỗ sẵn có: `issuedRecently` cho thao tác xóa, và mốc cắt phiên khi tài khoản đã
+yêu cầu xóa.
+
+## Kiểm thử
+
+| Kiểm thử | Nội dung |
+|---|---|
+| `nbf` tương lai | `not_yet_valid` |
+| `iat` tương lai | `bad_iat` |
+| Tuổi thọ 4000 giây | `lifetime_too_long` khi người gọi đặt chặn 900; vẫn hợp lệ khi không đặt chặn |
+| Tuổi thọ đúng 900 | Được nhận, nên biên là bao gồm |
+| Lệch đồng hồ 30 giây | Được nhận |
+| Khóa ngắn | `createHttpServer` ném lỗi `at least 32 characters` |
+| D-08 chờ xóa ghi món đồ | `POST /v1/items` trả **409 `invalid_state`**, không phải 500 |
+| D-08 escape phần trăm sai | `GET /v1/items/%E0%A4%A` trả **404**, không phải 500 |
+
+## Fixture phải sửa theo
+
+Chặn trên tuổi thọ làm hai fixture cũ không còn hợp lệ, vì chúng ký token sống lâu hơn thời hạn phiên.
+Đã sửa trong `tests/api/account-deletion-http.test.ts`, giữ nguyên ý định của từng kiểm thử:
+
+- `freshSession`: `exp: cutoff + 3600` → `exp: cutoff + 60 + 900` (tuổi thọ 900).
+- Token cũ của kiểm thử xác thực lại: `exp: now + 600` → `exp: now + 500`, giữ `iat: now - 360` để
+  token vẫn "cũ" theo luật 300 giây nhưng tuổi thọ chỉ 860 giây.
+
+## Cổng
+
+- `tests/api` (11 tệp): 92/92 sau khi sửa fixture.
+- Tệp test mới: 8/8.
+- `npm run verify` và `npm run e2e:web`: xem commit.
+
+## Giới hạn
+
+- Không kiểm `iss` và `aud`: token hiện do chính API ký và chỉ dùng cục bộ (đăng nhập giả lập). Khi có
+  nhà cung cấp danh tính thật (DEC03) thì phải thêm.
+- `iat` vẫn không bắt buộc. Khi mọi đường phát token đều có `iat` thì nên bắt buộc.
+- Chặn trên tuổi thọ chỉ áp ở `authenticateSession`. Lời gọi `verifyHs256` trực tiếp trong kiểm thử
+  giữ hành vi cũ nếu không truyền tham số.
+
+## Ghi chú về việc chia commit
+
+`services/api/src/local/start-local.ts` bị cả OWN-A-07 và OWN-A-08 chạm vào. Hai dòng chuyển
+`MIN_JWT_SECRET_LENGTH` sang `auth/jwt.ts` (phần của OWN-A-08) vì thế đã đi cùng commit của
+OWN-A-07, không tách ra được mà không phải can thiệp vào index. Ghi lại ở đây để người đọc lịch sử
+không mất dấu.
