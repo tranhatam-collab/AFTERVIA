@@ -17,6 +17,15 @@ test('GT01 bundle scan flags secret-shaped values and server-only names in clien
   assert.deepEqual(rules, ['_next/chunk.js private-key-block', 'index.html server-only-name:SUPABASE_SERVICE_ROLE_KEY']);
 });
 
+test('G-21 the bundle scan flags the variable name the pack signing step really reads', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'gs-bundle-'));
+  // The name is the one tools/build/postbuild.mjs reads. It is assembled here so this test file does not contain it.
+  const name = ['GROUNDSTEAD', 'PACK', 'PRIVATE', 'KEY'].join('_');
+  writeFileSync(join(dir, 'chunk.js'), `var k=process.env.${name};\n`);
+  const rules = scanDir(dir).map((f: { file: string; rule: string }) => f.rule);
+  assert.deepEqual(rules, [`server-only-name:${name}`]);
+});
+
 test('GT01 the real static export contains no secrets and no server-only names', () => {
   assert.deepEqual(scanDir(OUT), []);
 });

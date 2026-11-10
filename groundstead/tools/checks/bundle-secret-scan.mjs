@@ -8,7 +8,14 @@ import { scanText } from './secret-scan.mjs';
 
 const TEXT_EXT = new Set(['.js', '.mjs', '.html', '.json', '.txt', '.css', '.xml', '.map', '.webmanifest']);
 // Server-only names that must never reach the browser bundle.
-export const SERVER_ONLY_NAMES = ['SUPABASE_SERVICE_ROLE_KEY', 'GS_SIGNING_PRIVATE_KEY', 'VAPID_PRIVATE_KEY', 'AFFILIATE_API_SECRET'];
+// GROUNDSTEAD_PACK_PRIVATE_KEY is the name postbuild.mjs reads (G-21). GS_SIGNING_PRIVATE_KEY was an earlier, unused name; it stays listed.
+export const SERVER_ONLY_NAMES = [
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'GROUNDSTEAD_PACK_PRIVATE_KEY',
+  'GS_SIGNING_PRIVATE_KEY',
+  'VAPID_PRIVATE_KEY',
+  'AFFILIATE_API_SECRET',
+];
 
 function walk(dir) {
   const files = [];
