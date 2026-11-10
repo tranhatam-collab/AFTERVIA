@@ -33,6 +33,7 @@
 | — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
 
 ## Việc kế tiếp
+- Chờ quyết định D-26 từ chủ dự án. Sau khi có: ghi vào `03_DECISIONS.md`, kiểm lại nguồn NWS cho các chủ đề còn thiếu của GS-032, rồi mới `unblock`. GS-031b (thẻ mất điện) dùng nguồn NWS và cần cùng quyết định phạm vi.
 - GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog). Đây là điểm nghẽn chính: GS-032 → GS-052 → GS-G1 → gần như toàn bộ việc AUTO còn lại (GS-036…GS-106, GS-G2, GS-G3).
 - GS-053a DONE (vòng 21): lõi job; GDACS đọc RSS thật; USGS bị proxy chặn nên chưa kiểm dữ liệu thật. GS-053b HUMAN: chủ dự án chọn nơi chạy job định kỳ (D-36) và cấp khóa VAPID. Đến lúc đó job chỉ chạy tay bằng `tools/alerts/refresh.mjs`.
 - Sau đó còn: GS-052 (mở thẻ 72 giờ theo hiểm họa, GT18; chờ GS-032), GS-062 (thu hồi với bản ghi mẫu), GS-100 (gói quốc gia mới, cần nguồn), và các cổng G1/G2/G3.
@@ -49,6 +50,7 @@
 - **D-23:** mở thêm tên miền để đọc số khẩn cấp (VN: bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn; Hoa Kỳ: fcc.gov, usa.gov). Không tự thêm.
 
 ## Chờ chủ dự án (đang chặn đường chính)
+- **Go-live (GS-082, Cổng 1):** chưa mở. Điều kiện: E2E đạt (chuỗi chặn hiện tại: D-26 → GS-032 → GS-052 → GS-G1); chủ dự án ghi duyệt cho đúng commit trong `03_DECISIONS.md` (GS-H02); DNS `groundstead.iai.one` (GS-H03); repo (GS-H01); khóa ký thật cho Production (D-30).
 - **D-30 / GS-H12 (chặn gói ngoại tuyến sẵn sàng trên Preview và Production):** sinh cặp khóa Ed25519; đặt khóa riêng làm secret của build (không commit, không ghi ra đĩa); đặt khóa công khai làm `NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY`. Đến lúc đó gói bị từ chối (đúng GT07). Vòng lặp không tự sinh khóa thật.
 - **GS-H11 (không gấp):** 5 website chặn truy cập tự động hoặc không kết nối (IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF) và FEMA/CDC cũng chặn: nhờ anh mở bằng trình duyệt, chép câu bản quyền/tái sử dụng gửi lại để ghi vào sổ nguồn.
 - **GS-053b (HUMAN, D-36):** chọn nơi chạy job định kỳ và cấp khóa VAPID cho thông báo đẩy (chỉ gói miễn phí). Không chặn các việc AUTO khác, trừ GS-G2 và GS-105 (phụ thuộc GS-053b).
@@ -56,11 +58,11 @@
 - **GS-H02, GS-H03:** duyệt nội dung landing và DNS `iai.one` (chặn landing công khai, cần trước 20/11).
 - **GS-031b:** thẻ mất điện cần một trang chính thức đọc được có hướng dẫn mất điện. NWS, USGS, Red Cross đã đọc không có; FEMA và CDC chặn tự động.
 - **APPllama.iai:** phiên này không có connector, MCP hay thư mục máy nào cho APPllama.iai (đã tra registry: không thấy). Cần URL hoặc tên chính xác, hoặc kết nối connector trong claude.ai, hoặc gắn thư mục máy qua Remote Control.
-- **PR #2 (AFTERVIA):** check `verify` đỏ ở bước `npm audit --omit=dev --audit-level=high` của repo gốc (5 lỗ hổng mức cao trong Expo SDK 54). Nhánh gốc đỏ từ 04/11. Cần chủ dự án chọn hướng nâng cấp hoặc đổi cổng audit (xem `docs/plan/05_AUTONOMY_STATUS.md` của AFTERVIA). Đã comment trên PR; không re-run được từ phiên này (403).
+- **PR #2 (AFTERVIA):** check `verify` đỏ ở bước `npm audit --omit=dev --audit-level=high` của repo gốc (5 lỗ hổng mức cao trong Expo SDK 54). Nhánh gốc đỏ từ 04/11. Cần chủ dự án chọn hướng nâng cấp hoặc đổi cổng audit (xem `docs/plan/05_AUTONOMY_STATUS.md` của AFTERVIA). Đã comment trên PR một lần. Commit `02c863a` (run `42266939440`, job `128061191274`) đỏ cùng lỗi; re-run trả 403 từ phiên này (GitHub App không có quyền actions). Nhánh này không đổi file nào ngoài `groundstead/`.
 
 ## Preview
 - Alias của nhánh: `groundstead-git-ccr-8dbbf147-1ge7hc-tranhatam-6714s-projects.vercel.app` (cần đăng nhập Vercel; không công khai; `noindex`).
-- Deploy bằng `create_deployment` với `gitSource` (sha = commit mới nhất của nhánh). Deployment mới nhất: `dpl_FiiXedJTQe1xUxwExjexA3XS7o5n` (commit `37b8751`, GS-016) READY, alias trên.
+- Deploy bằng `create_deployment` với `gitSource` (sha = commit mới nhất của nhánh). Deployment mới nhất: `dpl_FyTffgtqG1tgQKQ1S8Mayx2gYKyj` (commit `02c863a`, GS-053a) READY, alias `groundstead-git-ccr-8dbbf147-1ge7hc-tranhatam-6714s-projects.vercel.app`. Trước đó: `dpl_GnueAcfLsXVHLvnuXq9gnyN4f6jN` (commit `846c81d`, GS-021). Các commit GS-022 đến GS-081 chưa từng có bản preview riêng; `02c863a` đã gồm chúng.
 
 ## Ma trận nghiệm thu
 PASS 21 · NOT_RUN 15 · MANUAL_PENDING 1 (tổng 37). Độ phủ: FULL 1 · PARTIAL 20 · NONE 16.
