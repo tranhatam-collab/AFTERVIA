@@ -56,3 +56,12 @@ quét bí mật đọc nó thành một dòng nhiễu, nên đó là chỗ tồi
   khóa. Bộ quét vẫn là lọc theo mẫu, không phải phân tích entropy.
 - Nội dung bốn tệp nén đã bị xóa khỏi cây hiện tại nhưng còn trong lịch sử. Nếu cần biến mất hẳn thì
   phải viết lại lịch sử, việc đó bị cấm trong phạm vi hiện tại.
+
+## Đính chính về việc chia commit
+
+Bốn tệp nén được `git rm` **trước** khi commit OWN-A-09, nên chúng đã bị stage và đi vào commit
+`5b20e29` (OWN-A-09) chứ không vào commit của OWN-A-11 (`7c852c9`). Thông điệp của `5b20e29` không nói
+gì về việc này. Ghi lại ở đây để người đọc lịch sử tìm đúng chỗ. Đây là lỗi quy trình của lượt, cùng
+loại với việc hai dòng `MIN_JWT_SECRET_LENGTH` đi cùng commit OWN-A-07 thay vì OWN-A-08. Nguyên nhân
+chung: `git commit` lấy toàn bộ index, nên mọi thứ đã stage đều vào commit kế tiếp. Lượt sau nên
+`git add` đúng tệp ngay trước mỗi commit, và kiểm `git diff --cached --name-only` trước khi commit.

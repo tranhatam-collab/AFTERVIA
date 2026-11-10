@@ -171,7 +171,10 @@ describe('WO10-01 Web Desk: states, escaping, and the request boundary', () => {
   });
 
   it('T38 the web source has no raw HTML sink and no dynamic code evaluation', () => {
-    const forbidden = /dangerouslySetInnerHTML|innerHTML|outerHTML|insertAdjacentHTML|document\.write|\beval\s*\(|new Function\s*\(/;
+    // OWN-A-15 (A-12): phủ thêm các sink dựng URL và thuộc tính, không chỉ sink HTML thô. Một liên kết
+    // hoặc nguồn ảnh dựng từ dữ liệu máy chủ là đường đưa `javascript:` vào trang, nên cũng bị cấm.
+    const forbidden =
+      /dangerouslySetInnerHTML|innerHTML|outerHTML|insertAdjacentHTML|document\.write|\beval\s*\(|new Function\s*\(|setAttribute\s*\(|\.href\s*=|\.src\s*=|\bjavascript:|window\.open\s*\(|location\s*\.\s*(?:href|assign|replace)/;
     const root = fileURLToPath(new URL('../../apps/web/src', import.meta.url));
     const offenders: string[] = [];
     const walk = (dir: string): void => {

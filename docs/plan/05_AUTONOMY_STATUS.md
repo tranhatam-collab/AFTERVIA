@@ -1,7 +1,7 @@
 # Checkpoint tự chủ AFTERVIA
 
 - Cập nhật: 08/11/2026, sau lượt `AV-DQ-05-FIX` (ngoài ngân sách — xem dưới).
-- Trạng thái: **PAUSED_LIMIT** vẫn giữ nguyên — `iteration_budget` 65 (founder đã nâng từ 60 ngày 03/11), đã dùng hết (65/65) từ 06/11; `decide` = STOP_BUDGET. Lượt `AV-DQ-05-FIX` (08/11) **không phải vòng lặp tự động tiếp tục**: làm theo chỉ thị trực tiếp của chủ dự án trong chat ("all"), vượt ngân sách 65. `iterations_used` nay là **66/65** (vượt 1) — không tự nâng `iteration_budget` thành 66; cần chủ dự án xác nhận số mới nếu muốn tiếp tục thêm. Chưa có `ENGINEERING_ACCEPTED`. **HOLD phát hành** tiếp tục; không merge `main`, không deploy.
+- Trạng thái: **PAUSED_LIMIT** vẫn giữ nguyên — `iteration_budget` 65 (nâng từ 60 trong commit `2b4bc01` ngày **06/11**, không phải 03/11 — OWN-A-16; việc nâng này được sửa tay trong `backlog.json`, ngoài công cụ, xem A-15 trong `09_AUDIT_2026-11-10.md`), đã dùng **66/65** (`meta.iterations_used` = 66) từ 06/11; `decide` = STOP_BUDGET. Lượt `AV-DQ-05-FIX` (08/11) **không phải vòng lặp tự động tiếp tục**: làm theo chỉ thị trực tiếp của chủ dự án trong chat ("all"), vượt ngân sách 65. `iterations_used` nay là **66/65** (vượt 1) — không tự nâng `iteration_budget` thành 66; cần chủ dự án xác nhận số mới nếu muốn tiếp tục thêm. Chưa có `ENGINEERING_ACCEPTED`. **HOLD phát hành** tiếp tục; không merge `main`, không deploy.
 - **HOLD đã gỡ** (chủ dự án, 03/11 sau 04:30 UTC: tiếp tục vòng lặp đến khi xong E2E). P1 ở gate dependency của CI tại `9a76185` vẫn đỏ, và mọi lần đẩy từ `426ac0f` đều đỏ ở cùng bước `Dependency audit`; chưa nới cổng audit. `WO10-03e` đã hoàn tất (`docs/plan/evidence/WO10-03e.md`), gồm commit WIP `6d35f87` và commit hoàn tất.
 - Nguồn mệnh lệnh: gói `docs/spec/AUTONOMY_V1/` (đã kiểm checksum); chỉ thị của chủ dự án trong phiên ngày 31/10 (Cloudflare Pages là hosting ưu tiên; landing VI/EN; không form, không email hiển thị, không thanh toán; công khai chỉ khi có quyền và nội dung đã duyệt; quyền qua biến môi trường); ảnh bảng nhận diện do chủ dự án gửi cùng lệnh "Áp dụng".
 
@@ -13,8 +13,8 @@
 - PR #1: nháp, base `main`, chưa merge, chưa đổi sang sẵn sàng review, chưa có reviewer.
 
 ## Scheduler (một writer)
-- Chuỗi `send_later` là writer duy nhất. Lượt WO11-02e-CASE bắt đầu 16:11 UTC, lượt cuối. Ngân sách 65/65 đã hết. `decide` = STOP_BUDGET: không lên lịch vòng kế tiếp. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
-- Lượt kế tiếp: không có. `decide` = STOP_BUDGET (65/65). Để chạy tiếp cần cả ngân sách mới và quyết định HUMAN mở các task AUTO còn lại (WO11-03, WO12-01..03, WO16-01b).
+- Chuỗi `send_later` là writer duy nhất. Lượt WO11-02e-CASE bắt đầu 16:11 UTC, lượt cuối. Ngân sách đã hết (66/65 theo `meta`). `decide` = STOP_BUDGET: không lên lịch vòng kế tiếp. Check-in PR 1 của 3 vẫn không đăng ký check-in 2 của 3; chờ chủ dự án xác nhận.
+- Lượt kế tiếp: không có. `decide` = STOP_BUDGET (66/65). Để chạy tiếp cần cả ngân sách mới và quyết định HUMAN mở các task AUTO còn lại (WO11-03, WO12-01..03, WO16-01b).
 - Chưa tạo Cloud Routine. Không bật writer thứ hai (D1, D12).
 
 ## Backlog (DONE, có bằng chứng)
@@ -47,7 +47,7 @@ WO02-01, WO03-01, WO03-02, WO03-03, WO03-04, WO04-01, WO04-02, WO04-03, WO04-04,
 - Xuất dữ liệu (WO11-01, WO10-03a): gói JSON, CSV và manifest SHA-256 chỉ chứa món đồ của người dùng và tài liệu được grant còn hiệu lực; kiểm phạm vi trong cơ sở dữ liệu; liên kết tạm 24 giờ bằng mã băm. HTTP `createExport` và `getJob` đã có (WO10-03a), nhưng chưa có đường tải gói: đặc tả OpenAPI không có route tải, và mã truy cập không được trả ra (HUM-WO10-03a). Xuất trong lúc chờ xóa chưa có quy tắc (WO11-02d, Q6). Gói hết hạn chưa được dọn dẹp (ảnh hưởng xóa tài khoản, WO11-02); nội dung cá nhân trong gói cần đánh giá riêng tư trước khi dùng dữ liệu thật.
 
 ## Việc kế tiếp
-- Lượt 06/11 16:11 UTC: WO11-02e-CASE DONE (AUTO, T25 PARTIAL; T17 và T19 vẫn đạt; lượt cuối của ngân sách): lý do lịch sử case chuyển sang `case_event_reasons` bằng trigger trước insert; cột `case_events.reason` luôn NULL; migration `0023`; 6 kiểm thử T25 mới; E2E-WEB-01 đạt 12/12. Chờ reviewer độc lập. `decide` = STOP_BUDGET (65/65). Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-06T1611Z.md`.
+- Lượt 06/11 16:11 UTC: WO11-02e-CASE DONE (AUTO, T25 PARTIAL; T17 và T19 vẫn đạt; lượt cuối của ngân sách): lý do lịch sử case chuyển sang `case_event_reasons` bằng trigger trước insert; cột `case_events.reason` luôn NULL; migration `0023`; 6 kiểm thử T25 mới; E2E-WEB-01 đạt 12/12. Chờ reviewer độc lập. `decide` = STOP_BUDGET (66/65). Receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-06T1611Z.md`.
 - Lượt 06/11 15:57 UTC: WO11-02e-CONF DONE (AUTO, T25 PARTIAL; T14 vẫn đạt): giá trị cũ và mới của xác nhận trường chuyển sang `field_confirmation_values` (RLS; người xác nhận đọc được giá trị của mình); bảng chỉ thêm giữ tham chiếu; migration `0022`; 6 kiểm thử T25 mới; đột biến 1/13, 1/6, 4/13; E2E không liên quan. Chờ reviewer độc lập. `decide` = START WO11-02e-CASE, ngân sách 64/65.
 - Lượt 06/11 15:47 UTC: WO11-02e-EXP DONE (AUTO, T25 PARTIAL): nội dung gói xuất vào bảng `export_bodies` có hạn 24 giờ; `export_files` chỉ giữ tham chiếu và băm; `purge_expired_export_bodies()` xóa nội dung hết hạn và ghi audit (migration `0021`); 7 kiểm thử T25 mới; đột biến 1/7 ×3; E2E-WEB-01 đạt 12/12. Chờ reviewer độc lập. `decide` = START WO11-02e-CONF, ngân sách 63/65.
 - Lượt 06/11 15:38 UTC: WO11-02f-SESS DONE (AUTO, T25 PARTIAL): thời hạn phiên 900 giây (đăng nhập thử); yêu cầu xóa chỉ nhận phiên phát trong 300 giây gần nhất, phiên cũ trả 401 `unauthenticated`; 3 kiểm thử T25 mới; đột biến 2/9 và 1/9; E2E-WEB-01 đạt 12/12. Chờ reviewer độc lập. `decide` = START WO11-02e-EXP, ngân sách 62/65.
