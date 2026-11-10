@@ -21,12 +21,14 @@ Quyết định không phải là phê duyệt pháp lý, và không có gì đ�
 - Thêm task kỹ thuật khử trùng idempotency ở máy chủ (grant và `POST /v1/items`). **QUYẾT**: làm ở vòng lặp kế tiếp.
 
 ## 3. Xóa tài khoản (WO11-02, Q1–Q6)
-- Q1 danh mục xóa: phương án A (dùng `legal/04` làm nháp). Grace: 30 ngày. Merchant giữ chứng từ: theo `legal/04`, tách riêng. **QUYẾT TẠM**: luật sư xác nhận từng dòng.
-- Q2 nội dung cá nhân trong bảng chỉ thêm: phương án C (chuyển sang bảng sửa được, bảng chỉ thêm giữ mã tham chiếu). **QUYẾT**: triển khai trong task riêng.
-- Q3 xác minh danh tính và phiên: C ngay (thời hạn phiên 15 phút, xác thực lại trước khi xóa). Khi chọn nhà cung cấp, chuyển sang A. **QUYẾT TẠM**.
-- Q4 thành viên tổ chức khi khách xóa: A (đánh dấu REVOKED; từ chối nếu là owner duy nhất). **QUYẾT**: triển khai trong task riêng. **Đã triển khai**: WO11-02g-MEM (migration `0020`, T25 và T26; chờ reviewer độc lập).
-- Q5 quyền bên nhận: A cho quyền truy cập tài liệu; C cho bản ghi case của merchant. **QUYẾT TẠM**: luật sư xác nhận.
-- Q6 xuất dữ liệu trong lúc chờ xóa: A (cho phép). **QUYẾT**. Không cần đổi mã.
+> Đính chính 10/11 (kiểm toán): nhãn QUYẾT và QUYẾT TẠM ở Q1–Q6 do agent ghi khi chưa có câu trích nguồn trong repo. Đặt về CHỜ NGƯỜI cho đến khi chủ dự án và luật sư xác nhận. Mã đã triển khai (migration `0020`) không bị gỡ.
+
+- Q1 danh mục xóa: phương án A (dùng `legal/04` làm nháp). Grace: 30 ngày. Merchant giữ chứng từ: theo `legal/04`, tách riêng. **QUYẾT TẠM**: **CHỜ NGƯỜI**: luật sư xác nhận từng dòng.
+- Q2 nội dung cá nhân trong bảng chỉ thêm: phương án C (chuyển sang bảng sửa được, bảng chỉ thêm giữ mã tham chiếu). **CHỜ NGƯỜI**: triển khai trong task riêng.
+- Q3 xác minh danh tính và phiên: C ngay (thời hạn phiên 15 phút, xác thực lại trước khi xóa). Khi chọn nhà cung cấp, chuyển sang A. **CHỜ NGƯỜI**.
+- Q4 thành viên tổ chức khi khách xóa: A (đánh dấu REVOKED; từ chối nếu là owner duy nhất). **CHỜ NGƯỜI**: triển khai trong task riêng. **Đã triển khai**: WO11-02g-MEM (migration `0020`, T25 và T26; chờ reviewer độc lập).
+- Q5 quyền bên nhận: A cho quyền truy cập tài liệu; C cho bản ghi case của merchant. **CHỜ NGƯỜI**: luật sư xác nhận.
+- Q6 xuất dữ liệu trong lúc chờ xóa: A (cho phép). **CHỜ NGƯỜI**. Không cần đổi mã.
 
 ## 4. Danh tính, lưu trữ, AI
 - D3 danh tính đăng nhập thật: Supabase project thuộc chủ dự án. **QUYẾT HƯỚNG**. Chủ dự án tự tạo tài khoản. **CHỜ NGƯỜI**.
