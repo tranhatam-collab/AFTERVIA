@@ -22,6 +22,7 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, đề xuất, trạng 
 | D16 | Kho byte cho tài liệu (ảnh, PDF, tối đa 10 MiB) — đang chặn WO10-03d | (A) kho object riêng tư của nhà cung cấp danh tính; (B) byte trong Postgres theo mẫu `export_bodies`, chỉ cho dữ liệu tổng hợp; (C) object storage tự vận hành | A, quyết cùng DEC03. Dùng B tạm nếu cần kiểm thử đường tải lên/tải xuống trước khi có tài khoản. Đề xuất đầy đủ: `docs/plan/evidence/WO10-03d-prep.md`; dữ kiện mới 10/11 ở mục dưới bảng | OPEN, HUMAN_REQUIRED | Chủ dự án |
 | D17 | Cách trả liên kết tải gói xuất trong 24 giờ — đang chặn HUM-WO10-03a | (1) route tải có phiên, chỉ chủ job; (2) mã truy cập một lần; (3) gửi qua email; (4) trả nội dung ngay | (1): không có bí mật mang đi được, kiểm quyền mỗi lần tải. Cần chủ dự án duyệt thêm route vào hợp đồng OpenAPI | OPEN, HUMAN_REQUIRED | Chủ dự án |
 | D18 | Danh mục xóa và giữ lại dữ liệu — đang chặn HUM-LEGAL-DEL-01 và WO20-01 | Luật sư duyệt từng bảng: xóa / che nội dung / giữ lại; nếu giữ thì bao lâu, căn cứ nào, ai được xem | Gói cho luật sư đã dựng sẵn và **sinh từ lược đồ thật**: `docs/legal/DRAFT_danh-muc-xoa-va-giu-lai.md`. 28/32 bảng chưa quyết, trong đó 6 bảng rủi ro cao | OPEN, HUMAN_REQUIRED | Chủ dự án + luật sư |
+| D19 | Người tải tệp lên cũng là người tuyên bố tệp đã qua kiểm (D-04 của kiểm toán 10/11) | (a) giữ nguyên cho tới khi có scanner đã duyệt; (b) chặn `SCANNER_UNAVAILABLE` ở các đường dùng, chấp nhận khóa luồng tài liệu; (c) yêu cầu một dịch vụ riêng ghi kết quả kiểm | (a) cho tới khi có scanner: (b) khóa toàn bộ luồng tài liệu hôm nay, (c) cần dịch vụ chưa tồn tại. Xem phần dưới bảng để biết vì sao vòng lặp KHÔNG tự sửa | OPEN, HUMAN_REQUIRED (chờ scanner, INFRA) | Chủ dự án |
 
 ## Dữ kiện mới cho D16, phát hiện sau khi viết đề xuất 06/11
 
@@ -50,3 +51,27 @@ Hệ quả thực tế: nếu chủ dự án viết "duyệt DEC06", không ai b
 đó đã được quyết từ trước. Đề xuất của vòng lặp (chưa phải quyết định): cấp mã riêng cho kho byte —
 `D16` ở bảng trên dùng tạm làm mã trong hồ sơ kế hoạch. Đặc tả là bất biến nên **không** sửa; chỉ hồ sơ
 kế hoạch được ghi rõ.
+
+## Vì sao vòng lặp không tự sửa D-04 (D19)
+
+Sự thật đã kiểm trong mã, không phải suy đoán:
+
+- `public.record_upload_inspection` được **`grant execute ... to authenticated`** (`0004_quarantine.sql`, dòng
+  cuối), và nằm trong danh sách bề mặt khách gọi được của `tests/security/function-privileges-surface.test.ts`.
+- Hàm nhận `p_scan_status`, `p_reason`, `p_detected_mime`, `p_actual_size` **từ người gọi**, và chỉ kiểm
+  người gọi có phải **chủ tài liệu** hay không (`v_owner <> v_uid`). Tức là người tải tệp lên cũng là người
+  khai tệp đã qua kiểm.
+- `SCANNER_UNAVAILABLE` được chấp nhận y như `CLEAN` ở **bốn** chỗ: `0005:87`, `0008:211`, `0012:34`, `0013:85`.
+- Hôm nay **chưa khai thác được**, vì chưa có kho byte nên không có tệp thật nào được phục vụ (D16).
+
+Ba cách sửa đều vượt quyền vòng lặp:
+
+- Chặn `SCANNER_UNAVAILABLE` ở các đường dùng sẽ **khóa toàn bộ luồng tài liệu** ngay lập tức. Đó là quyết
+  định sản phẩm, không phải sửa lỗi.
+- Bắt hàm chỉ cho máy chủ gọi (`assert_server_caller`) nghe hợp lý, nhưng `withUser` của API đặt
+  `set local role authenticated`, nên **chính API cũng sẽ không gọi được**. Nó chỉ dời chỗ nghẽn, và vẫn cần
+  một dịch vụ kiểm tệp mà hôm nay chưa tồn tại.
+- Thêm cột ghi "ai xác nhận" thì hôm nay không ai đọc, và với dữ liệu tổng hợp thì không có gì để truy ngược.
+
+Nói thẳng: **điều kiện đủ để sửa là có một scanner đã duyệt (INFRA)**, cùng lúc với D16. Trước đó, mọi thay
+đổi chỉ là đổi hình dáng của cùng một sự tin tưởng.

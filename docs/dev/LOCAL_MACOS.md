@@ -122,7 +122,7 @@ npm run api:local
 | `AFTERVIA_LOCAL_PORT` | `npm run api:local` | Không. Mặc định 8787; từ 1024 đến 65535 |
 | `AFTERVIA_LOCAL_API_URL` | Desk khi chạy dev (proxy `/v1`), E2E | Không. Mặc định `http://127.0.0.1:8787` |
 | `VITE_API_BASE` | Desk, khi build | Không; để trống khi chạy dev |
-| `AFTERVIA_E2E_PLAYWRIGHT` | `npm run e2e:web` | Không. Đường dẫn gói `playwright` (repo không cài gói này) |
+| `AFTERVIA_E2E_PLAYWRIGHT` | `npm run e2e:web` | Không. Chỉ cần khi muốn trỏ tới một bản `playwright` khác; repo đã ghim `playwright ^1.65.0` trong `package.json` |
 | `EXPO_PUBLIC_API_BASE` | ứng dụng di động (Expo) | Không thuộc phạm vi tài liệu này |
 
 ## 9. Không đưa vào repo, chat, hoặc log
@@ -138,27 +138,38 @@ npm run api:local
 - `ECONNREFUSED` tới `localhost:5432`: PostgreSQL chưa chạy hoặc chạy ở cổng khác. Kiểm tra cổng và dịch vụ.
 - `npm ci` lỗi: kiểm tra `node -v` (phải 22.12 trở lên). Không xóa `package-lock.json` để "sửa".
 - Lỗi checksum khi migration: không sửa migration đã áp dụng; báo chủ dự án.
-- `npm run verify` đỏ ở bước audit: bước `Dependency audit` chỉ có trong CI, không nằm trong `verify`. Xem blocker đã báo trên PR #1.
+- Bước `Dependency audit` (`npm audit --omit=dev --audit-level=high`) chỉ có trong CI, không nằm trong `verify`. Cổng này **đã hết đỏ** từ head `487d084` (run 42803201074, bước 7 đạt).
 - `AFTERVIA_LOCAL_DATABASE_URL is not set`, `AFTERVIA_LOCAL_JWT_SECRET must be at least 32 characters` hoặc `refusing to use database`: cấu hình của `npm run api:local` chưa đúng. Xem mục 7.
 
 ## 11. Đã kiểm và chưa kiểm
 
-- Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (19 migration); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
+- Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (lúc đó 19 migration; nay 33); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
 - Đã kiểm WO26-02 trên container Linux (03/11/2026), `npm run api:local` với DB `_test`: thiếu cấu hình và tên DB sai đều bị từ chối (thoát 1); khởi động thật trả `/healthz` 200 và đăng nhập giả lập 200; chỉ nghe trên `127.0.0.1` (kiểm trong `/proc/net/tcp`; địa chỉ không phải loopback bị từ chối); SIGINT và SIGTERM dừng và giải phóng cổng; nhật ký không chứa khóa hay URL. Kiểm tự động: `tests/api/local-start.test.ts`.
 - Đã kiểm E2E-WEB-01 trên container Linux (03/11/2026): `npm run e2e:web` chạy trọn luồng, xem mục 12.
 - Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; API cục bộ và E2E trên macOS; Safari và Firefox (DEV-02).
 
 ## 12. E2E trên Chromium (E2E-WEB-01)
 
-Luồng đầy đủ trên DB `_test` cục bộ: thêm món, mở case, gắn bằng chứng và mời người tham gia (chỉ metadata, qua hàm cơ sở dữ liệu), chia tài liệu, Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24).
+Luồng đầy đủ trên DB `_test` cục bộ: thêm món, mở case, gắn bằng chứng và mời người tham gia (chỉ metadata, qua hàm cơ sở dữ liệu), chia tài liệu, Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24), và yêu cầu xóa tài khoản trên màn Quyền riêng tư (T25, thêm 10/11).
+
+Gói `playwright` đã có trong `package.json`, nhưng **trình duyệt thì chưa**: `npm ci` không tải Chromium.
+Cài một lần trước khi chạy e2e lần đầu:
+
+```bash
+npx playwright install chromium
+```
 
 ```bash
 export TEST_DATABASE_URL="postgres://<tên-người-dùng>@localhost:5432/aftervia_test"
-export AFTERVIA_E2E_PLAYWRIGHT="<thư mục gói playwright>"
 npm run e2e:web
 ```
 
+Nếu máy đã có sẵn Chromium của Playwright ở nơi khác, đặt `PLAYWRIGHT_BROWSERS_PATH` trỏ tới thư mục đó
+thay vì tải lại. Lỗi `Executable doesn't exist ... chromium_headless_shell-<số>` nghĩa là bản `playwright`
+đang dùng cần một **revision** trình duyệt khác với bản đã cài; chạy lại `npx playwright install chromium`
+cho đúng bản `playwright` của repo.
+
 - Lệnh đặt lại DB `_test` (schema, shim, migration), chạy API cục bộ tại `127.0.0.1:8787` và Desk tại `127.0.0.1:5173`, rồi mở Chromium. Kết quả: `.loop/e2e/summary.json`, ảnh `.loop/e2e/*.png`, nhật ký API `.loop/e2e/api.log`. Thư mục `.loop/` không commit.
-- Thoát 0 nếu mọi bước đạt và không có lỗi trang. Thoát 1 và in bước lỗi nếu không.
-- Không nằm trong `npm run verify`: cần Playwright và Chromium cục bộ, và CI chưa có. Ma trận T24 vẫn lấy từ kiểm thử Vitest.
+- Thoát 0 nếu mọi bước đạt **và** không có lỗi trang **và** không có lỗi console. Thoát 1 và in bước lỗi nếu không.
+- Không nằm trong `npm run verify` (cần Chromium cục bộ), nhưng **có chạy trên CI** từ `7c852c9`: job `e2e-web` trong `.github/workflows/ci.yml`. Ma trận T24 và T25 vẫn lấy trạng thái từ Vitest qua `matrix.mjs from-report`; e2e là bằng chứng bổ sung trên trình duyệt thật.
 - Giới hạn: chỉ Chromium; Desk chưa có CSS hoàn chỉnh; form mở case chưa gửi mã tài liệu, nên bằng chứng được gắn bằng hàm cơ sở dữ liệu.
