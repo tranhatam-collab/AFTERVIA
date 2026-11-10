@@ -6,13 +6,13 @@
       "title": "NWS weather safety guidance",
       "url": "https://www.weather.gov/safety/",
       "language": "en",
-      "accessed": "2026-11-06",
+      "accessed": "2026-11-10",
       "license": {
         "kind": "public-domain",
         "summary": "US federal government work, public domain with three conditions",
         "url": "https://www.weather.gov/disclaimer",
         "quote": "The information on National Weather Service (NWS) Web pages are in the public domain, unless specifically noted otherwise, and may be used without charge for any lawful purpose so long as you do not: 1) claim it is your own (e.g., by claiming copyright for NWS information -- see below), 2) use it in a manner that implies an endorsement or affiliation with NOAA/NWS, or 3) modify its content and then present it as official government material.",
-        "checked_on": "2026-11-06",
+        "checked_on": "2026-11-10",
         "verified_via": "official-page"
       },
       "usage": {
@@ -26,7 +26,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Page read on 2026-11-06. Conditions: do not claim it as your own, do not imply NWS endorsement, do not present modified content as official government material (Groundstead's cards say they are summaries, not official). 17 U.S.C. 403 notice: a copyrighted work made predominantly of NWS material must identify the NWS material and say it is not subject to copyright. The NWS name and logo need permission, except to identify unaltered NWS content or link to NWS sites. Third-party imagery and map data on weather.gov are licensed separately. General safety principles may be used for other countries, but leave out US-only details (911, US programmes)."
+      "notes": "Pages read on 2026-11-06 and re-read on 2026-11-10: /safety/flood-during and /safety/flood-after (used by the flood card) and /safety/heat (used by the heat card). /safety/flood-before was read but no card line relies on it. Disclaimer re-read on 2026-11-10: the quoted sentence still appears verbatim. Conditions: do not claim it as your own, do not imply NWS endorsement, do not present modified content as official government material (Groundstead's cards say they are summaries, not official). 17 U.S.C. 403 notice: a copyrighted work made predominantly of NWS material must identify the NWS material and say it is not subject to copyright. The NWS name and logo need permission, except to identify unaltered NWS content or link to NWS sites. Third-party imagery and map data on weather.gov are licensed separately. General safety principles may be used for other countries, but leave out US-only details (911, US programmes)."
     },
     {
       "id": "us-fema-ready",
@@ -422,13 +422,13 @@
       "title": "Heat cramps, exhaustion and stroke: first aid",
       "url": "https://www.weather.gov/safety/heat-illness",
       "language": "en",
-      "accessed": "2026-11-06",
+      "accessed": "2026-11-10",
       "license": {
         "kind": "public-domain",
         "summary": "US federal government work (NWS web page): public domain under the NWS conditions",
         "url": "https://www.weather.gov/disclaimer",
         "quote": "The information on National Weather Service (NWS) Web pages are in the public domain, unless specifically noted otherwise, and may be used without charge for any lawful purpose so long as you do not: 1) claim it is your own (e.g., by claiming copyright for NWS information -- see below), 2) use it in a manner that implies an endorsement or affiliation with NOAA/NWS, or 3) modify its content and then present it as official government material. You also cannot present information of your own in a way that makes it appear to be official government information.",
-        "checked_on": "2026-11-06",
+        "checked_on": "2026-11-10",
         "verified_via": "official-page"
       },
       "usage": {
@@ -442,7 +442,7 @@
         "US",
         "GLOBAL"
       ],
-      "notes": "Page read on 2026-11-06. It gives warning signs of heat illness and first-aid steps, and says for heat stroke: 'Call 911 or get the victim to a hospital immediately.' Groundstead summaries must not present 911 as a global number: say 'your local emergency number'. Same NWS conditions as us-nws-safety apply."
+      "notes": "Page read on 2026-11-06 and re-read on 2026-11-10 for the lines the heat card uses. It gives warning signs of heat illness and first-aid steps, and says for heat stroke: 'Call 911 or get the victim to a hospital immediately.' Groundstead summaries must not present 911 as a global number: say 'your local emergency number'. Same NWS conditions as us-nws-safety apply."
     }
   ]
 }
