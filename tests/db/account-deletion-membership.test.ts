@@ -32,6 +32,19 @@ function first(rows: Array<Record<string, unknown>>): Record<string, unknown> {
   return row;
 }
 
+// Một client đỗ sẵn trong một giao dịch, dưới danh nghĩa một người dùng, để hai bên tranh nhau thật.
+// iat mới là bắt buộc: 0028 từ chối yêu cầu xóa từ phiên cũ hơn 300 giây.
+async function openAs(userId: string): Promise<import('pg').Client> {
+  const c = await connect();
+  await c.query('begin');
+  await c.query("select set_config('request.jwt.claims', $1, true)", [
+    JSON.stringify({ sub: userId, role: 'authenticated', iat: Math.floor(Date.now() / 1000) }),
+  ]);
+  await c.query('set local role authenticated');
+  await c.query("set local statement_timeout = '15s'");
+  return c;
+}
+
 async function countOf(sql: string, params: unknown[]): Promise<number> {
   return first(await adminRows(sql, params)).n as number;
 }
@@ -133,26 +146,56 @@ describe('WO11-02g account deletion: membership is revoked, and an active sole o
     expect(await visibleOrgs(NEW_OWNER)).toEqual([orgSolo]);
   });
 
-  it('T25 two owners of one organization who ask at the same time: exactly one is refused, and the organization keeps an active owner', async () => {
-    const attempts: Array<[string, string]> = [
-      [RACE_1, 'req-mem-race-0001'],
-      [RACE_2, 'req-mem-race-0002'],
-    ];
-    const outcomes = await Promise.all(
-      attempts.map(([actor, requestId]) =>
-        requestDeletion(actor, requestId).then(
-          (value) => ({ ok: true as const, value }),
-          (error: unknown) => ({ ok: false as const, error }),
-        ),
-      ),
-    );
-    const refused = outcomes.filter((o) => !o.ok);
-    expect(outcomes.filter((o) => o.ok)).toHaveLength(1);
-    expect(refused).toHaveLength(1);
-    expect(refused[0]).toMatchObject({ error: { code: '55000' } });
+  // Kiểm toán 10/11 xếp bài kiểm đua này là "trung bình: không có barrier". Đúng: bản cũ dùng
+  // Promise.all hai lời gọi độc lập, mà Node có thể chạy xong cái thứ nhất trước khi bắt đầu cái thứ hai.
+  // Khi đó hai giao dịch KHÔNG hề chồng nhau, nên bài kiểm xanh dù khóa tập owner có hay không —
+  // tức là nó không bắt được đúng thứ nó sinh ra để bắt.
+  //
+  // Bản này đỗ một giao dịch mở rồi mới gọi cái thứ hai, và KHẲNG ĐỊNH cái thứ hai bị chặn trong lúc
+  // cái thứ nhất còn mở. Đó mới là bằng chứng hai bên thật sự tranh nhau.
+  it('T25 two owners of one organization who ask at the same time: the second blocks, then exactly one is refused', async () => {
+    expect(
+      await countOf("select count(*)::int as n from public.organization_members where org_id = $1 and role = 'owner' and status = 'ACTIVE'", [orgRace]),
+    ).toBe(2);
+
+    const held = await openAs(RACE_1);
+    const waiting = await openAs(RACE_2);
+    let firstCommitted = false;
+    try {
+      // RACE_1 yêu cầu xóa và GIỮ giao dịch mở: khóa tập owner (0020, giữ nguyên ở 0028) còn đang nắm.
+      await held.query('select public.request_account_deletion($1::text)', ['req-mem-race-0001']);
+
+      const second = waiting
+        .query('select public.request_account_deletion($1::text)', ['req-mem-race-0002'])
+        .then(() => ({ ok: true as const }))
+        .catch((error: { code?: string }) => ({ ok: false as const, code: error.code }));
+
+      // Barrier: trong lúc giao dịch đầu còn mở, lời gọi thứ hai PHẢI còn treo. Nếu nó xong sớm thì
+      // khóa đã biến mất và hai bên không tranh nhau — chính là lỗ hổng cần bắt.
+      const state = await Promise.race([
+        second.then(() => 'settled' as const),
+        new Promise<'pending'>((resolve) => setTimeout(() => resolve('pending'), 400)),
+      ]);
+      expect(state, 'the second owner must block on the owner-set lock while the first transaction is open').toBe('pending');
+
+      await held.query('commit');
+      firstCommitted = true;
+
+      // Giờ mới đọc được trạng thái đã commit: RACE_1 đã rời, nên RACE_2 là owner duy nhất và bị từ chối.
+      const outcome = await second;
+      expect(outcome).toEqual({ ok: false, code: '55000' });
+      await waiting.query('rollback');
+    } finally {
+      if (!firstCommitted) await held.query('rollback').catch(() => undefined);
+      await held.end().catch(() => undefined);
+      await waiting.end().catch(() => undefined);
+    }
+
     expect(
       await countOf("select count(*)::int as n from public.organization_members where org_id = $1 and role = 'owner' and status = 'ACTIVE'", [orgRace]),
     ).toBe(1);
+    expect(await countOf('select count(*)::int as n from public.account_tombstones where user_id = $1', [RACE_1])).toBe(1);
+    expect(await countOf('select count(*)::int as n from public.account_tombstones where user_id = $1', [RACE_2])).toBe(0);
   });
 
   it('T26 restoring a backup taken before the deletion does not bring the membership back: the tombstone revokes it again', async () => {

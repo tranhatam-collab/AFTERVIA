@@ -5,6 +5,7 @@ sửa) trong `docs/plan/09_AUDIT_2026-11-10.md`. Mỗi phát hiện được **k
 không tin bản báo cáo.
 
 - `npm run verify`: **exit 0**, 681 pass / 1 bỏ qua (trước lượt này 678). `npm run e2e:web`: **exit 0**.
+- Thêm một mục: bài kiểm đua xóa tài khoản được làm mạnh lên (xem mục riêng bên dưới).
 - Bảo mật: **chờ reviewer độc lập**.
 
 ## Kết quả kiểm từng phát hiện
@@ -77,6 +78,28 @@ Thêm hai thứ vốn thiếu, và chính là nội dung A-14 phàn nàn:
 
 Cập nhật thêm: luồng e2e nay có bước xóa tài khoản (T25), và điều kiện thoát 0 gồm **cả lỗi console**, không
 chỉ lỗi trang.
+
+## Sức mạnh test — bài kiểm đua xóa tài khoản (kiểm toán xếp "trung bình: không có barrier")
+
+Kiểm toán đúng, và vấn đề nặng hơn chữ "trung bình" gợi ý.
+
+Bản cũ dùng `Promise.all` hai lời gọi độc lập. Node có thể chạy xong cái thứ nhất **trước khi** bắt đầu cái
+thứ hai, nên hai giao dịch không hề chồng nhau. Khi đó khẳng định "đúng một cái bị từ chối" vẫn đúng **dù
+khóa tập owner có tồn tại hay không** — tức là bài kiểm xanh trong cả trường hợp nó sinh ra để bắt.
+
+Bản mới đỗ một giao dịch mở, gọi cái thứ hai, rồi **khẳng định cái thứ hai còn treo** trong lúc cái đầu chưa
+commit. Đó mới là bằng chứng hai bên thật sự tranh nhau. Sau khi commit, cái thứ hai mới đọc được trạng thái
+đã commit và bị từ chối `55000`; kiểm thêm rằng chỉ một tombstone được tạo.
+
+**Đã chứng minh bản mới bắt được, bản cũ thì không.** Gỡ `for update` khỏi phần khóa tập owner trong `0028`:
+
+- bản mới **đỏ** đúng câu `the second owner must block on the owner-set lock ... expected 'settled' to be 'pending'`;
+- bản cũ sẽ vẫn xanh trong đúng tình huống đó, vì hai lời gọi tuần tự vẫn cho "đúng một cái bị từ chối".
+
+Khôi phục `0028`: sha256 khớp bản gốc; chạy lại 8/8.
+
+Ghi chú về mã: đường xóa tài khoản **đã có** khóa tập owner từ `0020` (giữ nguyên ở `0028`), nên đây là
+sửa **bài kiểm**, không phải sửa lỗi. Không có thay đổi nào trong `supabase/migrations/` ở lượt này.
 
 ## Giới hạn
 
