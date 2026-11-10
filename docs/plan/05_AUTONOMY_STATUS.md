@@ -1,3 +1,38 @@
+# OWNER_REPORT — 10/11/2026, Lane A
+
+Chủ dự án đồng ý trong chat ngày 10/11 ("đồng ý Lane A"): đồng bộ bản sửa từ PR #2, rồi làm
+OWN-A-03 đến OWN-A-16, **bỏ** OD-03 (tăng ngân sách), OD-06 (kho byte), OD-07 (link gói xuất) và
+OD-08 (nới phụ thuộc pháp lý).
+
+| Việc | Commit | Nội dung |
+|---|---|---|
+| SYNC-01 | `1f991e9` | cherry-pick 10 commit phần gốc từ PR #2; **cổng audit P1 hết đỏ** |
+| OWN-A-03 | `e9844aa` | Shim mô phỏng quyền mặc định Supabase; migration 0026 thu quyền `anon` trên mọi hàm; test khóa bề mặt (D-01) |
+| OWN-A-04 | `7eb2fa0` | migration 0027: lời mời từ chối tài khoản đã yêu cầu xóa (D-02) |
+| OWN-A-05 | `925341f` | migration 0028: xác thực lại trước khi xóa, kiểm trong DB (D-05) |
+| OWN-A-06 | `9481280` | migration 0029: khóa cả tập owner (D-06) |
+| OWN-A-07 | `52fabb2` | `tools/db/db-target-guard.mjs`: một guard cho mọi công cụ DB (D-07, A-10, D-11) |
+| OWN-A-08 | `4197492` | 55000 → 409, `%` sai → 404, JWT kiểm `nbf`/`iat`/tuổi thọ, độ dài khóa (D-08, D-09) |
+| OWN-A-09 | `5b20e29` | migration 0030: chặn trên 10 gói xuất còn hiệu lực (D-03) |
+| OWN-A-10, A-11 | `7c852c9` | CI thêm job `e2e-web` và `groundstead-verify`; quét bí mật bắt giá trị không nháy và bỏ loại trừ `docs/spec`; gỡ 4 tệp nén |
+| OWN-A-15, A-16 | `4285949` | Header bảo mật cho Desk; regex sink mở rộng; test `escapeHtml`; sửa ma trận, ngày ngân sách, nội dung landing |
+
+Cổng ở head `4285949`: `npm run verify` exit 0 với **573 test đạt** và 1 bỏ qua (trước SYNC-01: 485);
+`npm audit --omit=dev --audit-level=high` exit 0, **0 cảnh báo high**; `npm run e2e:web` exit 0;
+quét bí mật 540 tệp, 6 luật. Ma trận: PASS 31, MANUAL_PARTIAL 3, NOT_RUN 12, FAIL 0.
+
+**Vòng lặp không chạy tiếp được.** `node tools/loop/backlog.mjs decide` trả `STOP_BUDGET`
+(`iteration budget 65 reached`, `used: 66`). Hai thứ chặn là đúng hai quyết định đã hoãn:
+
+1. **OD-03** (ngân sách). Chưa nâng, nên `decide` dừng ngay.
+2. **OD-08** (phụ thuộc). WO11-03, WO12-01 và WO16-01b vẫn phụ thuộc `WO11-02d/e/f/g`, là task HUMAN
+   chờ luật sư duyệt danh mục xóa. Kể cả có ngân sách, `decide` cũng không mở được chúng.
+
+Việc còn lại của lượt theo kế hoạch: OWN-A-12 (OD-08), OWN-A-13 (OD-06), OWN-A-14 (OD-07) — không làm
+theo yêu cầu của chủ dự án.
+
+---
+
 # Checkpoint tự chủ AFTERVIA
 
 - Cập nhật: 08/11/2026, sau lượt `AV-DQ-05-FIX` (ngoài ngân sách — xem dưới).
