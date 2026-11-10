@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 126,
-    "iterations_used": 69,
+    "iterations_used": 70,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
     "budget_history": [
       {
@@ -1041,9 +1041,16 @@
       "acceptance": [
         "T30"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO12-03.md",
+        "T30 NOT_RUN -> PASS qua matrix.mjs from-report trên lần chạy thật",
+        "npm run verify exit 0: 655 pass / 1 skipped; e2e:web exit 0",
+        "đột biến M1/M2/M3/M4 giết 3/2/1/6 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:53:45.357Z",
+      "finished_at": "2026-11-10T11:59:55.042Z"
     },
     {
       "id": "WO13-01",
