@@ -1,5 +1,17 @@
 # Groundstead — Trạng thái vòng lặp
 
+## OWNER_REPORT (Lane G, 10/11/2026)
+
+- Nguồn chỉ thị: tin nhắn điều phối qua bridge (phiên "Chuyên gia kiểm duyệt dự án"). Chưa được chủ dự án xác nhận trong phiên này, nên chưa ghi nhãn QUYẾT ủy quyền vào `03_DECISIONS.md`. Tin trả lời gửi tới phiên điều phối bị từ chối (HTTP 401); báo cáo này là kênh thay thế.
+- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082 go-live, GS-H01 đến GS-H11, GS-053b.
+- Task đã làm: **G-21**, bộ quét bundle thiếu tên khóa ký thật. Commit `c1f0bc3`. Test đỏ trước (1 lỗi), xanh sau (3/3 trong `tests/bundle-scan.test.ts`). Quét `out/`: 122 tệp, sạch.
+- Cổng: `npm run verify` trong `groundstead/` trên `c1f0bc3`: exit 0. Secret scan 149 tệp; backlog 72 task; content 0 cảnh báo; bundle 122 tệp; node test 197/197 (196 trước đó, thêm 1 test G-21). Thời lượng không đo trong lượt này.
+- Còn mở trong G-21: luật cho khóa JWK (tham số `d`) và seed.
+- SYNC-01: chưa có commit SYNC-01 trên `ccr-4544c9f7-b1t50m` (đang ở `b2763e2`, gồm hai commit docs của phiên khác). Chưa merge. Khi có SYNC-01: `merge --no-ff`; xung đột ở phần gốc xem từng nội dung, không lấy nguyên một phía. Lấy phía PR #1 có thể làm mất sửa đã kiểm toán: Expo 58, migration 0024 và 0025, sửa hàng đợi APP-01, quét bí mật.
+- Chờ chủ dự án xác nhận: G-22 và G-20 (đổi cổng phát hành production và khóa ký), và nhãn quyết định ủy quyền.
+- Việc kế tiếp, mỗi lượt một việc: G-21 phần JWK và seed; G-08 phần `accesslevel`; G-09 tính lại trạng thái nguồn lúc đọc.
+- Blocker kỹ thuật: không có. Chờ xác nhận chủ dự án cho G-22 và G-20.
+
 - Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
 - Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
