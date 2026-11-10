@@ -18,11 +18,19 @@ export function databaseNameOf(url) {
   return decodeURIComponent(new URL(url).pathname.replace(/^\//, ''));
 }
 
+// Only a database on this machine may be reset (DOC-05). The name check alone does not stop a reset of a remote
+// database whose name happens to end in _test.
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
+
 export function assertTestDatabase(url) {
   if (!url) throw new Error('database URL is missing');
   const name = databaseNameOf(url);
   if (!name.endsWith('_test')) {
     throw new Error(`refusing to use database "${name}": its name must end with _test`);
+  }
+  const host = new URL(url).hostname;
+  if (!LOCAL_HOSTS.has(host)) {
+    throw new Error(`refusing to use database on host "${host}": only localhost, 127.0.0.1 or [::1] is allowed`);
   }
   return name;
 }
