@@ -38,7 +38,7 @@ T36,Web,HIGH,Browser support,PARTIAL,PARTIAL,WO10-03;DEV-02,NOT_RUN,,Sandbox ch�
 T37,Security,CRITICAL,Secret/log leak,AUTO,PARTIAL,WO03-01;WO03-04;WO16-03,PASS,2026-11-06,Quét repo và log; chưa có quét crash report thật.
 T38,Security,CRITICAL,XSS/SSRF,AUTO,PARTIAL,WO05-01;WO09-02;WO10-01,PASS,2026-11-06,
 T39,Recovery,HIGH,Backup restore,PARTIAL,PARTIAL,WO16-01;INF-01,PASS,2026-11-06,Diễn tập cục bộ có; RPO/RTO thật cần staging (INFRA).
-T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,PASS,2026-11-06,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ.
+T40,Performance,MEDIUM,Tải pilot,PARTIAL,PARTIAL,WO15-02;HUM-WO19-02,MANUAL_PARTIAL,2026-11-06,Profile pilot thật cần người dùng pilot; chỉ đo cục bộ bây giờ. Không test nào so p95 với ngưỡng 800 ms của PRD; test T40 kiểm công cụ đo. Đính chính theo kiểm toán 10/11 (DOC-02).
 T41,Legal,HIGH,Country gating,AUTO,PARTIAL,WO16-04;HUM-WO18-02,PASS,2026-11-06,Cổng kỹ thuật tự động; duyệt pháp lý là HUMAN.
 T42,Support,CRITICAL,Break-glass,AUTO,PARTIAL,WO16-02,PASS,2026-11-06,
 T43,Analytics,HIGH,Không metric giả,AUTO,PARTIAL,WO14-01,PASS,2026-11-06,
