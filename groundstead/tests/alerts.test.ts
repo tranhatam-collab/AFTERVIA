@@ -138,3 +138,14 @@ test('GT15 the USGS and GDACS samples become alerts that name their agency; an e
     [['FL1001', 'GDACS', 'flood', '2026-11-06T06:00:00.000Z']],
   );
 });
+
+test('GT13 a GDACS item without gdacs:iscurrent is not read as a Cancel; only an explicit "false" ends it (GSL-F05)', () => {
+  const noFlag = GDACS_SAMPLE.replace('<gdacs:iscurrent>true</gdacs:iscurrent>\n<gdacs:eventtype>FL', '<gdacs:eventtype>FL');
+  assert.notEqual(noFlag, GDACS_SAMPLE, 'the fixture lost its flag');
+  const flood = fromGdacsRss(noFlag, RECEIVED).find((a) => a.id === 'FL1001');
+  assert.equal(flood?.msgType, 'Alert');
+  assert.deepEqual(flood?.references, []);
+  assert.deepEqual(publicAlerts(fromGdacsRss(noFlag, RECEIVED)).map((a) => a.id), ['FL1001']);
+  const old = fromGdacsRss(GDACS_SAMPLE, RECEIVED).find((a) => a.id === 'EQ77');
+  assert.equal(old?.msgType, 'Cancel', 'an explicit false still ends the event');
+});

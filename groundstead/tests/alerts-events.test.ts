@@ -92,3 +92,32 @@ test('GT17 a place is stored only when the reader has turned alerts on', () => {
   assert.deepEqual(placeToStore(HANOI_CITY, true), HANOI_CITY);
   assert.equal(placeToStore(null, true), null);
 });
+
+test('GT16 an event keeps its key when a source updates its record, so it is not pushed again (GSL-F02)', () => {
+  const pushed = markPushed(new Set(), groupEvents([quakeUsgs, quakeGdacs]));
+  // USGS revises the quake: its update time moves after the GDACS record's.
+  const revised: Alert = { ...quakeUsgs, sent: '2026-11-06T09:55:00.000Z' };
+  assert.equal(notYetPushed(groupEvents([revised, quakeGdacs]), pushed).length, 0, 'a revised record is the same event');
+  // GDACS reports first; USGS reports the same quake on a later run with an earlier update time.
+  const gdacsFirst = markPushed(new Set(), groupEvents([quakeGdacs]));
+  assert.equal(notYetPushed(groupEvents([quakeUsgs, quakeGdacs]), gdacsFirst).length, 0, 'a second source is the same event');
+});
+
+test('GT16 events are not chained through a middle alert: a quake 10 hours after another is pushed (GST-F03)', () => {
+  const at = (id: string, time: string): Alert => ({ ...quakeUsgs, id, source: id.startsWith('g') ? 'gdacs' : 'usgs', sent: time, effective: time });
+  const a = at('usA', '2026-11-06T00:00:00.000Z');
+  const b = at('gB', '2026-11-06T05:00:00.000Z');
+  const c = at('usC', '2026-11-06T10:00:00.000Z');
+  for (const order of [[a, b, c], [a, c, b], [c, b, a]]) {
+    const events = groupEvents(order);
+    const withA = events.find((e) => e.alerts.includes(a));
+    assert.ok(!withA?.alerts.includes(c), 'A and C are 10 hours apart and must not be one event');
+    assert.deepEqual(
+      events.map((e) => e.alerts.map((x) => x.id).sort().join('+')).sort(),
+      ['gB+usA', 'usC'],
+      'the grouping does not depend on the order the alerts arrive in',
+    );
+  }
+  const pushed = markPushed(new Set(), groupEvents([a, b]));
+  assert.deepEqual(notYetPushed(groupEvents([a, b, c]), pushed).map((e) => e.key), ['usgs:usC']);
+});

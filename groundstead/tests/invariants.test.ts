@@ -89,3 +89,15 @@ test('GT05 the real translations keep the invariants, and the content validator 
     [],
   );
 });
+
+test('GT05 numbers are compared with their units in order: a swapped pair is reported, a matching pair is not (GSL-F03)', () => {
+  const en = { ...original, avoid: ['Stay 3 m from the edge and 1 m from the wall.'] };
+  const swapped = { ...faithful, avoid: ['Đứng cách mép 1 m và cách tường 3 m.'] };
+  assert.ok(
+    invariantProblems(en, swapped, [tvException]).some((p) => p.startsWith('avoid[0]: a number and its unit differ')),
+    'the swapped pair is reported',
+  );
+  const matching = { ...faithful, avoid: ['Đứng cách mép 3 m và cách tường 1 m.'] };
+  assert.deepEqual(invariantProblems(en, matching, [tvException]), []);
+  assert.deepEqual(numberUnits('3 m then 1 m'), ['3|m', '1|m'], 'pairs are kept in text order');
+});

@@ -21,8 +21,24 @@ export function buildSnapshot(runs: SourceRun[], now: Date, previous: Snapshot |
       lastUpdated,
     };
   });
-  const alerts = publicAlerts(runs.filter((run) => run.ok).flatMap((run) => run.alerts));
+  const fresh = runs.filter((run) => run.ok).flatMap((run) => run.alerts);
+  const carried = runs
+    .filter((run) => !run.ok)
+    .flatMap((run) => (previous?.alerts ?? []).filter((alert) => alert.source === run.source && !carryExpired(alert, now)));
+  const alerts = publicAlerts([...fresh, ...carried]);
   return { generatedAt: now.toISOString(), sources, alerts };
+}
+
+// A source that fails keeps the public alerts it gave on its last good run (GSL-F01): a failed read must not remove an
+// alert that is still in force. The alert model has no expiry time, so a carried alert expires CARRY_FORWARD_HOURS after
+// it was last received from its source (its `received` time is kept, never moved forward). The source's state stays
+// 'failed', so the page still says that its list may be out of date.
+export const CARRY_FORWARD_HOURS = 24;
+
+function carryExpired(alert: Alert, now: Date): boolean {
+  const received = Date.parse(alert.received);
+  if (Number.isNaN(received)) return true;
+  return now.getTime() - received > CARRY_FORWARD_HOURS * 3_600_000;
 }
 
 const STATES: readonly SourceState[] = ['ok', 'stale', 'failed', 'never'];

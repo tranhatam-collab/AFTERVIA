@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { eventsToPush, gdacsBody, refreshAll, usgsBody } from '../lib/alerts/refresh.ts';
-import { parseSnapshot, type Snapshot } from '../lib/alerts/snapshot.ts';
+import { CARRY_FORWARD_HOURS, parseSnapshot, type Snapshot } from '../lib/alerts/snapshot.ts';
 import { GDACS_SAMPLE, QUAKE_HANOI_GDACS } from './alerts-fixtures.ts';
 
 const NOW = new Date('2026-11-06T10:00:00.000Z');
@@ -92,4 +92,45 @@ test('GT14 a snapshot file is read only when its shape is right; a round trip ke
     /unknown state/,
   );
   assert.throws(() => parseSnapshot({ generatedAt: NOW.toISOString(), sources: [], alerts: [{ source: 'usgs' }] }), /missing a field/);
+});
+
+test('GT14 a source that fails now keeps its alerts from the last good run until they expire (GSL-F01)', async () => {
+  const earlier = await refreshAll({
+    fetchers: { usgs: okUsgs, gdacs: okGdacs },
+    now: new Date('2026-11-06T09:00:00.000Z'),
+    previous: null,
+  });
+  const later = await refreshAll({ fetchers: { usgs: failUsgs, gdacs: okGdacs }, now: NOW, previous: earlier });
+  assert.equal(later.sources.find((s) => s.source === 'usgs')?.state, 'failed');
+  assert.deepEqual(later.alerts.map((a) => `${a.source}:${a.id}`).sort(), ['gdacs:FL1001', 'usgs:us1'], 'the quake is still shown');
+  const carried = later.alerts.find((a) => a.source === 'usgs');
+  assert.equal(carried?.received, '2026-11-06T09:00:00.000Z', 'a carried alert keeps the time it was last received');
+  // Still failing a day later: the quake was last received more than CARRY_FORWARD_HOURS ago, so it has expired.
+  const dayLater = new Date(Date.parse('2026-11-06T09:00:00.000Z') + (CARRY_FORWARD_HOURS + 1) * 3_600_000);
+  const expired = await refreshAll({ fetchers: { usgs: failUsgs, gdacs: okGdacs }, now: dayLater, previous: later });
+  assert.deepEqual(expired.alerts.map((a) => `${a.source}:${a.id}`), ['gdacs:FL1001'], 'the expired quake is removed');
+});
+
+test('GT14 a carried alert is only taken from the source that failed; a working source replaces its own list (GSL-F01)', async () => {
+  const earlier = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: okGdacs }, now: NOW, previous: null });
+  const later = await refreshAll({
+    fetchers: { usgs: okUsgs, gdacs: async () => QUAKE_HANOI_GDACS },
+    now: new Date('2026-11-06T10:05:00.000Z'),
+    previous: earlier,
+  });
+  assert.deepEqual(later.alerts.map((a) => `${a.source}:${a.id}`).sort(), ['gdacs:EQ9', 'usgs:us1'], 'FL1001 is gone from a working GDACS');
+});
+
+test('GT16 a quake that USGS revises keeps its event key, so a caller that stores event keys does not push it again (GSL-F02)', async () => {
+  const first = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: async () => QUAKE_HANOI_GDACS }, now: NOW, previous: null });
+  const pushed = new Set(eventsToPush(first, new Set()).map((e) => e.key));
+  const revised = structuredClone(USGS_FEED);
+  const props = revised.features[0]?.properties;
+  if (props) props.updated = Date.parse('2026-11-06T09:55:00Z');
+  const second = await refreshAll({
+    fetchers: { usgs: async () => revised, gdacs: async () => QUAKE_HANOI_GDACS },
+    now: new Date('2026-11-06T10:05:00.000Z'),
+    previous: first,
+  });
+  assert.equal(eventsToPush(second, pushed).length, 0);
 });

@@ -53,14 +53,16 @@ const UNITS: Record<string, string> = {
   '°c': 'C',
 };
 
-// Each number with the word or symbol right after it ('' when that is not a unit): "103°F" gives 103|F, "90s" gives 90|.
+// Each number with the word or symbol right after it ('' when that is not a unit), in the order they appear: "103°F"
+// gives 103|F, "90s" gives 90|. The order is kept on purpose (GSL-F03): "3 m from the edge, 1 m from the wall" and a
+// translation that swaps the two distances have the same numbers, but not the same pairs in the same order.
 export function numberUnits(text: string): string[] {
   const pairs: string[] = [];
   for (const match of text.normalize('NFC').matchAll(/(\d+)\s*(°\s*[FCfc]|%|\p{L}+)?/gu)) {
     const word = (match[2] ?? '').replace(/\s+/g, '').toLowerCase();
     pairs.push(`${match[1]}|${UNITS[word] ?? ''}`);
   }
-  return pairs.sort();
+  return pairs;
 }
 
 // Negation words. English: not, never, no, nor, cannot, can't, don't, without. Vietnamese: không, chớ, đừng, chưa,
@@ -97,7 +99,13 @@ function fieldProblems(field: string, en: string, vi: string, exceptions: Except
   if (!same(numbersEn, numbersVi)) {
     problems.push(`${field}: numbers differ (${numbersEn.join(' ') || 'none'} in the original, ${numbersVi.join(' ') || 'none'} in the translation)`);
   }
-  if (!same(numberUnits(en), numberUnits(vi))) problems.push(`${field}: a number and its unit differ`);
+  const unitsEn = numberUnits(en);
+  const unitsVi = numberUnits(vi);
+  if (!same(unitsEn, unitsVi)) {
+    problems.push(
+      `${field}: a number and its unit differ, or are in a different order (${unitsEn.join(' ') || 'none'} in the original, ${unitsVi.join(' ') || 'none'} in the translation)`,
+    );
+  }
   if (!body) return problems;
   const negationsEn = negationCount(en, 'en');
   const negationsVi = negationCount(vi, 'vi');

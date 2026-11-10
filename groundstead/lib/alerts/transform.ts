@@ -125,8 +125,8 @@ function composeHeadline(type: string, level: string, name: string): string {
   return [`${label} alert level ${level || 'unknown'}`, name].filter((part) => part !== '').join(' · ');
 }
 
-// Disaster events from the GDACS RSS feed. A current event is a warning. An event that is no longer current is sent as a
-// Cancel of itself, so it is not shown. Only events whose access level is Public may be shown to the public.
+// Disaster events from the GDACS RSS feed. A current event is a warning. An event marked as no longer current
+// (gdacs:iscurrent "false") is sent as a Cancel of itself, so it is not shown. Only events whose access level is Public may be shown to the public.
 export function fromGdacsRss(xml: string, receivedAt: string): Alert[] {
   const alerts: Alert[] = [];
   for (const item of rssItems(xml)) {
@@ -138,7 +138,9 @@ export function fromGdacsRss(xml: string, receivedAt: string): Alert[] {
     const id = `${type}${eventId}`;
     const level = tagText(item, 'gdacs:alertlevel') ?? '';
     const name = tagText(item, 'gdacs:eventname') ?? '';
-    const current = (tagText(item, 'gdacs:iscurrent') ?? '').toLowerCase() === 'true';
+    // Only an explicit "false" ends an event (GSL-F05). A missing or unreadable flag is not a Cancel: hiding an alert
+    // that may still be in force is worse than showing one that has just ended.
+    const current = (tagText(item, 'gdacs:iscurrent') ?? '').toLowerCase() !== 'false';
     const access = tagText(item, 'gdacs:accesslevel') ?? '';
     const lat = numberOf(tagText(item, 'geo:lat'));
     const lon = numberOf(tagText(item, 'geo:long'));
