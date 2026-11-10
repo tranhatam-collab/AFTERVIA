@@ -11,7 +11,7 @@
 - Cổng cục bộ trên `dc9e1bb`: `npm ci` exit 0; root `npm run verify` exit 0 (86 tệp đạt, 1 bỏ qua; 662 test đạt); `npm audit --omit=dev --audit-level=high` exit 0; `groundstead` `npm run verify` exit 0 (197/197 node test, secret scan 150 tệp, bundle 122 tệp).
 - Chờ chủ dự án xác nhận: G-22 và G-20 (đổi cổng phát hành production và khóa ký), và nhãn quyết định ủy quyền.
 - Việc kế tiếp, mỗi lượt một việc: G-21 phần JWK và seed; G-08 phần `accesslevel`; G-11 nhóm sự kiện theo tâm và cửa sổ thời gian.
-- G-09 (OWN-G-02): trạng thái nguồn được tính lại lúc đọc qua `statusesAt`, không tin trạng thái lưu lúc ghi. Test đỏ trước (1 lỗi với bản stub), xanh sau: 28/28 trong bốn tệp alerts; `tsc` exit 0. Verify đầy đủ của groundstead đang chạy; kết quả ghi ở lượt sau.
+- G-09 (OWN-G-02): trạng thái nguồn được tính lại lúc đọc qua `statusesAt`, không tin trạng thái lưu lúc ghi. Test đỏ trước (1 lỗi với bản stub), xanh sau: 28/28 trong bốn tệp alerts; `tsc` exit 0. Verify đầy đủ của groundstead: exit 0, 201/201 node test (197 trước đó, thêm 4 test G-09).
 - Blocker CI: PR #2 đỏ tại `dc9e1bb` và `09b7a8e`. Ba job (`verify`, `groundstead-verify`, `e2e-web`) kết thúc trong ~3 giây, không có log (HTTP 404). PR #1 cũng đỏ đúng kiểu (run 42861241240), nên lỗi nằm ở môi trường Actions, không phải ở mã. Re-run bị từ chối (403). Cần người có quyền Actions kiểm tra quota/billing và chạy lại. Đã comment trên PR #2 (6773491049); không có review thread nào mở.
 
 - Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
