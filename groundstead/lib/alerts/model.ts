@@ -31,6 +31,7 @@ export type Alert = {
   references: string[]; // "source:id" of the alerts this message updates or cancels
   where?: { lat: number; lon: number }; // the place of the event, when the source gives one
   url?: string; // the source's own page for this event, shown as a link (never a copy of its text)
+  tsunami?: boolean; // USGS tsunami flag, carried as the source gives it (G-12); absent when the source gives none
 };
 
 export function keyOf(alert: Pick<Alert, 'source' | 'id'>): string {

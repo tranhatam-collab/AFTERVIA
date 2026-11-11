@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { KINDS, type Alert } from '../lib/alerts/model.ts';
 import { inForce, isPublic, publicAlerts } from '../lib/alerts/filter.ts';
+import { buildSnapshot, parseSnapshot } from '../lib/alerts/snapshot.ts';
 import { sourceState } from '../lib/alerts/sources.ts';
 import { alertFacts, coverageNote, lastUpdatedLine } from '../lib/alerts/render.ts';
 import { fromGdacsRss, fromUsgs, toIso } from '../lib/alerts/transform.ts';
@@ -172,4 +173,28 @@ test('G-08 an explicit non-Public access level is still Restricted and hidden; o
   const flood = fromGdacsRss(restricted, RECEIVED).find((a) => a.id === 'FL1001');
   assert.equal(flood?.scope, 'Restricted');
   assert.deepEqual(publicAlerts(fromGdacsRss(restricted, RECEIVED)), []);
+});
+
+test('G-12 the USGS tsunami flag reaches the alert and survives buildSnapshot, publicAlerts and a stored snapshot', () => {
+  const quake = (id: string, tsunami: number) => ({
+    id,
+    geometry: { coordinates: [139.7, 35.6, 10] },
+    properties: {
+      title: `M 7.1 - test ${id}`,
+      time: Date.parse('2026-11-06T09:00:00Z'),
+      updated: Date.parse('2026-11-06T09:20:00Z'),
+      tsunami,
+    },
+  });
+  const now = new Date('2026-11-06T10:00:00.000Z');
+  const alerts = fromUsgs({ features: [quake('us-tsu', 1), quake('us-none', 0)] }, now.toISOString());
+  assert.equal(alerts.find((a) => a.id === 'us-tsu')?.tsunami, true, 'the flag reaches the alert');
+  assert.equal(alerts.find((a) => a.id === 'us-none')?.tsunami, false, 'a record that says 0 carries false');
+  const snap = buildSnapshot([{ source: 'usgs', ok: true, fetchedAt: now.toISOString(), alerts }], now, null);
+  const shown = publicAlerts(snap.alerts);
+  assert.equal(shown.find((a) => a.id === 'us-tsu')?.tsunami, true, 'the flag survives buildSnapshot and publicAlerts');
+  assert.equal(shown.find((a) => a.id === 'us-none')?.tsunami, false);
+  const stored = parseSnapshot(JSON.parse(JSON.stringify(snap)));
+  assert.equal(stored.alerts.find((a) => a.id === 'us-tsu')?.tsunami, true, 'the flag survives a stored snapshot');
+  assert.equal(shown.find((a) => a.id === 'us-tsu')?.kind, 'observation', 'the flag does not turn the quake into a warning');
 });

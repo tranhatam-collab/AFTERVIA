@@ -27,7 +27,7 @@ function featuresOf(feed: unknown): Record<string, unknown>[] {
 }
 
 // Earthquakes from the USGS GeoJSON summary feed. A quake is an observation: it reports what was measured and is not
-// an order. Any tsunami or alert flag in the record is not turned into a warning here.
+// an order. The tsunami flag is carried on the alert as data (G-12); it does not turn the quake into a warning.
 export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
   const alerts: Alert[] = [];
   for (const feature of featuresOf(feed)) {
@@ -37,6 +37,8 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
     const sent = toIso(p.updated);
     const effective = toIso(p.time);
     if (!id || !headline || !sent || !effective) continue;
+    // USGS sends the flag as 1 or 0; a record that gives neither carries no flag rather than a guessed one.
+    const tsunami = p.tsunami === 1 || p.tsunami === true ? true : p.tsunami === 0 || p.tsunami === false ? false : undefined;
     const coords = (feature.geometry as { coordinates?: unknown } | undefined)?.coordinates;
     const where =
       Array.isArray(coords) && typeof coords[0] === 'number' && typeof coords[1] === 'number'
@@ -59,6 +61,7 @@ export function fromUsgs(feed: unknown, receivedAt: string): Alert[] {
       references: [],
       ...(where ? { where } : {}),
       ...(url ? { url } : {}),
+      ...(tsunami !== undefined ? { tsunami } : {}),
     });
   }
   return alerts;
