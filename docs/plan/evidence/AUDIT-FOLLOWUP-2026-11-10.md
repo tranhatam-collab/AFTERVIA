@@ -136,3 +136,45 @@ Kiểm chứng công cụ:
 **Ghi chú về môi trường.** Lần `verify` đầu đỏ với 8 test và 329 bị bỏ qua, nguyên nhân là Postgres đã tắt
 sau khi môi trường đổi thư mục làm việc (log có `ECONNREFUSED`). Khởi động lại `service postgresql start`
 rồi chạy lại: `verify` exit 0, 681 đạt / 1 bỏ qua.
+
+## Lượt "hoàn tất những gì còn lại": D-09, D-03, A-05, WO20-01
+
+**D-09 — đã đóng (phần còn thiếu: iss và aud).** `verifyHs256` nhận `expectedIssuer` và `expectedAudience`; khi
+đặt, token thiếu hoặc sai là bị từ chối bằng `bad_iss` / `bad_aud`. Máy chủ luôn đặt hai giá trị này khi xác
+thực phiên. Mọi phiên cục bộ được ký qua một hàm duy nhất, `signLocalSession`, nên không còn chỗ nào ký ra phiên
+thiếu nhà phát hành (đã kiểm: không còn lời gọi `signHs256` nào tạo phiên hợp lệ ngoài hàm này).
+- Test đỏ trước: 8/17 đỏ (unit và HTTP). Sau khi sửa: `tests/api` 112/112, typecheck sạch.
+- Đột biến: bỏ kiểm `iss` ở máy chủ → 1/17 đỏ (ca "token của nhà phát hành khác"); làm kiểm `aud` luôn đúng →
+  3/17 đỏ. Khôi phục, sha256 khớp.
+- Giới hạn: phiên vẫn là mô phỏng (DEC03 chưa chọn nhà cung cấp). Hai giá trị `aftervia-local` và `authenticated`
+  đặt theo mặc định phiên của nhà cung cấp kiểu Supabase, để khi đổi nhà cung cấp thì chỉ đổi giá trị.
+
+**D-03 — đã đóng phần kỹ thuật; lên lịch là hạ tầng (D21).** `tools/db/purge-export-bodies.mjs` chạy
+`purge_expired_export_bodies()` từ dòng lệnh, đọc `DATABASE_URL` từ môi trường, in JSON `{"purged": n}`, thoát 0/1/2.
+Không in chuỗi kết nối: lỗi kết nối chỉ in mã lỗi.
+- Test đỏ trước: 3/4 đỏ. **Ca thứ tư lúc đầu xanh vì lý do sai**: file script chưa tồn tại làm Node thoát 1 và
+  không in secret, nên test kiểm được "mã thoát 1 và không lộ chuỗi" nhưng không kiểm được "lỗi kết nối". Đã siết lại
+  để đòi đúng thông báo `cannot connect`, rồi mới thấy nó đỏ. Ghi lại vì nó cho thấy một test có thể xanh mà không
+  kiểm gì.
+- Đột biến: nuốt lỗi kết nối (trả 0) → 1/4 đỏ; in chuỗi kết nối ra → 1/4 đỏ; ghi sai số đã dọn → 1/4 đỏ. Khôi phục,
+  sha256 khớp, 4/4 xanh.
+
+**A-05 — đã đóng sau khi tái lập bằng chứng; thời lượng là lỗi ghi nhận.**
+- Cơ chế: `finished_at − started_at` cho bốn task là 0,04–0,50 giây. `start` và `done` được ghi liền nhau, nên trường
+  này không đo thời gian làm việc. Không kết luận được từ metadata rằng công việc có thật hay không, nên đã chạy lại bằng chứng:
+  - WO25-01: `tests/api/contract.test.ts` **18/18** trên DB thật (khớp).
+  - WO23-01: `tools/loop/backlog.test.mjs` **21/21** hôm nay (lúc ghi là 14; số tăng do test budget/deps thêm sau đó).
+  - WO24-01: SBOM có **26** phụ thuộc trực tiếp (khớp), đường `expo > @expo/metro > metro > image-size` (khớp).
+    **Sai lệch:** bằng chứng ghi "794 gói", nhưng đếm được **782** cặp tên@phiên bản duy nhất. Chưa rõ do cách đếm
+    hay do sai lệch thật; ghi nhận, không sửa lịch sử.
+  - AV-DQ-05-FIX: e2e được chạy lại trong lượt này (xem bên dưới).
+- Việc cần sửa là quy trình: `start` phải được ghi **trước khi** làm việc, không phải ngay trước `done`. Không sửa dữ liệu
+  lịch sử của bốn task.
+
+**WO20-01 — chuẩn bị xong, task vẫn TODO.** `docs/plan/evidence/WO20-01-prep.md`: bảng kiểm G4 với trạng thái thật,
+kịch bản rollback (chưa chạy trên staging). Kết luận: G4 không đạt; không mục nào do vòng lặp tự đóng.
+Phát hiện đáng chú ý: **không có migration đảo ngược nào** (rollback dữ liệu chỉ là khôi phục từ bản sao lưu), và
+**không có script khôi phục cho production**.
+
+**Quyết định mới cho chủ dự án** (trong `06_DECISION_QUEUE.md`): D20 đưa bundle di động vào `verify`; D21 nơi và lịch
+chạy purge; D22 cho phép CI chạy thủ công.

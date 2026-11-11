@@ -8,8 +8,15 @@ export interface JwtClaims {
   exp: number;
   iat?: number;
   nbf?: number;
+  iss?: string;
+  aud?: string | string[];
   simulated?: boolean;
 }
+
+// Nhà phát hành và đối tượng nhận của phiên cục bộ. Đặt theo mặc định của phiên người dùng Supabase
+// (aud = authenticated), để khi đổi sang nhà cung cấp thật thì chỉ đổi giá trị, không đổi cách kiểm.
+export const LOCAL_ISSUER = 'aftervia-local';
+export const LOCAL_AUDIENCE = 'authenticated';
 
 // Độ dài tối thiểu của khóa ký. HMAC-SHA256 nhận khóa rỗng, nên phải tự kiểm (D-09).
 export const MIN_JWT_SECRET_LENGTH = 32;
@@ -19,14 +26,23 @@ export interface VerifyOptions {
   maxLifetimeSeconds?: number;
   // Dung sai đồng hồ cho nbf và iat.
   clockSkewSeconds?: number;
+  // Khi người gọi đặt, token phải mang đúng iss và aud; thiếu hoặc sai là bị từ chối (D-09).
+  expectedIssuer?: string;
+  expectedAudience?: string;
 }
 
 export type VerifyResult =
   | { ok: true; claims: JwtClaims }
   | {
       ok: false;
-      reason: 'malformed' | 'bad_alg' | 'bad_signature' | 'expired' | 'missing_sub' | 'not_yet_valid' | 'bad_iat' | 'lifetime_too_long';
+      reason: 'malformed' | 'bad_alg' | 'bad_signature' | 'expired' | 'missing_sub' | 'not_yet_valid' | 'bad_iat' | 'lifetime_too_long' | 'bad_iss' | 'bad_aud';
     };
+
+// Ký phiên cục bộ: luôn gắn iss và aud. Mọi nơi phát phiên cục bộ đều đi qua đây (kể cả kiểm thử),
+// để không có phiên "thiếu nhà phát hành" nào được ký ra từ đường chính thức.
+export function signLocalSession(payload: Record<string, unknown>, secret: string): string {
+  return signHs256({ ...payload, iss: LOCAL_ISSUER, aud: LOCAL_AUDIENCE }, secret);
+}
 
 export function signHs256(payload: Record<string, unknown>, secret: string): string {
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
@@ -76,6 +92,17 @@ export function verifyHs256(
   ) {
     return { ok: false, reason: 'lifetime_too_long' };
   }
+  if (options.expectedIssuer !== undefined && claims.iss !== options.expectedIssuer) return { ok: false, reason: 'bad_iss' };
+  if (options.expectedAudience !== undefined && !audienceIncludes(claims.aud, options.expectedAudience)) {
+    return { ok: false, reason: 'bad_aud' };
+  }
   if (typeof claims.sub !== 'string' || claims.sub.length === 0) return { ok: false, reason: 'missing_sub' };
   return { ok: true, claims: claims as JwtClaims };
+}
+
+// aud có thể là một chuỗi hoặc một danh sách (RFC 7519). Không khớp kiểu thì không khớp.
+function audienceIncludes(aud: unknown, expected: string): boolean {
+  if (typeof aud === 'string') return aud === expected;
+  if (Array.isArray(aud)) return aud.some((item) => item === expected);
+  return false;
 }

@@ -1,5 +1,5 @@
 import type { AddressInfo } from 'node:net';
-import { signHs256 } from '../../services/api/src/auth/jwt';
+import { signLocalSession } from '../../services/api/src/auth/jwt';
 import { createPool } from '../../services/api/src/db/session';
 import { createHttpServer } from '../../services/api/src/http/app';
 import { connect } from '../support/db';
@@ -48,5 +48,5 @@ export async function startServer(): Promise<RunningServer> {
 }
 
 export function perfToken(): string {
-  return signHs256({ sub: PERF_USER, exp: Math.floor(Date.now() / 1000) + 3600 }, SECRET);
+  return signLocalSession({ sub: PERF_USER, exp: Math.floor(Date.now() / 1000) + 3600 }, SECRET);
 }

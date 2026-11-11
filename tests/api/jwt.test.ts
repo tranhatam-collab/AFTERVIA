@@ -43,3 +43,41 @@ describe('T06 JWT trust boundary (HS256 only, local simulated sign-in)', () => {
     expect(verifyHs256(`${notObject}.${notObject}.x`, SECRET, NOW)).toEqual({ ok: false, reason: 'malformed' });
   });
 });
+
+// D-09 (kiểm toán 10/11): iss và aud. Chỉ được kiểm khi người gọi yêu cầu, để các lời gọi cũ không đổi hành vi.
+describe('D-09 issuer and audience are checked when the caller names them', () => {
+  const ISS = 'aftervia-local';
+  const AUD = 'authenticated';
+  const opts = { expectedIssuer: ISS, expectedAudience: AUD };
+
+  it('D-09 a token without an issuer is refused when one is expected', () => {
+    const token = signHs256({ sub: SUB, exp: NOW + 60, aud: AUD }, SECRET);
+    expect(verifyHs256(token, SECRET, NOW, opts)).toEqual({ ok: false, reason: 'bad_iss' });
+  });
+
+  it('D-09 a token from another issuer is refused', () => {
+    const token = signHs256({ sub: SUB, exp: NOW + 60, iss: 'some-other-project', aud: AUD }, SECRET);
+    expect(verifyHs256(token, SECRET, NOW, opts)).toEqual({ ok: false, reason: 'bad_iss' });
+  });
+
+  it('D-09 a token without an audience is refused when one is expected', () => {
+    const token = signHs256({ sub: SUB, exp: NOW + 60, iss: ISS }, SECRET);
+    expect(verifyHs256(token, SECRET, NOW, opts)).toEqual({ ok: false, reason: 'bad_aud' });
+  });
+
+  it('D-09 a token for another audience is refused, and an audience list that holds the expected value is accepted', () => {
+    expect(verifyHs256(signHs256({ sub: SUB, exp: NOW + 60, iss: ISS, aud: 'anon' }, SECRET), SECRET, NOW, opts)).toEqual({
+      ok: false,
+      reason: 'bad_aud',
+    });
+    expect(verifyHs256(signHs256({ sub: SUB, exp: NOW + 60, iss: ISS, aud: ['x', AUD] }, SECRET), SECRET, NOW, opts)).toMatchObject({ ok: true });
+  });
+
+  it('D-09 a token with the right issuer and audience is accepted', () => {
+    expect(verifyHs256(signHs256({ sub: SUB, exp: NOW + 60, iss: ISS, aud: AUD }, SECRET), SECRET, NOW, opts)).toMatchObject({ ok: true });
+  });
+
+  it('D-09 without an expectation, issuer and audience are not required, so existing callers keep their behaviour', () => {
+    expect(verifyHs256(signHs256({ sub: SUB, exp: NOW + 60 }, SECRET), SECRET, NOW)).toMatchObject({ ok: true });
+  });
+});

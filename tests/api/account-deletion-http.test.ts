@@ -2,7 +2,7 @@ import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
 import type pg from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { signHs256 } from '../../services/api/src/auth/jwt';
+import { signLocalSession } from '../../services/api/src/auth/jwt';
 import { createPool } from '../../services/api/src/db/session';
 import { createHttpServer } from '../../services/api/src/http/app';
 import { connect, resetTestDatabase } from '../support/db';
@@ -116,7 +116,7 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
 
   it('T25 a session issued after the cutoff is accepted, and a session without iat is refused', async () => {
     expect((await api(h.url, 'GET', '/v1/items', await freshSession(USERS.cOwner))).status).toBe(200);
-    const withoutIat = signHs256({ sub: USERS.cOwner, role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, simulated: true }, SECRET);
+    const withoutIat = signLocalSession({ sub: USERS.cOwner, role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, simulated: true }, SECRET);
     expect((await api(h.url, 'GET', '/v1/items', withoutIat)).status).toBe(401);
   });
 
@@ -170,7 +170,7 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
     // Mốc 360 giây thay vì 301 để kết quả không phụ thuộc đồng hồ. Ranh giới 300 giây nằm trong mã và được đọc ở đó.
     const now = Math.floor(Date.now() / 1000);
     // exp cách iat 860 giây, dưới chặn trên 900 giây của D-09, nên token vẫn hợp lệ và chỉ bị từ chối vì cũ.
-    const stale = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 360, exp: now + 500, simulated: true }, SECRET);
+    const stale = signLocalSession({ sub: USERS.reauth, role: 'authenticated', iat: now - 360, exp: now + 500, simulated: true }, SECRET);
     expect((await api(h.url, 'GET', '/v1/items', stale)).status).toBe(200);
     const refused = await api(h.url, 'POST', '/v1/account/deletion', stale, { request_id: 'erase-reauth-stale-0001' });
     expect(refused.status).toBe(401);
@@ -180,7 +180,7 @@ describe('WO11-02a deletion over HTTP: receipt, and sessions issued before the r
 
   it('T25 a session issued within the last 5 minutes can request deletion, and the profile moves to PENDING_DELETION', async () => {
     const now = Math.floor(Date.now() / 1000);
-    const recent = signHs256({ sub: USERS.reauth, role: 'authenticated', iat: now - 240, exp: now + 600, simulated: true }, SECRET);
+    const recent = signLocalSession({ sub: USERS.reauth, role: 'authenticated', iat: now - 240, exp: now + 600, simulated: true }, SECRET);
     const accepted = await api(h.url, 'POST', '/v1/account/deletion', recent, { request_id: 'erase-reauth-recent-0001' });
     expect(accepted.status).toBe(200);
     expect(accepted.json).toMatchObject({ request_id: 'erase-reauth-recent-0001', status: 'PENDING_POLICY' });

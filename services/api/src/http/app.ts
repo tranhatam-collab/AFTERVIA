@@ -3,7 +3,7 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import type pg from 'pg';
 import { normalizeItemFields, normalizeUploadTicket, type ItemFields } from '@aftervia/domain';
-import { MIN_JWT_SECRET_LENGTH, signHs256, verifyHs256 } from '../auth/jwt';
+import { LOCAL_AUDIENCE, LOCAL_ISSUER, MIN_JWT_SECRET_LENGTH, signLocalSession, verifyHs256 } from '../auth/jwt';
 import { recordDenial, withUser } from '../db/session';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { CASE_STATES, RESOLUTION_OUTCOMES } from '@aftervia/domain';
@@ -77,7 +77,12 @@ async function authenticateSession(req: IncomingMessage, config: AppConfig): Pro
   const match = /^Bearer (.+)$/.exec(req.headers.authorization ?? '');
   if (!match || !match[1]) throw new HttpError(401, 'unauthenticated');
   // Tuổi thọ token không được vượt thời hạn phiên, kể cả khi exp bị ký dài hơn (D-09).
-  const result = verifyHs256(match[1], config.jwtSecret, undefined, { maxLifetimeSeconds: TOKEN_TTL_SECONDS });
+  // Token phải do đúng nhà phát hành cấp cho đúng đối tượng nhận (D-09). Token ký đúng khóa nhưng thiếu iss/aud bị từ chối.
+  const result = verifyHs256(match[1], config.jwtSecret, undefined, {
+    maxLifetimeSeconds: TOKEN_TTL_SECONDS,
+    expectedIssuer: LOCAL_ISSUER,
+    expectedAudience: LOCAL_AUDIENCE,
+  });
   if (!result.ok) throw new HttpError(401, 'unauthenticated');
   const { sub, iat } = result.claims;
   const cutoff = await deletionCutoff(config.pool, sub);
@@ -170,7 +175,7 @@ async function handle(req: IncomingMessage, res: ServerResponse, config: AppConf
     const exists = await config.pool.query('select 1 from auth.users where id = $1', [userId]);
     if (exists.rowCount === 0) throw new HttpError(404, 'not_found');
     const now = Math.floor(Date.now() / 1000);
-    const token = signHs256({ sub: userId, role: 'authenticated', iat: now, exp: now + TOKEN_TTL_SECONDS, simulated: true }, config.jwtSecret);
+    const token = signLocalSession({ sub: userId, role: 'authenticated', iat: now, exp: now + TOKEN_TTL_SECONDS, simulated: true }, config.jwtSecret);
     return send(res, 200, { access_token: token, token_type: 'Bearer', expires_in: TOKEN_TTL_SECONDS, simulated: true });
   }
 

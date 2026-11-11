@@ -4,7 +4,7 @@ import type pg from 'pg';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createPool } from '../../services/api/src/db/session';
 import { createHttpServer } from '../../services/api/src/http/app';
-import { MIN_JWT_SECRET_LENGTH, signHs256, verifyHs256 } from '../../services/api/src/auth/jwt';
+import { MIN_JWT_SECRET_LENGTH, signHs256, signLocalSession, verifyHs256 } from '../../services/api/src/auth/jwt';
 import { asActor, connect, resetTestDatabase } from '../support/db';
 import { AFTER_CUTOFF_SECONDS, SESSION_TTL_SECONDS, sessionAfterCutoff } from '../support/session-fixtures';
 
@@ -124,7 +124,7 @@ describe('OWN-A-08 error mapping on the legacy path (D-08)', () => {
 
   it('D-08 a path with a malformed percent escape answers 404, not 500', async () => {
     const now = Math.floor(Date.now() / 1000);
-    const token = signHs256({ sub: CLEAN, role: 'authenticated', iat: now, exp: now + 900, simulated: true }, SECRET);
+    const token = signLocalSession({ sub: CLEAN, role: 'authenticated', iat: now, exp: now + 900, simulated: true }, SECRET);
     const bad = await api(h.url, 'GET', '/v1/items/%E0%A4%A', token);
     expect(bad.status).toBe(404);
     expect(bad.status).not.toBe(500);
