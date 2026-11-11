@@ -54,7 +54,7 @@ export function statusesAt(snapshot: Snapshot, now: Date, maxAgeMinutes = 30): S
 const STATES: readonly SourceState[] = ['ok', 'stale', 'failed', 'never'];
 const STATUSES: readonly Status[] = ['Actual', 'Exercise', 'System', 'Test', 'Draft'];
 const MSG_TYPES: readonly MsgType[] = ['Alert', 'Update', 'Cancel', 'Ack', 'Error'];
-const SCOPES: readonly Scope[] = ['Public', 'Restricted', 'Private'];
+const SCOPES: readonly Scope[] = ['Public', 'Restricted', 'Private', 'Unstated'];
 const KINDS: readonly Kind[] = ['observation', 'forecast', 'warning', 'order'];
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null;

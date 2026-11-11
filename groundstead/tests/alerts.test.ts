@@ -149,3 +149,27 @@ test('GT13 a GDACS item without gdacs:iscurrent is not read as a Cancel; only an
   const old = fromGdacsRss(GDACS_SAMPLE, RECEIVED).find((a) => a.id === 'EQ77');
   assert.equal(old?.msgType, 'Cancel', 'an explicit false still ends the event');
 });
+
+test('G-08 a GDACS record with no accesslevel is not hidden silently: it is shown, and the page can say the source gave no access level', () => {
+  const noAccess = GDACS_SAMPLE.replace('<gdacs:accesslevel>Public</gdacs:accesslevel>', '');
+  assert.notEqual(noAccess, GDACS_SAMPLE, 'the fixture lost its access level');
+  const flood = fromGdacsRss(noAccess, RECEIVED).find((a) => a.id === 'FL1001');
+  assert.equal(flood?.scope, 'Unstated', 'a missing access level is not read as Restricted');
+  assert.deepEqual(
+    publicAlerts(fromGdacsRss(noAccess, RECEIVED)).map((a) => a.id),
+    ['FL1001'],
+    'the record is shown in the public list',
+  );
+  assert.match(alertFacts(flood as Alert, 'en').map((f) => f.value).join(' | '), /did not give an access level/);
+  assert.match(alertFacts(flood as Alert, 'vi').map((f) => f.value).join(' | '), /không ghi mức truy cập/);
+});
+
+test('G-08 an explicit non-Public access level is still Restricted and hidden; only a missing one is shown with a note', () => {
+  const restricted = GDACS_SAMPLE.replace(
+    '<gdacs:accesslevel>Public</gdacs:accesslevel>',
+    '<gdacs:accesslevel>Restricted</gdacs:accesslevel>',
+  );
+  const flood = fromGdacsRss(restricted, RECEIVED).find((a) => a.id === 'FL1001');
+  assert.equal(flood?.scope, 'Restricted');
+  assert.deepEqual(publicAlerts(fromGdacsRss(restricted, RECEIVED)), []);
+});

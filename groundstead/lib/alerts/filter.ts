@@ -1,11 +1,12 @@
 import { keyOf, type Alert } from './model.ts';
 
 // A message the public may see: a real (Actual), public alert or update. Tests, exercises, drafts, system messages,
-// private or restricted messages, acknowledgements, errors and cancellations are all kept out (GT13).
+// private or restricted messages, acknowledgements, errors and cancellations are all kept out (GT13). A message whose
+// source gave no access level is shown with a note (G-08); it is not a restricted message.
 export function isPublic(alert: Alert): boolean {
   return (
     alert.status === 'Actual' &&
-    alert.scope === 'Public' &&
+    (alert.scope === 'Public' || alert.scope === 'Unstated') &&
     (alert.msgType === 'Alert' || alert.msgType === 'Update')
   );
 }

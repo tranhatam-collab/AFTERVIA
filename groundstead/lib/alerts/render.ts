@@ -4,16 +4,18 @@ import { ALERT_TEXT, type AlertLocale, type SourceState } from './text.ts';
 export type Fact = { label: string; value: string };
 
 // The facts every public alert shows (GT15): the issuing agency, when it was sent, when this product received it, when
-// it takes effect, and what kind of message it is.
+// it takes effect, and what kind of message it is. An alert whose source gave no access level also says so (G-08).
 export function alertFacts(alert: Alert, locale: AlertLocale): Fact[] {
   const t = ALERT_TEXT[locale];
-  return [
+  const facts: Fact[] = [
     { label: t.sender, value: alert.sender },
     { label: t.sent, value: alert.sent },
     { label: t.received, value: alert.received },
     { label: t.effective, value: alert.effective },
     { label: t.kind, value: t.kinds[alert.kind] },
   ];
+  if (alert.scope === 'Unstated') facts.push({ label: t.access, value: t.noAccess });
+  return facts;
 }
 
 // The note under a source. It says what is not known; it never says that an area is safe (GT14).

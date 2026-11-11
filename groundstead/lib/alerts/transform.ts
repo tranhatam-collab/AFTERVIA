@@ -141,6 +141,7 @@ export function fromGdacsRss(xml: string, receivedAt: string): Alert[] {
     // Only an explicit "false" ends an event (GSL-F05). A missing or unreadable flag is not a Cancel: hiding an alert
     // that may still be in force is worse than showing one that has just ended.
     const current = (tagText(item, 'gdacs:iscurrent') ?? '').toLowerCase() !== 'false';
+    // A missing access level is "Unstated", shown with a note (G-08). Any other value that is not "Public" is Restricted.
     const access = tagText(item, 'gdacs:accesslevel') ?? '';
     const lat = numberOf(tagText(item, 'geo:lat'));
     const lon = numberOf(tagText(item, 'geo:long'));
@@ -151,7 +152,7 @@ export function fromGdacsRss(xml: string, receivedAt: string): Alert[] {
       sender: 'GDACS',
       status: 'Actual',
       msgType: current ? 'Alert' : 'Cancel',
-      scope: access === 'Public' ? 'Public' : 'Restricted',
+      scope: access === 'Public' ? 'Public' : access === '' ? 'Unstated' : 'Restricted',
       kind: 'warning',
       headline: composeHeadline(type, level, name),
       hazard: GDACS_HAZARD[type] ?? '',

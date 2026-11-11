@@ -134,3 +134,14 @@ test('GT16 a quake that USGS revises keeps its event key, so a caller that store
   });
   assert.equal(eventsToPush(second, pushed).length, 0);
 });
+
+test('G-08 the job keeps a GDACS record with no access level, with its source state, and the snapshot survives a round trip', async () => {
+  const noAccess = GDACS_SAMPLE.replace('<gdacs:accesslevel>Public</gdacs:accesslevel>', '');
+  const snap = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: async () => noAccess }, now: NOW, previous: null });
+  assert.equal(snap.sources.find((s) => s.source === 'gdacs')?.state, 'ok');
+  assert.ok(
+    snap.alerts.some((a) => a.source === 'gdacs' && a.id === 'FL1001' && a.scope === 'Unstated'),
+    'the record without an access level is in the snapshot',
+  );
+  assert.deepEqual(parseSnapshot(JSON.parse(JSON.stringify(snap))), snap);
+});

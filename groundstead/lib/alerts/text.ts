@@ -12,6 +12,8 @@ export type AlertText = {
   effective: string;
   kind: string;
   kinds: Record<Kind, string>;
+  access: string; // the label for the access level row (G-08)
+  noAccess: string; // shown when the source gave no access level (G-08)
   lastUpdated: string; // contains {time}
   noUpdate: string;
   notes: Record<SourceState, string>; // "ok" and "stale" contain {time}
@@ -25,6 +27,8 @@ export const ALERT_TEXT: Record<AlertLocale, AlertText> = {
     effective: 'Effective from',
     kind: 'Type',
     kinds: { observation: 'Observation', forecast: 'Forecast', warning: 'Warning', order: 'Order' },
+    access: 'Access',
+    noAccess: 'The source did not give an access level for this alert.',
     lastUpdated: 'Last updated: {time}',
     noUpdate: 'No update from this source yet.',
     notes: {
@@ -41,6 +45,8 @@ export const ALERT_TEXT: Record<AlertLocale, AlertText> = {
     effective: 'Hiệu lực từ',
     kind: 'Loại',
     kinds: { observation: 'Quan trắc', forecast: 'Dự báo', warning: 'Cảnh báo', order: 'Lệnh' },
+    access: 'Quyền truy cập',
+    noAccess: 'Nguồn không ghi mức truy cập cho cảnh báo này.',
     lastUpdated: 'Cập nhật lần cuối: {time}',
     noUpdate: 'Chưa có cập nhật nào từ nguồn này.',
     notes: {

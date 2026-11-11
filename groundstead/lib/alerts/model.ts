@@ -3,7 +3,10 @@
 
 export const STATUSES = ['Actual', 'Exercise', 'System', 'Test', 'Draft'] as const;
 export const MSG_TYPES = ['Alert', 'Update', 'Cancel', 'Ack', 'Error'] as const;
-export const SCOPES = ['Public', 'Restricted', 'Private'] as const;
+// Unstated: the source gave no access level (GDACS without gdacs:accesslevel, G-08). It is shown in the public list, and
+// the page says the source gave no level. It is not Restricted: a missing level is not a statement that it is restricted.
+// CAP v1.2 has no such value; it is this product's own.
+export const SCOPES = ['Public', 'Restricted', 'Private', 'Unstated'] as const;
 // Quan trắc (observation), dự báo (forecast), cảnh báo (warning), lệnh (order).
 export const KINDS = ['observation', 'forecast', 'warning', 'order'] as const;
 
