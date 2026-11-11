@@ -6,6 +6,13 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { run } from 'node:test';
 
+// The real message of a failed test, as written by the test (G-25). Never replaced by a generic placeholder
+// when the test gave one.
+function failureMessage(error) {
+  if (error && typeof error === 'object' && typeof error.message === 'string') return error.message;
+  return error === undefined ? 'failed without an error message' : String(error);
+}
+
 export async function collect(files) {
   const results = [];
   const stream = run({ files: files.map((f) => resolve(f)) });
@@ -14,7 +21,8 @@ export async function collect(files) {
     if (event.data.details?.type === 'suite') continue;
     const skipped = Boolean(event.data.skip || event.data.todo);
     const status = skipped ? 'skipped' : event.type === 'test:pass' ? 'passed' : 'failed';
-    results.push({ title: event.data.name, status, file: event.data.file ?? '' });
+    const failureMessages = status === 'failed' ? [failureMessage(event.data.details?.error)] : [];
+    results.push({ title: event.data.name, status, file: event.data.file ?? '', failureMessages });
   }
   return results;
 }
@@ -33,11 +41,19 @@ async function main(argv) {
     numFailedTests: failed,
     numPendingTests: skipped,
     success: failed === 0 && results.length > 0,
-    testResults: [{ name: 'node:test', assertionResults: results.map(({ title, status }) => ({ title, status })) }],
+    testResults: [
+      {
+        name: 'node:test',
+        assertionResults: results.map(({ title, status, failureMessages }) => ({ title, status, failureMessages })),
+      },
+    ],
   };
   mkdirSync(dirname(resolve(out)), { recursive: true });
   writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
-  for (const r of results.filter((x) => x.status === 'failed')) console.error(`FAIL ${r.title} (${r.file})`);
+  for (const r of results.filter((x) => x.status === 'failed')) {
+    console.error(`FAIL ${r.title} (${r.file})`);
+    for (const message of r.failureMessages) console.error(message.split('\n').map((line) => `  ${line}`).join('\n'));
+  }
   console.log(`node tests: ${passed} passed, ${failed} failed, ${skipped} skipped → ${out}`);
   if (!report.success) process.exit(1);
 }
