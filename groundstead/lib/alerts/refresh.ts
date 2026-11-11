@@ -1,4 +1,4 @@
-import { groupEvents, notYetPushed, type AlertEvent } from './dedupe.ts';
+import { groupEvents, notYetPushed, type AlertEvent, type PushedRanks } from './dedupe.ts';
 import { buildSnapshot, type Snapshot, type SourceRun } from './snapshot.ts';
 import { readGdacs, readUsgs, type Reading } from './transform.ts';
 
@@ -60,7 +60,8 @@ export async function refreshAll(input: { fetchers: Fetchers; now: Date; previou
   return buildSnapshot([usgs, gdacs], input.now, input.previous);
 }
 
-// The events in a snapshot that have not been pushed yet (GT16). The caller keeps the keys it has pushed.
-export function eventsToPush(snapshot: Snapshot, pushed: ReadonlySet<string>): AlertEvent[] {
+// The events in a snapshot that have not been pushed yet, or are stronger than when they were pushed (GT16, G-11).
+// The caller keeps the ranks it has pushed.
+export function eventsToPush(snapshot: Snapshot, pushed: PushedRanks): AlertEvent[] {
   return notYetPushed(groupEvents(snapshot.alerts), pushed);
 }

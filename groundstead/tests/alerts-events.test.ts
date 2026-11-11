@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import type { Alert } from '../lib/alerts/model.ts';
+import type { Alert, Severity } from '../lib/alerts/model.ts';
 import { groupEvents, markPushed, notYetPushed } from '../lib/alerts/dedupe.ts';
 import { alertsNear, distanceKm, placeToStore, RADIUS_RANGE_KM, validRadius, type Place } from '../lib/alerts/location.ts';
 import { fromGdacsRss, fromUsgs } from '../lib/alerts/transform.ts';
@@ -57,7 +57,7 @@ test('GT16 a different hazard, a far place, or a missing place stays a separate 
 
 test('GT16 each event is pushed once: a run that repeats a known event pushes nothing new', () => {
   const first = groupEvents([quakeUsgs]);
-  const pushed = markPushed(new Set(), first);
+  const pushed = markPushed(new Map(), first);
   assert.equal(notYetPushed(groupEvents([quakeUsgs, quakeGdacs]), pushed).length, 0, 'the second source is the same event');
   const later = groupEvents([quakeUsgs, quakeGdacs, quakeHcmc]);
   const fresh = notYetPushed(later, pushed);
@@ -94,12 +94,12 @@ test('GT17 a place is stored only when the reader has turned alerts on', () => {
 });
 
 test('GT16 an event keeps its key when a source updates its record, so it is not pushed again (GSL-F02)', () => {
-  const pushed = markPushed(new Set(), groupEvents([quakeUsgs, quakeGdacs]));
+  const pushed = markPushed(new Map(), groupEvents([quakeUsgs, quakeGdacs]));
   // USGS revises the quake: its update time moves after the GDACS record's.
   const revised: Alert = { ...quakeUsgs, sent: '2026-11-06T09:55:00.000Z' };
   assert.equal(notYetPushed(groupEvents([revised, quakeGdacs]), pushed).length, 0, 'a revised record is the same event');
   // GDACS reports first; USGS reports the same quake on a later run with an earlier update time.
-  const gdacsFirst = markPushed(new Set(), groupEvents([quakeGdacs]));
+  const gdacsFirst = markPushed(new Map(), groupEvents([quakeGdacs]));
   assert.equal(notYetPushed(groupEvents([quakeUsgs, quakeGdacs]), gdacsFirst).length, 0, 'a second source is the same event');
 });
 
@@ -118,6 +118,34 @@ test('GT16 events are not chained through a middle alert: a quake 10 hours after
       'the grouping does not depend on the order the alerts arrive in',
     );
   }
-  const pushed = markPushed(new Set(), groupEvents([a, b]));
+  const pushed = markPushed(new Map(), groupEvents([a, b]));
   assert.deepEqual(notYetPushed(groupEvents([a, b, c]), pushed).map((e) => e.key), ['usgs:usC']);
+});
+
+// G-11: a cluster is pushed again only for a stronger severity, and an equal or weaker alert never repeats a push.
+const withSeverity = (alert: Alert, severity: Severity): Alert => ({ ...alert, severity });
+
+test('G-11 a cluster that later gets a stronger alert is pushed again, and the same strength is not pushed twice', () => {
+  const moderateUsgs = withSeverity(quakeUsgs, 'Moderate');
+  const severeGdacs = withSeverity(quakeGdacs, 'Severe');
+  const pushed = markPushed(new Map(), groupEvents([moderateUsgs]));
+  const escalated = notYetPushed(groupEvents([moderateUsgs, severeGdacs]), pushed);
+  assert.equal(escalated.length, 1, 'Severe is above Moderate, so the cluster is pushed again');
+  assert.equal(escalated[0]?.alerts.length, 2, 'the pushed cluster carries both alerts');
+  const afterEscalation = markPushed(pushed, escalated);
+  assert.equal(notYetPushed(groupEvents([moderateUsgs, severeGdacs]), afterEscalation).length, 0, 'the same strength is not pushed again');
+});
+
+test('G-11 an equal or weaker alert joining a pushed cluster does not push it again', () => {
+  const severeUsgs = withSeverity(quakeUsgs, 'Severe');
+  const pushed = markPushed(new Map(), groupEvents([severeUsgs]));
+  const equal = groupEvents([severeUsgs, withSeverity(quakeGdacs, 'Severe')]);
+  const weaker = groupEvents([severeUsgs, withSeverity(quakeGdacs, 'Moderate')]);
+  assert.equal(notYetPushed(equal, pushed).length, 0, 'an equal alert is not a push');
+  assert.equal(notYetPushed(weaker, pushed).length, 0, 'a weaker alert is not a push');
+});
+
+test('G-11 a cluster pushed with no known severity is not pushed again by a source that gives a level (GT16)', () => {
+  const pushed = markPushed(new Map(), groupEvents([quakeUsgs]));
+  assert.equal(notYetPushed(groupEvents([quakeUsgs, withSeverity(quakeGdacs, 'Severe')]), pushed).length, 0);
 });

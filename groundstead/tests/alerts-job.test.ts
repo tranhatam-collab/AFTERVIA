@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { markPushed } from '../lib/alerts/dedupe.ts';
 import { eventsToPush, gdacsBody, refreshAll, usgsBody } from '../lib/alerts/refresh.ts';
 import { CARRY_FORWARD_HOURS, parseSnapshot, type Snapshot } from '../lib/alerts/snapshot.ts';
 import { GDACS_SAMPLE, QUAKE_HANOI_GDACS } from './alerts-fixtures.ts';
@@ -73,8 +74,8 @@ test('GT16 the same quake from two sources is one event, pushed once; a second r
     now: NOW,
     previous: null,
   });
-  const pushed = new Set(eventsToPush(first, new Set()).map((e) => e.key));
-  assert.equal(pushed.size, 1, 'the quake from both sources is one event');
+  assert.equal(eventsToPush(first, new Map()).length, 1, 'the quake from both sources is one event');
+  const pushed = markPushed(new Map(), eventsToPush(first, new Map()));
   const second = await refreshAll({
     fetchers: { usgs: okUsgs, gdacs: async () => QUAKE_HANOI_GDACS },
     now: new Date('2026-11-06T10:05:00.000Z'),
@@ -123,7 +124,7 @@ test('GT14 a carried alert is only taken from the source that failed; a working 
 
 test('GT16 a quake that USGS revises keeps its event key, so a caller that stores event keys does not push it again (GSL-F02)', async () => {
   const first = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: async () => QUAKE_HANOI_GDACS }, now: NOW, previous: null });
-  const pushed = new Set(eventsToPush(first, new Set()).map((e) => e.key));
+  const pushed = markPushed(new Map(), eventsToPush(first, new Map()));
   const revised = structuredClone(USGS_FEED);
   const props = revised.features[0]?.properties;
   if (props) props.updated = Date.parse('2026-11-06T09:55:00Z');
@@ -244,4 +245,14 @@ test('G-14 an empty RSS after a good run keeps the time of the good run and the 
   assert.equal(gdacs?.state, 'failed');
   assert.equal(gdacs?.lastUpdated, NOW.toISOString(), 'the last good time is not moved forward');
   assert.ok(later.alerts.some((a) => a.source === 'gdacs' && a.id === 'FL1001'), 'an alert still in force is not erased');
+});
+
+test('G-11 a snapshot alert keeps its severity through a round trip, and an unknown severity is refused', async () => {
+  const snap = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: okGdacs }, now: NOW, previous: null });
+  const [first, ...rest] = snap.alerts;
+  if (!first) throw new Error('the fixture produced no alert');
+  const severe = { ...snap, alerts: [{ ...first, severity: 'Severe' as const }, ...rest] };
+  assert.deepEqual(parseSnapshot(JSON.parse(JSON.stringify(severe))), severe);
+  const bad = { ...snap, alerts: [{ ...first, severity: 'Huge' }, ...rest] };
+  assert.throws(() => parseSnapshot(JSON.parse(JSON.stringify(bad))), /unknown severity/);
 });

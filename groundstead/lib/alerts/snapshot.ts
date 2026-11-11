@@ -1,5 +1,5 @@
 import { publicAlerts } from './filter.ts';
-import type { Alert, Kind, MsgType, Scope, Status } from './model.ts';
+import { SEVERITIES, type Alert, type Kind, type MsgType, type Scope, type Severity, type Status } from './model.ts';
 import { sourceState, type SourceState } from './sources.ts';
 
 // The alert snapshot (GS-053): what the job last saw. It holds each source's state and the public alerts still in force.
@@ -69,6 +69,9 @@ const isText = (v: unknown): v is string => typeof v === 'string';
 function alertOf(v: unknown): Alert {
   if (!isObject(v)) throw new Error('bad snapshot: an alert is not an object');
   const need = (name: string): unknown => v[name];
+  if (need('severity') !== undefined && !SEVERITIES.includes(need('severity') as Severity)) {
+    throw new Error('bad snapshot: an alert has an unknown severity');
+  }
   if (
     !isText(need('source')) ||
     !isText(need('id')) ||

@@ -1,5 +1,5 @@
 import { distanceKm } from './location.ts';
-import { keyOf, type Alert } from './model.ts';
+import { keyOf, SEVERITY_RANK, type Alert } from './model.ts';
 
 // One real-world event can arrive from more than one source (GT16). Two alerts are the same event when they name the
 // same hazard, took effect within SAME_EVENT_HOURS of each other, and are within SAME_EVENT_KM. Without a position on both
@@ -42,14 +42,48 @@ export function groupEvents(alerts: Alert[]): AlertEvent[] {
   return events;
 }
 
-// The events not yet pushed. The caller keeps the keys it has pushed and adds the new ones with markPushed, so each
-// event is pushed once, however many sources or runs report it (GT16). An event counts as pushed when any of its alerts
-// was pushed before, so a second source that reports it later, with an earlier time, does not push it again (GSL-F02).
-export function notYetPushed(events: AlertEvent[], pushed: ReadonlySet<string>): AlertEvent[] {
-  return events.filter((event) => !pushed.has(event.key) && !event.alerts.some((alert) => pushed.has(keyOf(alert))));
+// G-11: the highest severity rank each key was pushed at, keyed by event key and alert key. A rank of 0 means the
+// cluster was pushed with no known severity.
+export type PushedRanks = ReadonlyMap<string, number>;
+
+// How serious an alert says it is, as a rank in CAP's order. An alert with no severity ranks 0.
+export function rankOf(alert: Alert): number {
+  return alert.severity === undefined ? 0 : SEVERITY_RANK[alert.severity];
 }
 
-// Records every alert of the pushed events, not only the event key.
-export function markPushed(pushed: ReadonlySet<string>, events: AlertEvent[]): Set<string> {
-  return new Set([...pushed, ...events.flatMap((event) => [event.key, ...event.alerts.map(keyOf)])]);
+function eventRank(event: AlertEvent): number {
+  return Math.max(0, ...event.alerts.map(rankOf));
+}
+
+// The highest rank this event was pushed at, or null when none of its keys was pushed.
+function pushedRank(event: AlertEvent, pushed: PushedRanks): number | null {
+  const ranks = [event.key, ...event.alerts.map(keyOf)]
+    .map((key) => pushed.get(key))
+    .filter((rank): rank is number => rank !== undefined);
+  return ranks.length === 0 ? null : Math.max(...ranks);
+}
+
+// The events to push: never pushed before, or pushed before and now stronger (G-11). A cluster is stronger only when it
+// was pushed at a known severity and now has a higher one; a cluster pushed with no known severity is not pushed again,
+// so a second source that reports the same event without a level cannot repeat it (GT16). An event counts as pushed when
+// any of its alerts was pushed before, so a second source that reports it later, with an earlier time, does not push it
+// again (GSL-F02).
+export function notYetPushed(events: AlertEvent[], pushed: PushedRanks): AlertEvent[] {
+  return events.filter((event) => {
+    const before = pushedRank(event, pushed);
+    if (before === null) return true;
+    return before > 0 && eventRank(event) > before;
+  });
+}
+
+// Records every alert of the pushed events, not only the event key, at the rank the event was pushed at (G-11).
+export function markPushed(pushed: PushedRanks, events: AlertEvent[]): Map<string, number> {
+  const next = new Map(pushed);
+  for (const event of events) {
+    const rank = eventRank(event);
+    for (const key of [event.key, ...event.alerts.map(keyOf)]) {
+      next.set(key, Math.max(rank, next.get(key) ?? 0));
+    }
+  }
+  return next;
 }
