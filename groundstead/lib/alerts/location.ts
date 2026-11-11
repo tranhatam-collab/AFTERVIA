@@ -24,11 +24,32 @@ export function validRadius(km: number): number | null {
   return Number.isFinite(km) && km >= RADIUS_RANGE_KM.min && km <= RADIUS_RANGE_KM.max ? km : null;
 }
 
-// The alerts within a place's radius.
-export function alertsNear(alerts: Alert[], place: Place): Alert[] {
-  const radius = validRadius(place.radiusKm);
-  if (radius === null) return [];
-  return alerts.filter((alert) => alert.where !== undefined && distanceKm(alert.where, place) <= radius);
+// The result of matching a place: its alerts, or the reason the place cannot be used (G-15). An invalid place is refused
+// and never answered with an empty list, which would read as "no alerts".
+export type Nearby = { ok: true; alerts: Alert[] } | { ok: false; reason: string };
+
+function inRange(value: number, min: number, max: number): boolean {
+  return Number.isFinite(value) && value >= min && value <= max;
+}
+
+// The reason a place cannot be used, or null when it can. Checked before any alert is matched (G-15).
+export function placeProblem(place: Pick<Place, 'lat' | 'lon' | 'radiusKm'>): string | null {
+  if (validRadius(place.radiusKm) === null) {
+    return `the radius must be a number from ${RADIUS_RANGE_KM.min} to ${RADIUS_RANGE_KM.max} km, got ${String(place.radiusKm)}`;
+  }
+  if (!inRange(place.lat, -90, 90)) return `the latitude must be a number from -90 to 90, got ${String(place.lat)}`;
+  if (!inRange(place.lon, -180, 180)) return `the longitude must be a number from -180 to 180, got ${String(place.lon)}`;
+  return null;
+}
+
+// The alerts within a place's radius, or the reason the place is refused.
+export function alertsNear(alerts: Alert[], place: Place): Nearby {
+  const problem = placeProblem(place);
+  if (problem !== null) return { ok: false, reason: problem };
+  return {
+    ok: true,
+    alerts: alerts.filter((alert) => alert.where !== undefined && distanceKm(alert.where, place) <= place.radiusKm),
+  };
 }
 
 // A place is kept only when the reader has turned alerts on (GT17). Otherwise nothing about the location is stored.

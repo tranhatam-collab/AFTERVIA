@@ -81,10 +81,9 @@ test('GT17 the distance between two places is the great-circle distance, and rad
 });
 
 test('GT17 two places are matched by their own radius, and an alert without a position is never matched', () => {
-  assert.deepEqual(alertsNear([quakeUsgs], HANOI_CITY), [quakeUsgs], 'the city matches its own quake');
-  assert.deepEqual(alertsNear([quakeUsgs], HA_LONG_LAND), [], 'the land far away does not match');
-  assert.deepEqual(alertsNear([quakeNoPlace], HANOI_CITY), [], 'no position, no match');
-  assert.deepEqual(alertsNear([quakeUsgs], { ...HANOI_CITY, radiusKm: 4 }), [], 'a radius outside the range matches nothing');
+  assert.deepEqual(alertsNear([quakeUsgs], HANOI_CITY), { ok: true, alerts: [quakeUsgs] }, 'the city matches its own quake');
+  assert.deepEqual(alertsNear([quakeUsgs], HA_LONG_LAND), { ok: true, alerts: [] }, 'the land far away does not match');
+  assert.deepEqual(alertsNear([quakeNoPlace], HANOI_CITY), { ok: true, alerts: [] }, 'no position, no match');
 });
 
 test('GT17 a place is stored only when the reader has turned alerts on', () => {
@@ -148,4 +147,38 @@ test('G-11 an equal or weaker alert joining a pushed cluster does not push it ag
 test('G-11 a cluster pushed with no known severity is not pushed again by a source that gives a level (GT16)', () => {
   const pushed = markPushed(new Map(), groupEvents([quakeUsgs]));
   assert.equal(notYetPushed(groupEvents([quakeUsgs, withSeverity(quakeGdacs, 'Severe')]), pushed).length, 0);
+});
+
+// G-15: an invalid radius or position is refused with a reason. It is never an empty list, which would read as "no alerts".
+const placeWith = (patch: Partial<Place>): Place => ({ ...HANOI_CITY, ...patch });
+
+test('G-15 a radius of 0, a negative radius, NaN or a radius outside 5 to 100 km is refused with a reason', () => {
+  for (const radiusKm of [0, -5, Number.NaN, 4, 101]) {
+    const result = alertsNear([quakeUsgs], placeWith({ radiusKm }));
+    assert.equal(result.ok, false, `radius ${radiusKm} must be refused, not read as no alerts`);
+    if (!result.ok) assert.match(result.reason, /radius/, `radius ${radiusKm} gives a reason about the radius`);
+  }
+  const empty = alertsNear([], placeWith({ radiusKm: 0 }));
+  assert.equal(empty.ok, false, 'an invalid radius is refused even when there are no alerts');
+});
+
+test('G-15 a latitude or longitude out of range, or not a number, is refused with a reason', () => {
+  const cases: Array<[Partial<Place>, RegExp]> = [
+    [{ lat: 91 }, /latitude/],
+    [{ lat: -90.5 }, /latitude/],
+    [{ lat: Number.NaN }, /latitude/],
+    [{ lon: 181 }, /longitude/],
+    [{ lon: -180.1 }, /longitude/],
+    [{ lon: Number.NaN }, /longitude/],
+  ];
+  for (const [patch, pattern] of cases) {
+    const result = alertsNear([quakeUsgs], placeWith(patch));
+    assert.equal(result.ok, false, `${JSON.stringify(patch)} must be refused`);
+    if (!result.ok) assert.match(result.reason, pattern, `${JSON.stringify(patch)} gives a reason about the position`);
+  }
+});
+
+test('G-15 a valid place returns its alerts as a success, so an empty list only means no alert in the radius', () => {
+  assert.deepEqual(alertsNear([quakeUsgs], HANOI_CITY), { ok: true, alerts: [quakeUsgs] });
+  assert.deepEqual(alertsNear([quakeUsgs], HA_LONG_LAND), { ok: true, alerts: [] });
 });
