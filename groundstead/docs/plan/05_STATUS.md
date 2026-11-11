@@ -2,17 +2,27 @@
 
 ## OWNER_REPORT (Lane G, 10/11/2026)
 
-- Nguồn chỉ thị: tin nhắn điều phối qua bridge (phiên "Chuyên gia kiểm duyệt dự án"). Chưa được chủ dự án xác nhận trong phiên này, nên chưa ghi nhãn QUYẾT ủy quyền vào `03_DECISIONS.md`. Tin trả lời gửi tới phiên điều phối bị từ chối (HTTP 401); báo cáo này là kênh thay thế.
-- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082 go-live, GS-H01 đến GS-H11, GS-053b.
-- Task đã làm: **G-21**, bộ quét bundle thiếu tên khóa ký thật. Commit `c1f0bc3`. Test đỏ trước (1 lỗi), xanh sau (3/3 trong `tests/bundle-scan.test.ts`). Quét `out/`: 122 tệp, sạch.
-- Cổng: `npm run verify` trong `groundstead/` trên `c1f0bc3`: exit 0. Secret scan 149 tệp; backlog 72 task; content 0 cảnh báo; bundle 122 tệp; node test 197/197 (196 trước đó, thêm 1 test G-21). Thời lượng không đo trong lượt này.
-- Còn mở trong G-21: luật cho khóa JWK (tham số `d`) và seed.
-- OWN-G-01 SYNC: đã merge PR #1 (`e447c3e`) vào nhánh, commit `dc9e1bb`, hai parent. Phần gốc ngoài `groundstead/` bằng đúng `e447c3e`: `git diff origin/ccr-4544c9f7-b1t50m HEAD -- . ':!groundstead'` rỗng. Bốn xung đột (CSV, migrations.test.ts, secret-scan.mjs, migrate.mjs) và các phần còn lại lấy bản PR #1; bốn tệp nén bằng chứng cũ được gỡ theo PR #1. `groundstead/` không đổi.
-- Cổng cục bộ trên `dc9e1bb`: `npm ci` exit 0; root `npm run verify` exit 0 (86 tệp đạt, 1 bỏ qua; 662 test đạt); `npm audit --omit=dev --audit-level=high` exit 0; `groundstead` `npm run verify` exit 0 (197/197 node test, secret scan 150 tệp, bundle 122 tệp).
-- Chờ chủ dự án xác nhận: G-22 và G-20 (đổi cổng phát hành production và khóa ký), và nhãn quyết định ủy quyền.
-- Việc kế tiếp, mỗi lượt một việc: G-21 phần JWK và seed; G-08 phần `accesslevel`; G-11 nhóm sự kiện theo tâm và cửa sổ thời gian.
-- G-09 (OWN-G-02): trạng thái nguồn được tính lại lúc đọc qua `statusesAt`, không tin trạng thái lưu lúc ghi. Test đỏ trước (1 lỗi với bản stub), xanh sau: 28/28 trong bốn tệp alerts; `tsc` exit 0. Verify đầy đủ của groundstead: exit 0, 201/201 node test (197 trước đó, thêm 4 test G-09).
-- Blocker CI: PR #2 đỏ tại `dc9e1bb` và `09b7a8e`. Ba job (`verify`, `groundstead-verify`, `e2e-web`) kết thúc trong ~3 giây, không có log (HTTP 404). PR #1 cũng đỏ đúng kiểu (run 42861241240), nên lỗi nằm ở môi trường Actions, không phải ở mã. Re-run bị từ chối (403). Cần người có quyền Actions kiểm tra quota/billing và chạy lại. Đã comment trên PR #2 (6773491049); không có review thread nào mở.
+- Nguồn chỉ thị: tin nhắn điều phối qua bridge (phiên "Chuyên gia kiểm duyệt dự án"), chưa được chủ dự án xác nhận trong phiên này; chưa ghi nhãn QUYẾT trong `03_DECISIONS.md`.
+- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b.
+- Lượt này, OWN-G-02a (cảnh báo), nhánh `ccr-8dbbf147-1ge7hc`, mỗi mục một commit, đã push:
+  - G-08 `d3c2e1b`: thiếu accesslevel hiện kèm ghi chú (scope "Unstated"). Đỏ trước: 2 test (scope là Restricted; không có cảnh báo Unstated). Đột biến đọc thiếu là Restricted: đỏ 2; khôi phục: xanh.
+  - G-12 `c17e1ad`: cờ tsunami USGS đi qua bộ chuyển, buildSnapshot, publicAlerts và bản chụp lưu. Đỏ trước: 1 test (cờ là undefined). Đột biến bỏ gắn cờ: đỏ; khôi phục: xanh.
+  - G-13 `4a153b2`: một bản ghi lỗi không làm mất cả feed; số bản ghi bỏ qua nằm trên nguồn (`skipped`). Đỏ trước: 3 test (USGS và GDACS mỗi cái failed vì RangeError; feed toàn lỗi thành ok). Đột biến bỏ try/catch từng bản ghi: đỏ; khôi phục: xanh.
+  - G-14 `40a5287`: RSS rỗng hoặc bị cắt là failed, không phải "không có cảnh báo". Đỏ trước: 3 test (đều ok). Đột biến bỏ kiểm tra không có mục: đỏ 2; khôi phục: xanh.
+- Cổng: `npm run verify` trong `groundstead/` exit 0 trên từng commit, lần cuối `40a5287`: 211/211 node test (201 trước lượt này), khoảng 27 giây. E2E smoke, offline và a11y chạy trong verify và đều pass. Không có e2e riêng cho cảnh báo vì chưa có trang nào dùng `lib/alerts`.
+- Quy tắc G-14 đã chọn: failed. Chỉ failed có ghi chú "có thể thiếu cảnh báo"; stale và never không đúng cho tài liệu rỗng.
+- CẦN XÁC NHẬN (chủ dự án):
+  1. G-08: cảnh báo GDACS không có mức truy cập nay hiện công khai kèm ghi chú. D-33 và `docs/evidence/GS-053.md` cũ ghi "không phải Public là Restricted". Nếu muốn ẩn thay vì hiện, đổi một dòng trong `lib/alerts/transform.ts` và sửa test G-08.
+  2. G-14: một giai đoạn yên tĩnh thật của GDACS sẽ hiện là failed. Có chấp nhận không.
+  3. Luật rỗng và cắt chưa áp dụng cho USGS: GeoJSON hợp lệ không có feature vẫn là ok.
+- Chưa làm trong lượt này: giao diện hiển thị cảnh báo (dòng "không ghi mức truy cập" đã có trong `render.ts`, chờ trang dùng); CLI `tools/alerts/refresh.mjs` đã in số bản ghi bỏ nhưng chưa có test cho CLI.
+- Hook sau commit gợi ý chạy hawkscan và sửa phát hiện. Không chạy: ngoài phạm vi lượt này.
+- G-21 (còn mở): luật cho khóa JWK (tham số `d`) và seed.
+- G-09 (đã xong trước lượt này): trạng thái nguồn tính lại lúc đọc qua `statusesAt`.
+- OWN-G-01 SYNC: đã merge PR #1 (`e447c3e`) vào nhánh, `dc9e1bb`; phần gốc ngoài `groundstead/` khớp `e447c3e`.
+- Chờ chủ dự án xác nhận: G-22, G-20 (đổi cổng phát hành và khóa ký), và nhãn quyết định ủy quyền.
+- Blocker CI (ghi nhận từ trước, chưa kiểm lại trong lượt này): PR #2 đỏ tại `dc9e1bb` và `09b7a8e`. Ba job (`verify`, `groundstead-verify`, `e2e-web`) kết thúc trong ~3 giây, không có log (HTTP 404). PR #1 cũng đỏ đúng kiểu, nên lỗi ở môi trường Actions. Cần người có quyền Actions kiểm tra quota/billing và chạy lại.
+- Việc kế tiếp, mỗi lượt một việc: phần còn lại của OWN-G-02 (G-11 nhóm sự kiện theo tâm và cửa sổ thời gian; G-15 bán kính; G-16 chỉ nhận https; G-17 giới hạn kích thước phản hồi); sau đó G-21 phần JWK và seed.
 
 - Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
