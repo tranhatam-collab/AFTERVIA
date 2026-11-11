@@ -106,9 +106,9 @@ async function answer(request) {
   const stored = await storedCopy(request);
   if (!stored) return fetch(request);
   try {
-    const response = await networkWithinWait(request);
-    // A server error must not replace the stored offline copy.
-    return response.ok ? response : stored;
+    // The network's answer is returned whatever its status, so a page the build withdrew (404) is not served from the
+    // device. The stored copy is used only when the request itself fails or the wait runs out.
+    return await networkWithinWait(request);
   } catch {
     return stored;
   }

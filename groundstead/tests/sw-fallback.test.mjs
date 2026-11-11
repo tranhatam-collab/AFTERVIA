@@ -97,12 +97,24 @@ async function servedText(promise) {
   }
 }
 
-test('SW-01 a 500 from the network returns the stored copy', async () => {
+test('SW-01 a 500 from the network is returned as it is, not the stored copy', async () => {
   const manifest = await signedPack(TRUSTED);
-  const text = await servedText(
-    ask({ trusted: TRUSTED.publicKey, cache: packCache(manifest), networkResponse: { ok: false, status: 500 } }),
+  const net = { ok: false, status: 500, tag: 'net' };
+  assert.equal(
+    await ask({ trusted: TRUSTED.publicKey, cache: packCache(manifest), networkResponse: net }),
+    net,
+    'a 500 is the network answer, not the stored copy',
   );
-  assert.equal(text, 'page a');
+});
+
+test('SW-01 a 404 from the network is returned as it is, not the stored copy', async () => {
+  const manifest = await signedPack(TRUSTED);
+  const net = { ok: false, status: 404, tag: 'net' };
+  assert.equal(
+    await ask({ trusted: TRUSTED.publicKey, cache: packCache(manifest), networkResponse: net }),
+    net,
+    'a page the build withdrew is not served from the device while the network answers 404',
+  );
 });
 
 test('SW-01 a 200 from the network is returned instead of the stored copy', async () => {
