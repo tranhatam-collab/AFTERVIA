@@ -47,7 +47,7 @@ These names do not match the 14 names in this folder. If this branch is merged i
 | packages/domain, packages/i18n, packs/countries, tools/, tests/ | as named | consumed as source [I] | Covered by the root verify gate |
 | groundstead | `groundstead/` | absent at 6d3a7fc [V, `ls-tree -d` count 0]. On PR #2 head cb3d5e4: `groundstead/next.config.ts` sets `output: 'export'`, `trailingSlash: true`, `images.unoptimized: true` [V] | Not on the default branch [V] |
 
-Decision IDs (D14, D15, D20, D21, D22) cited in the input: a pattern search of `docs/plan/06_DECISIONS_DELEGATED.md` at 6d3a7fc found no matches [V]. The numbering scheme of that file was not established. Treat these IDs as [U]. The file does say that Cloudflare Pages and `aftervia.iai.one` are allowed only after the content is approved, with lawyer review (HUM-WEB-03) [V, line 47].
+Decision IDs (D14, D15, D20, D21, D22) are in `docs/plan/06_DECISION_QUEUE.md` [V]: D14 PARTIAL (hosting chosen, DNS unconfirmed); D15 mechanism DECIDED, permission not granted; D20, D21 and D22 OPEN. An earlier pattern search covered only `docs/plan/06_DECISIONS_DELEGATED.md`, so it proved nothing about these IDs. The file does say that Cloudflare Pages and `aftervia.iai.one` are allowed only after the content is approved, with lawyer review (HUM-WEB-03) [V, line 47].
 
 ## Workflows [V]
 

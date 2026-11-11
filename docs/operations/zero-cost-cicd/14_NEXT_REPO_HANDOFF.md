@@ -8,8 +8,8 @@ Reason: the CI gate is BLOCKED. No `ci.yml` job has started since 2026-11-10T17:
 
 - Local verify passes at 6d3a7fc, exit 0 [V, VERIFY_EXIT=0].
 - The workflow file has one definition, `ci.yml`, unchanged since 7c852c9 in local history [V].
-- The remote default head is 2759b23, and PR #1 and PR #2 heads are 2759b23 and cb3d5e4 [V].
-- BuildFailed runs (38) all end in `startup_failure` [V].
+- The remote default head is 2759b23, and PR #1 and PR #2 heads are 2759b23 and db3c5b1 (snapshot at 08:07Z) [V].
+- BuildFailed runs seen at the 08:04Z snapshot all end in `startup_failure` [V].
 
 ## What is not proven
 

@@ -13,7 +13,7 @@ Code under test: the ops worktree at 6d3a7fc83d1d17e529a09b11c9c43c4cefc7f2db [I
 | Runtime | `node -v` | n/a | v22.23.4, inside engines `>=22.12 <23` [V] | PASS |
 | Install | `npm ci` | 0 | `01-npm-ci.log`: "added 609 packages" and `NPM_CI_EXIT=0` [V] | PASS |
 | Verify gate | `TEST_DATABASE_URL=<aftervia_test> npm run verify` | 0 | `02-verify.log` ends with `VERIFY_EXIT=0` [V] | PASS |
-| Audit (production, high) | `npm audit --omit=dev --audit-level=high` | 0 [I] | `03-audit-prod-high.log` shows "5 moderate severity vulnerabilities" and no high. The log has no exit marker [V] | PASS per input; exit not recorded in the log |
+| Audit (production, high) | `npm audit --omit=dev --audit-level=high` | 0 [I] | `03-audit-prod-high.log` shows "5 moderate severity vulnerabilities" and no high. The log has no exit marker [V] | UNVERIFIED: exit 0 comes from the input, and the log has no exit marker |
 | e2e:web | `npm run e2e:web` with `TEST_DATABASE_URL` set | 1 | `04-e2e-web.log`: "Executable doesn't exist at /opt/pw-browsers/chromium_headless_shell-1254"; `E2E_EXIT=1` [V] | PENDING, environment |
 | Browser install | `npx playwright install chromium` (scratchpad path) | 1 | `05-pw-install.log`: HTTP 403, "request blocked: no rule or allowlist entry allows host cdn.playwright.dev"; `PW_INSTALL_EXIT=1` [V] | environment, policy denial, not routed around |
 | e2e diagnostic | same e2e, with a substitute browser (symlink shim) | 0 | `06-e2e-web-diag-substitute-browser.log` reports the steps ok and `E2E_DIAG_EXIT=0` [V] | DIAGNOSTIC ONLY, NOT A PASS |

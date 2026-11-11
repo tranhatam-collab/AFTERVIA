@@ -6,7 +6,7 @@ Status: BLOCKED (see 13). Root cause: UNKNOWN. No hypothesis is chosen as the ca
 
 - The last `ci.yml` run that was created is run 130 (created 2026-11-10T17:58:37Z). Nothing has started a `ci.yml` job since then [V, `list_workflow_runs` for workflow 402791759 returns total_count 130, newest first].
 - Runs under workflow id 414146482 (path `BuildFailed`) continue. The newest one seen was created 2026-11-11T07:57:23Z [V].
-- No head has CI evidence. That includes the default head 2759b23, PR #1 head 2759b23 and PR #2 head cb3d5e4 [V].
+- No head has CI evidence. That includes the default head 2759b23, PR #1 head 2759b23 and PR #2 head db3c5b1 (snapshot at 08:07Z) [V].
 
 Tags: [V] checked this session. [I] from the input, not re-fetched.
 

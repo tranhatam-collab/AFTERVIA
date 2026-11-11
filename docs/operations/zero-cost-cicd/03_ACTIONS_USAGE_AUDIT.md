@@ -19,8 +19,8 @@ Status: BLOCKED (see 13). Cost: BILLING_UNVERIFIED.
 ## Cost
 
 - BILLING_UNVERIFIED. No billing tool is available in this session. No cost figure is stated.
-- No USD budget appears in the repo. A grep of `docs/plan` at 6d3a7fc for `USD` finds only a valuation scenario in `docs/plan/03_BUNDLE_AUDIT.md` (lines 12 and 37), which is not a budget [V].
-- The "65" in the brief refers to `iteration_budget` 65 in `docs/plan/05_AUTONOMY_STATUS.md` line 61. That is an autonomy-loop count, not money [V].
+- No CI spend budget appears in `docs/plan`. A grep at 6d3a7fc for `USD` there finds only a valuation scenario in `docs/plan/03_BUNDLE_AUDIT.md` (lines 12 and 37) [V]. Repo-wide, USD also appears in `apps/landing/src/content.mjs` (proposed plan prices, lines 73 to 79) and `tests/fixtures/billing/sandbox-report-2026-11.json` (currency USD) [V]. None of these is a CI spend limit.
+- The "65" in the brief is not traced to any source in this repo. `iteration_budget` 65 at `docs/plan/05_AUTONOMY_STATUS.md` line 61 is a loop counter that might be what the brief meant. Unverified [I].
 - `docs/plan/backlog.json` line 7 has `iteration_budget` 126 at 6d3a7fc [V]. The two values disagree. Neither is a USD figure.
 
 ## Unknowns

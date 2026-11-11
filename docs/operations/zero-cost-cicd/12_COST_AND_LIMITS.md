@@ -6,7 +6,7 @@ Status: BILLING_UNVERIFIED. No cost figure is stated in this folder.
 
 - No billing tool is available in this session [V, none in the tool list used].
 - Observed usage for run 130: billable UBUNTU total_ms 0, 3 jobs, run_duration_ms 5000 [V]. This does not separate a block from a normal run. Run 123 also shows 0 [I].
-- No USD budget figure exists in the repo [V, see 03]. The "65" in the brief is `iteration_budget` 65 in `docs/plan/05_AUTONOMY_STATUS.md` line 61. That is an autonomy-loop count, not money [V]. `docs/plan/backlog.json` line 7 says 126 [V]. The two disagree and neither is a currency amount.
+- No CI spend budget appears in this repo [V, see 03]. Repo-wide USD appears only in landing price proposals and a sandbox fixture, which are not spend limits [V]. The "65" in the brief has no source in this repo or session [V]. `iteration_budget` 65 at `docs/plan/05_AUTONOMY_STATUS.md` line 61 and 126 in `docs/plan/backlog.json` line 7 are loop counters, not currency [V]. Any link between them and the brief's 65 USD is an inference [I].
 - The 65 USD figure in the brief is not supported by any file read here [V].
 
 ## Limits that bound this audit
