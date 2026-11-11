@@ -15,7 +15,7 @@ Only this folder is added:
 - docs/operations/zero-cost-cicd/03_ACTIONS_USAGE_AUDIT.md
 - docs/operations/zero-cost-cicd/04_DEPLOY_TARGET_DECISION.md
 - docs/operations/zero-cost-cicd/05_CLOUDFLARE_COMPATIBILITY.md
-- docs/operations/zero-cost-cicd/06_CI_OPTIMIZATION_PLAN.md
+- docs/operations/zero-cost-cicd/06b_CI_OPTIMIZATION_PLAN_ops.md
 - docs/operations/zero-cost-cicd/07_CHANGELOG_AND_DIFF.md
 - docs/operations/zero-cost-cicd/08_TEST_EVIDENCE.md
 - docs/operations/zero-cost-cicd/09_PREVIEW_STAGING_EVIDENCE.md

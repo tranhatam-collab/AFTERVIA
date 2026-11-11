@@ -30,7 +30,7 @@ The brief said the default head was 6d3a7fc and PR #2 was at 1c55ef7. Both have 
 
 The head commit of 2759b23 (run 42983260429, listed by `mcp__github__actions_list`) says it adds 14 files under `docs/operations/zero-cost-cicd/`. The saved `get_files` output for PR #1 (grep, not printed in full) names these files:
 
-01_README.md, 02_AUDIT.md, 03_BILLING_EVIDENCE.md, 04_ROUTE_DECISION.md, 05_CI_INVENTORY.md, 06_CI_OPTIMIZATION_PLAN.md, 07_SAFE_TEST_AREA.md, 08_TEST_RESULTS.md, 09_CONTROLLED_SWITCH.md, 10_DEPLOY_PROCESS.md, 11_ROLLBACK.md, 12_OWNER_APPROVALS.md, 13_ACCEPTANCE.md, 14_FINAL_REPORT.md.
+01_README.md, 02_AUDIT.md, 03_BILLING_EVIDENCE.md, 04_ROUTE_DECISION.md, 05_CI_INVENTORY.md, 06b_CI_OPTIMIZATION_PLAN_ops.md, 07_SAFE_TEST_AREA.md, 08_TEST_RESULTS.md, 09_CONTROLLED_SWITCH.md, 10_DEPLOY_PROCESS.md, 11_ROLLBACK.md, 12_OWNER_APPROVALS.md, 13_ACCEPTANCE.md, 14_FINAL_REPORT.md.
 
 These names do not match the 14 names in this folder. If this branch is merged into the default branch, two different sets would sit in one directory. Which set is canonical is an owner decision. This writer did not change the other set.
 
