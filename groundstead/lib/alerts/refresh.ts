@@ -1,4 +1,5 @@
 import { groupEvents, notYetPushed, type AlertEvent, type PushedRanks } from './dedupe.ts';
+import { FeedRefused } from './fetch.ts';
 import { buildSnapshot, type Snapshot, type SourceRun } from './snapshot.ts';
 import { readGdacs, readUsgs, type Reading } from './transform.ts';
 
@@ -42,8 +43,9 @@ async function runOne(
     // A feed whose every record was malformed gave nothing that could be read. That is a failed read, not "no alerts" (G-13).
     if (alerts.length === 0 && skipped > 0) throw new Error('no record of the feed could be read');
     return { source, ok: true, fetchedAt: now.toISOString(), alerts, skipped };
-  } catch {
-    return { source, ok: false, fetchedAt: null, alerts: [] };
+  } catch (error) {
+    // A refused feed says why (G-16, G-17). Any other failure is a failed read with no reason given.
+    return { source, ok: false, fetchedAt: null, alerts: [], ...(error instanceof FeedRefused ? { reason: error.reason } : {}) };
   }
 }
 

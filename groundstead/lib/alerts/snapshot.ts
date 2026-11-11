@@ -6,12 +6,13 @@ import { sourceState, type SourceState } from './sources.ts';
 // It never says that an area is safe; a source that failed says so, and keeps the time of its last good update.
 
 // skipped: how many records of the last good run were malformed and left out (G-13). Absent when no run has counted them.
-export type SourceStatus = { source: string; state: SourceState; lastUpdated: string | null; skipped?: number };
+// reason: why the source failed, when the read was refused for a stated reason (G-16, G-17). Absent otherwise.
+export type SourceStatus = { source: string; state: SourceState; lastUpdated: string | null; skipped?: number; reason?: string };
 export type Snapshot = { generatedAt: string; sources: SourceStatus[]; alerts: Alert[] };
 
 // One source's result for this run: whether it worked, when it last worked, the alerts it gave, and how many records it
 // skipped as malformed (G-13).
-export type SourceRun = { source: string; ok: boolean; fetchedAt: string | null; alerts: Alert[]; skipped?: number };
+export type SourceRun = { source: string; ok: boolean; fetchedAt: string | null; alerts: Alert[]; skipped?: number; reason?: string };
 
 export function buildSnapshot(runs: SourceRun[], now: Date, previous: Snapshot | null, maxAgeMinutes = 30): Snapshot {
   const sources: SourceStatus[] = runs.map((run) => {
@@ -24,6 +25,7 @@ export function buildSnapshot(runs: SourceRun[], now: Date, previous: Snapshot |
       state: sourceState({ lastUpdated, failed: !run.ok }, now, maxAgeMinutes),
       lastUpdated,
       ...(skipped !== undefined ? { skipped } : {}),
+      ...(!run.ok && run.reason !== undefined ? { reason: run.reason } : {}),
     };
   });
   const fresh = runs.filter((run) => run.ok).flatMap((run) => run.alerts);
@@ -54,6 +56,7 @@ export function statusesAt(snapshot: Snapshot, now: Date, maxAgeMinutes = 30): S
     lastUpdated: s.lastUpdated,
     state: sourceState({ lastUpdated: s.lastUpdated, failed: s.state === 'failed' }, now, maxAgeMinutes),
     ...(s.skipped !== undefined ? { skipped: s.skipped } : {}),
+    ...(s.reason !== undefined ? { reason: s.reason } : {}),
   }));
 }
 
@@ -108,11 +111,13 @@ export function parseSnapshot(value: unknown): Snapshot {
     if (s.skipped !== undefined && (typeof s.skipped !== 'number' || !Number.isInteger(s.skipped) || s.skipped < 0)) {
       throw new Error('bad snapshot: skipped is not a count');
     }
+    if (s.reason !== undefined && !isText(s.reason)) throw new Error('bad snapshot: reason is not text');
     return {
       source: s.source,
       state: s.state as SourceState,
       lastUpdated: s.lastUpdated as string | null,
       ...(s.skipped !== undefined ? { skipped: s.skipped as number } : {}),
+      ...(s.reason !== undefined ? { reason: s.reason as string } : {}),
     };
   });
   if (!Array.isArray(value.alerts)) throw new Error('bad snapshot: alerts is not a list');
