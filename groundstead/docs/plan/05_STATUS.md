@@ -2,20 +2,20 @@
 
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
-- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-02b. Chưa được chủ dự án xác nhận trong phiên này.
+- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-03. Chưa được chủ dự án xác nhận trong phiên này.
 - Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b.
-- Lượt này, OWN-G-02b (cảnh báo, phần còn lại), nhánh `ccr-8dbbf147-1ge7hc`, mỗi mục một commit, đã push:
-  - G-11 `d9dc15e` (MỘT PHẦN): cụm được đẩy lại khi có mức cao hơn mức đã đẩy; cụm không có mức không đẩy lại (giữ GT16). Đỏ trước: 1 test (cụm mạnh hơn không được đẩy lại: thực tế 0, kỳ vọng 1). Hai test không lặp đã xanh trước sửa, đóng vai trò chốt. Đột biến quy tắc đẩy lại: đỏ 1; khôi phục: xanh. Chưa nguồn nào đặt mức (xem BLOCKER 1).
-  - G-15 `b2e7776`: bán kính 0, âm, NaN, ngoài 5–100 km; vĩ độ hoặc kinh độ ngoài khoảng hay NaN bị từ chối kèm lý do. Không còn danh sách rỗng giả. Đỏ trước: 2 test (trả về rỗng). Đột biến (trả `{ok: true, alerts: []}`): đỏ 2; khôi phục: xanh.
-  - G-16 `27771ae`: chỉ https. http, file, data, ftp, ws, javascript và địa chỉ không phải URL bị từ chối trước mọi yêu cầu, kèm lý do; lý do đi vào snapshot (nguồn failed). CLI đọc qua `readFeed`. Đỏ trước: 7 test (địa chỉ http được nhận; nguồn ok). Đột biến bỏ kiểm tra scheme: đỏ 7; khôi phục: xanh.
-  - G-17 `1d931cf`: phản hồi quá 5 MiB bị từ chối; nguồn failed với lý do "too large". Content-Length vượt giới hạn thì không đọc byte nào; không khai báo thì đếm byte khi stream và hủy khi vượt. Đỏ trước: 5 test (body quá lớn được nhận; nguồn ok). Đột biến bỏ kiểm tra trong vòng đọc: đỏ 4; khôi phục: giống hệt bản sửa.
-- Cổng: `npm run verify` trong `groundstead/` exit 0 ở mỗi commit. Trước lượt: 211/211 (~26 giây). Cuối lượt `1d931cf`: 232/232 kiểm thử node, khoảng 26 giây. E2E smoke, offline và a11y chạy trong verify và đều pass. Không có e2e riêng cho cảnh báo vì chưa có trang nào dùng `lib/alerts`.
+- Lượt này, OWN-G-03 (offline), nhánh `ccr-8dbbf147-1ge7hc`, mỗi mục một commit, đã push:
+  - G-18 `5d228a4`: service worker kiểm lại từng tệp đã lưu trước khi phục vụ. Chữ ký Ed25519 của manifest được kiểm bằng khóa build (postbuild ghi khóa vào sw.js); kích thước và SHA-256 của từng tệp được kiểm. Tệp bị sửa, tệp không có trong manifest, hoặc gói không ký bằng khóa này đều không được phục vụ từ máy. Ghi bản mới thất bại không còn xóa bản tốt đang có. Đỏ trước: 7 test (SW-02 đến SW-05, khóa trong sw.js, e2e tệp bị sửa, e2e ghi lỗi). Đột biến (bỏ so SHA-256): đỏ 2 (SW-02, e2e tệp bị sửa); khôi phục: xanh.
+  - G-19 `83a323e`: manifest có thời điểm ký (`issued`) nằm trong phần được chữ ký bao phủ. Manifest cũ hơn bản đã cài bị từ chối trước khi tải tệp nào; bản đã cài giữ nguyên và trang báo riêng. Phiên bản là hash danh sách tệp nên không dùng để sắp thứ tự. Đỏ trước: 2 (unit `isOlder` trả sai; e2e: bản cũ thay bản đã cài). Đột biến (bỏ kiểm tra cũ hơn): đỏ 1; khôi phục: xanh.
+  - Lượt trước (OWN-G-02b): G-11 `d9dc15e` (một phần), G-15 `b2e7776`, G-16 `27771ae`, G-17 `1d931cf` đã push; chi tiết trong git log.
+- Cổng: `npm run verify` trong `groundstead/` exit 0 ở `83a323e`: 242/242 kiểm thử node, 30 giây. Đầu lượt, trên cây chưa sửa: exit 0, 232/232, 27 giây. E2E offline chạy riêng bằng `tools/loop/run-node-tests.mjs` với `tests/e2e/offline.e2e.mjs`: 9/9 ở `83a323e` (5 giây). Runner không có tùy chọn trace và e2e không bật trace.
 - BLOCKER (chờ chủ dự án, không tự quyết):
   1. G-11: chưa có ánh xạ mức nguồn sang CAP severity (GDACS Green/Orange/Red; USGS green/yellow/orange/red). Đến khi có, không nguồn nào đặt `severity`, nên không cụm nào được đẩy lại theo mức nguồn. Câu hỏi kèm theo: cụm đã đẩy khi chưa có mức, sau đó nhận mức, có đẩy lại không. Hiện: không, để giữ GT16 (một sự kiện, một lần đẩy).
   2. G-17: giới hạn 5 MiB là mặc định kỹ thuật của lượt này (`MAX_FEED_BYTES`). Chủ dự án có thể đổi.
   3. Môi trường: DNS của sandbox không phân giải được earthquake.usgs.gov và www.gdacs.org (ENOTFOUND). CLI `tools/alerts/refresh.mjs` vì vậy báo cả hai nguồn failed ở đây; không do thay đổi này. Dữ liệu thật chưa kiểm lại (như GS-053).
-- Hook sau commit gợi ý chạy hawkscan. Không chạy: ngoài phạm vi lượt này (như OWN-G-02a).
-- Việc kế tiếp: chủ dự án quyết ánh xạ mức và câu hỏi kèm theo (G-11). Sau đó OWN-G-03 offline (G-18, G-19), rồi G-21 phần JWK và seed.
+  4. G-19: phiên bản là hash danh sách tệp, không sắp thứ tự được. Lượt này so sánh bằng thời điểm ký (UTC, đến giây) nằm trong phần được chữ ký bao phủ. Chủ dự án cần xác nhận cách so sánh này. Hệ quả: manifest định dạng cũ (chưa có gói ký thật nào) không còn hợp lệ.
+- Hook sau commit gợi ý chạy hawkscan (sau `5d228a4` và `83a323e`). Không chạy: ngoài phạm vi lượt này (như OWN-G-02a).
+- Việc kế tiếp: OWN-G-04 khóa (G-21 phần JWK và seed; G-22 và G-20 chờ chủ dự án xác nhận). Chủ dự án quyết ánh xạ mức G-11 (BLOCKER 1).
 - Còn mở từ trước: G-21 (luật JWK `d` và seed); xác nhận G-08 (GDACS không có mức truy cập hiện công khai kèm ghi chú), G-14 (GDACS yên tĩnh hiện failed), luật rỗng và cắt chưa áp dụng cho USGS. Chờ chủ dự án xác nhận: G-22, G-20, nhãn quyết định ủy quyền. Blocker CI (ghi nhận từ trước, chưa kiểm lại): PR #2 đỏ tại các commit trước, ba job kết thúc trong ~3 giây, không có log.
 - Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
 - Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
