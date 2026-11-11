@@ -2,21 +2,14 @@
 
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
-- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-05. Chưa được chủ dự án xác nhận trong phiên này.
-- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b.
-- Lượt này, OWN-G-05 (G-23, header bảo mật), nhánh `ccr-8dbbf147-1ge7hc`:
-  - G-23 `1f5bb8d` (xong): header nằm trong `groundstead/vercel.json`, vì `next export` bỏ qua `headers()`. Mọi đường dẫn nhận CSP chặt nhất có thể, `frame-ancestors 'none'` chỉ trong header (không có trong meta), và Referrer-Policy `strict-origin-when-cross-origin`. Nới hai chỉ thị, mỗi cái có đo: `script-src 'unsafe-inline'` (script bootstrap inline của Next trên mọi trang, không có nonce khi export tĩnh; với `'self`, cả 19 trang chính đều lỗi) và `style-src 'unsafe-inline'` (trang 404 mặc định của Next; với `'self`, 3 trang 404 lỗi 30 lần).
-  - Đỏ trước: 5 kiểm thử cấu hình đỏ vì không có `vercel.json`; e2e đỏ vì mọi trang thiếu CSP và Referrer-Policy. Đột biến (bỏ `frame-ancestors`): kiểm thử cấu hình đỏ, e2e đỏ; khôi phục giống hệt bản cuối.
-  - Cổng: `npm run verify` trong `groundstead/` exit 0 ở `1f5bb8d`: 255/255 kiểm thử node (247 trước đó, thêm 8: 6 cấu hình, 2 e2e), 51 giây. E2E `tests/e2e/headers.e2e.mjs` chạy trong verify qua script `test`.
-- BLOCKER và lưu ý (chờ chủ dự án, không tự quyết):
-  1. Chưa triển khai (theo chỉ thị). Header chưa được kiểm trên URL Vercel thật: e2e áp quy tắc `vercel.json` cục bộ. Sau lần triển khai tới, cần xác nhận bằng `curl -I` trên preview.
-  2. `'unsafe-inline'` cho script là giới hạn của static export (không có nonce). Phương án chặt hơn là băm script theo từng trang khi build, kèm header theo đường dẫn; cần chủ dự án quyết có làm không.
-  3. Trang ngoại tuyến do service worker phục vụ giữ header đã lưu (`sw.js` giữ `hit.headers`); chưa kiểm trên thiết bị.
-  4. Các e2e khác (smoke, offline, a11y) vẫn không kèm header; chỉ e2e headers kiểm CSP.
-  5. Từ OWN-G-04, chưa đổi: G-20 và G-22 chờ xác nhận; G-11, G-17, G-19 chờ chủ dự án; giới hạn G-21 (seed 32 byte trần) cần xác nhận.
-- Việc kế tiếp: OWN-G-06 (nội dung) theo kế hoạch; mọi nội dung vẫn AI_DRAFT tới khi D-10. Blocker 2 chờ chủ dự án nếu muốn chặt hơn.
-- Còn mở từ trước: xác nhận G-08, G-14, luật rỗng và cắt cho USGS; blocker CI của PR #2 (ghi nhận từ trước, chưa kiểm lại).
-- Cập nhật: 11/11/2026, OWN-G-05 (G-23 xong).
+- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-06. Chưa được chủ dự án xác nhận trong phiên này.
+- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b. Không đổi `review.status` nào; mọi nội dung vẫn AI_DRAFT.
+- Lượt này, OWN-G-06 (G-05, G-06, G-07), nhánh `ccr-8dbbf147-1ge7hc`:
+  - G-06 (xong, commit này): ngày kiểm tuổi nội dung do người gọi truyền vào. `loadContent` và `validateContent` từ chối chạy nếu thiếu hoặc sai ngày; không còn mặc định theo đồng hồ. Đường nội dung chỉ đọc đồng hồ ở `lib/content/load.ts` (điểm lắp ráp của build) và ở CLI `tools/checks/content-validate.mjs`. Đỏ trước: `Missing expected exception` (ngày đang lấy từ đồng hồ). Đột biến (khôi phục `?? new Date()`): đỏ; khôi phục giống hệt bản đã sửa (cmp).
+  - Cổng: `npm run verify` trong `groundstead/` exit 0: 256/256 kiểm thử node (255 trước đó, thêm 1), 50 giây.
+  - G-05 BLOCKED, chờ chủ dự án, chưa sửa code: D-22 trong `03_DECISIONS.md` ghi màn hình khẩn cấp liệt kê mọi khối quốc gia, không có bộ chọn và không dùng vị trí. G-05 yêu cầu chỉ hiện số của quốc gia người đọc. Hai điều này mâu thuẫn, và cách biết quốc gia người đọc (bộ chọn trên trang, hay route theo quốc gia) là quyết định của chủ dự án. Trang in `emergency/print` cũng liệt kê mọi quốc gia; cần quyết định phạm vi cho cả hai.
+- Việc kế tiếp: G-07 (build production chặn AI_DRAFT; Preview có biển báo và nhãn JSON-LD; kênh chọn bằng `GS_CHANNEL`, không đặt thì là production).
+- Cập nhật: 11/11/2026, OWN-G-06 (G-06 xong; G-05 chờ quyết định D-22).
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |

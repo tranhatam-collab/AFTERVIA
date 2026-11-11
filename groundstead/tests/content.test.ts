@@ -107,6 +107,18 @@ test('GT03 a country pack must name known sources, match its file name and warn 
   assert.ok(report.warnings.some((w) => /not re-checked for more than 92 days/.test(w.message)));
 });
 
+test('G-06 the content age check uses the date it is given and never reads the clock', () => {
+  // No date given: the check refuses to run, rather than aging the content against whatever day the suite runs.
+  assert.throws(() => loadContent({ contentDir: DEFAULT_CONTENT_DIR } as never), /injected date/);
+  assert.throws(() => validateContent({ contentDir: DEFAULT_CONTENT_DIR } as never), /injected date/);
+  assert.throws(() => loadContent({ contentDir: DEFAULT_CONTENT_DIR, today: 'not-a-date' }), /injected date/);
+  // A fixed date gives the same answer on any day: 92 days after the check is still current, 93 is old.
+  const dir = writeContent(editJson(validFiles(), 'countries/VN.json', (d) => void (d.emergency_numbers[0].checked_on = '2026-05-01')));
+  const oldWarnings = (today: string) => validateContent({ contentDir: dir, today }).warnings.filter((w) => /not re-checked/.test(w.message));
+  assert.equal(oldWarnings('2026-08-01').length, 0, '92 days is still current');
+  assert.ok(oldWarnings('2026-08-02').length > 0, '93 days is old');
+});
+
 test('GT03 the content check exits non-zero on broken content, and the build runs it before next build', () => {
   const bad = edit(validFiles(), 'cards/en/flood-before.md', (d) => void delete d.first_action);
   const script = join(ROOT, 'tools/checks/content-validate.mjs');

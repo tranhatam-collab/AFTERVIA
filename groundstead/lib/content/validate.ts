@@ -27,8 +27,18 @@ const REQUIRED_DISCLAIMER: Record<string, Article['disclaimer']> = {
 export type ValidateOptions = {
   contentDir?: string;
   schemaDir?: string;
-  today?: string;
+  // Required: the caller injects the date (the build passes its own, a test passes a fixed one). The age checks read
+  // this and never the clock, so a result cannot drift with the day the check happens to run (G-06).
+  today: string;
 };
+
+// The one check on the injected date. A missing or malformed date stops the check instead of defaulting to the clock.
+function requireDate(today: unknown): string {
+  if (typeof today !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(today) || Number.isNaN(Date.parse(today))) {
+    throw new Error('the content check needs an injected date (YYYY-MM-DD); it does not read the clock');
+  }
+  return today;
+}
 
 function buildValidators(schemaDir: string): Record<(typeof SCHEMA_NAMES)[number], ValidateFunction> {
   const ajv = new Ajv({ allErrors: true, strict: true });
@@ -105,10 +115,10 @@ function readExceptions(contentDir: string, err: (file: string, message: string)
   return valid;
 }
 
-export function loadContent(options: ValidateOptions = {}): LoadedContent {
+export function loadContent(options: ValidateOptions): LoadedContent {
   const contentDir = resolve(options.contentDir ?? DEFAULT_CONTENT_DIR);
   const schemaDir = resolve(options.schemaDir ?? join(DEFAULT_CONTENT_DIR, 'schema'));
-  const today = options.today ?? new Date().toISOString().slice(0, 10);
+  const today = requireDate(options.today);
   const v = buildValidators(schemaDir);
   const errors: ContentIssue[] = [];
   const warnings: ContentIssue[] = [];
@@ -335,7 +345,7 @@ export function loadContent(options: ValidateOptions = {}): LoadedContent {
   };
 }
 
-export function validateContent(options: ValidateOptions = {}): LoadedContent['report'] {
+export function validateContent(options: ValidateOptions): LoadedContent['report'] {
   return loadContent(options).report;
 }
 

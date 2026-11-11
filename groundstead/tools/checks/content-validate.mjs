@@ -8,7 +8,8 @@ import { DEFAULT_CONTENT_DIR, validateContent } from '../../lib/content/validate
 const flag = process.argv.indexOf('--content');
 const contentDir = flag >= 0 ? resolve(process.argv[flag + 1] ?? '') : DEFAULT_CONTENT_DIR;
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const report = validateContent({ contentDir });
+// The CLI is a composition root: it is where the build's date enters the content check (G-06).
+const report = validateContent({ contentDir, today: new Date().toISOString().slice(0, 10) });
 
 for (const w of report.warnings) console.warn(`WARN  ${w.file}: ${w.message}`);
 if (report.errors.length > 0) {
