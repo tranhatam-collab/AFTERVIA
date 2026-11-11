@@ -2,17 +2,16 @@
 
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
-- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-06. Chưa được chủ dự án xác nhận trong phiên này.
-- Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b. Không đổi `review.status` nào; mọi nội dung vẫn AI_DRAFT.
-- Lượt này, OWN-G-06 (G-05, G-06, G-07), nhánh `ccr-8dbbf147-1ge7hc`:
-  - G-06 `db3c5b1` (xong): ngày kiểm tuổi nội dung do người gọi truyền vào. `loadContent` và `validateContent` từ chối chạy nếu thiếu hoặc sai ngày. Đỏ trước: `Missing expected exception`. Đột biến (khôi phục `?? new Date()`): đỏ; khôi phục giống hệt.
-  - G-07 (xong, commit này): kênh build chọn bằng `GS_CHANNEL`. Không đặt hoặc để trống thì là `production`; `preview` phải đặt rõ; giá trị khác làm build dừng. Production chỉ đưa thẻ đã được người duyệt (`COMMUNITY_CHECKED` hoặc `EXPERT_REVIEWED`, có đủ hồ sơ), còn AI_DRAFT, STALE và bản dịch STALE bị loại (fail closed). Preview có biển báo trên mọi trang và nhãn trong JSON-LD (HowTo, Organization). `build:test` đặt `GS_CHANNEL=preview`, nên e2e chạy trên Preview. Đỏ trước: production hiện mọi thẻ, Preview chưa có biển báo, `lib/channel.ts` chưa có. Đột biến (production hiện mọi thẻ): đỏ ở 2 kiểm thử đơn vị và 3 kiểm thử bản build production; khôi phục giống hệt.
-  - Hệ quả, cần chủ dự án biết: trong khi mọi thẻ còn AI_DRAFT (chờ D-10), bản build production không có thẻ an toàn nào. Trang khẩn cấp hiện "chưa có hướng dẫn nào được công bố". Next static export cần ít nhất một route động, nên có một route giữ chỗ `emergency/_none/` không chứa thẻ, trang của nó gọi `notFound()` và không có liên kết nào trỏ tới.
-  - Cổng: `npm run verify` trong `groundstead/` exit 0 (lần cuối 55 giây): 266/266 kiểm thử node (256 trước đó, thêm 10), cộng 4/4 kiểm thử bản build production (`check:production`), và quét bí mật bản production sạch. E2E (smoke, offline, a11y, headers) chạy 41/41 trên kênh Preview, 33 giây. Lưu ý: bước cuối của verify để `out/` là bản production; muốn chạy e2e sau verify, chạy `npm run build:test` trước.
-  - G-05 BLOCKED, chờ chủ dự án, chưa sửa code: D-22 trong `03_DECISIONS.md` ghi màn hình khẩn cấp liệt kê mọi khối quốc gia, không có bộ chọn và không dùng vị trí. G-05 yêu cầu chỉ hiện số của quốc gia người đọc. Hai điều này mâu thuẫn, và cách biết quốc gia người đọc (bộ chọn trên trang, hay route theo quốc gia) là quyết định của chủ dự án. Trang in `emergency/print` cũng liệt kê mọi quốc gia; cần quyết định phạm vi cho cả hai.
-- BLOCKER cần thao tác ngoài repo (không làm trong lượt này, không deploy): môi trường Preview trên Vercel phải đặt `GS_CHANNEL=preview`. Nếu không, Preview build theo production: không có thẻ, không có biển báo. Production để trống biến này.
-- Việc kế tiếp: chủ dự án quyết D-22 (G-05), xác nhận D-10 khi có người duyệt thật, và đặt `GS_CHANNEL=preview` cho Preview trên Vercel. Sau đó OWN-G-07 (G-25: chạy e2e 10 lần để tìm lỗi chập chờn).
-- Cập nhật: 11/11/2026, OWN-G-06 (G-06 xong; G-07 xong; G-05 chờ D-22).
+- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-07. Chưa được chủ dự án xác nhận trong phiên này.
+- Mục HUMAN giữ nguyên, không làm trong lượt này: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b. Không đổi `review.status` nào; mọi nội dung vẫn AI_DRAFT.
+- Lượt này, OWN-G-07 (G-25), nhánh `ccr-8dbbf147-1ge7hc`:
+  - G-25 messages `17cd02e` (xong): runner giữ thông báo lỗi thật của từng kiểm thử, in ngay dưới dòng FAIL và ghi vào `failureMessages` trong báo cáo JSON. Kiểm thử mới `tools/loop/run-node-tests.test.mjs` nằm trong script test. Đỏ trước: "the console output shows the failure message". Đột biến (thông báo thành chuỗi rỗng): đỏ; khôi phục giống hệt (sha256 khớp). Phát hiện khi viết test: node:test đặt `NODE_TEST_CONTEXT`, nên runner con phải chạy với biến này bị xóa.
+  - Lỗi chập chờn `24477e3` (xong, không có lỗi): e2e smoke, offline và a11y chạy 10 lượt liên tiếp trên bản Preview. 10/10 lượt thoát 0, mỗi lượt 39 đạt, 0 lỗi, 0 bỏ qua; thời gian 17,0 đến 23,9 giây. Không có kiểm thử nào lỗi nên không có mã nào được sửa. Chi tiết: `docs/evidence/G25-e2e-10x.md`. Lưu ý: 10 lượt trên một máy trong một phiên, nên chưa chứng minh là không có lỗi chập chờn.
+  - Cổng: `npm run verify` exit 0 (lần cuối 57 giây): 267/267 kiểm thử node (266 trước đó, thêm 1), 4/4 kiểm thử bản production, quét bí mật và bundle sạch.
+  - `--trace off`: runner và bộ e2e không có tùy chọn trace, không có cấu hình Playwright, nên không truyền cờ này.
+- Blocker: không có blocker mới trong lượt này. Blocker cũ vẫn còn: bản Preview trên Vercel phải đặt `GS_CHANNEL=preview` (ngoài repo). Nếu không, Preview build theo production và e2e không khớp. G-05 vẫn BLOCKED chờ D-22.
+- Việc kế tiếp: OWN-G-08 (Cổng 1, GS-G1), chạy sau OWN-G-02 đến OWN-G-07 theo kế hoạch. Chủ dự án cần quyết D-22 (G-05), xác nhận D-10 khi có người duyệt thật, và đặt `GS_CHANNEL=preview` trên Vercel.
+- Cập nhật: 11/11/2026, OWN-G-07 (G-25 xong; lỗi chập chờn: 10/10 lượt đạt, không có lỗi).
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
