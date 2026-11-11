@@ -14,7 +14,7 @@ Evidence tags used in this folder:
 |---|---|---|
 | ccr-4544c9f7-b1t50m (default branch) | 2759b23ff07eed9ad51dbcd1737adbf2da065c4a | `git ls-remote origin`, exit 0 |
 | main | b809781cd8f2894837310320d1c09d7686f0f4da | ls-remote; `git cat-file -t` = commit; `git ls-tree -r` = 0 files |
-| ccr-8dbbf147-1ge7hc (PR #2 head) | cb3d5e4bd79eead217f38a79b8c39fe7683d8478 | ls-remote |
+| ccr-8dbbf147-1ge7hc (PR #2 head, 07:55Z snapshot) | cb3d5e4bd79eead217f38a79b8c39fe7683d8478 | ls-remote |
 | ops/zero-cost-cicd-20261111 | not on remote | ls-remote grep, empty |
 | local worktree HEAD | 6d3a7fc83d1d17e529a09b11c9c43c4cefc7f2db | `git rev-parse HEAD` |
 

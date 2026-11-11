@@ -7,7 +7,7 @@ GO is not granted. The acceptance condition is not met: no `ci.yml` run has star
 ## Reasons (with tags)
 
 1. No CI job has started since run 130 [V]. 38 BuildFailed runs, all `startup_failure`, continue through 2026-11-11T07:57:23Z [V].
-2. The default head is 2759b23, not 6d3a7fc as briefed [V]. PR #1 head is also 2759b23 [V]. PR #2 head is cb3d5e4, not 1c55ef7 [V].
+2. The default head is 2759b23, not 6d3a7fc as briefed [V]. PR #1 head is also 2759b23 [V]. PR #2 head was cb3d5e4 at the 07:55Z snapshot, not 1c55ef7 [V]; it has since moved (see pr2_head).
 3. The default branch already holds a 14-file docs set in the same directory under different names [V]. This must be resolved by an owner before any merge.
 4. Local verify passes at 6d3a7fc, exit 0 [V]. e2e:web parity is PENDING because of an environment block [V].
 5. Cloudflare behaviour is UNVERIFIED (05). Docs are unreachable from this session [V].

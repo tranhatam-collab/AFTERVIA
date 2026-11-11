@@ -30,7 +30,7 @@ Every statement about how Cloudflare Pages reads `_headers`, how Pages build set
 ### groundstead (PR #2 head only)
 
 - Not on the default branch [V].
-- On PR #2 head cb3d5e4: `next.config.ts` has `output: 'export'`, `trailingSlash: true`, `images.unoptimized: true` [V].
+- On PR #2 head at the 07:55Z snapshot (cb3d5e4): `next.config.ts` has `output: 'export'`, `trailingSlash: true`, `images.unoptimized: true` [V].
 - The output directory `groundstead/out` comes from `tools/build/postbuild.mjs` [I]. Next.js 16 defaults for the export directory: [U].
 - No `_headers` or Cloudflare config exists on that branch [I].
 
