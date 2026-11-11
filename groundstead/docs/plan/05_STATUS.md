@@ -2,25 +2,23 @@
 
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
-- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-03. Chưa được chủ dự án xác nhận trong phiên này.
+- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-04. Chưa được chủ dự án xác nhận trong phiên này.
 - Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b.
-- Lượt này, OWN-G-03 (offline), nhánh `ccr-8dbbf147-1ge7hc`, mỗi mục một commit, đã push:
-  - G-18 `5d228a4`: service worker kiểm lại từng tệp đã lưu trước khi phục vụ. Chữ ký Ed25519 của manifest được kiểm bằng khóa build (postbuild ghi khóa vào sw.js); kích thước và SHA-256 của từng tệp được kiểm. Tệp bị sửa, tệp không có trong manifest, hoặc gói không ký bằng khóa này đều không được phục vụ từ máy. Ghi bản mới thất bại không còn xóa bản tốt đang có. Đỏ trước: 7 test (SW-02 đến SW-05, khóa trong sw.js, e2e tệp bị sửa, e2e ghi lỗi). Đột biến (bỏ so SHA-256): đỏ 2 (SW-02, e2e tệp bị sửa); khôi phục: xanh.
-  - G-19 `83a323e`: manifest có thời điểm ký (`issued`) nằm trong phần được chữ ký bao phủ. Manifest cũ hơn bản đã cài bị từ chối trước khi tải tệp nào; bản đã cài giữ nguyên và trang báo riêng. Phiên bản là hash danh sách tệp nên không dùng để sắp thứ tự. Đỏ trước: 2 (unit `isOlder` trả sai; e2e: bản cũ thay bản đã cài). Đột biến (bỏ kiểm tra cũ hơn): đỏ 1; khôi phục: xanh.
-  - Lượt trước (OWN-G-02b): G-11 `d9dc15e` (một phần), G-15 `b2e7776`, G-16 `27771ae`, G-17 `1d931cf` đã push; chi tiết trong git log.
-- Cổng: `npm run verify` trong `groundstead/` exit 0 ở `83a323e`: 242/242 kiểm thử node, 30 giây. Đầu lượt, trên cây chưa sửa: exit 0, 232/232, 27 giây. E2E offline chạy riêng bằng `tools/loop/run-node-tests.mjs` với `tests/e2e/offline.e2e.mjs`: 9/9 ở `83a323e` (5 giây). Runner không có tùy chọn trace và e2e không bật trace.
+- Lượt này, OWN-G-04 (khóa), nhánh `ccr-8dbbf147-1ge7hc`:
+  - G-21 `52a41a0` (xong): phần còn lại sau `c1f0bc3` (tên khóa). Bundle scan chặn: `d` của JWK private (JSON hoặc JS); seed 32 byte dạng hex hoặc base64 gắn tên seed hoặc private key; tiêu đề PKCS#8 Ed25519 bọc seed, không cần tên. Khóa công khai đáng tin và digest SHA-256 không bị báo (kiểm thử âm). Đỏ trước: 3 kiểm thử dương trả về `[]`. Đột biến (bỏ lời gọi quét khóa): đỏ 3; khôi phục: xanh 8/8.
+  - G-20 (chưa làm, chờ xác nhận): đổi cổng phát hành. Yêu cầu đã ghi cho Lane A: `groundstead/docs/plan/REQUESTS_TO_LANE_A.md`.
+  - G-22 (chưa làm, chờ xác nhận): build production thất bại khi thiếu khóa; Preview ra gói chưa ký có nhãn. Không đổi code trong lượt này.
+- Cổng: `npm run verify` trong `groundstead/` exit 0 ở `52a41a0`: 247/247 kiểm thử node (242 trước đó, thêm 5), 32 giây. Đầu lượt, trên cây chưa sửa: exit 0, 242/242. Lượt này không chạm trang, cảnh báo hay offline nên không chạy e2e riêng.
 - BLOCKER (chờ chủ dự án, không tự quyết):
-  1. G-11: chưa có ánh xạ mức nguồn sang CAP severity (GDACS Green/Orange/Red; USGS green/yellow/orange/red). Đến khi có, không nguồn nào đặt `severity`, nên không cụm nào được đẩy lại theo mức nguồn. Câu hỏi kèm theo: cụm đã đẩy khi chưa có mức, sau đó nhận mức, có đẩy lại không. Hiện: không, để giữ GT16 (một sự kiện, một lần đẩy).
-  2. G-17: giới hạn 5 MiB là mặc định kỹ thuật của lượt này (`MAX_FEED_BYTES`). Chủ dự án có thể đổi.
-  3. Môi trường: DNS của sandbox không phân giải được earthquake.usgs.gov và www.gdacs.org (ENOTFOUND). CLI `tools/alerts/refresh.mjs` vì vậy báo cả hai nguồn failed ở đây; không do thay đổi này. Dữ liệu thật chưa kiểm lại (như GS-053).
-  4. G-19: phiên bản là hash danh sách tệp, không sắp thứ tự được. Lượt này so sánh bằng thời điểm ký (UTC, đến giây) nằm trong phần được chữ ký bao phủ. Chủ dự án cần xác nhận cách so sánh này. Hệ quả: manifest định dạng cũ (chưa có gói ký thật nào) không còn hợp lệ.
-- Hook sau commit gợi ý chạy hawkscan (sau `5d228a4` và `83a323e`). Không chạy: ngoài phạm vi lượt này (như OWN-G-02a).
-- Việc kế tiếp: OWN-G-04 khóa (G-21 phần JWK và seed; G-22 và G-20 chờ chủ dự án xác nhận). Chủ dự án quyết ánh xạ mức G-11 (BLOCKER 1).
-- Còn mở từ trước: G-21 (luật JWK `d` và seed); xác nhận G-08 (GDACS không có mức truy cập hiện công khai kèm ghi chú), G-14 (GDACS yên tĩnh hiện failed), luật rỗng và cắt chưa áp dụng cho USGS. Chờ chủ dự án xác nhận: G-22, G-20, nhãn quyết định ủy quyền. Blocker CI (ghi nhận từ trước, chưa kiểm lại): PR #2 đỏ tại các commit trước, ba job kết thúc trong ~3 giây, không có log.
-- Cập nhật: 06/11/2026, sau vòng 21 (GS-053a là vòng 21; GS-081 là vòng 20; GS-051 là vòng 19; GS-050 là vòng 18; GS-033 là vòng 17; GS-023 là vòng 16; GS-022 là vòng 15; GS-021 là vòng 14; GS-020 là vòng 13; GS-035 là vòng 12; GS-016 là vòng 11; GS-013 là vòng 10; GS-014 là vòng 9; GS-031 là vòng 8).
-- Trạng thái: **STOP_STUCK** — `decide` không còn việc tự động nào sẵn sàng. Mọi việc AUTO còn lại chờ GS-032 (D-26, chủ dự án quyết) hoặc việc HUMAN (GS-H01–H05, GS-053b). Chờ chủ dự án.
-- Vị trí: repo AFTERVIA, nhánh `ccr-8dbbf147-1ge7hc`, thư mục `groundstead/`. Repo riêng `tranhatam-collab/groundstead` chưa tồn tại (GS-H01).
-- Ngân sách: 21/100 vòng.
+  1. G-20 và G-22: chủ dự án xác nhận trước khi làm. G-20 cần Lane A sửa workflow; G-22 đổi cổng build.
+  2. Giới hạn của G-21: không phát hiện được seed 32 byte trần, không có tên và không có tiêu đề PKCS#8. Dạng này giống khóa công khai đáng tin và SHA-256 digest, nên chặn sẽ báo nhầm. Cần chủ dự án xác nhận chấp nhận giới hạn này.
+  3. G-11: chưa có ánh xạ mức nguồn sang CAP severity; cụm sự kiện chưa được đẩy lại theo mức nguồn.
+  4. G-17: giới hạn 5 MiB là mặc định kỹ thuật (`MAX_FEED_BYTES`).
+  5. G-19: so sánh manifest bằng thời điểm ký (UTC, đến giây); chủ dự án cần xác nhận cách so sánh này.
+  6. Môi trường sandbox: DNS không phân giải earthquake.usgs.gov và www.gdacs.org; dữ liệu thật chưa kiểm lại.
+- Việc kế tiếp: chủ dự án trả lời G-20, G-22, và chọn cách ánh xạ mức G-11 (BLOCKER 3). Sau đó Lane G làm G-22 trong lượt riêng; G-20 chuyển cho Lane A.
+- Còn mở từ trước: xác nhận G-08, G-14, luật rỗng và cắt cho USGS; blocker CI của PR #2 (ghi nhận từ trước, chưa kiểm lại).
+- Cập nhật: 11/11/2026, OWN-G-04 (G-21 xong; G-20 và G-22 chờ xác nhận).
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
