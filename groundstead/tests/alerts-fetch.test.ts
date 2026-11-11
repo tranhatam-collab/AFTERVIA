@@ -67,6 +67,80 @@ test('G-16 a refused feed marks its source failed, with the reason, in the snaps
   assert.deepEqual(spy.calls, [], 'nothing was fetched');
 });
 
+// G-16: a redirect is followed one hop at a time, and each hop is checked with the same https rule before it is requested.
+// The table answers each address. A redirect comes back as it is when the request asks for redirect "manual", and is
+// followed to its Location otherwise, as fetch does by default. Every address asked for is recorded.
+type Route = { status: number; location: string } | { body: string };
+function routedFetch(table: Record<string, Route>): { fetch: (url: string, init: RequestInit) => Promise<Response>; calls: string[] } {
+  const calls: string[] = [];
+  return {
+    calls,
+    fetch: async (url: string, init: RequestInit): Promise<Response> => {
+      let current = url;
+      for (;;) {
+        calls.push(current);
+        if (calls.length > 40) return new Response('a loop', { status: 500 }); // a loop that is never followed cannot hang the test
+        const route = table[current];
+        if (route === undefined) return new Response('no such address', { status: 404 });
+        if (!('body' in route)) {
+          if (init.redirect === 'manual') return new Response(null, { status: route.status, headers: { location: route.location } });
+          current = route.location;
+          continue;
+        }
+        return new Response(route.body, { status: 200 });
+      }
+    },
+  };
+}
+
+test('G-16 a redirect from https to an http address is refused with a reason, and the http address is never requested', async () => {
+  const routes = routedFetch({
+    'https://feed.test/summary.geojson': { status: 302, location: 'http://feed.test/moved.geojson' },
+    'http://feed.test/moved.geojson': { body: GEO },
+  });
+  await assert.rejects(
+    readFeed({ url: 'https://feed.test/summary.geojson', format: 'geojson', fetch: routes.fetch }),
+    (error: unknown) => error instanceof FeedRefused && /https/.test(error.reason),
+    'a redirect to http must be refused with a reason that names https',
+  );
+  assert.deepEqual(routes.calls, ['https://feed.test/summary.geojson'], 'the http address is never requested');
+});
+
+for (const location of ['ftp://feed.test/summary.geojson', 'file:///etc/passwd']) {
+  const scheme = location.slice(0, location.indexOf(':') + 1);
+  test(`G-16 a redirect to the ${scheme} scheme is refused with a reason, and that address is never requested`, async () => {
+    const routes = routedFetch({
+      'https://feed.test/summary.geojson': { status: 307, location },
+      [location]: { body: GEO },
+    });
+    await assert.rejects(
+      readFeed({ url: 'https://feed.test/summary.geojson', format: 'geojson', fetch: routes.fetch }),
+      (error: unknown) => error instanceof FeedRefused && /https/.test(error.reason),
+      `a redirect to ${scheme} must be refused with a reason that names https`,
+    );
+    assert.deepEqual(routes.calls, ['https://feed.test/summary.geojson'], 'the redirect target is never requested');
+  });
+}
+
+test('G-16 a redirect from https to https is followed, and the body at its address is read', async () => {
+  const routes = routedFetch({
+    'https://feed.test/summary.geojson': { status: 301, location: 'https://feed.test/moved/summary.geojson' },
+    'https://feed.test/moved/summary.geojson': { body: GEO },
+  });
+  const body = await readFeed({ url: 'https://feed.test/summary.geojson', format: 'geojson', fetch: routes.fetch });
+  assert.deepEqual(routes.calls, ['https://feed.test/summary.geojson', 'https://feed.test/moved/summary.geojson']);
+  assert.deepEqual(body, { type: 'FeatureCollection', features: [] });
+});
+
+test('G-16 a redirect loop is refused with the reason "too many redirects" once the hop limit is passed', async () => {
+  const routes = routedFetch({ 'https://feed.test/loop.geojson': { status: 302, location: 'https://feed.test/loop.geojson' } });
+  await assert.rejects(
+    readFeed({ url: 'https://feed.test/loop.geojson', format: 'geojson', fetch: routes.fetch }),
+    (error: unknown) => error instanceof FeedRefused && error.reason === 'too many redirects',
+  );
+  assert.ok(routes.calls.length <= 21, `the hop limit is 20 redirects, got ${routes.calls.length} requests`);
+});
+
 test('G-16 every configured feed address is https, and an address that is not a URL is refused with a reason', () => {
   for (const [id, feed] of Object.entries(FEEDS)) assert.equal(feedUrlProblem(feed.url), null, `${id} must be an https address`);
   assert.match(feedUrlProblem('not a url') ?? '', /valid URL/);

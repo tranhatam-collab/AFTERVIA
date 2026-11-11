@@ -10,6 +10,7 @@
   - Cổng: `npm run verify` exit 0 (lần cuối 57 giây): 267/267 kiểm thử node (266 trước đó, thêm 1), 4/4 kiểm thử bản production, quét bí mật và bundle sạch.
   - `--trace off`: runner và bộ e2e không có tùy chọn trace, không có cấu hình Playwright, nên không truyền cờ này.
 - Sửa lỗi review `public/sw.js`: mạng trả 404/500 không còn bị thay bằng bản lưu offline; bản lưu chỉ dùng khi yêu cầu lỗi hoặc quá 3 giây. SW-01 đỏ trước, đột biến đỏ rồi khôi phục khớp; offline e2e 9/9.
+- Sửa lỗi review `lib/alerts/fetch.ts`: chuyển hướng feed sang http bị từ chối có lý do, nguồn ghi failed, không gọi địa chỉ http. Đỏ trước; đột biến đỏ rồi khôi phục khớp.
 - Blocker: không có blocker mới trong lượt này. Blocker cũ vẫn còn: bản Preview trên Vercel phải đặt `GS_CHANNEL=preview` (ngoài repo). Nếu không, Preview build theo production và e2e không khớp. G-05 vẫn BLOCKED chờ D-22.
 - Việc kế tiếp: OWN-G-08 (Cổng 1, GS-G1), chạy sau OWN-G-02 đến OWN-G-07 theo kế hoạch. Chủ dự án cần quyết D-22 (G-05), xác nhận D-10 khi có người duyệt thật, và đặt `GS_CHANNEL=preview` trên Vercel.
 - Cập nhật: 11/11/2026, OWN-G-07 (G-25 xong; lỗi chập chờn: 10/10 lượt đạt, không có lỗi).

@@ -64,13 +64,45 @@ export function feedUrlProblem(url: string): string | null {
   return null;
 }
 
+// The redirects followed for one feed read: the same limit fetch applies by default.
+const MAX_REDIRECTS = 20;
+const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
+
+// The address a redirect points to. It gets the same https rule as the configured address, checked before it is requested,
+// so a redirect to http (or any other scheme) is refused with a reason and nothing is sent to it (G-16).
+function redirectTarget(location: string, from: string): string {
+  let target: URL;
+  try {
+    target = new URL(location, from);
+  } catch {
+    throw new FeedRefused('the feed redirects to an address that is not a valid URL');
+  }
+  if (feedUrlProblem(target.href) !== null) throw new FeedRefused(`the feed redirects to ${target.protocol}; only https feeds are read`);
+  return target.href;
+}
+
+// The response to a feed address, after its redirects are followed one hop at a time. The request asks fetch not to follow
+// redirects itself, so each hop is seen here and checked before it is requested (G-16).
+async function requestFeed(doFetch: FetchLike, url: string, init: RequestInit): Promise<Response> {
+  let current = url;
+  for (let redirects = 0; ; redirects++) {
+    const response = await doFetch(current, init);
+    const location = response.headers.get('location');
+    if (!REDIRECT_STATUSES.has(response.status) || location === null) return response;
+    await response.body?.cancel();
+    if (redirects >= MAX_REDIRECTS) throw new FeedRefused('too many redirects');
+    current = redirectTarget(location, current);
+  }
+}
+
 // The body of one feed: parsed JSON for GeoJSON, text for RSS.
 export async function readFeed(input: FeedRead): Promise<unknown> {
   const problem = feedUrlProblem(input.url);
   if (problem !== null) throw new FeedRefused(problem);
   const doFetch: FetchLike = input.fetch ?? ((url, init) => fetch(url, init));
   const geojson = input.format === 'geojson';
-  const response = await doFetch(input.url, {
+  const response = await requestFeed(doFetch, input.url, {
+    redirect: 'manual',
     headers: {
       'user-agent': USER_AGENT,
       accept: geojson ? 'application/geo+json, application/json' : 'application/rss+xml, application/xml, text/xml',
