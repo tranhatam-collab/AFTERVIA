@@ -213,3 +213,35 @@ test('G-13 a feed whose every record is malformed is failed, not ok with no aler
   assert.deepEqual(snap.sources.map((s) => s.state), ['failed', 'failed'], 'nothing could be read, so nothing is claimed');
   assert.equal(snap.alerts.length, 0);
 });
+
+// G-14: an RSS document with no item, or one cut short, is a failed read. It is never "no alerts".
+const EMPTY_RSS = '<?xml version="1.0" encoding="utf-8"?>\n<rss version="2.0"><channel><title>GDACS</title></channel></rss>';
+const CUT_SHORT_RSS =
+  '<?xml version="1.0" encoding="utf-8"?>\n<rss version="2.0" xmlns:gdacs="http://www.gdacs.org"><channel>\n' +
+  '<item><gdacs:eventtype>FL</gdacs:eventtype><gdacs:eventid>1</gdacs:eventid>';
+
+test('G-14 an empty RSS document is failed, not ok with no alerts', async () => {
+  const snap = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: async () => EMPTY_RSS }, now: NOW, previous: null });
+  const gdacs = snap.sources.find((s) => s.source === 'gdacs');
+  assert.equal(gdacs?.state, 'failed', 'an empty feed is not read as "no alerts"');
+  assert.equal(gdacs?.lastUpdated, null, 'no good update was seen');
+  assert.deepEqual(snap.alerts.map((a) => `${a.source}:${a.id}`), ['usgs:us1']);
+});
+
+test('G-14 an RSS document cut short is failed, not ok with no alerts', async () => {
+  const snap = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: async () => CUT_SHORT_RSS }, now: NOW, previous: null });
+  assert.equal(snap.sources.find((s) => s.source === 'gdacs')?.state, 'failed');
+});
+
+test('G-14 an empty RSS after a good run keeps the time of the good run and the alerts still in force', async () => {
+  const earlier = await refreshAll({ fetchers: { usgs: okUsgs, gdacs: okGdacs }, now: NOW, previous: null });
+  const later = await refreshAll({
+    fetchers: { usgs: okUsgs, gdacs: async () => EMPTY_RSS },
+    now: new Date('2026-11-06T10:05:00.000Z'),
+    previous: earlier,
+  });
+  const gdacs = later.sources.find((s) => s.source === 'gdacs');
+  assert.equal(gdacs?.state, 'failed');
+  assert.equal(gdacs?.lastUpdated, NOW.toISOString(), 'the last good time is not moved forward');
+  assert.ok(later.alerts.some((a) => a.source === 'gdacs' && a.id === 'FL1001'), 'an alert still in force is not erased');
+});

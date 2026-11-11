@@ -15,11 +15,19 @@ export function usgsBody(body: unknown): unknown {
   return body;
 }
 
-// A GDACS body must be an RSS document with a channel. An HTML error page is a failed read.
+// A GDACS body must be an RSS document with a channel and at least one item. An HTML error page is a failed read. So is
+// a document cut short or unbalanced, and an empty one: none of those is "no alerts" (G-14). The rule: a source reads ok
+// only from a complete document that has items; a quiet period shows as failed until the owner decides otherwise.
 export function gdacsBody(body: unknown): string {
   if (typeof body !== 'string' || !/<rss[\s>]/i.test(body) || !/<channel[\s>]/i.test(body)) {
     throw new Error('the GDACS feed is not the expected RSS');
   }
+  const items = (body.match(/<item[\s>]/gi) ?? []).length;
+  const closedItems = (body.match(/<\/item>/gi) ?? []).length;
+  if (!/<\/channel>/i.test(body) || !/<\/rss>/i.test(body) || items !== closedItems) {
+    throw new Error('the GDACS feed is cut short or unparseable');
+  }
+  if (items === 0) throw new Error('the GDACS feed has no items, so it is not read as no alerts');
   return body;
 }
 
