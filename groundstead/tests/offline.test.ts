@@ -240,3 +240,13 @@ test('GT07 build output: every pack is signed, the signature verifies, and the s
     assert.ok(bundle.includes(manifest.publicKey), `${locale}: the site's JavaScript contains that public key`);
   }
 });
+
+test('G-18 build output: the worker is built with the same trusted key as the pages, so it can check a stored file', () => {
+  const sw = readOut('sw.js');
+  assert.doesNotMatch(sw, /const TRUSTED_KEY = '';/, 'the key placeholder is replaced at build time');
+  for (const locale of LOCALES) {
+    const { publicKey } = manifestOf(locale);
+    assert.ok(publicKey, `${locale} pack is signed`);
+    assert.ok(sw.includes(`const TRUSTED_KEY = '${publicKey}';`), `${locale}: sw.js trusts the key that signed the pack`);
+  }
+});

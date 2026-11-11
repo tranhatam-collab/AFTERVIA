@@ -129,6 +129,7 @@ async function fetchPack(locale: string): Promise<Fetched> {
 
 async function storePack(locale: string, manifest: PackManifest, bodies: Map<string, Body>): Promise<void> {
   const name = `${PREFIX}${locale}-${manifest.version}`;
+  const existed = await caches.has(name);
   const cache = await caches.open(name);
   try {
     for (const [path, body] of bodies) {
@@ -140,7 +141,9 @@ async function storePack(locale: string, manifest: PackManifest, bodies: Map<str
       new Response(JSON.stringify(manifest), { headers: { 'content-type': 'application/json' } }),
     );
   } catch (error) {
-    await caches.delete(name);
+    // A new partial copy is removed. A copy with this name was already on the device (same version, same bytes), so
+    // it is left in place and settle() checks it again.
+    if (!existed) await caches.delete(name);
     throw error;
   }
   await dropPacks(locale, name);
@@ -234,9 +237,9 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
       try {
         await storePack(locale, fetched.manifest, fetched.bodies);
       } catch {
-        await dropPacks(locale);
-        setInfo(null);
-        setPhase('notReady');
+        // The copy that was on the device stays: a failed write never replaces the last good copy.
+        setNotice(labels.statusFailed);
+        await settle();
         return;
       }
       if (!(await ensureWorker())) {

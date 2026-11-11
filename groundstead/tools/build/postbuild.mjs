@@ -93,3 +93,19 @@ for (const locale of LOCALES) {
   const state = privateKey ? 'signed' : 'UNSIGNED (no signing key: readers will not accept this pack)';
   console.log(`postbuild: offline pack ${locale}: ${manifest.files.length} file(s), version ${manifest.version}, ${state}`);
 }
+
+// The worker checks each stored file against the signed manifest with the same trusted key the pages use (G-18). The
+// key is written into the worker here. With no key the worker keeps an empty key and serves no stored copy.
+const SW_PLACEHOLDER = "const TRUSTED_KEY = '';";
+const swPath = join(out, 'sw.js');
+const swSource = readFileSync(swPath, 'utf8');
+if (swSource.split(SW_PLACEHOLDER).length !== 2) {
+  console.error('postbuild: out/sw.js must hold the trusted key placeholder exactly once');
+  process.exit(1);
+}
+if (publicKey && !/^[A-Za-z0-9+/]+={0,2}$/.test(publicKey)) {
+  console.error('postbuild: NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY must be base64');
+  process.exit(1);
+}
+writeFileSync(swPath, swSource.replace(SW_PLACEHOLDER, `const TRUSTED_KEY = '${publicKey}';`));
+console.log(`postbuild: sw.js trusted key ${publicKey ? 'set' : 'empty (no stored copy is served)'}`);

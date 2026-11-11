@@ -184,3 +184,63 @@ test('GT08 the emergency page shows the pack version and date, and the check but
     await s.close();
   }
 });
+
+test('G-18 a stored file that no longer matches its SHA-256 is not served when the server is down, the others still are', async () => {
+  const s = await session();
+  try {
+    await downloadEn(s);
+    await s.page.reload({ waitUntil: 'load' });
+    await s.page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+    await s.page.waitForSelector('[data-offline="ready"]');
+    // One character changed, same length: only the SHA-256 check can tell the copy has changed.
+    const edited = await s.page.evaluate(async (path) => {
+      const name = (await caches.keys()).find((n) => n.startsWith('groundstead-pack-en-'));
+      const cache = await caches.open(name);
+      const url = new URL(path, location.origin).href;
+      const text = await (await cache.match(url)).text();
+      const changed = text.replace('<h1', '<H1');
+      if (changed === text) throw new Error('the test page has no <h1 to change');
+      await cache.put(url, new Response(changed, { headers: { 'content-type': 'text/html; charset=utf-8' } }));
+      return changed;
+    }, '/en/emergency/flood-safety/');
+    s.stopServer();
+    const served = await s.page.evaluate(async () => {
+      try {
+        return { text: await (await fetch('/en/emergency/flood-safety/')).text() };
+      } catch (error) {
+        return { error: String(error) };
+      }
+    });
+    assert.notEqual(served.text, edited, 'the changed copy is not served');
+    const intact = await s.page.evaluate(async () => (await fetch('/en/emergency/heat-safety/')).ok);
+    assert.equal(intact, true, 'a copy that still matches is served');
+  } finally {
+    await s.close();
+  }
+});
+
+test('G-18 a failed write of a copy keeps the last good copy on this device', async () => {
+  const s = await session();
+  try {
+    await downloadEn(s);
+    await s.page.reload({ waitUntil: 'load' });
+    await s.page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+    await s.page.waitForSelector('[data-offline="ready"]');
+    const before = await packNames(s.page);
+    await s.page.evaluate(() => {
+      Cache.prototype.put = () => Promise.reject(new Error('storage full'));
+    });
+    const manifest = s.page.waitForResponse((r) => r.url().endsWith('/offline/en.json'));
+    await button(s.page, OFFLINE.en.download).click();
+    await manifest;
+    await s.page.waitForFunction(() => document.querySelector('[data-offline]')?.getAttribute('data-offline') !== 'busy');
+    assert.equal(await s.page.locator('[data-offline]').getAttribute('data-offline'), 'ready', 'the last good copy is still in place');
+    assert.equal(await status(s.page), OFFLINE.en.statusFailed);
+    assert.deepEqual(await packNames(s.page), before);
+    s.stopServer();
+    const served = await s.page.evaluate(async () => (await fetch('/en/emergency/flood-safety/')).ok);
+    assert.equal(served, true, 'the kept copy is still served offline');
+  } finally {
+    await s.close();
+  }
+});
