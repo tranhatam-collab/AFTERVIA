@@ -7,6 +7,7 @@ import { LOCALES, type Locale } from '../lib/i18n/locales.ts';
 import { sha256Hex } from '../lib/offline/digest.ts';
 import { base64ToBytes, verifySignature } from '../lib/offline/signature.ts';
 import { assetRefs, buildManifest, inPack, signManifest } from '../lib/offline/pack.ts';
+import * as verify from '../lib/offline/verify.ts';
 import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
 import { elements, OUT, readOut, visibleText } from './helpers.ts';
 import { cardsFor } from '../lib/emergency/cards.ts';
@@ -32,6 +33,7 @@ test('GT07 a pack is ready only when every listed file was found with its SHA-25
     id: 'en',
     version: 'test',
     updated: '2026-11-06',
+    issued: '2026-11-06T08:00:00Z',
     files: [
       { path: '/a/', sha256: a, size: 6 },
       { path: '/b/', sha256: b, size: 6 },
@@ -48,6 +50,7 @@ test('GT07 a missing file, or a file with another SHA-256, makes the whole pack 
     id: 'en',
     version: 'test',
     updated: '2026-11-06',
+    issued: '2026-11-06T08:00:00Z',
     files: [
       { path: '/a/', sha256: a, size: 6 },
       { path: '/b/', sha256: b, size: 6 },
@@ -62,10 +65,10 @@ test('GT07 a missing file, or a file with another SHA-256, makes the whole pack 
 });
 
 test('GT07 a pack with no files, or with a malformed hash, is never ready', () => {
-  const empty = verifyPack({ id: 'en', version: 'v', updated: 'd', files: [] }, {});
+  const empty = verifyPack({ id: 'en', version: 'v', updated: 'd', issued: '2026-11-06T08:00:00Z', files: [] }, {});
   assert.equal(empty.ready, false);
   const malformed = verifyPack(
-    { id: 'en', version: 'v', updated: 'd', files: [{ path: '/a/', sha256: 'not-a-hash', size: 1 }] },
+    { id: 'en', version: 'v', updated: 'd', issued: '2026-11-06T08:00:00Z', files: [{ path: '/a/', sha256: 'not-a-hash', size: 1 }] },
     { '/a/': 'not-a-hash' },
   );
   assert.equal(malformed.ready, false);
@@ -134,6 +137,7 @@ test('GT06 buildManifest sorts its files, and its version changes when one byte 
       { path: '/a/', bytes: encode('1') },
     ],
     '2026-11-06',
+    '2026-11-06T08:00:00Z',
   );
   assert.deepEqual(
     first.files.map((file) => file.path),
@@ -147,6 +151,7 @@ test('GT06 buildManifest sorts its files, and its version changes when one byte 
       { path: '/b/', bytes: encode('2') },
     ],
     '2026-11-06',
+    '2026-11-06T08:00:00Z',
   );
   assert.equal(again.version, first.version, 'the same files give the same version');
   const changed = await buildManifest(
@@ -156,6 +161,7 @@ test('GT06 buildManifest sorts its files, and its version changes when one byte 
       { path: '/b/', bytes: encode('3') },
     ],
     '2026-11-06',
+    '2026-11-06T08:00:00Z',
   );
   assert.notEqual(changed.version, first.version);
 });
@@ -209,7 +215,7 @@ function readJavaScript(dir: string): string {
 
 test('GT07 an Ed25519 signature verifies a manifest only under the key that made it, and only unchanged', async () => {
   const key = testKey();
-  const manifest = await buildManifest('en', [{ path: '/a/', bytes: encode('page a') }], '2026-11-06');
+  const manifest = await buildManifest('en', [{ path: '/a/', bytes: encode('page a') }], '2026-11-06', '2026-11-06T08:00:00Z');
   const signed = signManifest(manifest, key.pem);
   assert.equal(await verifySignature(signed, signed.signature, key.publicKey), true);
   assert.equal(await verifySignature(signed, signed.signature, testKey().publicKey), false, 'another key');
@@ -218,6 +224,8 @@ test('GT07 an Ed25519 signature verifies a manifest only under the key that made
   assert.equal(await verifySignature(changedFile, signed.signature, key.publicKey), false, 'a changed file');
   const changedVersion = { ...signed, version: 'other' };
   assert.equal(await verifySignature(changedVersion, signed.signature, key.publicKey), false, 'a changed version');
+  const changedIssued = { ...signed, issued: '2026-11-06T07:00:00Z' };
+  assert.equal(await verifySignature(changedIssued, signed.signature, key.publicKey), false, 'a changed issue time');
   assert.equal(await verifySignature(signed, null, key.publicKey), false, 'no signature');
   assert.equal(await verifySignature(signed, undefined, key.publicKey), false, 'no signature field');
   assert.equal(await verifySignature(signed, signed.signature, ''), false, 'no key');
@@ -249,4 +257,22 @@ test('G-18 build output: the worker is built with the same trusted key as the pa
     assert.ok(publicKey, `${locale} pack is signed`);
     assert.ok(sw.includes(`const TRUSTED_KEY = '${publicKey}';`), `${locale}: sw.js trusts the key that signed the pack`);
   }
+});
+
+test('G-19 a manifest is older only when its signed issue time is earlier than the installed one', () => {
+  const installed: PackManifest = {
+    id: 'en',
+    version: 'v1',
+    updated: '2026-11-11',
+    issued: '2026-11-11T08:00:00Z',
+    files: [],
+  };
+  assert.equal(verify.isOlder({ ...installed, issued: '2026-11-11T07:00:00Z' }, installed), true, 'an earlier build');
+  assert.equal(verify.isOlder({ ...installed, issued: '2026-11-11T08:00:00Z' }, installed), false, 'the same build');
+  assert.equal(verify.isOlder({ ...installed, issued: '2026-11-11T09:00:00Z' }, installed), false, 'a later build');
+  assert.equal(
+    verify.isOlder({ ...installed, version: '0aaaaaaaaaaa' }, installed),
+    false,
+    'the version is a hash of the file list and does not order packs',
+  );
 });

@@ -28,6 +28,7 @@ export async function buildManifest(
   locale: Locale,
   files: { path: string; bytes: Uint8Array }[],
   updated: string,
+  issued: string,
 ): Promise<PackManifest> {
   const entries: PackFile[] = [];
   for (const file of files) {
@@ -36,7 +37,7 @@ export async function buildManifest(
   entries.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
   const listing = new TextEncoder().encode(entries.map((e) => `${e.path} ${e.sha256}`).join('\n'));
   const version = (await sha256Hex(listing)).slice(0, 12);
-  return { id: locale, version, updated, files: entries };
+  return { id: locale, version, updated, issued, files: entries };
 }
 
 // Signs the manifest with the build's Ed25519 private key (PKCS#8 PEM). Only the build calls this. The key comes from
@@ -44,7 +45,13 @@ export async function buildManifest(
 export function signManifest(manifest: PackManifest, privatePem: string): PackManifest {
   const key = createPrivateKey(privatePem);
   const publicKey = Buffer.from(createPublicKey(key).export({ format: 'jwk' }).x ?? '', 'base64url').toString('base64');
-  const body: PackBody = { id: manifest.id, version: manifest.version, updated: manifest.updated, files: manifest.files };
+  const body: PackBody = {
+    id: manifest.id,
+    version: manifest.version,
+    updated: manifest.updated,
+    issued: manifest.issued,
+    files: manifest.files,
+  };
   const signature = sign(null, canonicalBytes(body), key).toString('base64');
   return { ...manifest, signature, publicKey };
 }

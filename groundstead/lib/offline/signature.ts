@@ -1,7 +1,7 @@
 import type { PackFile } from './verify.ts';
 
 // What an Ed25519 signature covers: every manifest field except the signature fields (GS-022).
-export type PackBody = { id: string; version: string; updated: string; files: PackFile[] };
+export type PackBody = { id: string; version: string; updated: string; issued: string; files: PackFile[] };
 
 // Fixed key order and only the listed fields, so the build (Node) and the reader's browser make the same bytes.
 export function canonicalBytes(body: PackBody): Uint8Array<ArrayBuffer> {
@@ -9,6 +9,7 @@ export function canonicalBytes(body: PackBody): Uint8Array<ArrayBuffer> {
     id: body.id,
     version: body.version,
     updated: body.updated,
+    issued: body.issued,
     files: body.files.map((file) => ({ path: file.path, sha256: file.sha256, size: file.size })),
   });
   return new TextEncoder().encode(text);

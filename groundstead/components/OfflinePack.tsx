@@ -5,7 +5,7 @@ import { sha256Hex } from '../lib/offline/digest.ts';
 import { PACK_PUBLIC_KEY } from '../lib/offline/keys.ts';
 import { verifySignature } from '../lib/offline/signature.ts';
 import type { OfflineText } from '../lib/offline/text.ts';
-import { verifyPack, type PackManifest } from '../lib/offline/verify.ts';
+import { isOlder, verifyPack, type PackManifest } from '../lib/offline/verify.ts';
 
 // The offline copy panel (GS-021, GS-022). It downloads a locale pack, checks the manifest's Ed25519 signature
 // against the key built into the site, checks every file against the manifest, and stores the pack only when all of
@@ -20,6 +20,7 @@ type Body = { bytes: ArrayBuffer; type: string | null };
 type Fetched =
   | { kind: 'ok'; manifest: PackManifest; bodies: Map<string, Body> }
   | { kind: 'unsigned' }
+  | { kind: 'older' }
   | { kind: 'failed' };
 
 const PREFIX = 'groundstead-pack-';
@@ -55,6 +56,7 @@ function isManifest(value: unknown): value is PackManifest {
   if (typeof value !== 'object' || value === null) return false;
   const v = value as Record<string, unknown>;
   if (typeof v.id !== 'string' || typeof v.version !== 'string' || typeof v.updated !== 'string') return false;
+  if (typeof v.issued !== 'string' || Number.isNaN(Date.parse(v.issued))) return false;
   if (!Array.isArray(v.files)) return false;
   return v.files.every((file: unknown) => {
     if (typeof file !== 'object' || file === null) return false;
@@ -98,9 +100,26 @@ async function checkStored(locale: string): Promise<Check> {
   return { kind: 'none' };
 }
 
+// The manifest of the pack already on this device, when its signature verifies. A pack that does not verify is not
+// counted as installed.
+async function installedManifest(locale: string): Promise<PackManifest | null> {
+  for (const name of await packNames(locale)) {
+    const hit = await (await caches.open(name)).match(absolute(`/offline/${locale}.json`));
+    if (!hit) continue;
+    let manifest: unknown;
+    try {
+      manifest = await hit.json();
+    } catch {
+      continue;
+    }
+    if (isManifest(manifest) && (await verifySignature(manifest, manifest.signature, PACK_PUBLIC_KEY))) return manifest;
+  }
+  return null;
+}
+
 // Downloads the manifest, checks its signature, then downloads every file it lists. The result is 'ok' only when the
-// signature is valid and every file matches.
-async function fetchPack(locale: string): Promise<Fetched> {
+// signature is valid, the manifest is not older than the installed pack, and every file matches.
+async function fetchPack(locale: string, installed: PackManifest | null): Promise<Fetched> {
   let manifest: unknown;
   try {
     const response = await fetch(`/offline/${locale}.json`, { cache: 'no-store' });
@@ -111,6 +130,7 @@ async function fetchPack(locale: string): Promise<Fetched> {
   }
   if (!isManifest(manifest)) return { kind: 'failed' };
   if (!(await verifySignature(manifest, manifest.signature, PACK_PUBLIC_KEY))) return { kind: 'unsigned' };
+  if (installed && isOlder(manifest, installed)) return { kind: 'older' };
   const found: Record<string, string> = {};
   const bodies = new Map<string, Body>();
   for (const file of manifest.files) {
@@ -228,7 +248,14 @@ export function OfflinePack({ locale, labels }: { locale: string; labels: Offlin
     setNotice(null);
     setPhase('busy');
     try {
-      const fetched = await fetchPack(locale).catch((): Fetched => ({ kind: 'failed' }));
+      const installed = await installedManifest(locale).catch(() => null);
+      const fetched = await fetchPack(locale, installed).catch((): Fetched => ({ kind: 'failed' }));
+      if (fetched.kind === 'older') {
+        // The installed pack stays. settle() checks it again.
+        setNotice(labels.statusOlder);
+        await settle();
+        return;
+      }
       if (fetched.kind !== 'ok') {
         setNotice(fetched.kind === 'unsigned' ? labels.statusUnsigned : labels.statusFailed);
         await settle();

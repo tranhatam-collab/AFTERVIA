@@ -3,11 +3,16 @@
 import { after, before, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { startServer } from './server.mjs';
 import { OFFLINE } from '../../lib/offline/text.ts';
 import { PRINT } from '../../lib/print/text.ts';
 
 const require = createRequire(import.meta.url);
+// Test builds write an older, validly signed manifest here (G-19); see tools/build/postbuild.mjs.
+const OLDER_PACK = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '.loop', 'offline-older', 'en.json');
 const { chromium } = require('playwright');
 let browser;
 
@@ -240,6 +245,35 @@ test('G-18 a failed write of a copy keeps the last good copy on this device', as
     s.stopServer();
     const served = await s.page.evaluate(async () => (await fetch('/en/emergency/flood-safety/')).ok);
     assert.equal(served, true, 'the kept copy is still served offline');
+  } finally {
+    await s.close();
+  }
+});
+
+async function storedManifest(page) {
+  return page.evaluate(async () => {
+    const name = (await caches.keys()).find((n) => n.startsWith('groundstead-pack-en-'));
+    const hit = await (await caches.open(name)).match(new URL('/offline/en.json', location.origin).href);
+    return hit ? hit.json() : null;
+  });
+}
+
+test('G-19 a validly signed manifest older than the installed pack is refused, and the installed pack stays', async () => {
+  const older = readFileSync(OLDER_PACK, 'utf8');
+  const s = await session();
+  try {
+    await downloadEn(s);
+    const installed = await storedManifest(s.page);
+    await s.context.route('**/offline/en.json', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: older }),
+    );
+    const manifest = s.page.waitForResponse((r) => r.url().endsWith('/offline/en.json'));
+    await button(s.page, OFFLINE.en.download).click();
+    await manifest;
+    await s.page.waitForFunction(() => document.querySelector('[data-offline]')?.getAttribute('data-offline') !== 'busy');
+    assert.deepEqual(await storedManifest(s.page), installed, 'the installed manifest is unchanged');
+    assert.equal(await status(s.page), OFFLINE.en.statusOlder);
+    assert.equal(await s.page.locator('[data-offline]').getAttribute('data-offline'), 'ready');
   } finally {
     await s.close();
   }

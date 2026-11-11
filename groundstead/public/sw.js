@@ -31,6 +31,7 @@ function canonicalBytes(manifest) {
     id: manifest.id,
     version: manifest.version,
     updated: manifest.updated,
+    issued: manifest.issued,
     files: manifest.files.map((file) => ({ path: file.path, sha256: file.sha256, size: file.size })),
   });
   return new TextEncoder().encode(text);

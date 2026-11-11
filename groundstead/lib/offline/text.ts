@@ -14,6 +14,7 @@ export type OfflineText = {
   statusNotReady: string;
   statusFailed: string;
   statusUnsigned: string;
+  statusOlder: string;
   statusUnsupported: string;
   statusRemoved: string;
   storageGranted: string;
@@ -35,6 +36,7 @@ const EN: OfflineText = {
   statusNotReady: 'The copy is incomplete or does not match, so it is not used. Try downloading again.',
   statusFailed: 'The download did not finish, or some files did not match. The copy on this device was not changed.',
   statusUnsigned: 'This pack does not have a valid signature, so it is not used.',
+  statusOlder: 'This copy is older than the one already on this device, so it was not installed. The copy on this device was kept.',
   statusUnsupported: 'This browser cannot store an offline copy.',
   statusRemoved: 'The offline copy was removed from this device.',
   storageGranted: 'The browser keeps this copy even when storage runs low.',
@@ -56,6 +58,7 @@ const VI: OfflineText = {
   statusNotReady: 'Bản sao chưa đủ hoặc không khớp, nên không được dùng. Hãy thử tải lại.',
   statusFailed: 'Tải chưa xong hoặc có tệp không khớp. Bản sao trên thiết bị này không thay đổi.',
   statusUnsigned: 'Gói này không có chữ ký hợp lệ, nên không được dùng.',
+  statusOlder: 'Bản này cũ hơn bản đã có trên thiết bị này, nên chưa được cài. Bản trên thiết bị vẫn được giữ.',
   statusUnsupported: 'Trình duyệt này không lưu được bản sao ngoại tuyến.',
   statusRemoved: 'Đã xóa bản sao ngoại tuyến khỏi thiết bị này.',
   storageGranted: 'Trình duyệt giữ bản sao này kể cả khi thiếu dung lượng.',

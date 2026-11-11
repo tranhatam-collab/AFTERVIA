@@ -26,7 +26,7 @@ const OTHER = testKey();
 
 // A pack of one page ('page a'), signed with `key`. The manifest is what the page stores at /offline/en.json.
 async function signedPack(key) {
-  const manifest = await buildManifest('en', [{ path: '/en/', bytes: encode('page a') }], '2026-11-11');
+  const manifest = await buildManifest('en', [{ path: '/en/', bytes: encode('page a') }], '2026-11-11', '2026-11-11T08:00:00Z');
   return JSON.stringify(signManifest(manifest, key.pem));
 }
 

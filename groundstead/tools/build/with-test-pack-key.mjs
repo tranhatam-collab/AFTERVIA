@@ -16,6 +16,7 @@ const env = {
   ...process.env,
   GROUNDSTEAD_PACK_PRIVATE_KEY: privateKey.export({ format: 'pem', type: 'pkcs8' }).toString(),
   NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY: publicRaw,
+  GROUNDSTEAD_TEST_PACK_FIXTURES: '1',
 };
 console.log('test pack key: a new Ed25519 pair for this run only (not a production key)');
 const result = spawnSync(command, args, { env, stdio: 'inherit' });

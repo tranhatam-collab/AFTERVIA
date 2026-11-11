@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Writes per-locale sitemaps, the sitemap index and the offline pack manifests into the static export (out/).
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BRAND } from '../../lib/brand.ts';
@@ -50,7 +50,7 @@ const pageUrls = walk(out)
   .filter((file) => basename(file) === 'index.html')
   .map(urlPathOf);
 
-async function packFor(locale) {
+async function packFor(locale, issued) {
   const queue = [];
   const seen = new Set();
   const add = (urlPath) => {
@@ -68,7 +68,7 @@ async function packFor(locale) {
     for (const ref of assetRefs(readFileSync(fileOf(urlPath), 'utf8'))) add(ref);
   }
   const files = queue.map((path) => ({ path, bytes: readFileSync(fileOf(path)) }));
-  return buildManifest(locale, files, buildDate());
+  return buildManifest(locale, files, buildDate(), issued);
 }
 
 mkdirSync(join(out, 'offline'), { recursive: true });
@@ -80,16 +80,28 @@ if (Boolean(privateKey) !== Boolean(publicKey)) {
   console.error('postbuild: set both GROUNDSTEAD_PACK_PRIVATE_KEY and NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY, or neither');
   process.exit(1);
 }
+// The signed issue time (G-19): one per build. A manifest older than the installed one is refused by the reader.
+const issued = new Date().toISOString();
+// Test builds only (see tools/build/with-test-pack-key.mjs): an older, validly signed manifest for the rollback test.
+const olderDir = resolve(root, '.loop', 'offline-older');
+rmSync(olderDir, { recursive: true, force: true });
 for (const locale of LOCALES) {
-  let manifest = await packFor(locale);
+  const unsigned = await packFor(locale, issued);
+  let manifest = unsigned;
   if (privateKey) {
-    manifest = signManifest(manifest, privateKey);
+    manifest = signManifest(unsigned, privateKey);
     if (manifest.publicKey !== publicKey) {
       console.error('postbuild: the signing key does not match NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY');
       process.exit(1);
     }
   }
   writeFileSync(join(out, 'offline', `${locale}.json`), `${JSON.stringify(manifest, null, 2)}\n`);
+  if (privateKey && process.env.GROUNDSTEAD_TEST_PACK_FIXTURES === '1') {
+    const earlier = new Date(Date.parse(issued) - 60 * 60 * 1000).toISOString();
+    mkdirSync(olderDir, { recursive: true });
+    const older = signManifest({ ...unsigned, issued: earlier }, privateKey);
+    writeFileSync(join(olderDir, `${locale}.json`), `${JSON.stringify(older, null, 2)}\n`);
+  }
   const state = privateKey ? 'signed' : 'UNSIGNED (no signing key: readers will not accept this pack)';
   console.log(`postbuild: offline pack ${locale}: ${manifest.files.length} file(s), version ${manifest.version}, ${state}`);
 }

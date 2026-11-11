@@ -7,11 +7,19 @@ export type PackManifest = {
   id: string;
   version: string;
   updated: string;
+  // When the build signed the manifest (ISO 8601, UTC). It is part of the signed bytes, so it cannot be moved later.
+  issued: string;
   files: PackFile[];
   signature?: string | null;
   publicKey?: string | null;
 };
 export type Verdict = { ready: boolean; problems: string[] };
+
+// Rollback (G-19): a signed manifest issued before the installed one is refused. The version is a hash of the file
+// list and cannot be ordered, so the signed issue time decides.
+export function isOlder(incoming: PackManifest, installed: PackManifest): boolean {
+  return Date.parse(incoming.issued) < Date.parse(installed.issued);
+}
 
 const HEX64 = /^[0-9a-f]{64}$/;
 
