@@ -2,23 +2,21 @@
 
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
-- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-04. Chưa được chủ dự án xác nhận trong phiên này.
+- Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-05. Chưa được chủ dự án xác nhận trong phiên này.
 - Mục HUMAN giữ nguyên: D-10, D-30, tên, tài khoản, DNS, GS-082, GS-H01 đến GS-H11, GS-053b.
-- Lượt này, OWN-G-04 (khóa), nhánh `ccr-8dbbf147-1ge7hc`:
-  - G-21 `52a41a0` (xong): phần còn lại sau `c1f0bc3` (tên khóa). Bundle scan chặn: `d` của JWK private (JSON hoặc JS); seed 32 byte dạng hex hoặc base64 gắn tên seed hoặc private key; tiêu đề PKCS#8 Ed25519 bọc seed, không cần tên. Khóa công khai đáng tin và digest SHA-256 không bị báo (kiểm thử âm). Đỏ trước: 3 kiểm thử dương trả về `[]`. Đột biến (bỏ lời gọi quét khóa): đỏ 3; khôi phục: xanh 8/8.
-  - G-20 (chưa làm, chờ xác nhận): đổi cổng phát hành. Yêu cầu đã ghi cho Lane A: `groundstead/docs/plan/REQUESTS_TO_LANE_A.md`.
-  - G-22 (chưa làm, chờ xác nhận): build production thất bại khi thiếu khóa; Preview ra gói chưa ký có nhãn. Không đổi code trong lượt này.
-- Cổng: `npm run verify` trong `groundstead/` exit 0 ở `52a41a0`: 247/247 kiểm thử node (242 trước đó, thêm 5), 32 giây. Đầu lượt, trên cây chưa sửa: exit 0, 242/242. Lượt này không chạm trang, cảnh báo hay offline nên không chạy e2e riêng.
-- BLOCKER (chờ chủ dự án, không tự quyết):
-  1. G-20 và G-22: chủ dự án xác nhận trước khi làm. G-20 cần Lane A sửa workflow; G-22 đổi cổng build.
-  2. Giới hạn của G-21: không phát hiện được seed 32 byte trần, không có tên và không có tiêu đề PKCS#8. Dạng này giống khóa công khai đáng tin và SHA-256 digest, nên chặn sẽ báo nhầm. Cần chủ dự án xác nhận chấp nhận giới hạn này.
-  3. G-11: chưa có ánh xạ mức nguồn sang CAP severity; cụm sự kiện chưa được đẩy lại theo mức nguồn.
-  4. G-17: giới hạn 5 MiB là mặc định kỹ thuật (`MAX_FEED_BYTES`).
-  5. G-19: so sánh manifest bằng thời điểm ký (UTC, đến giây); chủ dự án cần xác nhận cách so sánh này.
-  6. Môi trường sandbox: DNS không phân giải earthquake.usgs.gov và www.gdacs.org; dữ liệu thật chưa kiểm lại.
-- Việc kế tiếp: chủ dự án trả lời G-20, G-22, và chọn cách ánh xạ mức G-11 (BLOCKER 3). Sau đó Lane G làm G-22 trong lượt riêng; G-20 chuyển cho Lane A.
+- Lượt này, OWN-G-05 (G-23, header bảo mật), nhánh `ccr-8dbbf147-1ge7hc`:
+  - G-23 `1f5bb8d` (xong): header nằm trong `groundstead/vercel.json`, vì `next export` bỏ qua `headers()`. Mọi đường dẫn nhận CSP chặt nhất có thể, `frame-ancestors 'none'` chỉ trong header (không có trong meta), và Referrer-Policy `strict-origin-when-cross-origin`. Nới hai chỉ thị, mỗi cái có đo: `script-src 'unsafe-inline'` (script bootstrap inline của Next trên mọi trang, không có nonce khi export tĩnh; với `'self`, cả 19 trang chính đều lỗi) và `style-src 'unsafe-inline'` (trang 404 mặc định của Next; với `'self`, 3 trang 404 lỗi 30 lần).
+  - Đỏ trước: 5 kiểm thử cấu hình đỏ vì không có `vercel.json`; e2e đỏ vì mọi trang thiếu CSP và Referrer-Policy. Đột biến (bỏ `frame-ancestors`): kiểm thử cấu hình đỏ, e2e đỏ; khôi phục giống hệt bản cuối.
+  - Cổng: `npm run verify` trong `groundstead/` exit 0 ở `1f5bb8d`: 255/255 kiểm thử node (247 trước đó, thêm 8: 6 cấu hình, 2 e2e), 51 giây. E2E `tests/e2e/headers.e2e.mjs` chạy trong verify qua script `test`.
+- BLOCKER và lưu ý (chờ chủ dự án, không tự quyết):
+  1. Chưa triển khai (theo chỉ thị). Header chưa được kiểm trên URL Vercel thật: e2e áp quy tắc `vercel.json` cục bộ. Sau lần triển khai tới, cần xác nhận bằng `curl -I` trên preview.
+  2. `'unsafe-inline'` cho script là giới hạn của static export (không có nonce). Phương án chặt hơn là băm script theo từng trang khi build, kèm header theo đường dẫn; cần chủ dự án quyết có làm không.
+  3. Trang ngoại tuyến do service worker phục vụ giữ header đã lưu (`sw.js` giữ `hit.headers`); chưa kiểm trên thiết bị.
+  4. Các e2e khác (smoke, offline, a11y) vẫn không kèm header; chỉ e2e headers kiểm CSP.
+  5. Từ OWN-G-04, chưa đổi: G-20 và G-22 chờ xác nhận; G-11, G-17, G-19 chờ chủ dự án; giới hạn G-21 (seed 32 byte trần) cần xác nhận.
+- Việc kế tiếp: OWN-G-06 (nội dung) theo kế hoạch; mọi nội dung vẫn AI_DRAFT tới khi D-10. Blocker 2 chờ chủ dự án nếu muốn chặt hơn.
 - Còn mở từ trước: xác nhận G-08, G-14, luật rỗng và cắt cho USGS; blocker CI của PR #2 (ghi nhận từ trước, chưa kiểm lại).
-- Cập nhật: 11/11/2026, OWN-G-04 (G-21 xong; G-20 và G-22 chờ xác nhận).
+- Cập nhật: 11/11/2026, OWN-G-05 (G-23 xong).
 
 ## Vòng gần nhất
 | Vòng | Task | Kết quả | Bằng chứng |
