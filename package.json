@@ -14,6 +14,7 @@
     "test:loop": "node --test tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs",
     "check:bundle": "node tools/checks/bundle-verify.mjs",
     "check:secrets": "node tools/checks/secret-scan.mjs",
+    "check:mobile-bundle": "node tools/checks/mobile-bundle.mjs",
     "db:migrate": "node tools/db/migrate.mjs",
     "api:local": "node tools/dev/api-local.mjs",
     "e2e:web": "node tools/e2e/web-e2e.mjs",

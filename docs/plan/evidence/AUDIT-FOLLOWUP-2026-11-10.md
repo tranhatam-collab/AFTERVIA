@@ -109,3 +109,30 @@ sửa **bài kiểm**, không phải sửa lỗi. Không có thay đổi nào tr
 2. **D-04 vẫn mở.** Không có thay đổi mã nào trong lượt này chạm vào nó.
 3. Bẫy D-10 chỉ dò theo **tên bảng chứa `extraction`** và vài dấu hiệu chuỗi trong thân hàm. Một bảng đặt tên
    khác hẳn sẽ lọt. Đây là bẫy, không phải chứng minh.
+
+## Lượt /loop tiếp theo: A-06 và bundle di động thật
+
+**A-06 — đã đóng, không cần sửa.** Kiểm lại trong mã: `image-size` không còn trong `package-lock.json`
+(không có khóa nào chứa tên này), và `expo` nằm trong `dependencies` (đính chính 10/11 của WO24-01).
+Commit nâng cấp Expo SDK 58 (`11ebd66`) không nằm trên nhánh này, nhưng cây phụ thuộc hiện tại đã
+không còn `image-size` nên lỗ hổng "devDependency bị `--omit=dev` bỏ sót" không còn tồn tại.
+
+**Bundle Android thật — lỗ hổng được bịt.** `typecheck:mobile` không thấy lỗi phân giải module lúc chạy.
+Mã di động import giá trị runtime từ `@aftervia/domain` (`draft.ts`, `request-deletion.ts`, `privacy.tsx`),
+và `@aftervia/*` không có `workspaces`, chỉ phân giải qua `paths` của tsconfig. Lần bundle thật đầu tiên
+(`npx expo export --platform android`): exit 0, 1283 module, và mọi chuỗi đặc trưng của WO11-03 nằm trong
+bundle (`/v1/account/deletion`, `primary_data_erasure`, `LEGAL_PENDING`,
+`tombstone_registry_outside_backup`, `isDeletionRequestId`).
+
+`tools/checks/mobile-bundle.mjs` đóng gói việc đó (`npm run check:mobile-bundle`), **không** đưa vào
+`npm run verify`: thêm một bước vào cổng là quyết định phạm vi, chờ chủ dự án duyệt.
+
+Kiểm chứng công cụ:
+- dương tính: `mobile bundle OK: 1 Android bundle(s), 2871646 bytes, 4/4 markers present`, exit 0;
+- M1 — chuỗi không có trong bundle (`--require=ZZZ_...`) → exit 1, liệt kê đúng chuỗi thiếu;
+- M2 — import `@aftervia/domain` trong `request-deletion.ts` bị đổi thành gói không tồn tại → Metro báo
+  `Unable to resolve module` → exit 1. File khôi phục, sha256 khớp, chạy lại xanh.
+
+**Ghi chú về môi trường.** Lần `verify` đầu đỏ với 8 test và 329 bị bỏ qua, nguyên nhân là Postgres đã tắt
+sau khi môi trường đổi thư mục làm việc (log có `ECONNREFUSED`). Khởi động lại `service postgresql start`
+rồi chạy lại: `verify` exit 0, 681 đạt / 1 bỏ qua.
