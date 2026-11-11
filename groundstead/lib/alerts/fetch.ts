@@ -13,9 +13,43 @@ export class FeedRefused extends Error {
 
 export type FeedFormat = 'geojson' | 'rss';
 export type FetchLike = (url: string, init: RequestInit) => Promise<Response>;
-export type FeedRead = { url: string; format: FeedFormat; fetch?: FetchLike; timeoutMs?: number };
+export type FeedRead = { url: string; format: FeedFormat; fetch?: FetchLike; timeoutMs?: number; maxBytes?: number };
 
 const USER_AGENT = 'groundstead-alert-refresh/0.1';
+
+// The largest feed body read, in bytes (G-17). A larger body is refused and its source is marked failed with the reason
+// TOO_LARGE. The two feeds are a few hundred kilobytes each; this bounds memory, it does not limit normal use.
+export const MAX_FEED_BYTES = 5 * 1024 * 1024;
+export const TOO_LARGE = 'too large';
+
+// The text of a body, read as it streams. A declared length over the limit is refused before any byte is read. The
+// bytes are counted as they arrive, and reading stops and the stream is cancelled as soon as the limit is passed, so the
+// body is never held in memory past the limit (G-17).
+async function readCapped(response: Response, maxBytes: number): Promise<string> {
+  const declared = Number(response.headers.get('content-length'));
+  if (Number.isFinite(declared) && declared > maxBytes) throw new FeedRefused(TOO_LARGE);
+  if (response.body === null) return '';
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel();
+      throw new FeedRefused(TOO_LARGE);
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(bytes);
+}
 
 // The reason a feed address is refused, or null when it may be read (G-16). Only https is read: another scheme can name a
 // local file, inline data or another protocol.
@@ -44,6 +78,6 @@ export async function readFeed(input: FeedRead): Promise<unknown> {
     signal: AbortSignal.timeout(input.timeoutMs ?? 20_000),
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const text = await response.text();
+  const text = await readCapped(response, input.maxBytes ?? MAX_FEED_BYTES);
   return geojson ? JSON.parse(text) : text;
 }
