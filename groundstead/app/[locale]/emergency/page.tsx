@@ -56,6 +56,7 @@ export default async function EmergencyIndex({ params }: Params) {
         <p className="footnote">{m.emergencyUpdated}: {buildDate()}</p>
         <section aria-labelledby="cards-title">
           <h2 id="cards-title">{m.emergencyCardsTitle}</h2>
+          {cards.length === 0 ? <p>{m.emergencyNoPublished}</p> : (
           <ul className="situations">
             {cards.map((v) => (
               <li key={v.item.data.id}>
@@ -65,6 +66,7 @@ export default async function EmergencyIndex({ params }: Params) {
               </li>
             ))}
           </ul>
+          )}
         </section>
         <section aria-labelledby="help-title">
           <h2 id="help-title">{m.emergencyHelpTitle}</h2>

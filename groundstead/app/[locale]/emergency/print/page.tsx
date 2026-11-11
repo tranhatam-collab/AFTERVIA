@@ -55,6 +55,7 @@ export default async function PrintEmergency({ params }: Params) {
         <p>{p.lead}</p>
         <p className="footnote">{m.emergencyUpdated}: {buildDate()}</p>
         <p className="noprint"><PrintButton label={p.button} /></p>
+        {cards.length === 0 ? <p>{m.emergencyNoPublished}</p> : null}
         {cards.map((v) => {
           const c = v.item.data;
           return (

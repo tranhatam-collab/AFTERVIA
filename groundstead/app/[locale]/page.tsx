@@ -1,4 +1,5 @@
 import { BRAND } from '../../lib/brand.ts';
+import { currentChannel } from '../../lib/channel.ts';
 import { isLocale, localePath, type Locale } from '../../lib/i18n/locales.ts';
 import { LANDING, MESSAGES } from '../../lib/i18n/messages.ts';
 import { jsonLd, organizationLd } from '../../lib/seo/jsonld.ts';
@@ -67,7 +68,7 @@ export default async function Home({ params }: Params) {
           <p>{m.signupBody}</p>
         </section>
         <p className="footnote">{m.footerNotice}</p>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(organizationLd(BRAND.siteUrl, locale)) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(organizationLd(BRAND.siteUrl, locale, currentChannel())) }} />
       </main>
     </>
   );

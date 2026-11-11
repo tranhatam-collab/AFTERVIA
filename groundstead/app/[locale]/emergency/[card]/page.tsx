@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { BRAND } from '../../../../lib/brand.ts';
+import { currentChannel } from '../../../../lib/channel.ts';
 import { getContent } from '../../../../lib/content/load.ts';
 import { reviewLabel } from '../../../../lib/content/review.ts';
 import { cardsFor } from '../../../../lib/emergency/cards.ts';
@@ -11,8 +12,13 @@ import type { Metadata } from 'next';
 
 export const dynamicParams = false;
 
+// Static export needs at least one generated route. When no card is published (production, G-07), a placeholder id is
+// generated instead. It is not a card, its page calls notFound(), and no link points to it.
+const NO_CARD = '_none';
+
 export function generateStaticParams(): { locale: Locale; card: string }[] {
-  return LOCALES.flatMap((locale) => cardsFor(locale).map((v) => ({ locale, card: v.item.data.id })));
+  const routes = LOCALES.flatMap((locale) => cardsFor(locale).map((v) => ({ locale, card: v.item.data.id })));
+  return routes.length > 0 ? routes : LOCALES.map((locale) => ({ locale, card: NO_CARD }));
 }
 
 type Params = { params: Promise<{ locale: string; card: string }> };
@@ -95,7 +101,7 @@ export default async function CardPage({ params }: Params) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: jsonLd(howToLd(c, locale, `${BRAND.siteUrl.replace(/\/+$/, '')}${localePath(locale, `emergency/${card}/`)}`)),
+            __html: jsonLd(howToLd(c, locale, `${BRAND.siteUrl.replace(/\/+$/, '')}${localePath(locale, `emergency/${card}/`)}`, currentChannel())),
           }}
         />
       </main>

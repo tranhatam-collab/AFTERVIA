@@ -61,6 +61,9 @@ export type Messages = {
   emergencyCardsTitle: string;
   emergencyHelpTitle: string;
   emergencyNoRescue: string;
+  emergencyNoPublished: string;
+  previewBanner: string;
+  previewLabel: string;
   emergencyUpdated: string;
   emergencyNetChecking: string;
   emergencyNetOnline: string;
@@ -116,6 +119,9 @@ const en: Messages = {
   emergencyHelpTitle: 'Who to contact',
   emergencyNoRescue:
     'Groundstead does not send rescue requests. To ask for help, call your local emergency number from your phone.',
+  emergencyNoPublished: 'No safety guide is published on this site yet.',
+  previewBanner: 'Preview build, not for public use. Guides marked as AI draft have not been reviewed by an expert.',
+  previewLabel: 'Preview, not published:',
   emergencyUpdated: 'Content last updated',
   emergencyNetChecking: 'Checking your connection…',
   emergencyNetOnline: 'Your browser reports a connection. That does not prove that any service is reachable.',
@@ -171,6 +177,9 @@ const vi: Messages = {
   emergencyHelpTitle: 'Liên hệ ai',
   emergencyNoRescue:
     'Groundstead không gửi yêu cầu cứu hộ. Để xin trợ giúp, hãy gọi số khẩn cấp tại nơi bạn ở bằng điện thoại của bạn.',
+  emergencyNoPublished: 'Trang này chưa công bố hướng dẫn an toàn nào.',
+  previewBanner: 'Bản xem thử, không dành cho công chúng. Hướng dẫn được đánh dấu là bản nháp AI chưa có chuyên gia duyệt.',
+  previewLabel: 'Bản xem thử, chưa công bố:',
   emergencyUpdated: 'Nội dung cập nhật lần cuối',
   emergencyNetChecking: 'Đang kiểm tra kết nối…',
   emergencyNetOnline: 'Trình duyệt báo đang có kết nối. Điều này không chứng minh rằng dịch vụ nào đó truy cập được.',

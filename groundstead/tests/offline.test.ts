@@ -180,7 +180,8 @@ test('GT08 build output: each locale has a printable emergency page with its car
     const text = visibleText(html);
     assert.ok(text.includes(PRINT[locale].title), `${locale} print title`);
     assert.ok(text.includes(PRINT[locale].button), `${locale} print button`);
-    for (const card of cardsFor(locale)) {
+    // The built print page is the preview build's (npm run build:test), so it lists the drafts too (G-07).
+    for (const card of cardsFor(locale, 'preview')) {
       assert.ok(text.includes(card.item.data.title), `${locale} print lists ${card.item.data.title}`);
       assert.ok(text.includes(card.item.data.first_action), `${locale} print gives the first action of ${card.item.data.title}`);
     }

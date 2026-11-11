@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { BRAND } from '../../lib/brand.ts';
+import { ChannelBanner } from '../../components/ChannelBanner.tsx';
 import { LOCALES, isLocale, type Locale } from '../../lib/i18n/locales.ts';
 import { pageMetadata } from '../../lib/seo/page.ts';
 import '../globals.css';
@@ -24,10 +25,14 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function LocaleLayout({ children, params }: Params & { children: ReactNode }) {
-  const { locale } = await params;
+  const { locale: raw } = await params;
+  const locale: Locale = isLocale(raw) ? raw : 'en';
   return (
-    <html lang={isLocale(locale) ? locale : 'en'}>
-      <body>{children}</body>
+    <html lang={locale}>
+      <body>
+        <ChannelBanner locale={locale} />
+        {children}
+      </body>
     </html>
   );
 }

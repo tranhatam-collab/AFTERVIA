@@ -25,6 +25,12 @@ export function reviewIssues(review: Review): string[] {
   return out;
 }
 
+// Fail closed (G-07): a production build publishes a card only when a person has checked it and the record can back the
+// label. AI_DRAFT, STALE and any review missing its reviewer details are refused.
+export function publishable(review: Review): boolean {
+  return (review.status === 'COMMUNITY_CHECKED' || review.status === 'EXPERT_REVIEWED') && reviewIssues(review).length === 0;
+}
+
 // A translation is STALE as soon as its original has a newer version than the one it was based on.
 export function effectiveReview(
   item: { review: Review; based_on?: { version: number } },

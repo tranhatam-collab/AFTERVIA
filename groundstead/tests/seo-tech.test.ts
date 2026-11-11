@@ -28,7 +28,7 @@ function pagesOf(locale: (typeof LOCALES)[number]): string[] {
     'help/',
     'readiness/',
     ...getContent().countries.map((c) => `help/${c.data.code.toLowerCase()}/`),
-    ...cardsFor(locale).map((v) => `emergency/${v.item.data.id}/`),
+    ...cardsFor(locale, 'preview').map((v) => `emergency/${v.item.data.id}/`),
   ];
 }
 
@@ -85,7 +85,7 @@ test('GT31 structured data: the home page has an Organization, and each safety c
     const org = home.find((d) => d['@type'] === 'Organization');
     assert.equal(org?.name, BRAND.name);
     assert.equal(org?.url, `${SITE}/${locale}/`);
-    for (const card of cardsFor(locale)) {
+    for (const card of cardsFor(locale, 'preview')) {
       const html = readOut(`${locale}/emergency/${card.item.data.id}/index.html`);
       const howTo = jsonLdOf(html).find((d) => d['@type'] === 'HowTo');
       assert.ok(howTo, `${locale} ${card.item.data.id} has a HowTo`);
@@ -100,11 +100,11 @@ test('GT31 JSON-LD cannot end its script element early, whatever its values', ()
   const text = jsonLd({ name: '</script><b>x</b>', url: `${SITE}/en/` });
   assert.equal(text.includes('</script'), false);
   assert.deepEqual(JSON.parse(text), { name: '</script><b>x</b>', url: `${SITE}/en/` });
-  const card = cardsFor('en')[0];
+  const card = cardsFor('en', 'preview')[0];
   if (!card) throw new Error('no English card to test');
-  const howTo = howToLd(card.item.data, 'en', `${SITE}/en/emergency/${card.item.data.id}/`);
+  const howTo = howToLd(card.item.data, 'en', `${SITE}/en/emergency/${card.item.data.id}/`, 'production');
   assert.equal(howTo['@type'], 'HowTo');
-  assert.equal(organizationLd(SITE, 'en')['@type'], 'Organization');
+  assert.equal(organizationLd(SITE, 'en', 'production')['@type'], 'Organization');
 });
 
 test('GT31 robots.txt blocks everything unless indexing is allowed, and then names the sitemap', () => {
