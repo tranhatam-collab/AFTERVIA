@@ -50,6 +50,8 @@ mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, `${JSON.stringify(snapshot, null, 2)}\n`);
 for (const s of snapshot.sources) {
   const when = s.lastUpdated ? `last updated ${s.lastUpdated}` : 'no successful update yet';
-  console.log(`${s.source}: ${s.state} (${when})`);
+  // G-13: a malformed record is left out of the snapshot, and the count is shown so the loss is visible.
+  const skipped = s.skipped ? `; ${s.skipped} malformed record(s) left out` : '';
+  console.log(`${s.source}: ${s.state} (${when})${skipped}`);
 }
 console.log(`public alerts in force: ${snapshot.alerts.length}; snapshot written to ${out}`);

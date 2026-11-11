@@ -145,3 +145,71 @@ test('G-08 the job keeps a GDACS record with no access level, with its source st
   );
   assert.deepEqual(parseSnapshot(JSON.parse(JSON.stringify(snap))), snap);
 });
+
+// G-13: one malformed record is skipped and counted; the rest of the feed is kept.
+const goodQuake = (id: string) => ({
+  id,
+  properties: {
+    title: `M 4.0 - ${id}`,
+    time: Date.parse('2026-11-06T09:00:00Z'),
+    updated: Date.parse('2026-11-06T09:10:00Z'),
+  },
+});
+const gdacsItem = (type: string, id: string, name: string): string =>
+  [
+    '<item>',
+    '<gdacs:datemodified>Fri, 06 Nov 2026 08:00:00 GMT</gdacs:datemodified>',
+    '<gdacs:fromdate>Fri, 06 Nov 2026 06:00:00 GMT</gdacs:fromdate>',
+    '<gdacs:iscurrent>true</gdacs:iscurrent>',
+    `<gdacs:eventtype>${type}</gdacs:eventtype>`,
+    `<gdacs:eventid>${id}</gdacs:eventid>`,
+    '<gdacs:alertlevel>Orange</gdacs:alertlevel>',
+    `<gdacs:eventname>${name}</gdacs:eventname>`,
+    '<gdacs:accesslevel>Public</gdacs:accesslevel>',
+    '</item>',
+  ].join('\n');
+const rssOf = (...items: string[]): string =>
+  `<?xml version="1.0" encoding="utf-8"?>\n<rss version="2.0" xmlns:gdacs="http://www.gdacs.org"><channel>\n${items.join('\n')}\n</channel></rss>`;
+const downGdacs = async (): Promise<unknown> => {
+  throw new Error('down');
+};
+
+test('G-13 one malformed USGS record is skipped and counted; the two good records are kept', async () => {
+  const feed = {
+    features: [
+      goodQuake('g1'),
+      { id: 'bad', properties: { title: 'M 9.0 - time out of range', time: 1e20, updated: Date.parse('2026-11-06T09:10:00Z') } },
+      goodQuake('g2'),
+    ],
+  };
+  const snap = await refreshAll({ fetchers: { usgs: async () => feed, gdacs: downGdacs }, now: NOW, previous: null });
+  const usgs = snap.sources.find((s) => s.source === 'usgs');
+  assert.equal(usgs?.state, 'ok', 'one bad record does not fail the feed');
+  assert.equal(usgs?.skipped, 1, 'the skipped record is counted on the source');
+  assert.deepEqual(snap.alerts.map((a) => a.id).sort(), ['g1', 'g2']);
+});
+
+test('G-13 one malformed GDACS record (an invalid character reference) is skipped and counted; the two good records are kept', async () => {
+  const feed = rssOf(
+    gdacsItem('FL', '2001', 'First'),
+    gdacsItem('EQ', '2002', 'Broken &#x110000; name'),
+    gdacsItem('WF', '2003', 'Third'),
+  );
+  const snap = await refreshAll({ fetchers: { usgs: downGdacs, gdacs: async () => feed }, now: NOW, previous: null });
+  const gdacs = snap.sources.find((s) => s.source === 'gdacs');
+  assert.equal(gdacs?.state, 'ok', 'one bad record does not fail the feed');
+  assert.equal(gdacs?.skipped, 1, 'the skipped record is counted on the source');
+  assert.deepEqual(snap.alerts.map((a) => `${a.source}:${a.id}`).sort(), ['gdacs:FL2001', 'gdacs:WF2003']);
+});
+
+test('G-13 a feed whose every record is malformed is failed, not ok with no alerts', async () => {
+  const usgsAllBad = { features: [{ id: 'x', properties: { title: 'no times' } }] };
+  const gdacsAllBad = rssOf('<item><gdacs:eventtype>TC</gdacs:eventtype></item>');
+  const snap = await refreshAll({
+    fetchers: { usgs: async () => usgsAllBad, gdacs: async () => gdacsAllBad },
+    now: NOW,
+    previous: null,
+  });
+  assert.deepEqual(snap.sources.map((s) => s.state), ['failed', 'failed'], 'nothing could be read, so nothing is claimed');
+  assert.equal(snap.alerts.length, 0);
+});

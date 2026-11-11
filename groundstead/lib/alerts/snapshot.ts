@@ -5,20 +5,25 @@ import { sourceState, type SourceState } from './sources.ts';
 // The alert snapshot (GS-053): what the job last saw. It holds each source's state and the public alerts still in force.
 // It never says that an area is safe; a source that failed says so, and keeps the time of its last good update.
 
-export type SourceStatus = { source: string; state: SourceState; lastUpdated: string | null };
+// skipped: how many records of the last good run were malformed and left out (G-13). Absent when no run has counted them.
+export type SourceStatus = { source: string; state: SourceState; lastUpdated: string | null; skipped?: number };
 export type Snapshot = { generatedAt: string; sources: SourceStatus[]; alerts: Alert[] };
 
-// One source's result for this run: whether it worked, when it last worked, and the alerts it gave.
-export type SourceRun = { source: string; ok: boolean; fetchedAt: string | null; alerts: Alert[] };
+// One source's result for this run: whether it worked, when it last worked, the alerts it gave, and how many records it
+// skipped as malformed (G-13).
+export type SourceRun = { source: string; ok: boolean; fetchedAt: string | null; alerts: Alert[]; skipped?: number };
 
 export function buildSnapshot(runs: SourceRun[], now: Date, previous: Snapshot | null, maxAgeMinutes = 30): Snapshot {
   const sources: SourceStatus[] = runs.map((run) => {
-    const prior = previous?.sources.find((s) => s.source === run.source)?.lastUpdated ?? null;
-    const lastUpdated = run.ok ? run.fetchedAt : prior;
+    const before = previous?.sources.find((s) => s.source === run.source);
+    const lastUpdated = run.ok ? run.fetchedAt : (before?.lastUpdated ?? null);
+    // The skipped count belongs to the same run as the time: a failed run keeps the count of its last good run (G-13).
+    const skipped = run.ok ? run.skipped : before?.skipped;
     return {
       source: run.source,
       state: sourceState({ lastUpdated, failed: !run.ok }, now, maxAgeMinutes),
       lastUpdated,
+      ...(skipped !== undefined ? { skipped } : {}),
     };
   });
   const fresh = runs.filter((run) => run.ok).flatMap((run) => run.alerts);
@@ -48,6 +53,7 @@ export function statusesAt(snapshot: Snapshot, now: Date, maxAgeMinutes = 30): S
     source: s.source,
     lastUpdated: s.lastUpdated,
     state: sourceState({ lastUpdated: s.lastUpdated, failed: s.state === 'failed' }, now, maxAgeMinutes),
+    ...(s.skipped !== undefined ? { skipped: s.skipped } : {}),
   }));
 }
 
@@ -96,7 +102,15 @@ export function parseSnapshot(value: unknown): Snapshot {
       throw new Error('bad snapshot: a source has no name or an unknown state');
     }
     if (s.lastUpdated !== null && !isText(s.lastUpdated)) throw new Error('bad snapshot: lastUpdated is not text or null');
-    return { source: s.source, state: s.state as SourceState, lastUpdated: s.lastUpdated as string | null };
+    if (s.skipped !== undefined && (typeof s.skipped !== 'number' || !Number.isInteger(s.skipped) || s.skipped < 0)) {
+      throw new Error('bad snapshot: skipped is not a count');
+    }
+    return {
+      source: s.source,
+      state: s.state as SourceState,
+      lastUpdated: s.lastUpdated as string | null,
+      ...(s.skipped !== undefined ? { skipped: s.skipped as number } : {}),
+    };
   });
   if (!Array.isArray(value.alerts)) throw new Error('bad snapshot: alerts is not a list');
   return { generatedAt: value.generatedAt, sources, alerts: value.alerts.map(alertOf) };
