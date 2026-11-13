@@ -5,8 +5,15 @@ chi tiết những gì cần cung cấp. Mỗi mục ghi: **cần gì → cung c
 gì → lane sẽ làm gì ngay sau khi có**. Khóa và mật khẩu LUÔN đặt qua cài đặt môi trường hoặc
 secret store, KHÔNG dán vào chat.
 
-Phạm vi: AFTERVIA (lane A). Groundstead (lane G) có báo cáo riêng do lane G lập trong
-`groundstead/` trên nhánh `ccr-8dbbf147-1ge7hc` — đã gửi yêu cầu phối hợp 13/11, chờ phản hồi.
+Phạm vi: AFTERVIA (lane A). Groundstead (lane G) có báo cáo riêng do lane G lập:
+`groundstead/docs/plan/11_OWNER_NEEDS_REPORT_2026-11-13.md` trên nhánh `ccr-8dbbf147-1ge7hc`
+(commit 5f0b63a) — nhận qua phiên 13/11. Tóm tắt lane G tự báo (số liệu của lane G, kiểm trên
+nhánh của họ): production deploy READY trên Vercel nhưng Vercel Authentication còn BẬT và chưa
+gắn tên miền; gate cục bộ 274/274. Việc cần chủ dự án phía Groundstead: GS-H03 (thêm domain
+`groundstead.iai.one` vào Vercel + bản ghi CNAME; nameserver iai.one là Cloudflare), GS-H02
+(duyệt landing), xác nhận tắt Vercel Authentication = công khai, GS-H11 (mở trang điều khoản
+nguồn chính thức bằng trình duyệt cho GS-031b), D-36 (nơi chạy job theo lịch). Lane G đề xuất
+chờ thêm trước khi công khai: D-10 người duyệt, H08 pháp lý, D-30/G-22 khóa ký.
 
 ## Nhóm 1 — Nhanh nhất, mở khóa nhiều nhất (làm trước)
 
