@@ -1,5 +1,24 @@
 # Groundstead — Trạng thái vòng lặp
 
+## OWNER_REPORT (Lane G, deploy 13/11/2026)
+
+- Yêu cầu của chủ dự án: "Build cho xong tất cả những gì còn lại xong deploy luôn, tôi sẽ gắn DNS". Hiểu là: xong phần trang cần để deploy, deploy, chủ dự án tự gắn DNS. Phần backlog còn lại bị chặn bởi Cổng 1 (GS-G1 ← GS-032 ← GS-031b, cần nguồn chính thức đọc được) và các mục HUMAN, nên không làm.
+- Sửa lỗi review trang chủ và trang đo độ sẵn sàng, commit `cc161b6` (đã đẩy lên `ccr-8dbbf147-1ge7hc`): bản production không còn nói hướng dẫn lũ lụt và nắng nóng "đã có sẵn" khi chưa công bố thẻ nào (G-07). Hai kiểm thử bản production mới đỏ trước, xanh sau; đột biến trên trang đo độ sẵn sàng cho đúng một kiểm thử đỏ, khôi phục giống hệt (`cmp`).
+- Cổng trước khi deploy: `npm run verify` exit 0 (49 giây): 273/273 kiểm thử node, 6/6 kiểm thử bản production, quét bí mật (165 tệp) và quét bundle (112 tệp bản production) sạch, backlog 72 task hợp lệ.
+- Deploy trên Vercel, dự án `groundstead` (không nối Git, tạo từ commit `cc161b6` qua `gitSource`):
+  - Preview `dpl_Hic2eN1Pqd4BWvSETrZyVPsqZsz8`: READY, dùng để kiểm nội dung trước.
+  - Production `dpl_87b9TGEFUdgrp9q8hLWSBbJD16TU`: READY, `target: production`, `aliasError: null`, alias `groundstead.vercel.app`. Build 18 giây.
+  - Kiểm nội dung bản chạy qua quyền truy cập của Vercel. Trên bản preview: `/vi/` và `/en/emergency/` nói chưa công bố hướng dẫn nào, `/vi/` không còn câu "ở đây rồi". Trên alias production `groundstead.vercel.app`: `/en/readiness/` mang câu mới trong props của component, không còn câu cũ. Cả ba có `noindex, nofollow`, canonical `https://groundstead.iai.one/...`, CSP và Referrer-Policy đúng như `vercel.json`. Chưa tải lại `/vi/` trên alias production (cùng commit, cùng cấu hình build).
+- Vercel Authentication (`ssoProtection`, mức `all`) vẫn BẬT: chưa ai ngoài nhóm xem được. Chưa gắn tên miền nào vào dự án. Không đổi DNS, Cloudflare, thanh toán hay bí mật.
+- Chưa được chứng minh: gói offline của bản này KHÔNG có chữ ký (log build: "UNSIGNED (no signing key)", `sw.js trusted key empty`), nên không bản lưu nào được phục vụ. G-22 và D-30 vẫn chờ khóa ký của chủ dự án. Cloudflare: không có kết nối nào trong phiên này, nên không kiểm được ID tên miền hay vùng DNS.
+- Việc của chủ dự án trước khi mở công khai (bật công khai = tắt Vercel Authentication, chỉ làm khi chủ dự án xác nhận):
+  1. Quyết D-22 (G-05), D-10 (duyệt nội dung; hiện production có 0 thẻ vì mọi nội dung là AI_DRAFT), G-22/D-30 (khóa ký hay chấp nhận gói chưa ký), H02 (duyệt nội dung landing), H08 (duyệt bản nháp pháp lý).
+  2. Thêm `groundstead.iai.one` vào dự án Vercel `groundstead`, rồi trỏ DNS theo bản ghi mà Vercel báo (CNAME hoặc A). Đây là thao tác ghi ngoài repo; cần chủ dự án duyệt.
+  3. Đặt `GS_CHANNEL=preview` cho môi trường Preview của Vercel (ngoài repo) nếu muốn bản Preview khớp e2e.
+- Chưa sửa, đã biết: trang phục vụ từ bản lưu offline chưa có CSP và Referrer-Policy; chỉ mục khẩn cấp hiện số của mọi quốc gia ở cả hai ngôn ngữ (G-05); nhãn liên kết `homeEmergencyLink` vẫn ghi "Hướng dẫn khẩn cấp: việc đầu tiên cần làm" dù production chưa có hướng dẫn nào.
+- Còn tồn: CI từ xa vẫn `startup_failure` (nguyên nhân chưa xác minh; thanh toán BILLING_UNVERIFIED; chạy lại bị 403). Vài commit do workflow tạo mang trailer `Co-Authored-By` có tên mô hình; không viết lại lịch sử nên để nguyên.
+- Cập nhật: 13/11/2026, deploy production READY, bảo vệ Vercel còn bật, không GO công khai.
+
 ## OWNER_REPORT (Lane G, 11/11/2026)
 
 - Nguồn chỉ thị: `docs/plan/10_OWNER_PLAN_2026-11-10.md`, mục OWN-G-07. Chưa được chủ dự án xác nhận trong phiên này.
