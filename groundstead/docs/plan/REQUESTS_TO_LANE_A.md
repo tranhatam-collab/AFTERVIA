@@ -13,3 +13,12 @@ Lane G ghi các yêu cầu cần thay đổi ngoài `groundstead/` vào file nà
 - Không thuộc yêu cầu này: tạo khóa thật (D-30, HUMAN), đặt tên khóa công khai, và sửa nội dung trang.
 - Lưới an toàn đã có trong repo: `groundstead/tools/checks/bundle-secret-scan.mjs` chặn tên biến này và khóa private trong bundle client (G-21, `52a41a0`). Lưới này không thay thế việc tách khóa khỏi build.
 - Người ghi: Lane G, lượt OWN-G-04.
+
+## G-26: job `groundstead-verify` cài sai bản Chromium, 41 kiểm thử e2e đỏ
+
+- Trạng thái: **ĐỀ NGHỊ, chưa ai xác nhận**. Lane G không sửa `.github/workflows/`; chỉ ghi yêu cầu.
+- Bằng chứng: run `43345425301` (13/11/2026, commit `cc161b6`, PR #2). Đây là lần đầu job chạy thật. Build, typecheck, quét bí mật và 232 kiểm thử đạt; 41 kiểm thử e2e đỏ, mỗi cái chỉ có dòng "failed running before hook" (hook `before` không mở được trình duyệt).
+- Nguyên nhân (suy ra; chưa thấy lỗi thật trong log CI vì runner lúc đó không in `cause`): bước `npx playwright install --with-deps chromium` chạy ở thư mục gốc khi gốc chưa `npm ci`, nên `npx` lấy Playwright mới nhất (1.65.0, Chromium revision 1254). `groundstead/package.json` ghim Playwright 1.63.0, cần revision 1243. Tái hiện triệu chứng cục bộ: `PLAYWRIGHT_BROWSERS_PATH` trỏ vào thư mục rỗng cho ra đúng dòng đó, kèm `Executable doesn't exist at .../chromium_headless_shell-1243/...`.
+- Yêu cầu cho Lane A (job `groundstead-verify` trong `.github/workflows/ci.yml`): đặt bước "Install the browser the groundstead e2e tests use" **sau** bước `npm ci` của `groundstead/` và thêm `working-directory: groundstead`, để `npx playwright install --with-deps chromium` dùng đúng bản Playwright đã ghim.
+- Lane G đã làm phần trong lane (`84f4e1e`): runner kiểm thử in cả `cause` của hook. Lần chạy CI sau sẽ ghi rõ lỗi thật; nếu lỗi khác revision 1243 thì giả thuyết trên sai và cần xem lại.
+- Người ghi: Lane G, 13/11/2026.
