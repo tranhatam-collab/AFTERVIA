@@ -8,9 +8,23 @@ import { run } from 'node:test';
 
 // The real message of a failed test, as written by the test (G-25). Never replaced by a generic placeholder
 // when the test gave one.
-function failureMessage(error) {
+function oneMessage(error) {
   if (error && typeof error === 'object' && typeof error.message === 'string') return error.message;
   return error === undefined ? 'failed without an error message' : String(error);
+}
+
+// node:test reports a failed `before` hook as the generic "failed running before hook" and keeps the real error in
+// `cause`. Follow the chain (bounded, cycle-safe) so the log says why, e.g. that the browser could not start.
+function failureMessage(error) {
+  const lines = [oneMessage(error)];
+  const seen = new Set();
+  let cause = error && typeof error === 'object' ? error.cause : undefined;
+  while (cause !== undefined && cause !== null && !seen.has(cause) && seen.size < 5) {
+    seen.add(cause);
+    lines.push(`caused by: ${oneMessage(cause)}`);
+    cause = typeof cause === 'object' ? cause.cause : undefined;
+  }
+  return lines.join('\n');
 }
 
 export async function collect(files) {
