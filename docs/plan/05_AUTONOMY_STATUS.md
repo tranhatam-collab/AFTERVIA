@@ -642,3 +642,9 @@ xanh đủ 3 job (verify 80 s, e2e thật, groundstead-verify bỏ qua đúng th
 (D5) như vậy đã pass cả trên Postgres sạch của CI — vai trò được tạo lần đầu từ đầu. API usage
 vẫn trả 0 phút tính phí cho run thật, nên câu hỏi chi phí vẫn chờ trang Billing (mục 1.1 của
 10_NEEDS_FROM_OWNER, đã thu hẹp). Nguyên nhân đợt dừng CI 10–11/11 chưa xác định.
+
+**Chốt G-26 (04:21 UTC 13/11):** lane G xác nhận trên run CI thật 43364646021 (head 7e7bc49,
+tạo 04:18:27 — sau bản sửa f3f1685): cả ba job xanh; groundstead-verify 276 pass / 0 fail,
+gồm 41 kiểm thử e2e trước đó đỏ; PR #2 mergeable clean. Bước check:browser của lane G in
+"browser ready" — trình duyệt đã đúng sẵn khi nó chạy, tức bản sửa thứ tự bước trong ci.yml
+là nguyên nhân khắc phục; check:browser giữ vai trò lớp dự phòng. G-26 ĐÓNG.
