@@ -86,13 +86,19 @@ jobs:
             echo "present=false" >> "$GITHUB_OUTPUT"
             echo "No groundstead/ on this branch: nothing to verify."
           fi
-      - name: Install the browser the groundstead e2e tests use
-        if: steps.probe.outputs.present == 'true'
-        run: npx playwright install --with-deps chromium
       - name: npm ci
         if: steps.probe.outputs.present == 'true'
         working-directory: groundstead
         run: npm ci
+      # G-26 (Lane G báo 13/11, xác nhận trên run 43345425301): bước cài trình duyệt phải chạy
+      # SAU npm ci và TRONG groundstead/, để npx phân giải đúng bản Playwright mà groundstead
+      # ghim trong lockfile của nó. Trước đây bước này chạy ở thư mục gốc khi CHƯA có
+      # node_modules nào, nên npx tải một bản Playwright khác và cài Chromium sai revision —
+      # e2e của groundstead đỏ vì thiếu đúng trình duyệt nó cần.
+      - name: Install the browser the groundstead e2e tests use
+        if: steps.probe.outputs.present == 'true'
+        working-directory: groundstead
+        run: npx playwright install --with-deps chromium
       - name: npm run verify
         if: steps.probe.outputs.present == 'true'
         working-directory: groundstead
