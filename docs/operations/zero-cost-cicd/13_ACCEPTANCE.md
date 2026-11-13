@@ -4,7 +4,7 @@
 |---|---|---|---|---|
 | AC-01 | Có đủ 14 tệp trong `docs/operations/zero-cost-cicd/` | Liệt kê thư mục sau khi tạo | ĐẠT | [V] |
 | AC-02 | Chi phí Actions = 0 USD có bằng chứng từ trang billing | Trang Billing & plans | CHƯA ĐẠT | [U] [P] |
-| AC-03 | `ci.yml` có ít nhất một run hoàn tất trên PR | `list_workflow_runs` | CHƯA ĐẠT: không có run sau 17:58 UTC 10/11 | [V] |
+| AC-03 | `ci.yml` có ít nhất một run hoàn tất trên PR | `list_workflow_runs` | ĐẠT (13/11): run 132 success trên `4a8449b`, 3 job chạy thật, 2 m 03 s | [V] |
 | AC-04 | Landing build được | `npm run build:landing` | ĐẠT: 13 tệp, exit 0 | [V] |
 | AC-05 | Quét bí mật sạch | `npm run check:secrets` | ĐẠT: 582 tệp, 6 quy tắc | [V] |
 | AC-06 | Toàn bộ verify pass | `npm run verify` | ĐẠT: exit 0 | [V] |
@@ -17,6 +17,6 @@
 
 ## Tóm tắt
 
-- Đạt: AC-01, AC-04, AC-05, AC-06, AC-08, AC-09, AC-10, AC-11.
-- Chưa đạt: AC-02, AC-03, AC-07, AC-12.
+- Đạt: AC-01, AC-04, AC-05, AC-06, AC-08, AC-09, AC-10, AC-11, và AC-03 từ 13/11.
+- Chưa đạt: AC-02, AC-07, AC-12.
 - Không đánh dấu PASS cho mục nào thiếu bằng chứng.

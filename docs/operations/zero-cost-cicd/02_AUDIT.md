@@ -74,3 +74,19 @@ Ghi chú:
 - Repo sạch, nhánh đúng, PR #1 đang mở và là PR của nhánh này. Không cần tạo PR mới. [V]
 - Không có secret nào được git theo dõi, chỉ có `.env.example`. [V]
 - Workflow `ci.yml` có cấu trúc hợp lý, nhưng không tạo được run hoàn tất từ 17:58 UTC 10/11. Theo bằng chứng hiện có, nguyên nhân nằm ngoài nội dung workflow. [V] + [R]
+
+## Phụ lục 13/11/2026 — CI chạy lại
+
+Push `2759b23..4a8449b` lúc ~01:38 UTC 13/11 kích hoạt run 132 (id 43346472969) trên PR #1:
+**success**, tổng 2 phút 03 giây, cả ba job chạy đủ bước thật (không phải success rỗng):
+
+| Job | Bước chính | Thời lượng bước |
+|---|---|---|
+| `verify` | `npm run verify` | 80 s (01:39:37 → 01:40:57), audit 1 s |
+| `e2e-web` | cài Chromium 21 s; `npm run e2e:web` | 5 s |
+| `groundstead-verify` | probe không thấy `groundstead/` → bỏ qua đúng thiết kế | — |
+
+Kết luận cũ "không có run nào sau 17:58 UTC 10/11" đúng tới thời điểm viết (11/11) và **hết
+hiệu lực từ run 132**. Nguyên nhân đợt dừng 10–11/11 vẫn CHƯA xác định: không có thay đổi nào
+trong repo giữa hai thời điểm có thể giải thích việc dừng và việc chạy lại. [V] số liệu run;
+[U] nguyên nhân.

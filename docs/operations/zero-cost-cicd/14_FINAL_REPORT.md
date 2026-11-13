@@ -31,3 +31,14 @@ CÓ THỂ CHUYỂN SANG REPOSITORY TIẾP THEO: NO
 Lý do: lộ trình chưa đạt GO; CI không chạy; cần chủ dự án xử lý các mục trong `12_OWNER_APPROVALS.md`.
 
 VIỆC CHỜ CHỦ DỰ ÁN: xem `12_OWNER_APPROVALS.md` (mục 1–9).
+
+## Cập nhật 13/11/2026
+
+- CI: **đã chạy lại**. Run 132 (43346472969) success trên `4a8449b`, 3 job thật, 2 phút 03 giây.
+  Nguyên nhân đợt dừng 10–11/11 vẫn chưa xác định (xem phụ lục của 02 và 03).
+- TRẠNG THÁI: vẫn **HOLD**, nhưng thu hẹp — còn hai khối: (1) chi phí 0 USD chưa xác minh
+  (API usage trả 0 phút cho mọi run, kể cả run thật; cần trang Billing); (2) lộ trình A cho
+  landing vẫn BLOCKED (tài khoản Cloudflare, HUM-WEB-03, D14/WEB-02).
+- AC-03 của 13_ACCEPTANCE chuyển ĐẠT; AC-02, AC-07, AC-12 giữ nguyên.
+- Đề xuất tối ưu CI (06) nay ĐÃ KIỂM CHỨNG ĐƯỢC về mặt kỹ thuật vì CI chạy lại; vẫn chờ chủ
+  dự án duyệt trước khi áp dụng (D22 và mục 5–9 của 12_OWNER_APPROVALS).

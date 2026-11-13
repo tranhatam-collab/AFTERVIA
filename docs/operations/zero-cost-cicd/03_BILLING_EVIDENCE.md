@@ -61,3 +61,15 @@ H1 khớp với thời điểm lỗi bắt đầu, nhưng chưa có bằng chứ
 
 - Số phút đã dùng theo tháng, hóa đơn, hạn mức còn lại, trạng thái spending limit. [U]
 - Công cụ billing không có trong phiên này.
+
+## Phụ lục 13/11/2026 — thêm một điểm dữ liệu
+
+Run 132 (43346472969): chạy THẬT 123 giây, 3 job đủ bước, kết quả success — và
+`get_workflow_run_usage` vẫn trả `total_ms: 0` cho cả ba job. [V]
+
+Điều này củng cố kết luận cũ: **API usage không dùng được để kết luận chi phí** trên tài
+khoản này (0 phút cho cả run thật lẫn run lỗi). Nguồn duy nhất còn lại là trang Billing &
+plans của tài khoản. Hai câu hỏi cho chủ dự án khi mở trang đó:
+1. Tháng 11 đã dùng bao nhiêu phút Actions, hạn mức còn lại, spending limit đặt ở đâu?
+2. Có sự kiện nào (hết hạn mức, thanh toán, đổi cài đặt) khớp mốc 10/11 ~16:50 UTC (bắt đầu
+   lỗi) và mốc trước 13/11 01:38 UTC (chạy lại)? Trả lời được là đóng H1–H4.

@@ -636,3 +636,9 @@ chi tiết những gì cần cung cấp, phối hợp giữa các lane; chủ d�
 
 Trạng thái CI không đổi: không có run nào sau 17:58 UTC 10/11; cần chủ dự án kiểm 4 trang
 (mục 1.1 của báo cáo nhu cầu).
+
+**Bổ sung cùng ngày 13/11:** ngay sau khi push `4a8449b`, GitHub Actions tự chạy lại: run 132
+xanh đủ 3 job (verify 80 s, e2e thật, groundstead-verify bỏ qua đúng thiết kế). Migration 0033
+(D5) như vậy đã pass cả trên Postgres sạch của CI — vai trò được tạo lần đầu từ đầu. API usage
+vẫn trả 0 phút tính phí cho run thật, nên câu hỏi chi phí vẫn chờ trang Billing (mục 1.1 của
+10_NEEDS_FROM_OWNER, đã thu hẹp). Nguyên nhân đợt dừng CI 10–11/11 chưa xác định.

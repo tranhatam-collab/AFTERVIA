@@ -37,7 +37,8 @@ Giá trị lấy thẳng từ `ci.yml` (DB test cục bộ), không chép vào t
 - Mỗi commit ghi kết quả cổng THẬT trong thông điệp commit (exit code, số test), như hai lane
   vẫn làm. Không ghi DONE/PASS khi chưa có kết quả lệnh thật.
 - Khi Actions chạy lại, cổng CI là cổng chính thức trở lại; tài liệu này còn giá trị như
-  hướng dẫn chạy cục bộ.
+  hướng dẫn chạy cục bộ. **Cập nhật 13/11: đã xảy ra** — run 132 (`4a8449b`) xanh đủ 3 job
+  lúc 01:41 UTC. CI là cổng chính thức trở lại; `gate:local` giữ vai trò chạy-trước-khi-push.
 
 ## DAST (WO17-01b) — phần còn thiếu của cổng
 
