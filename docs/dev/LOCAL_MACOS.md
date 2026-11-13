@@ -143,7 +143,7 @@ npm run api:local
 
 ## 11. Đã kiểm và chưa kiểm
 
-- Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (lúc đó 19 migration; nay 33); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
+- Đã kiểm trên container Linux với Node 22.23.4, npm 10.9.9 và PostgreSQL 16.15 (03/11/2026): `npm ci`; `npm run db:migrate -- --with-shim` trên DB `_test` mới (lúc đó 19 migration; nay 34); `npm run verify` (exit 0); máy chủ phát triển Desk trả HTTP 200.
 - Đã kiểm WO26-02 trên container Linux (03/11/2026), `npm run api:local` với DB `_test`: thiếu cấu hình và tên DB sai đều bị từ chối (thoát 1); khởi động thật trả `/healthz` 200 và đăng nhập giả lập 200; chỉ nghe trên `127.0.0.1` (kiểm trong `/proc/net/tcp`; địa chỉ không phải loopback bị từ chối); SIGINT và SIGTERM dừng và giải phóng cổng; nhật ký không chứa khóa hay URL. Kiểm tự động: `tests/api/local-start.test.ts`.
 - Đã kiểm E2E-WEB-01 trên container Linux (03/11/2026): `npm run e2e:web` chạy trọn luồng, xem mục 12.
 - Chưa kiểm: mọi lệnh cài đặt trên macOS (Homebrew, Postgres.app, nvm, fnm); trình duyệt trên macOS; ứng dụng di động; API cục bộ và E2E trên macOS; Safari và Firefox (DEV-02).
