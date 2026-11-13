@@ -611,3 +611,28 @@ việc nào vòng lặp tự làm tiếp được mà không vượt quyền.
 WO16-01 — đúng những phần đã xong và có bằng chứng. Đó là bảng chủ dự án đọc để quyết định, nên đã viết
 lại theo trạng thái thật, kèm mã work order và mã kiểm thử PASS cho từng dòng, **và kèm phần còn thiếu
 của từng dòng**. Không dòng nào được nâng lên VERIFIED: tất cả dừng ở PARTIAL trở xuống.
+
+## Lượt 13/11/2026 — chuyển sang dev local theo chỉ đạo của chủ dự án
+
+Chỉ đạo (tóm tắt): chuyển dev local cho cả hai dự án, làm hết việc tự làm được, lập báo cáo
+chi tiết những gì cần cung cấp, phối hợp giữa các lane; chủ dự án sẽ xem và cung cấp sau.
+
+Đã làm trong lượt:
+- **D5 đóng (kỹ thuật)**: vai trò kết nối API `aftervia_api` — migration `0033` + 10 kiểm thử
+  (`tests/db/api-connect-role.test.ts`). Thiết kế: NOINHERIT (quên SET ROLE là lỗi 42501, không
+  âm thầm thấy dữ liệu), không bypassrls, không thành viên service_role, INSERT audit_events chỉ
+  cho `authz.denied`, SELECT đúng cột id của auth.users, EXECUTE record_billing_event. Thuộc tính
+  được ÉP LẠI mỗi lần áp (chống trôi dạt vai trò cấp cụm). Đột biến M1 (bỏ noinherit) giết 2,
+  M2 (policy `true`) giết 1, M3 (cấp service_role) giết 6 kiểm thử; khôi phục sha256 khớp.
+- **Cổng cục bộ**: script `gate:local` (= verify + npm audit high + e2e:web, đúng phạm vi CI)
+  và `docs/dev/LOCAL_GATE.md`. CI trên GitHub vẫn không khởi động job (hồ sơ: `docs/operations/zero-cost-cicd/`).
+- **Chuẩn bị DAST**: `stackhawk.yml` trỏ 127.0.0.1:8787; chờ `HAWK_API_KEY` + `HAWK_APP_ID`
+  trong cài đặt môi trường.
+- **Checklist thiết bị** cho DEV-01/DEV-02: `docs/dev/DEVICE_TEST_CHECKLIST.md`.
+- **Báo cáo nhu cầu hợp nhất** cho chủ dự án: `docs/plan/10_NEEDS_FROM_OWNER.md` (nhóm theo
+  tốc độ cung cấp; mỗi mục ghi cách cung cấp và việc mở khóa).
+- **Phối hợp lane G**: đã gửi yêu cầu qua phiên (13/11) đề nghị lane G tiếp tục dev local và lập
+  báo cáo nhu cầu riêng cho Groundstead trong `groundstead/`; chờ phản hồi.
+
+Trạng thái CI không đổi: không có run nào sau 17:58 UTC 10/11; cần chủ dự án kiểm 4 trang
+(mục 1.1 của báo cáo nhu cầu).

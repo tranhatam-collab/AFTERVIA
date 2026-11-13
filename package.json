@@ -21,7 +21,8 @@
     "loop": "node tools/loop/backlog.mjs",
     "build:landing": "node apps/landing/build.mjs",
     "build:web": "vite build --config apps/web/vite.config.ts",
-    "verify": "npm run check:bundle && npm run check:secrets && npm run typecheck && npm run typecheck:mobile && npm run build:landing && npm run build:web && npm run test && npm run test:loop"
+    "verify": "npm run check:bundle && npm run check:secrets && npm run typecheck && npm run typecheck:mobile && npm run build:landing && npm run build:web && npm run test && npm run test:loop",
+    "gate:local": "npm run verify && npm audit --omit=dev --audit-level=high && npm run e2e:web"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

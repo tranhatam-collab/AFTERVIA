@@ -1,0 +1,14 @@
+# WO17-01b (điều kiện D4): cấu hình DAST HawkScan cho API cục bộ.
+#
+# TRẠNG THÁI: CHƯA CHẠY LẦN NÀO. Thiếu hai thứ, cả hai đặt qua biến môi trường,
+# không bao giờ ghi vào repo hay dán vào chat:
+#   - HAWK_API_KEY: khóa API StackHawk (đặt trong cài đặt môi trường của phiên).
+#   - HAWK_APP_ID: applicationId lấy từ ứng dụng đã tạo trên app.stackhawk.com.
+#
+# Cách chạy khi đủ điều kiện (xem docs/dev/LOCAL_GATE.md):
+#   1. Chạy API cục bộ: npm run api:local (127.0.0.1:8787, DB test, không dữ liệu thật).
+#   2. hawk scan (Docker đã có sẵn trong môi trường này).
+app:
+  applicationId: ${HAWK_APP_ID}
+  env: local
+  host: http://127.0.0.1:8787
