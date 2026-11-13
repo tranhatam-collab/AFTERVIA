@@ -10,7 +10,7 @@ Lane G, nhánh `ccr-8dbbf147-1ge7hc`. Báo cáo này trả lời "cần gì từ
 - Cổng cục bộ `npm run verify`: exit 0, 274/274 kiểm thử node, 6/6 kiểm thử bản production, quét bí mật và bundle sạch.
 - Production đang công bố **0 thẻ hướng dẫn** (mọi nội dung là `AI_DRAFT`); trang nói rõ chưa có hướng dẫn nào được công bố. Mọi trang có `noindex, nofollow`.
 - Gói ngoại tuyến của bản này **chưa ký** (log build: "UNSIGNED"), nên không bản lưu offline nào được phục vụ.
-- CI từ xa chạy lại được (run `43345425301`); job `groundstead-verify` đỏ vì bước cài trình duyệt trong `ci.yml` (xem E3, đề nghị G-26 cho Lane A).
+- CI từ xa chạy lại được (13/11). Job `groundstead-verify` từng đỏ vì bước cài trình duyệt trong `ci.yml`; Lane A đã sửa (G-26) và run `43364646021` trên `7e7bc49` xanh cả ba job.
 
 ## A. Để trang chạy trên groundstead.iai.one (GS-082)
 
@@ -59,7 +59,7 @@ Cách trả lời: "G-08: làm / không", v.v.
 |---|---|---|---|---|
 | E1 | **`GS_CHANNEL=preview` cho môi trường Preview của Vercel** (ngoài repo). Không đặt cho Production. | Tự đặt trong Settings → Environment Variables, hoặc cho phép Lane G đặt bằng công cụ Vercel (thao tác ghi, cần duyệt). | Bản Preview khớp bộ e2e (hiện Preview build theo production) | Tạo lại một deployment Preview, kiểm banner và nhãn xem trước. |
 | E2 | **Kết nối Cloudflare** (chưa có). Danh sách kết nối cho thấy "Cloudflare Developer Platform" chưa cài. Cần nếu muốn Lane G kiểm hoặc tạo DNS. | Cài kết nối ở claude.ai, hoặc tự làm DNS (A1). | Kiểm vùng và ID tên miền phía Cloudflare | Chỉ đọc; không đổi DNS nếu chưa được duyệt. |
-| E3 | **GitHub Actions: thanh toán và job `groundstead-verify`.** CI chạy lại được từ 13/11 nhưng lý do hết `startup_failure` chưa xác minh; thanh toán: BILLING_UNVERIFIED. Job `groundstead-verify` đỏ vì bước cài trình duyệt trong `ci.yml`. | (1) Chủ dự án kiểm trang thanh toán và hạn mức chi tiêu của GitHub (không nâng ngân sách 65 USD, không tắt kiểm soát chi tiêu nếu chưa quyết). (2) Lane A sửa `ci.yml` theo **G-26** trong `REQUESTS_TO_LANE_A.md`. | CI xanh cho PR #2 | Theo dõi run CI kế tiếp: log thật (run `43363949190`) xác nhận runner thiếu Chromium revision 1243; Lane G đã thêm `npm run check:browser` vào `verify` để `groundstead/` tự bảo đảm trình duyệt (chưa xác nhận trên CI). G-26 vẫn nên làm. |
+| E3 | **GitHub Actions: thanh toán.** CI chạy lại được từ 13/11 nhưng lý do hết `startup_failure` chưa xác minh; thanh toán: BILLING_UNVERIFIED. (Job `groundstead-verify` đã xanh sau khi Lane A sửa `ci.yml`, G-26.) | Chủ dự án kiểm trang thanh toán và hạn mức chi tiêu của GitHub (không nâng ngân sách 65 USD, không tắt kiểm soát chi tiêu nếu chưa quyết). | Biết chắc CI không dừng vì hạn mức | Chưa cần làm gì thêm cho CI của Groundstead; ghi kết quả kiểm vào `docs/evidence/` nếu bạn gửi. |
 | E4 | **GS-H01: repo trống `tranhatam-collab/groundstead`** và quyền cho Claude GitHub App. | Tạo repo, cấp quyền. | GS-001 (tách thư mục `groundstead/` sang repo riêng) | Tách lịch sử bằng `git subtree split`, không viết lại lịch sử repo hiện tại. |
 
 ## F. Không chặn việc đưa landing lên (theo backlog)
