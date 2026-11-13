@@ -22,6 +22,9 @@ export type ReadinessText = {
   cityHeading: string;
   cityText: string;
   cityLink: string;
+  // Shown instead of cityText and cityLink when this build publishes no guide.
+  cityTextNoGuides: string;
+  cityLinkNoGuides: string;
   risksTitle: string;
   risks: string[];
   submit: string;
@@ -153,7 +156,11 @@ const EN: ReadinessText = {
   cityHeading: 'You can stay in the city first',
   cityText:
     'Emergency guidance for flooding and heat is already available. Start there while the other modules are being built.',
+  cityTextNoGuides:
+    'The emergency guides for flooding and heat are drafted and are waiting for a person to review them, so none is published yet. Until then, follow your local authorities and call your local emergency number.',
   cityLink: 'Open emergency guidance',
+  cityLinkNoGuides:
+    'Open the emergency page',
   risksTitle: 'What usually goes wrong',
   risks: [
     'Money running out in the first year.',
@@ -290,7 +297,11 @@ const VI: ReadinessText = {
   cityHeading: 'Bạn có thể ở lại thành phố trước',
   cityText:
     'Hướng dẫn khẩn cấp cho lũ lụt và nắng nóng đã có sẵn. Bắt đầu từ đó trong khi các module khác đang được xây dựng.',
+  cityTextNoGuides:
+    'Các hướng dẫn khẩn cấp cho lũ lụt và nắng nóng đã được soạn nháp và đang chờ người duyệt, nên chưa có hướng dẫn nào được công bố. Trong lúc đó, hãy làm theo chính quyền địa phương và gọi số khẩn cấp tại nơi bạn ở.',
   cityLink: 'Mở hướng dẫn khẩn cấp',
+  cityLinkNoGuides:
+    'Mở trang khẩn cấp',
   risksTitle: 'Điều thường xảy ra sai',
   risks: [
     'Tiền cạn trong năm đầu.',

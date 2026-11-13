@@ -26,7 +26,7 @@ function allStrings(t: ReadinessText): string[] {
   const out = [
     t.title, t.intro, t.scoreNote, t.planningAid, ...Object.values(t.themes), ...t.risks, t.interestHeading,
     t.interestNote, t.interestSystem, t.scoresHeading, t.scoreLabel, t.nextHeading, t.noLowNote, t.cityHeading,
-    t.cityText, t.cityLink, t.risksTitle, t.submit, t.save, t.clear, t.incomplete, t.saved, t.cleared, t.noStorage,
+    t.cityText, t.cityLink, t.cityTextNoGuides, t.cityLinkNoGuides, t.risksTitle, t.submit, t.save, t.clear, t.incomplete, t.saved, t.cleared, t.noStorage,
     ...Object.values(t.interest),
   ];
   for (const q of Object.values(t.questions)) out.push(q.prompt, ...Object.values(q.options));

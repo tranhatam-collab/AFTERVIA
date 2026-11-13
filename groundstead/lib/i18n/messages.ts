@@ -6,10 +6,14 @@ export type LandingRow = { name: string; text: string };
 export type Landing = {
   statusTitle: string;
   statusBody: string;
+  // Shown instead of statusBody when this build publishes no guide (a production build while every card is a draft).
+  statusBodyNoGuides: string;
   positioning: string;
   startTitle: string;
   modeStatus: string;
   startBody: string;
+  // Shown instead of startBody when this build publishes no guide: it must not describe a guide it does not carry.
+  startBodyNoGuides: string;
   pillarsTitle: string;
   pillarsIntro: string;
   pillars: readonly LandingRow[];
@@ -201,12 +205,16 @@ const landingEn: Landing = {
   statusTitle: 'Preview, not a finished product',
   statusBody:
     'The guidance here is drafted by AI and has not been reviewed by people yet. In an emergency, follow your local authorities and call your local emergency number.',
+  statusBodyNoGuides:
+    'No emergency guide is published here yet. In an emergency, follow your local authorities and call your local emergency number.',
   positioning:
     'Groundstead is building a way for city residents to get ready for emergencies and, if they choose, a step-by-step path to self-reliant, sustainable living on good land. Each guide shows its sources and its review status.',
   startTitle: 'Start here: 72-Hour City Mode',
   modeStatus: 'Being built',
   startBody:
     'This is the first mode we are building for city households. What is here now: emergency guidance for two situations, flood and heat, each with its sources and review label. Both guides are summaries of US National Weather Service guidance and may include details that apply only in the United States. Contact lists cover Vietnam and the United States. No Vietnamese emergency number has been checked yet, and the United States list has only 911 so far. Not here yet: use without a network connection, the family plan, the supply cabinet, and local alerts.',
+  startBodyNoGuides:
+    'This is the first mode we are building for city households. No emergency guide is published on this site yet. The guides for flood and heat are drafted and are waiting for a person to review them. Until one is published, follow your local authorities and call your local emergency number. Contact lists cover Vietnam and the United States. No Vietnamese emergency number has been checked yet, and the United States list has only 911 so far. Not here yet: use without a network connection, the family plan, the supply cabinet, and local alerts.',
   pillarsTitle: 'Seven pillars to track',
   pillarsIntro:
     'Planned: each pillar will be followed through one or more numbers that you track yourself. The tracker is not built yet. Targets are goals, not guarantees.',
@@ -253,12 +261,16 @@ const landingVi: Landing = {
   statusTitle: 'Bản xem trước, chưa phải sản phẩm hoàn chỉnh',
   statusBody:
     'Hướng dẫn ở đây do AI soạn nháp và chưa có người duyệt. Khi khẩn cấp, hãy làm theo chính quyền địa phương và gọi số khẩn cấp tại nơi bạn ở.',
+  statusBodyNoGuides:
+    'Trang này chưa công bố hướng dẫn khẩn cấp nào. Khi khẩn cấp, hãy làm theo chính quyền địa phương và gọi số khẩn cấp tại nơi bạn ở.',
   positioning:
     'Groundstead đang xây dựng cách để cư dân đô thị chuẩn bị cho khẩn cấp và, nếu muốn, một lộ trình từng bước để sống tự chủ, bền vững trên đất lành. Mỗi hướng dẫn ghi rõ nguồn và trạng thái duyệt.',
   startTitle: 'Bắt đầu từ đây: Chế độ 72 giờ đô thị',
   modeStatus: 'Đang xây dựng',
   startBody:
     'Đây là chế độ đầu tiên chúng tôi xây cho hộ gia đình đô thị. Hiện có: hướng dẫn khẩn cấp cho hai tình huống, lũ lụt và nắng nóng, mỗi mục có nguồn và nhãn duyệt. Cả hai hướng dẫn là bản tóm tắt từ hướng dẫn của Dịch vụ Thời tiết Quốc gia Hoa Kỳ (NWS) và có thể có chi tiết chỉ áp dụng ở Hoa Kỳ. Danh bạ liên hệ cho Việt Nam và Hoa Kỳ. Chưa có số khẩn cấp nào của Việt Nam được đối chiếu với nguồn chính thức; danh bạ Hoa Kỳ hiện chỉ có số 911. Chưa có: dùng khi không có mạng, kế hoạch gia đình, tủ vật dụng và cảnh báo địa phương.',
+  startBodyNoGuides:
+    'Đây là chế độ đầu tiên chúng tôi xây cho hộ gia đình đô thị. Hiện chưa có hướng dẫn khẩn cấp nào được công bố trên trang này. Các hướng dẫn về lũ lụt và nắng nóng đã được soạn nháp và đang chờ người duyệt. Cho đến khi có hướng dẫn được công bố, hãy làm theo chính quyền địa phương và gọi số khẩn cấp tại nơi bạn ở. Danh bạ liên hệ cho Việt Nam và Hoa Kỳ. Chưa có số khẩn cấp nào của Việt Nam được đối chiếu với nguồn chính thức; danh bạ Hoa Kỳ hiện chỉ có số 911. Chưa có: dùng khi không có mạng, kế hoạch gia đình, tủ vật dụng và cảnh báo địa phương.',
   pillarsTitle: 'Bảy trụ cột để tự theo dõi',
   pillarsIntro:
     'Dự kiến: mỗi trụ cột sẽ gồm một hoặc nhiều chỉ số bạn tự theo dõi. Công cụ theo dõi chưa được xây dựng. Các mục tiêu là đích đặt ra, không phải lời đảm bảo.',

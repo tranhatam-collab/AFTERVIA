@@ -15,10 +15,12 @@ function shownFields(m: Landing): string[] {
   return [
     m.statusTitle,
     m.statusBody,
+    m.statusBodyNoGuides,
     m.positioning,
     m.startTitle,
     m.modeStatus,
     m.startBody,
+    m.startBodyNoGuides,
     m.pillarsTitle,
     m.pillarsIntro,
     m.pathTitle,

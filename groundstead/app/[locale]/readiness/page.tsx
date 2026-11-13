@@ -1,4 +1,5 @@
 import { BRAND } from '../../../lib/brand.ts';
+import { cardsFor } from '../../../lib/emergency/cards.ts';
 import { isLocale, localePath, type Locale } from '../../../lib/i18n/locales.ts';
 import { MESSAGES } from '../../../lib/i18n/messages.ts';
 import { pageMetadata } from '../../../lib/seo/page.ts';
@@ -21,6 +22,8 @@ export default async function Readiness({ params }: Params) {
   const other: Locale = locale === 'en' ? 'vi' : 'en';
   const m = MESSAGES[locale];
   const t = READINESS[locale];
+  // Same rule as the home page: do not say a guide is available when this build carries none.
+  const shown = cardsFor(locale).length > 0 ? t : { ...t, cityText: t.cityTextNoGuides, cityLink: t.cityLinkNoGuides };
   return (
     <>
       <a className="skip" href="#main">{m.skipToContent}</a>
@@ -38,7 +41,7 @@ export default async function Readiness({ params }: Params) {
         <p>{t.intro}</p>
         <p>{t.scoreNote}</p>
         <p>{t.planningAid}</p>
-        <ReadinessCheck text={t} emergencyHref={localePath(locale, 'emergency/')} />
+        <ReadinessCheck text={shown} emergencyHref={localePath(locale, 'emergency/')} />
         <section aria-labelledby="risks-title">
           <h2 id="risks-title">{t.risksTitle}</h2>
           <ul>

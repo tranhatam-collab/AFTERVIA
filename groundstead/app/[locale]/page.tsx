@@ -1,5 +1,6 @@
 import { BRAND } from '../../lib/brand.ts';
 import { currentChannel } from '../../lib/channel.ts';
+import { cardsFor } from '../../lib/emergency/cards.ts';
 import { isLocale, localePath, type Locale } from '../../lib/i18n/locales.ts';
 import { LANDING, MESSAGES } from '../../lib/i18n/messages.ts';
 import { jsonLd, organizationLd } from '../../lib/seo/jsonld.ts';
@@ -11,6 +12,9 @@ export default async function Home({ params }: Params) {
   const locale: Locale = isLocale(raw) ? raw : 'en';
   const other: Locale = locale === 'en' ? 'vi' : 'en';
   const m = { ...MESSAGES[locale], ...LANDING[locale] };
+  // The page may only describe guides that this build carries. A production build publishes none while every card is
+  // a draft (G-07), so it must not say the flood and heat guides are "here now".
+  const hasGuides = cardsFor(locale).length > 0;
   return (
     <>
       <a className="skip" href="#main">{m.skipToContent}</a>
@@ -28,12 +32,12 @@ export default async function Home({ params }: Params) {
         <p className="lead">{m.positioning}</p>
         <section className="notice" aria-labelledby="status-title">
           <h2 id="status-title">{m.statusTitle}</h2>
-          <p>{m.statusBody}</p>
+          <p>{hasGuides ? m.statusBody : m.statusBodyNoGuides}</p>
         </section>
         <section aria-labelledby="start-title">
           <h2 id="start-title">{m.startTitle}</h2>
           <p className="tag">{m.modeStatus}</p>
-          <p>{m.startBody}</p>
+          <p>{hasGuides ? m.startBody : m.startBodyNoGuides}</p>
           <p><a href={localePath(locale, 'emergency/')}>{m.homeEmergencyLink}</a></p>
           <p><a href={localePath(locale, 'help/')}>{m.homeHelpLink}</a></p>
         </section>
