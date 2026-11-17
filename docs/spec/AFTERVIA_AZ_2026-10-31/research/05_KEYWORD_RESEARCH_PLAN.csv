@@ -1,0 +1,16 @@
+﻿language,query,audience,intent,market,monthly_searches,cpc_usd,source,extraction_date,status
+VI,quản lý bảo hành cửa hàng,B2B,Tìm công cụ,,,,,,UNVERIFIED
+VI,phần mềm hậu mãi điện máy,B2B,Tìm giải pháp,,,,,,UNVERIFIED
+VI,quản lý phiếu sửa chữa,B2B,Quy trình,,,,,,UNVERIFIED
+VI,mất hóa đơn bảo hành,B2C,Tìm chứng từ/quyền,,,,,,UNVERIFIED
+VI,theo dõi bảo hành sản phẩm,B2C,Quản lý sản phẩm,,,,,,UNVERIFIED
+VI,phần mềm chăm sóc khách hàng sau bán,B2B,So sánh rộng,,,,,,UNVERIFIED
+EN,warranty management software for small business,B2B,Commercial,,,,,,UNVERIFIED
+EN,after sales service software,B2B,Commercial,,,,,,UNVERIFIED
+EN,receipt and warranty tracker,B2C,Commercial,,,,,,UNVERIFIED
+EN,lost receipt warranty claim,B2C,Informational/legal,,,,,,UNVERIFIED
+EN,repair ticket tracking software,B2B,Commercial,,,,,,UNVERIFIED
+EN,product passport app,B2B2C,Emerging concept,,,,,,UNVERIFIED
+EN,customer warranty portal,B2B,Commercial,,,,,,UNVERIFIED
+EN,Claimlane alternatives,B2B,Comparison,,,,,,UNVERIFIED
+EN,AfterShip warranty management,B2B,Comparison,,,,,,UNVERIFIED

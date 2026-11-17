@@ -1,0 +1,158 @@
+npm notice run aftervia@0.1.0 verify
+npm notice run npm run check:bundle && npm run check:secrets && npm run typecheck && npm run typecheck:mobile && npm run build:landing && npm run build:web && npm run test && npm run test:loop
+npm notice run aftervia@0.1.0 check:bundle
+npm notice run node tools/checks/bundle-verify.mjs
+bundle OK: 69 files match 04_SHA256SUMS.txt
+npm notice run aftervia@0.1.0 check:secrets
+npm notice run node tools/checks/secret-scan.mjs
+secret scan OK: 257 files, 5 rules
+npm notice run aftervia@0.1.0 typecheck
+npm notice run tsc -p tsconfig.json
+npm notice run aftervia@0.1.0 typecheck:mobile
+npm notice run tsc -p apps/mobile/tsconfig.json
+npm notice run aftervia@0.1.0 build:landing
+npm notice run node apps/landing/build.mjs
+landing OK: 13 tệp, môi trường preview, thư mục /Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA/apps/landing/dist
+npm notice run aftervia@0.1.0 build:web
+npm notice run vite build --config apps/web/vite.config.ts
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 21 modules transformed.
+rendering chunks...
+computing gzip size...
+apps/web/dist/index.html                   0.44 kB │ gzip:  0.28 kB
+apps/web/dist/assets/index-5rjsQnOD.css    1.71 kB │ gzip:  0.77 kB
+apps/web/dist/assets/index-BSQfNOhN.js   192.24 kB │ gzip: 61.40 kB
+
+✓ built in 103ms
+npm notice run aftervia@0.1.0 test
+npm notice run vitest run
+
+ RUN  v4.1.12 /Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA
+
+
+ Test Files  46 passed | 1 skipped (47)
+      Tests  353 passed | 1 skipped (354)
+   Start at  06:44:51
+   Duration  25.95s (transform 752ms, setup 0ms, import 4.73s, tests 15.41s, environment 3ms)
+
+npm notice run aftervia@0.1.0 test:loop
+npm notice run node --test tools/loop/backlog.test.mjs tools/loop/matrix.test.mjs
+TAP version 13
+# Subtest: validate accepts a well-formed backlog
+ok 1 - validate accepts a well-formed backlog
+  ---
+  duration_ms: 1.254708
+  type: 'test'
+  ...
+# Subtest: validate rejects cycles, unknown deps, bad ids and DONE without evidence
+ok 2 - validate rejects cycles, unknown deps, bad ids and DONE without evidence
+  ---
+  duration_ms: 0.360292
+  type: 'test'
+  ...
+# Subtest: validate flags acceptance ids that are not in the matrix
+ok 3 - validate flags acceptance ids that are not in the matrix
+  ---
+  duration_ms: 0.082417
+  type: 'test'
+  ...
+# Subtest: loop never starts HUMAN tasks and only ready AUTO tasks are offered
+ok 4 - loop never starts HUMAN tasks and only ready AUTO tasks are offered
+  ---
+  duration_ms: 1.455834
+  type: 'test'
+  ...
+# Subtest: start then finish requires evidence and moves dependents to ready
+ok 5 - start then finish requires evidence and moves dependents to ready
+  ---
+  duration_ms: 0.215084
+  type: 'test'
+  ...
+# Subtest: only one task may be IN_PROGRESS and decide resumes it
+ok 6 - only one task may be IN_PROGRESS and decide resumes it
+  ---
+  duration_ms: 0.14975
+  type: 'test'
+  ...
+# Subtest: blocked tasks need a reason and can be unblocked explicitly
+ok 7 - blocked tasks need a reason and can be unblocked explicitly
+  ---
+  duration_ms: 0.206459
+  type: 'test'
+  ...
+# Subtest: decide stops at budget and at handoff when only human work remains
+ok 8 - decide stops at budget and at handoff when only human work remains
+  ---
+  duration_ms: 0.075834
+  type: 'test'
+  ...
+# Subtest: decide reports stuck when an automatable task waits on a blocked dependency
+ok 9 - decide reports stuck when an automatable task waits on a blocked dependency
+  ---
+  duration_ms: 0.304417
+  type: 'test'
+  ...
+# Subtest: split replaces an oversized task with explicit children and rewires dependents
+ok 10 - split replaces an oversized task with explicit children and rewires dependents
+  ---
+  duration_ms: 0.639375
+  type: 'test'
+  ...
+# Subtest: split refuses fewer than two children, duplicate ids, DONE/IN_PROGRESS parents and non-loop kinds
+ok 11 - split refuses fewer than two children, duplicate ids, DONE/IN_PROGRESS parents and non-loop kinds
+  ---
+  duration_ms: 0.281959
+  type: 'test'
+  ...
+# Subtest: add registers a brand-new task without touching any other task
+ok 12 - add registers a brand-new task without touching any other task
+  ---
+  duration_ms: 0.281584
+  type: 'test'
+  ...
+# Subtest: add refuses a duplicate id, a missing title or an unknown kind
+ok 13 - add refuses a duplicate id, a missing title or an unknown kind
+  ---
+  duration_ms: 0.093041
+  type: 'test'
+  ...
+# Subtest: split refuses a shape that would create a dependency cycle, via the normal validate-before-save path
+ok 14 - split refuses a shape that would create a dependency cycle, via the normal validate-before-save path
+  ---
+  duration_ms: 0.494541
+  type: 'test'
+  ...
+# Subtest: parseCsv handles BOM, quoted commas, escaped quotes and CRLF
+ok 15 - parseCsv handles BOM, quoted commas, escaped quotes and CRLF
+  ---
+  duration_ms: 0.7735
+  type: 'test'
+  ...
+# Subtest: stringifyCsv round-trips values that need quoting
+ok 16 - stringifyCsv round-trips values that need quoting
+  ---
+  duration_ms: 0.73475
+  type: 'test'
+  ...
+# Subtest: statuses come only from T-id test titles and FAIL wins over PASS
+ok 17 - statuses come only from T-id test titles and FAIL wins over PASS
+  ---
+  duration_ms: 0.230583
+  type: 'test'
+  ...
+# Subtest: applyReport updates derived statuses and never overwrites manual results
+ok 18 - applyReport updates derived statuses and never overwrites manual results
+  ---
+  duration_ms: 0.407292
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 58.093208

@@ -1,0 +1,24 @@
+{
+  "id": "pg-proof",
+  "command": [
+    "/Applications/Postgres.app/Contents/Versions/17/bin/psql",
+    "-X",
+    "-h",
+    "127.0.0.1",
+    "-p",
+    "55439",
+    "-d",
+    "aftervia_independent_20261103_test",
+    "-At",
+    "-c",
+    "SELECT current_database(), current_setting('server_version'), inet_server_addr(), inet_server_port(); SELECT count(*) FROM aftervia_meta.schema_migrations;"
+  ],
+  "cwd": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA",
+  "sha": "9a76185498c2e945e30ceb159cd8eaab8838eee2",
+  "started_at": "2026-11-02T23:49:46.723742+00:00",
+  "ended_at": "2026-11-02T23:49:46.771539+00:00",
+  "exit_code": 0,
+  "raw_log": "/private/tmp/aftervia-independent-audit-20261103-4flk3tvo/evidence/pg-proof.log",
+  "environment": "isolated local PostgreSQL 17, port 55439, synthetic DB only",
+  "test_counts": "unknown unless raw log supplies them"
+}

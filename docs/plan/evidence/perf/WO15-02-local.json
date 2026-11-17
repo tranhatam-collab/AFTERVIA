@@ -1,0 +1,39 @@
+{
+  "workorder": "WO15-02",
+  "acceptance": "T40 (PARTIAL: chỉ đo cục bộ theo profile khai báo)",
+  "profile": {
+    "name": "local-profile-v1 (khai báo tạm, không phải profile pilot đã công bố)",
+    "operation": "GET /v1/items/{id} với token người dùng hợp lệ, một món đồ",
+    "warmup_requests": 20,
+    "requests": 300,
+    "concurrency": 5
+  },
+  "conditions": {
+    "node": "v22.23.4",
+    "platform": "linux 6.18.44-fc-v185",
+    "arch": "x64",
+    "cpus": 4,
+    "memory_gb": 16,
+    "network": "loopback 127.0.0.1, không qua mạng công cộng",
+    "measured_at": "2026-10-31T19:59:39.960Z",
+    "postgres": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)",
+    "database": "aftervia_test (cục bộ)"
+  },
+  "result": {
+    "samples": 300,
+    "errors": 0,
+    "p50_ms": 9.69,
+    "p95_ms": 13.63,
+    "p99_ms": 15.21,
+    "max_ms": 15.43,
+    "status_counts": {
+      "200": 300
+    }
+  },
+  "notes": [
+    "Không phải kết quả tải pilot: profile pilot chưa được công bố (HUM-WO19-02).",
+    "Không phải SLA. Không suy diễn sang môi trường khác, khu vực khác hay mạng công cộng.",
+    "Yêu cầu khởi động nóng không được tính vào kết quả.",
+    "Độ trễ đo ở phía máy khách (fetch), gồm cả HTTP loopback, máy chủ API và PostgreSQL cục bộ."
+  ]
+}

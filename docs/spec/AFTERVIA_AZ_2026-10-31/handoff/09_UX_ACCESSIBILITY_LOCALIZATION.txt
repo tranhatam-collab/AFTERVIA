@@ -1,0 +1,8 @@
+Rà AFTERVIA trên mobile/web bằng design system VI/EN, dark/light. Không thu nhỏ dashboard desktop thành màn mobile. Mobile4 tab: Món đồ/Hồ sơ/Nhắc việc/Tài khoản; Desk ưu tiên inbox và case detail.
+
+Text từ localization; chọn 'Tiếng Việt'/'English', thị trường riêng; không suy luật từ ngôn ngữ. Format dates/currency; không hardcode marketing claims. Tất cả route có loading/empty/error/offline/denied; không link '#'.
+
+Kiểm focus keyboard, label screen reader, contrast, font scaling, target chạm, reduced motion. Màn AI nói 'đề xuất chưa duyệt'; confirmed badge phải có actor/evidence.
+Public landing chỉ nói tính năng thật, không testimonials/users/revenue giả. Privacy/terms thiếu pháp nhân phải ghi draft, không publish.
+
+Kiểm iPhone/Android thật và browser mục tiêu; screenshot chỉ là evidence UI, không thay test backend. Báo findings theo severity, không tự redeploy.

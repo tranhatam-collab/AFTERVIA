@@ -1,0 +1,9 @@
+﻿experiment_id,hypothesis,sample_or_method,decision_rule,caveat,window,status
+E01,Cửa hàng có pain lặp lại,15 merchant interviews,8/15 cùng vấn đề;5 design partners,Không đạt: đổi segment,14 ngày,NOT_STARTED
+E02,Onboarding đủ nhẹ,5 merchant pilots,First real case không cần kỹ sư hỗ trợ,"Đo median/p90, giảm scope",30 ngày,NOT_STARTED
+E03,Intake tốt hơn,>=200 eligible cases total,Giảm>=30% phút intake;>=20% hỏi lại,Không causal claim nếu không đối chiếu,30 ngày,NOT_STARTED
+E04,Willingness to pay,Offer sau pilot,3–5 merchant có payment xác nhận,LOI không tính revenue,30–60 ngày,NOT_STARTED
+E05,Retention B2B,Cohort pilot trả tiền,"Theo dõi 90ngày, lý do churn",Không ngoại suy 1 tuần thành năm,90 ngày,NOT_STARTED
+E06,Unit economics,Cost logs + support times,Contribution margin>=60%; CAC payback<6tháng,Chỉnh giá/scope trước ads,60 ngày,NOT_STARTED
+E07,Customer distribution,Invites có consent,Đo registration và Family conversion thực,Không coi40/25%/3% là observed,60 ngày,NOT_STARTED
+E08,Source portability,Wron sandbox probe,Clean build và rights verified,Fail: prototype only,Trước real data,NOT_STARTED

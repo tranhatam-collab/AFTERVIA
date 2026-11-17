@@ -1,0 +1,7 @@
+Chỉ thực hiện Gate0 AFTERVIA trong sandbox. Liệt kê khả năng đã có bằng chứng và chưa xác minh: source export, backend persistence, database migrations, private storage, auth, mobile release build, web build, tests, self-host rights.
+
+Tạo mẫu tối thiểu có login, items(id, owner_user_id, title), policy server/DB. Hai tài khoản A/B: A tạo item, refresh/restart vẫn còn; B thử URL/API với item A phải bị từ chối. Không render bản mock thay kết quả DB.
+
+Xuất source kèm lockfile, .env.example không secret, migrations, README và lệnh build. Ghi chính xác điều gì không xuất được. Chỉ tuyên bố clean build nếu đã chạy ở môi trường độc lập. Điều khoản sở hữu cần chủ dự án xác nhận, bạn không tự phê duyệt pháp lý.
+
+Báo receipt: changed_files, tests_run, evidence, limitations, cost, rollback. Dừng; không đưa dữ liệu thật hoặc mở production.

@@ -1,0 +1,23 @@
+﻿table_design,key_fields,purpose,access_rule
+profiles,id UUID PK; locale; service_country; created_at; deletion_status,User identity minimal,auth.uid=id; no PII in public profile
+organizations,id UUID PK; legal_name; country; plan_id; status,Merchant tenant,Membership only; legal fields admin
+organization_members,org_id; user_id; role; status; granted_by; revoked_at,"Unique(org_id,user_id)",No self-escalation
+items,id; owner_user_id; title; brand; model; serial_encrypted; purchased_on; currency,Customer vault,No merchant auto access
+documents,id; owner_user_id; private_object_key; sha256; mime; scan_status; retention_until,Document metadata,Private storage object policy
+item_documents,item_id; document_id; association_type,Item evidence relation,Owner grant checks
+extractions,id; document_id; schema_version; proposed_json; review_status; provider_job_id,Draft AI data,No client overwrite source
+field_confirmations,id; extraction_id; field_path; old_value; new_value; actor; confirmed_at,Human review history,Immutable audit of confirmation
+cases,id; org_id; item_id; created_by; status; assigned_to; version; created_at,After-sales case,Participant+organization rules
+case_participants,case_id; actor_id; role; scope; expires_at; revoked_at,Per-case membership,Invite/revoke server only
+case_document_grants,case_id; document_id; recipient_id; can_download; expires_at; revoked_at,Fine-grained evidence access,No wildcard document grants
+case_events,id; case_id; sequence; actor; type; payload_redacted; created_at; request_id,Timeline append-only,No arbitrary update/delete
+reminders,id; item_id; owner_id; confirmed_date; timezone; channel; status,User confirmed reminder,Date provenance required
+consents,id; actor_id; purpose; scope; version; granted_at; revoked_at,Purpose-specific records,Not a universal waiver
+policies,id; owner_org; product_scope; territory; source_document; effective_from; version,Source terms/policy,Legal review metadata
+subscriptions,id; payer_id; provider; external_id; status; period_end; plan,Entitlement state,Webhook server writes only
+billing_events,provider; event_id; event_time; type; redacted_payload; applied_at,"Unique(provider,event_id)",Idempotent immutable event
+jobs,id; kind; tenant_scope; state; attempts; dedupe_key; payload_ref,Async work,No arbitrary client tool invocation
+export_requests,id; actor; scope; status; file_key; expires_at,Portable records,Authorize every object
+deletion_requests,id; actor; state; retained_categories; due_at; completed_at,Deletion lifecycle,Tombstone on restore
+audit_events,id; actor; tenant; action; object_ref; request_id; occurred_at,Security/change evidence,Restricted append-only
+country_packs,country_code; version; status; legal_reviewed_at; reviewer; sources,Market enablement,Default disabled

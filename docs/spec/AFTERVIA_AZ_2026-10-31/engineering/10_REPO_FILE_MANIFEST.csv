@@ -1,0 +1,33 @@
+﻿planned_path,purpose,work_order,existence_status
+apps/mobile/app/_layout.tsx,Mobile routing/auth shell,WO10,PLANNED_NOT_GENERATED
+apps/mobile/app/items/index.tsx,Item list,WO07,PLANNED_NOT_GENERATED
+apps/mobile/app/items/new.tsx,Upload/manual entry,WO05,PLANNED_NOT_GENERATED
+apps/mobile/app/cases/[id].tsx,Case timeline,WO10,PLANNED_NOT_GENERATED
+apps/mobile/app/settings/privacy.tsx,Export/delete UI,WO11,PLANNED_NOT_GENERATED
+apps/web/src/app/router.tsx,Web routes,WO10,PLANNED_NOT_GENERATED
+apps/web/src/pages/desk/inbox.tsx,Merchant inbox,WO08,PLANNED_NOT_GENERATED
+apps/web/src/pages/desk/case-detail.tsx,Case processing,WO08,PLANNED_NOT_GENERATED
+apps/web/src/pages/desk/billing.tsx,Plan/entitlement UI,WO12,PLANNED_NOT_GENERATED
+packages/domain/src/case-state.ts,Allowed server transitions,WO08,PLANNED_NOT_GENERATED
+packages/domain/src/permissions.ts,Shared domain definitions; not only enforcement,WO04,PLANNED_NOT_GENERATED
+packages/domain/src/schemas.ts,Input contracts,WO06,PLANNED_NOT_GENERATED
+packages/i18n/src/vi.json,Vietnamese strings,WO07,PLANNED_NOT_GENERATED
+packages/i18n/src/en.json,English strings,WO07,PLANNED_NOT_GENERATED
+packages/ui/src/tokens.ts,Semantic light/dark tokens,WO10,PLANNED_NOT_GENERATED
+services/api/src/auth/authorize.ts,Server object authorization,WO04,PLANNED_NOT_GENERATED
+services/api/src/documents/service.ts,Upload/download scope,WO05,PLANNED_NOT_GENERATED
+services/api/src/cases/service.ts,Case transactions,WO08,PLANNED_NOT_GENERATED
+services/api/src/grants/service.ts,Grant/revoke policy,WO09,PLANNED_NOT_GENERATED
+services/api/src/billing/webhook.ts,Provider verification/idempotency,WO12,PLANNED_NOT_GENERATED
+services/worker/src/extraction.ts,AI job with schema/provenance,WO06,PLANNED_NOT_GENERATED
+services/worker/src/export.ts,Authorized export,WO11,PLANNED_NOT_GENERATED
+services/worker/src/deletion.ts,Deletion lifecycle,WO11,PLANNED_NOT_GENERATED
+supabase/migrations/0001_initial.sql,Schema/RLS migrations after review,WO04,PLANNED_NOT_GENERATED
+tests/security/tenant-isolation.test.ts,Cross-tenant negative tests,WO17,PLANNED_NOT_GENERATED
+tests/security/document-grants.test.ts,Scope/revocation tests,WO17,PLANNED_NOT_GENERATED
+tests/e2e/after-sales-flow.spec.ts,Core flow,WO10,PLANNED_NOT_GENERATED
+tests/billing/replay.test.ts,Webhook replay tests,WO12,PLANNED_NOT_GENERATED
+.github/workflows/ci.yml,Build/test/scan pipeline,WO03,PLANNED_NOT_GENERATED
+.env.example,Names only; no secrets,WO03,PLANNED_NOT_GENERATED
+README.md,Clean setup/build/exit instructions,WO03,PLANNED_NOT_GENERATED
+SECURITY.md,Incident/contact process,WO16,PLANNED_NOT_GENERATED

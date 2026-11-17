@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/npm",
+    "audit",
+    "--package-lock-only",
+    "--omit=dev",
+    "--audit-level=high",
+    "--json"
+  ],
+  "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source",
+  "started_at": "2026-11-04T00:47:19.840272+00:00",
+  "ended_at": "2026-11-04T00:47:25.650638+00:00",
+  "exit": 1,
+  "sha256": "30cfb2a8e03629fd4dea9c678ff85b80f6423ece0eb24f3fcba2ce8bde0a2d56",
+  "lock_sha256": "389f74d983c5c8ee2b88d3fe00a138e0d96b749d9d2168215b0e8a71ebc40806",
+  "env_scope": "sanitized; separate empty user/global configs; no registry token; temporary cache; scripts ignored"
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "command": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "decide"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source-e3d55e0",
+    "exit": 0,
+    "at": "2026-11-04T01:01:49.882368+00:00"
+  },
+  {
+    "command": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "status"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source-e3d55e0",
+    "exit": 0,
+    "at": "2026-11-04T01:01:49.979200+00:00"
+  },
+  {
+    "command": [
+      "/Users/tranhatam/.volta/tools/image/node/22.23.4/bin/node",
+      "tools/loop/backlog.mjs",
+      "validate"
+    ],
+    "cwd": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source-e3d55e0",
+    "exit": 0,
+    "at": "2026-11-04T01:01:50.045977+00:00"
+  }
+]

@@ -1,0 +1,297 @@
+{
+  "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/compare/6bf240d037de14715b2eadb0f5c41d5b2593b610...e3d55e05462454dd604559d611865976451772fd",
+  "html_url": "https://github.com/tranhatam-collab/AFTERVIA/compare/6bf240d037de14715b2eadb0f5c41d5b2593b610...e3d55e05462454dd604559d611865976451772fd",
+  "permalink_url": "https://github.com/tranhatam-collab/AFTERVIA/compare/tranhatam-collab:6bf240d...tranhatam-collab:e3d55e0",
+  "diff_url": "https://github.com/tranhatam-collab/AFTERVIA/compare/6bf240d037de14715b2eadb0f5c41d5b2593b610...e3d55e05462454dd604559d611865976451772fd.diff",
+  "patch_url": "https://github.com/tranhatam-collab/AFTERVIA/compare/6bf240d037de14715b2eadb0f5c41d5b2593b610...e3d55e05462454dd604559d611865976451772fd.patch",
+  "base_commit": {
+    "sha": "6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "node_id": "C_kwDOVeJPhdoAKDZiZjI0MGQwMzdkZTE0NzE1YjJlYWRiMGY1YzQxZDViMjU5M2I2MTA",
+    "commit": {
+      "author": {
+        "name": "Claude",
+        "email": "noreply@anthropic.com",
+        "date": "2026-11-03T05:20:56Z"
+      },
+      "committer": {
+        "name": "Claude",
+        "email": "noreply@anthropic.com",
+        "date": "2026-11-03T05:20:56Z"
+      },
+      "message": "E2E-WEB-01: luồng Chromium đầy đủ trên API cục bộ và Web Desk (T24)\n\n- tools/e2e/web-e2e.mjs: đặt lại DB _test; API cục bộ; Desk dev server; hai trình\n  duyệt riêng (khách, agent); thêm món, mở case, gắn bằng chứng và mời người tham gia\n  qua hàm cơ sở dữ liệu, chia tài liệu, xử lý, giải quyết có outcome, đóng, xuất gói\n- apps/web/vite.config.ts: alias @aftervia/domain cho máy chủ dev (trước đó thiếu, Desk\n  dev không resolve được); proxy /v1 cho dev, không ảnh hưởng bản build\n- package.json: script e2e:web; docs/dev/LOCAL_MACOS.md mục 6, 8, 11, 12\n- Kiểm: 12/12 bước đạt; 0 lỗi trang; verify xanh; JSON success; matrix không đổi\n- Bằng chứng: docs/plan/evidence/E2E-WEB-01.md\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC",
+      "tree": {
+        "sha": "196df1b16cbaac0dae3fe9caf078f405cb9828b4",
+        "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/trees/196df1b16cbaac0dae3fe9caf078f405cb9828b4"
+      },
+      "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQHUAZdBu\nfEZ52B7zUBwByx8XGqvvDkpHaiOxTn7oNDMBq2k5Kxc3WPF/EMzcqNEizB1ig354MgWKxvutwD0t\nhgA=\n-----END SSH SIGNATURE-----",
+        "payload": "tree 196df1b16cbaac0dae3fe9caf078f405cb9828b4\nparent 1dbd9a104568dd1310123e9b3d9fc55afe6c49b6\nauthor Claude <noreply@anthropic.com> 1793683256 +0000\ncommitter Claude <noreply@anthropic.com> 1793683256 +0000\n\nE2E-WEB-01: luồng Chromium đầy đủ trên API cục bộ và Web Desk (T24)\n\n- tools/e2e/web-e2e.mjs: đặt lại DB _test; API cục bộ; Desk dev server; hai trình\n  duyệt riêng (khách, agent); thêm món, mở case, gắn bằng chứng và mời người tham gia\n  qua hàm cơ sở dữ liệu, chia tài liệu, xử lý, giải quyết có outcome, đóng, xuất gói\n- apps/web/vite.config.ts: alias @aftervia/domain cho máy chủ dev (trước đó thiếu, Desk\n  dev không resolve được); proxy /v1 cho dev, không ảnh hưởng bản build\n- package.json: script e2e:web; docs/dev/LOCAL_MACOS.md mục 6, 8, 11, 12\n- Kiểm: 12/12 bước đạt; 0 lỗi trang; verify xanh; JSON success; matrix không đổi\n- Bằng chứng: docs/plan/evidence/E2E-WEB-01.md\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC\n",
+        "verified_at": "2026-11-03T05:20:59Z"
+      }
+    },
+    "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "comments_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610/comments",
+    "author": {
+      "login": "claude",
+      "id": 81847,
+      "node_id": "MDQ6VXNlcjgxODQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/claude",
+      "html_url": "https://github.com/claude",
+      "followers_url": "https://api.github.com/users/claude/followers",
+      "following_url": "https://api.github.com/users/claude/following{/other_user}",
+      "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+      "organizations_url": "https://api.github.com/users/claude/orgs",
+      "repos_url": "https://api.github.com/users/claude/repos",
+      "events_url": "https://api.github.com/users/claude/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/claude/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "claude",
+      "id": 81847,
+      "node_id": "MDQ6VXNlcjgxODQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/claude",
+      "html_url": "https://github.com/claude",
+      "followers_url": "https://api.github.com/users/claude/followers",
+      "following_url": "https://api.github.com/users/claude/following{/other_user}",
+      "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+      "organizations_url": "https://api.github.com/users/claude/orgs",
+      "repos_url": "https://api.github.com/users/claude/repos",
+      "events_url": "https://api.github.com/users/claude/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/claude/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1dbd9a104568dd1310123e9b3d9fc55afe6c49b6",
+        "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/1dbd9a104568dd1310123e9b3d9fc55afe6c49b6",
+        "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/1dbd9a104568dd1310123e9b3d9fc55afe6c49b6"
+      }
+    ]
+  },
+  "merge_base_commit": {
+    "sha": "6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "node_id": "C_kwDOVeJPhdoAKDZiZjI0MGQwMzdkZTE0NzE1YjJlYWRiMGY1YzQxZDViMjU5M2I2MTA",
+    "commit": {
+      "author": {
+        "name": "Claude",
+        "email": "noreply@anthropic.com",
+        "date": "2026-11-03T05:20:56Z"
+      },
+      "committer": {
+        "name": "Claude",
+        "email": "noreply@anthropic.com",
+        "date": "2026-11-03T05:20:56Z"
+      },
+      "message": "E2E-WEB-01: luồng Chromium đầy đủ trên API cục bộ và Web Desk (T24)\n\n- tools/e2e/web-e2e.mjs: đặt lại DB _test; API cục bộ; Desk dev server; hai trình\n  duyệt riêng (khách, agent); thêm món, mở case, gắn bằng chứng và mời người tham gia\n  qua hàm cơ sở dữ liệu, chia tài liệu, xử lý, giải quyết có outcome, đóng, xuất gói\n- apps/web/vite.config.ts: alias @aftervia/domain cho máy chủ dev (trước đó thiếu, Desk\n  dev không resolve được); proxy /v1 cho dev, không ảnh hưởng bản build\n- package.json: script e2e:web; docs/dev/LOCAL_MACOS.md mục 6, 8, 11, 12\n- Kiểm: 12/12 bước đạt; 0 lỗi trang; verify xanh; JSON success; matrix không đổi\n- Bằng chứng: docs/plan/evidence/E2E-WEB-01.md\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC",
+      "tree": {
+        "sha": "196df1b16cbaac0dae3fe9caf078f405cb9828b4",
+        "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/trees/196df1b16cbaac0dae3fe9caf078f405cb9828b4"
+      },
+      "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+      "comment_count": 0,
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQHUAZdBu\nfEZ52B7zUBwByx8XGqvvDkpHaiOxTn7oNDMBq2k5Kxc3WPF/EMzcqNEizB1ig354MgWKxvutwD0t\nhgA=\n-----END SSH SIGNATURE-----",
+        "payload": "tree 196df1b16cbaac0dae3fe9caf078f405cb9828b4\nparent 1dbd9a104568dd1310123e9b3d9fc55afe6c49b6\nauthor Claude <noreply@anthropic.com> 1793683256 +0000\ncommitter Claude <noreply@anthropic.com> 1793683256 +0000\n\nE2E-WEB-01: luồng Chromium đầy đủ trên API cục bộ và Web Desk (T24)\n\n- tools/e2e/web-e2e.mjs: đặt lại DB _test; API cục bộ; Desk dev server; hai trình\n  duyệt riêng (khách, agent); thêm món, mở case, gắn bằng chứng và mời người tham gia\n  qua hàm cơ sở dữ liệu, chia tài liệu, xử lý, giải quyết có outcome, đóng, xuất gói\n- apps/web/vite.config.ts: alias @aftervia/domain cho máy chủ dev (trước đó thiếu, Desk\n  dev không resolve được); proxy /v1 cho dev, không ảnh hưởng bản build\n- package.json: script e2e:web; docs/dev/LOCAL_MACOS.md mục 6, 8, 11, 12\n- Kiểm: 12/12 bước đạt; 0 lỗi trang; verify xanh; JSON success; matrix không đổi\n- Bằng chứng: docs/plan/evidence/E2E-WEB-01.md\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC\n",
+        "verified_at": "2026-11-03T05:20:59Z"
+      }
+    },
+    "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+    "comments_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610/comments",
+    "author": {
+      "login": "claude",
+      "id": 81847,
+      "node_id": "MDQ6VXNlcjgxODQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/claude",
+      "html_url": "https://github.com/claude",
+      "followers_url": "https://api.github.com/users/claude/followers",
+      "following_url": "https://api.github.com/users/claude/following{/other_user}",
+      "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+      "organizations_url": "https://api.github.com/users/claude/orgs",
+      "repos_url": "https://api.github.com/users/claude/repos",
+      "events_url": "https://api.github.com/users/claude/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/claude/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "claude",
+      "id": 81847,
+      "node_id": "MDQ6VXNlcjgxODQ3",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/claude",
+      "html_url": "https://github.com/claude",
+      "followers_url": "https://api.github.com/users/claude/followers",
+      "following_url": "https://api.github.com/users/claude/following{/other_user}",
+      "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+      "organizations_url": "https://api.github.com/users/claude/orgs",
+      "repos_url": "https://api.github.com/users/claude/repos",
+      "events_url": "https://api.github.com/users/claude/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/claude/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "1dbd9a104568dd1310123e9b3d9fc55afe6c49b6",
+        "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/1dbd9a104568dd1310123e9b3d9fc55afe6c49b6",
+        "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/1dbd9a104568dd1310123e9b3d9fc55afe6c49b6"
+      }
+    ]
+  },
+  "status": "ahead",
+  "ahead_by": 1,
+  "behind_by": 0,
+  "total_commits": 1,
+  "commits": [
+    {
+      "sha": "e3d55e05462454dd604559d611865976451772fd",
+      "node_id": "C_kwDOVeJPhdoAKGUzZDU1ZTA1NDYyNDU0ZGQ2MDQ1NTlkNjExODY1OTc2NDUxNzcyZmQ",
+      "commit": {
+        "author": {
+          "name": "Claude",
+          "email": "noreply@anthropic.com",
+          "date": "2026-11-04T00:51:11Z"
+        },
+        "committer": {
+          "name": "Claude",
+          "email": "noreply@anthropic.com",
+          "date": "2026-11-04T00:51:11Z"
+        },
+        "message": "docs: quyết định theo ủy quyền, thí nghiệm P1 (đã hoàn tác), thêm task SEC-IDEM-01\n\n- 06_DECISIONS_DELEGATED.md: mọi mục câu hỏi có lựa chọn và trạng thái (QUYẾT, QUYẾT TẠM, CHỜ NGƯỜI, KHÔNG CẤP)\n- P1-AUDIT-OPTION2.md: thử ghi đè bốn gói; audit đạt, verify đạt, nhưng bundle Expo hỏng với image-size 2.x; đã hoàn tác\n- backlog: thêm SEC-IDEM-01 (khử trùng idempotency ở máy chủ cho POST /v1/items và grant), kiểm T38\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC",
+        "tree": {
+          "sha": "9083927a25c2aa03f181cf72f1516b3319f0f9f6",
+          "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/trees/9083927a25c2aa03f181cf72f1516b3319f0f9f6"
+        },
+        "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/git/commits/e3d55e05462454dd604559d611865976451772fd",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN SSH SIGNATURE-----\nU1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgrLzsfFISF4by8Q+FKz27YpkK1USsBB+m\namu1QkJnbDsAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAAQD8c/C+3\nS5oO62t2ixalATBrtHx3tq151V77DI6MOqSl48O4GpwCkRIHrdh0NUMFbjfe1lb/GFrA0KS/0+SI\nsA8=\n-----END SSH SIGNATURE-----",
+          "payload": "tree 9083927a25c2aa03f181cf72f1516b3319f0f9f6\nparent 6bf240d037de14715b2eadb0f5c41d5b2593b610\nauthor Claude <noreply@anthropic.com> 1793753471 +0000\ncommitter Claude <noreply@anthropic.com> 1793753471 +0000\n\ndocs: quyết định theo ủy quyền, thí nghiệm P1 (đã hoàn tác), thêm task SEC-IDEM-01\n\n- 06_DECISIONS_DELEGATED.md: mọi mục câu hỏi có lựa chọn và trạng thái (QUYẾT, QUYẾT TẠM, CHỜ NGƯỜI, KHÔNG CẤP)\n- P1-AUDIT-OPTION2.md: thử ghi đè bốn gói; audit đạt, verify đạt, nhưng bundle Expo hỏng với image-size 2.x; đã hoàn tác\n- backlog: thêm SEC-IDEM-01 (khử trùng idempotency ở máy chủ cho POST /v1/items và grant), kiểm T38\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_015zwouYwPbH5fmiiUrk41bC\n",
+          "verified_at": "2026-11-04T00:51:14Z"
+        }
+      },
+      "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/e3d55e05462454dd604559d611865976451772fd",
+      "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/e3d55e05462454dd604559d611865976451772fd",
+      "comments_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/e3d55e05462454dd604559d611865976451772fd/comments",
+      "author": {
+        "login": "claude",
+        "id": 81847,
+        "node_id": "MDQ6VXNlcjgxODQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/claude",
+        "html_url": "https://github.com/claude",
+        "followers_url": "https://api.github.com/users/claude/followers",
+        "following_url": "https://api.github.com/users/claude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+        "organizations_url": "https://api.github.com/users/claude/orgs",
+        "repos_url": "https://api.github.com/users/claude/repos",
+        "events_url": "https://api.github.com/users/claude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/claude/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "claude",
+        "id": 81847,
+        "node_id": "MDQ6VXNlcjgxODQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/81847?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/claude",
+        "html_url": "https://github.com/claude",
+        "followers_url": "https://api.github.com/users/claude/followers",
+        "following_url": "https://api.github.com/users/claude/following{/other_user}",
+        "gists_url": "https://api.github.com/users/claude/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/claude/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/claude/subscriptions",
+        "organizations_url": "https://api.github.com/users/claude/orgs",
+        "repos_url": "https://api.github.com/users/claude/repos",
+        "events_url": "https://api.github.com/users/claude/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/claude/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "6bf240d037de14715b2eadb0f5c41d5b2593b610",
+          "url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/commits/6bf240d037de14715b2eadb0f5c41d5b2593b610",
+          "html_url": "https://github.com/tranhatam-collab/AFTERVIA/commit/6bf240d037de14715b2eadb0f5c41d5b2593b610"
+        }
+      ]
+    }
+  ],
+  "files": [
+    {
+      "sha": "34b3ba600125285cf89f7421a8f1fea941261e35",
+      "filename": "docs/plan/06_DECISIONS_DELEGATED.md",
+      "status": "added",
+      "additions": 79,
+      "deletions": 0,
+      "changes": 79,
+      "blob_url": "https://github.com/tranhatam-collab/AFTERVIA/blob/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2F06_DECISIONS_DELEGATED.md",
+      "raw_url": "https://github.com/tranhatam-collab/AFTERVIA/raw/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2F06_DECISIONS_DELEGATED.md",
+      "contents_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/contents/docs%2Fplan%2F06_DECISIONS_DELEGATED.md?ref=e3d55e05462454dd604559d611865976451772fd",
+      "patch": "@@ -0,0 +1,79 @@\n+# Quyết định theo ủy quyền — 03/11/2026\n+\n+Căn cứ: chủ dự án viết \"tất cả luôn, làm đi, tự quyết luôn\". Mỗi mục ghi lựa chọn, căn cứ và trạng thái.\n+\n+Nhãn trạng thái:\n+- **QUYẾT** — quyết định nội bộ của dự án, áp dụng ngay.\n+- **QUYẾT TẠM** — chọn để tiến hành, nhưng cần luật sư hoặc người có thẩm quyền xác nhận trước khi dùng thật.\n+- **CHỜ NGƯỜI** — cần tài khoản, thiết bị, người hoặc hành động bên ngoài sandbox. Tôi không tự làm.\n+- **KHÔNG CẤP** — giữ ở trạng thái không được phép. Không tự cấp.\n+\n+Quyết định không phải là phê duyệt pháp lý, và không có gì được xuất bản hay gửi ra ngoài.\n+\n+## 1. Cổng audit P1 (PR #1)\n+- Thử phương án 2 (ghi đè). Bundle Expo hỏng với `image-size` 2.x. Đã hoàn tác. Chi tiết: `docs/plan/evidence/P1-AUDIT-OPTION2.md`. **CHỜ CHỦ DỰ ÁN** chọn 1 hoặc 4. Không chọn 3, vì đổi định nghĩa cổng. Phương án 4 gỡ kiểm thử mobile khỏi `verify`, cần xác nhận.\n+\n+## 2. Vòng lặp, ngân sách, PR\n+- D1: giữ chuỗi `send_later`. **QUYẾT**.\n+- D2: PR #1 giữ nháp. **QUYẾT**.\n+- D6: không bật `.claude/loop.md`. **QUYẾT**.\n+- D7 và ngân sách: không có hạn mức chi; không gọi dịch vụ trả phí. Ngân sách vòng lặp giữ 60, vì công cụ không cho đổi. **QUYẾT**.\n+- Thêm task kỹ thuật khử trùng idempotency ở máy chủ (grant và `POST /v1/items`). **QUYẾT**: làm ở vòng lặp kế tiếp.\n+\n+## 3. Xóa tài khoản (WO11-02, Q1–Q6)\n+- Q1 danh mục xóa: phương án A (dùng `legal/04` làm nháp). Grace: 30 ngày. Merchant giữ chứng từ: theo `legal/04`, tách riêng. **QUYẾT TẠM**: luật sư xác nhận từng dòng.\n+- Q2 nội dung cá nhân trong bảng chỉ thêm: phương án C (chuyển sang bảng sửa được, bảng chỉ thêm giữ mã tham chiếu). **QUYẾT**: triển khai trong task riêng.\n+- Q3 xác minh danh tính và phiên: C ngay (thời hạn phiên 15 phút, xác thực lại trước khi xóa). Khi chọn nhà cung cấp, chuyển sang A. **QUYẾT TẠM**.\n+- Q4 thành viên tổ chức khi khách xóa: A (đánh dấu REVOKED; từ chối nếu là owner duy nhất). **QUYẾT**: triển khai trong task riêng.\n+- Q5 quyền bên nhận: A cho quyền truy cập tài liệu; C cho bản ghi case của merchant. **QUYẾT TẠM**: luật sư xác nhận.\n+- Q6 xuất dữ liệu trong lúc chờ xóa: A (cho phép). **QUYẾT**. Không cần đổi mã.\n+\n+## 4. Danh tính, lưu trữ, AI\n+- D3 danh tính đăng nhập thật: Supabase project thuộc chủ dự án. **QUYẾT HƯỚNG**. Chủ dự án tự tạo tài khoản. **CHỜ NGƯỜI**.\n+- DEC06 lưu trữ tệp tài liệu và scanner mã độc: chưa chọn nhà cung cấp, vì cần tài khoản và duyệt riêng tư. Đề xuất: lưu trữ riêng tư cùng nhà cung cấp danh tính. **CHỜ NGƯỜI**.\n+- DEC06 AI: giữ tắt, `AI_PROVIDER=disabled`, không chọn vendor. **QUYẾT**.\n+\n+## 5. Landing, Cloudflare, DNS\n+- Chủ dự án cho phép tạo Cloudflare Pages và `aftervia.iai.one`, **khi nội dung đã duyệt**. Điều kiện duyệt gồm luật sư (HUM-WEB-03). Hiện chưa có luật sư duyệt, nên **chưa tạo project, chưa công khai**. **ĐIỀU KIỆN CHƯA ĐỦ**.\n+- Token đọc từ biến môi trường `CLOUDFLARE_API_TOKEN`, không dán vào chat. Hiện biến này chưa có trong môi trường, nên chưa gọi được API. **CHỜ NGƯỜI**.\n+- Không đổi nameserver của `iai.one`. **QUYẾT**.\n+- Nhà cung cấp DNS của `iai.one`: chưa xác định. Sandbox không phân giải được tên miền; cần token để đọc zone. **CHỜ NGƯỜI** (token).\n+- Repo `tranhatam-collab/aftervia.iai.one`: đã clone chỉ đọc. Repo **rỗng**, không có commit. Chưa đẩy nội dung nào lên đó. **QUYẾT**.\n+- Công khai landing khi tên làm việc chưa có clearance (D13, DEC12): không công khai. **QUYẾT**.\n+\n+## 6. Chính sách sản phẩm\n+- WO06-03 trường quan trọng: ngày mua, số tiền, tiền tệ, serial. **QUYẾT**: duyệt như đề xuất.\n+- WO07-02 giờ đặc biệt của lịch nhắc: giờ không tồn tại thì dời sang sau khoảng trống; giờ lặp lại thì lấy lần đầu. **QUYẾT**.\n+- WO08-01 kết quả khi đóng case: `repaired`, `replaced`, `refunded`, `credited`, `no_remedy`; mở lại chỉ từ `resolved`. **QUYẾT** (chính sách). Nhãn VI/EN vẫn là bản dự thảo: **CHỜ NGƯỜI** (người bản ngữ).\n+- WO08-02 bằng chứng chưa quét: không hiển thị nội dung cho bên kia, chỉ hiển thị trạng thái. Tổ chức SUSPENDED không được chuyển trạng thái mới. **QUYẾT**.\n+- WO08-03 inbox và phân công: inbox toàn tổ chức; chỉ owner và manager phân công. **QUYẾT**.\n+- WO09-01 chia sẻ: tối đa 30 ngày; chỉ vai trò partner; người tham gia thấy timeline; lý do từ chối đầy đủ chỉ người liên quan thấy. **QUYẾT**.\n+- WO09-02 quyền đọc của chủ sở hữu: không phụ thuộc trạng thái case. **QUYẾT**.\n+- WO09-03 hợp đồng HTTP: mô tả tối đa 500 ký tự, khớp DB. Đặc tả ghi 4000 là sai khác đã biết; `docs/spec` chỉ đọc, nên không sửa đặc tả. Danh sách mã lỗi hiện tại được duyệt. `shared_document_ids` chỉ gắn bằng chứng, không cấp quyền. **QUYẾT**.\n+- HUM-WO10-03a link tải gói xuất: chọn B (mã truy cập một lần). Phải có reviewer độc lập trước khi triển khai. **QUYẾT HƯỚNG**; **CHỜ NGƯỜI** (reviewer).\n+\n+## 7. Người, thiết bị, pháp lý, kinh doanh\n+- DEC01 tên làm việc AFTERVIA: duyệt làm tên làm việc, chưa có clearance. DEC02 SMB điện máy, B2B trước: duyệt. **QUYẾT THEO ỦY QUYỀN**.\n+- DEC05 reviewer độc lập: chưa có người. **CHỜ NGƯỜI** (chủ dự án chỉ định; không được là AI viết code).\n+- DEC07 quốc gia pilot: đề xuất Việt Nam làm quốc gia đầu tiên. Giữ DISABLED đến khi luật sư và chủ dự án duyệt. **QUYẾT HƯỚNG**.\n+- HUM-WO02-02/03 phỏng vấn 30 người và chọn 5 design partner: không mua danh sách, không điền số giả. **CHỜ NGƯỜI**.\n+- DEV-01 thiết bị iPhone và Android thật; DEV-02 Safari và Firefox: **CHỜ NGƯỜI**. Chính sách trình duyệt (D9) đã chốt.\n+- INF-01 staging độc lập: chưa tạo, cần tài khoản hạ tầng. **CHỜ NGƯỜI**.\n+- HUM-WO18-02 luật sư theo quốc gia, tư vấn IP, duyệt store và billing: **CHỜ NGƯỜI** (chủ dự án chỉ định).\n+- Người bản ngữ rà soát VI/EN: **CHỜ NGƯỜI**.\n+- HawkScan (D4): cần `HAWK_API_KEY` trong môi trường và Docker đang chạy. **CHỜ NGƯỜI**.\n+- HUM-G0-01 builder và quyền source: xác nhận Claude Code trong repo (DEC-ENG-01). Quyền sử dụng source cần văn bản xác nhận. **QUYẾT TẠM**.\n+\n+## 8. Không cấp\n+- DEC04 hạn mức discovery và probe: **KHÔNG CẤP**.\n+- DEC08 dữ liệu khách thật, DEC09 thanh toán và store, DEC10 phát hành production, DEC11 kết nối dự án hiện hữu, DEC12 tên miền và IP: **KHÔNG CẤP**.\n+- HUM-WO19-02 pilot với cửa hàng thật, HUM-WO20-02 quyết định phát hành, HUM-WO21-01, HUM-WO22-01: để sau, cần dữ liệu và duyệt riêng.\n+\n+## Việc máy đã làm trong lượt này\n+- Thử phương án 2 của cổng P1, rồi hoàn tác. Bằng chứng trong `P1-AUDIT-OPTION2.md`.\n+- Kiểm tra token Cloudflare và DNS `iai.one`: chưa đủ điều kiện.\n+- Clone repo `aftervia.iai.one` (chỉ đọc): repo rỗng.\n+\n+## Việc máy sẽ làm tiếp\n+- Task `SEC-IDEM-01`: khử trùng idempotency ở máy chủ cho grant và `POST /v1/items`. Bắt đầu ở vòng lặp kế tiếp.\n+- Q2–Q4 xóa tài khoản: cần task riêng và thêm ngân sách vòng lặp. Chưa có trong backlog."
+    },
+    {
+      "sha": "2d0f14e0a57f1aaacec84e4703d4ea2bf0daf7a6",
+      "filename": "docs/plan/backlog.json",
+      "status": "modified",
+      "additions": 16,
+      "deletions": 0,
+      "changes": 16,
+      "blob_url": "https://github.com/tranhatam-collab/AFTERVIA/blob/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2Fbacklog.json",
+      "raw_url": "https://github.com/tranhatam-collab/AFTERVIA/raw/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2Fbacklog.json",
+      "contents_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/contents/docs%2Fplan%2Fbacklog.json?ref=e3d55e05462454dd604559d611865976451772fd",
+      "patch": "@@ -1763,6 +1763,22 @@\n       ],\n       \"started_at\": \"2026-11-03T05:11:23.203Z\",\n       \"finished_at\": \"2026-11-03T05:19:40.853Z\"\n+    },\n+    {\n+      \"id\": \"SEC-IDEM-01\",\n+      \"wo\": \"SEC\",\n+      \"gate\": \"P0\",\n+      \"kind\": \"AUTO\",\n+      \"title\": \"Khử trùng ở máy chủ theo Idempotency-Key cho POST /v1/items và cấp grant: lưu kết quả theo người dùng và khóa; cùng nội dung thì trả lại kết quả cũ, khác nội dung thì 409; kiểm thử T38\",\n+      \"deps\": [\n+        \"WO10-03c\"\n+      ],\n+      \"acceptance\": [\n+        \"T38\"\n+      ],\n+      \"status\": \"TODO\",\n+      \"attempts\": 0,\n+      \"evidence\": []\n     }\n   ]\n }"
+    },
+    {
+      "sha": "a162913a434ac9af0bdddbc88ace5b224bc0329f",
+      "filename": "docs/plan/evidence/P1-AUDIT-OPTION2.md",
+      "status": "added",
+      "additions": 38,
+      "deletions": 0,
+      "changes": 38,
+      "blob_url": "https://github.com/tranhatam-collab/AFTERVIA/blob/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2Fevidence%2FP1-AUDIT-OPTION2.md",
+      "raw_url": "https://github.com/tranhatam-collab/AFTERVIA/raw/e3d55e05462454dd604559d611865976451772fd/docs%2Fplan%2Fevidence%2FP1-AUDIT-OPTION2.md",
+      "contents_url": "https://api.github.com/repos/tranhatam-collab/AFTERVIA/contents/docs%2Fplan%2Fevidence%2FP1-AUDIT-OPTION2.md?ref=e3d55e05462454dd604559d611865976451772fd",
+      "patch": "@@ -0,0 +1,38 @@\n+# P1 — Thử phương án 2 (ghi đè) cho cổng audit production — KHÔNG áp dụng, đã hoàn tác\n+\n+- Ngày: 03/11/2026 · Liên quan: comment 6547639475 trên PR #1 (phương án 2: ghi đè bốn gói).\n+- Tình trạng sau thí nghiệm: HEAD không đổi (`package.json` và `package-lock.json` đã khôi phục từ commit). Cổng P1 vẫn đỏ, cùng nguyên nhân.\n+\n+## Thay đổi thử (không commit)\n+\n+- `overrides` toàn cục: `decode-uri-component` → `0.5.1`.\n+- `overrides` có phạm vi: `@expo/metro-config` → `postcss` = `8.5.23`; `metro` → `image-size` = `2.0.4`.\n+- Phạm vi có chủ đích, để không đổi `vite` (vite dùng `postcss` 8.5.32, không được hạ cấp).\n+\n+## Kết quả\n+\n+| Bước | Kết quả |\n+|---|---|\n+| `npm install --package-lock-only`, `npm ci` | exit 0; lockfile đổi 12 dòng thêm, 24 dòng bớt |\n+| `npm audit --omit=dev --audit-level=high` (cổng CI) | **exit 0** (đạt) |\n+| `npm run verify`, lần 1 | exit 1 do Postgres cục bộ đang tắt (`ECONNREFUSED 127.0.0.1:5432`), không do thay đổi |\n+| `npm run verify`, lần 2 (sau khi `pg_ctlcluster 16 main start`) | **exit 0**: bundle 69/69; quét bí mật 302 tệp; Vitest 58 tệp pass và 1 bỏ qua, 437 kiểm thử pass và 1 bỏ qua; test:loop 18/18 |\n+| `expo export --platform android` (apps/mobile, offline) | **exit 1**: `SyntaxError: .../expo-router/assets/pkg.png: The \"list\" argument must be an instance of SharedArrayBuffer, ArrayBuffer or ArrayBufferView.` |\n+\n+## Kết luận\n+\n+- `verify` đạt nhưng không phủ bundle mobile, nên đã bỏ sót lỗi. Chỉ bước `expo export` mới bắt được lỗi này.\n+- Metro đọc kích thước asset bằng `image-size`. Bản 2.x đổi cách gọi hoặc kiểu đầu vào, nên bundle hỏng.\n+- Advisory `image-size` áp dụng đến 2.0.2, nên không có bản vá trong nhánh 1.x. Muốn vá phải nhảy major, và metro không tương thích ngay.\n+- Vì vậy phương án 2 **không an toàn** cho mobile. Đã hoàn tác bằng `git checkout -- package.json package-lock.json` rồi `npm ci`. Kiểm `npm audit` ở HEAD vẫn cho `exit 1` với 5 cảnh báo cao.\n+\n+## Các phương án còn lại (chủ dự án chọn)\n+\n+1. Nâng dòng Expo lên bản không còn cảnh báo. Thay đổi lớn, cần kiểm trên thiết bị.\n+2. Ghi đè — **đã thử, không dùng được** (xem trên).\n+3. Tách phạm vi audit di động. Đổi định nghĩa cổng; ràng buộc của dự án là không nới cổng, nên không làm.\n+4. Bỏ phụ thuộc di động khỏi nhánh. Cổng xanh, nhưng `typecheck:mobile` và các kiểm thử `tests/mobile` mất khỏi `verify`. Đây là giảm độ phủ kiểm thử, cần chủ dự án xác nhận rõ.\n+\n+## Rollback\n+\n+- Không cần: không có thay đổi mã được giữ lại."
+    }
+  ]
+}

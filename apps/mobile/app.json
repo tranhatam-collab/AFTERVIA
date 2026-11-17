@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "AFTERVIA",
+    "slug": "aftervia",
+    "scheme": "aftervia",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router"]
+  }
+}

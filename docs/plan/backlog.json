@@ -1,0 +1,2207 @@
+{
+  "meta": {
+    "schema": "aftervia.backlog.v1",
+    "source": "docs/spec/AFTERVIA_AZ_2026-10-31/ops/02_BACKLOG_WORK_ORDERS.csv (WO01–WO22) và engineering/10_REPO_FILE_MANIFEST.csv",
+    "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
+    "generated_on": "2026-10-31",
+    "iteration_budget": 126,
+    "iterations_used": 75,
+    "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
+    "budget_history": [
+      {
+        "at": "2026-11-10T11:03:39.113Z",
+        "from": 65,
+        "to": 126,
+        "reason": "OD-03: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Thêm 60 lượt cho Lane A."
+      }
+    ],
+    "deps_history": [
+      {
+        "at": "2026-11-10T11:03:39.208Z",
+        "id": "WO11-03",
+        "from": [
+          "WO10-02",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO10-02",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Cổng pháp lý chuyển sang HUM-LEGAL-DEL-01 (chặn WO20-01); mã liên quan danh mục xóa gắn cờ LEGAL_PENDING."
+      },
+      {
+        "at": "2026-11-10T11:03:39.248Z",
+        "id": "WO12-01",
+        "from": [
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08."
+      },
+      {
+        "at": "2026-11-10T11:03:39.298Z",
+        "id": "WO16-01b",
+        "from": [
+          "WO16-01a",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02d",
+          "WO11-02e",
+          "WO11-02f",
+          "WO11-02g"
+        ],
+        "to": [
+          "WO16-01a",
+          "WO11-02a",
+          "WO11-02b",
+          "WO11-02c",
+          "WO11-02e-EXP",
+          "WO11-02e-CONF",
+          "WO11-02e-CASE",
+          "WO11-02f-SESS",
+          "WO11-02g-MEM"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08."
+      },
+      {
+        "at": "2026-11-10T11:03:39.342Z",
+        "id": "WO20-01",
+        "from": [
+          "WO16-01a",
+          "WO16-01b",
+          "WO17-01a",
+          "WO17-01b"
+        ],
+        "to": [
+          "WO16-01a",
+          "WO16-01b",
+          "WO17-01a",
+          "WO17-01b",
+          "HUM-LEGAL-DEL-01"
+        ],
+        "reason": "OD-08: chủ dự án duyệt trong chat 10/11/2026 (\"TÔI DUYỆT HẾT\") cho OD-03 và OD-08. Cổng pháp lý nằm ở đây, không còn chặn các task dev phía trước."
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "HUM-G0-01",
+      "wo": "WO01",
+      "gate": "G0",
+      "kind": "HUMAN",
+      "title": "Xác nhận builder (Wron hoặc repo này) và quyền sử dụng source; ghi quyết định vào docs/plan/04_DECISIONS.md",
+      "deps": [],
+      "acceptance": [
+        "T01",
+        "T02"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-DEC-01",
+      "wo": "WO01",
+      "gate": "G0",
+      "kind": "HUMAN",
+      "title": "Chủ dự án duyệt DEC01–DEC12: tên làm việc, pháp nhân, reviewer độc lập, vendor AI, thị trường pilot, dữ liệu thật, thanh toán, phát hành",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO02-01",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "AUTO_PREP",
+      "title": "Chuẩn bị bộ discovery: guide phỏng vấn 3 nhóm, mẫu consent, sheet baseline trước/sau. Không thu dữ liệu thật",
+      "deps": [],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: bundle 69/69, secret scan 29 files, vitest 4/4, node tests 13/13",
+        "03_BASELINE_SHEET.csv: 30 dòng, 12 cột, 0 dòng sai độ rộng",
+        "docs/plan/evidence/WO02-01.md"
+      ],
+      "started_at": "2026-10-31T14:23:32.663Z",
+      "finished_at": "2026-10-31T14:23:47.470Z"
+    },
+    {
+      "id": "HUM-WO02-02",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "30 phỏng vấn (15 cửa hàng, 10 khách, 5 đối tác dịch vụ) có consent; ghi ghi chú vào sổ E01",
+      "deps": [
+        "WO02-01"
+      ],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO02-03",
+      "wo": "WO02",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Chốt 5 design partners đúng tiêu chí (G1)",
+      "deps": [
+        "HUM-WO02-02"
+      ],
+      "acceptance": [
+        "E01"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO03-01",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khung repo: phiên bản ghim, TypeScript strict, Vitest, scripts verify, kiểm checksum bundle, quét bí mật",
+      "deps": [],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0: bundle 69/69, secret scan 22 files, tsc OK, vitest 4/4 (T37), node tests 13/13",
+        "docs/plan/evidence/WO03-01.md",
+        "matrix: T37 NOT_RUN -> PASS (coverage PARTIAL)"
+      ],
+      "started_at": "2026-10-31T14:17:53.249Z",
+      "finished_at": "2026-10-31T14:18:27.861Z"
+    },
+    {
+      "id": "WO03-02",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "CI GitHub Actions: Postgres 16, npm ci, verify, audit phụ thuộc production",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "python yaml.safe_load ci.yml OK",
+        "clean npm ci OK; pg 8.23.1, ajv 8.20.0 trong dependencies",
+        "npm audit --omit=dev --audit-level=high: 0 vulnerabilities",
+        "npm run verify exit 0: bundle 69/69, secret scan 30 files, vitest 4/4, node tests 13/13",
+        "docs/plan/evidence/WO03-02.md"
+      ],
+      "started_at": "2026-10-31T14:28:12.090Z",
+      "finished_at": "2026-10-31T14:28:42.336Z"
+    },
+    {
+      "id": "WO03-03",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Trình chạy migration có checksum; chặn reset DB không phải _test; shim auth cục bộ chỉ cho kiểm thử",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [
+        "T03"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "db:migrate --with-shim trên aftervia_test: applied 1 (0000_baseline)",
+        "npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 36 files, vitest 9/9 (T37 4 + T03 5), node 13/13",
+        "matrix: T03 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO03-03.md"
+      ],
+      "started_at": "2026-10-31T14:29:44.019Z",
+      "finished_at": "2026-10-31T14:30:12.097Z"
+    },
+    {
+      "id": "WO03-04",
+      "wo": "WO03",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "README thiết lập sạch; .env.example chỉ có tên biến; SECURITY.md quy trình sự cố tạm thời",
+      "deps": [
+        "WO03-02"
+      ],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 38 files, vitest 9/9, node 13/13",
+        "README: 6 lệnh npm đối chiếu với package.json, tất cả tồn tại",
+        ".env.example: chỉ tên biến, 2 giá trị mặc định không nhạy cảm",
+        "docs/plan/evidence/WO03-04.md"
+      ],
+      "started_at": "2026-10-31T14:34:07.203Z",
+      "finished_at": "2026-10-31T14:34:28.802Z"
+    },
+    {
+      "id": "WO04-01",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Migration 0001: profiles, organizations, organization_members, audit_events (append-only), RLS và hàm SECURITY DEFINER có kiểm quyền",
+      "deps": [
+        "WO03-03"
+      ],
+      "acceptance": [
+        "T03",
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 41 files, vitest 22/22 (T37 4 + T03 5 + identity 13), node 13/13",
+        "matrix: T06 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-01.md"
+      ],
+      "started_at": "2026-10-31T14:36:31.634Z",
+      "finished_at": "2026-10-31T14:38:16.334Z"
+    },
+    {
+      "id": "WO04-02",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Chính sách phân quyền dùng chung (packages/domain) và authorize.ts; kiểm song song TS với SQL trên ma trận vai trò",
+      "deps": [
+        "WO04-01"
+      ],
+      "acceptance": [
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 47 files, vitest 33/33 (gồm 8 ủy quyền thuần và 3 đối chiếu ma trận 104 ô), node 13/13",
+        "matrix: T06 giữ PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-02.md"
+      ],
+      "started_at": "2026-10-31T14:44:48.389Z",
+      "finished_at": "2026-10-31T14:46:07.240Z"
+    },
+    {
+      "id": "WO04-03",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bộ kiểm thử xâm nhập đa tenant: đọc, ghi, liệt kê, đếm, thu hồi, mọi đường vào DB",
+      "deps": [
+        "WO04-02"
+      ],
+      "acceptance": [
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 49 files, vitest 46/46 (gồm 13 kiểm thử đa tenant), node 13/13",
+        "matrix: T04 NOT_RUN -> PASS, T05 NOT_RUN -> PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-03.md"
+      ],
+      "started_at": "2026-10-31T14:46:40.785Z",
+      "finished_at": "2026-10-31T14:47:29.088Z"
+    },
+    {
+      "id": "WO04-04",
+      "wo": "WO04",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "API HTTP mỏng cho lát cắt: đăng nhập giả lập bằng JWT ký cục bộ (ghi rõ là mô phỏng), tạo tổ chức, mời, đọc danh sách và chi tiết; kiểm cách ly hai tài khoản qua HTTP; ghi nhật ký lần từ chối ở API",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T03",
+        "T04",
+        "T05",
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 55 files, vitest 64/64 (gồm 18 kiểm thử HTTP/JWT mới), node 13/13",
+        "matrix: T03, T04, T05, T06 giữ PASS (coverage PARTIAL)",
+        "docs/plan/evidence/WO04-04.md"
+      ],
+      "started_at": "2026-10-31T14:52:11.598Z",
+      "finished_at": "2026-10-31T14:55:12.299Z"
+    },
+    {
+      "id": "WO07-01",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng items (RLS chỉ chủ sở hữu), CRUD và nhập tay khi AI lỗi",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T04"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 61 files, vitest 80/80 (gồm 16 kiểm thử items mới), node 13/13",
+        "matrix: T22 NOT_RUN -> PASS (coverage PARTIAL); T03/T04 giữ PASS",
+        "docs/plan/evidence/WO07-01.md"
+      ],
+      "started_at": "2026-10-31T14:56:33.943Z",
+      "finished_at": "2026-10-31T14:58:11.094Z"
+    },
+    {
+      "id": "WO05-01",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng documents và upload ticket: khóa lưu trữ ngẫu nhiên, không URL công khai, RLS chỉ chủ sở hữu",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T04",
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run typecheck exit 0; npm run verify exit 0 với TEST_DATABASE_URL: bundle 69/69, secret 70 files, vitest 91/91 (gồm 11 kiểm thử tài liệu mới), node 13/13",
+        "matrix: T38 NOT_RUN -> PASS (coverage PARTIAL); T04 giữ PASS",
+        "docs/plan/evidence/WO05-01.md"
+      ],
+      "started_at": "2026-10-31T15:03:35.438Z",
+      "finished_at": "2026-10-31T15:04:35.754Z"
+    },
+    {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Landing page tĩnh (VI/EN) cho AFTERVIA: trang chủ, giá đề xuất (ghi rõ chưa được thị trường chấp nhận), quyền riêng tư và điều khoản ở trạng thái DRAFT, không thu thập email hay dữ liệu cá nhân, không lời chứng thực giả; build được và kiểm HTML, liên kết, ngôn ngữ và tương phản cơ bản",
+      "evidence": [
+        "docs/plan/evidence/WEB-01.md: lệnh đã chạy, kết quả, tệp đổi, giới hạn và rollback",
+        "npx vitest run tests/web: 24/24 pass (tests/web/landing.test.ts)",
+        "Trình duyệt thật Chromium, 12 tổ hợp vi và en x sáng và tối x 360, 768, 1280: không tràn ngang, không lỗi console, không vi phạm CSP; skip link và các neo hoạt động",
+        "npm run verify exit 0 với TEST_DATABASE_URL trỏ aftervia_test: bundle 69/69, quét bí mật 85 tệp, Vitest 115/115, kiểm thử vòng lặp 13/13",
+        "Tên kiểm thử không mang mã T-xx: T33 vẫn NOT_RUN vì phạm vi toàn ứng dụng; matrix changes []"
+      ],
+      "attempts": 1,
+      "status": "DONE",
+      "id": "WEB-01",
+      "kind": "AUTO",
+      "deps": [],
+      "acceptance": [
+        "US18",
+        "T33"
+      ],
+      "started_at": "2026-10-31T15:17:17.070Z",
+      "finished_at": "2026-10-31T15:34:01.889Z"
+    },
+    {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Đưa landing page lên AFTERVIA.iai.one: cần quyền DNS của iai.one, tài khoản hosting (đề xuất Cloudflare Pages nếu DNS nằm trên Cloudflare) và token qua biến môi trường, không dán vào chat",
+      "evidence": [],
+      "attempts": 0,
+      "status": "BLOCKED",
+      "id": "WEB-02",
+      "kind": "INFRA",
+      "deps": [
+        "WEB-01"
+      ],
+      "acceptance": [],
+      "blocked_reason": "Chờ quyền Cloudflare Pages (token đặt trong biến môi trường, không dán vào chat; D15) và quyết định DNS của iai.one (D14). developers.cloudflare.com không phân giải được từ phiên này nên cấu hình chưa đối chiếu với tài liệu chính thức",
+      "blocked_at": "2026-10-31T15:34:01.928Z"
+    },
+    {
+      "wo": "WEB",
+      "gate": "P0",
+      "title": "Chủ dự án và luật sư duyệt nội dung công khai, miễn trừ và tên AFTERVIA trước khi công bố (DEC01, DEC12)",
+      "evidence": [],
+      "attempts": 0,
+      "status": "TODO",
+      "id": "HUM-WEB-03",
+      "kind": "HUMAN",
+      "deps": [
+        "WEB-01"
+      ],
+      "acceptance": []
+    },
+    {
+      "id": "WO05-02",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Kiểm tra tệp: giới hạn 10 MB, JPEG/PNG/PDF theo chữ ký nhị phân, từ chối MIME giả, trạng thái quarantine",
+      "deps": [
+        "WO05-01"
+      ],
+      "acceptance": [
+        "T09"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO05-02.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn và rollback",
+        "npx vitest run tests/domain/upload-inspection.test.ts tests/db/quarantine.test.ts tests/db/migrations.test.ts: 18/18 pass trên aftervia_test",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 91 tệp, typecheck, build:landing, Vitest 128/128, kiểm thử vòng lặp 13/13",
+        "Ma trận từ báo cáo JSON: T09 NOT_RUN sang PASS, mức phủ PARTIAL; ghi chú về scanner giữ nguyên"
+      ],
+      "started_at": "2026-10-31T15:39:24.215Z",
+      "finished_at": "2026-10-31T15:45:21.716Z"
+    },
+    {
+      "id": "WO05-03",
+      "wo": "WO05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Hoàn tất upload idempotent (khóa theo chủ sở hữu + sha256 + idempotency key); cổng quét mã độc, không có scanner thì BLOCKED cho upload thật",
+      "deps": [
+        "WO05-02"
+      ],
+      "acceptance": [
+        "T09",
+        "T10"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO05-03.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn BLOCKED cho upload thật và rollback",
+        "npx vitest run tests/db/completion.test.ts tests/db/migrations.test.ts tests/db/quarantine.test.ts: 16/16 pass trên aftervia_test",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 99 tệp, typecheck, build:landing, Vitest 136/136, kiểm thử vòng lặp 13/13",
+        "Ma trận từ báo cáo JSON: T10 NOT_RUN sang PASS, mức phủ PARTIAL; upload thật BLOCKED: chưa có kho lưu trữ (DEC06) và scanner (INFRA)"
+      ],
+      "started_at": "2026-10-31T15:55:05.271Z",
+      "finished_at": "2026-10-31T15:57:28.574Z"
+    },
+    {
+      "id": "WO06-01",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Schema trích xuất (theo 09_EXTRACTION) và kiểm ngữ nghĩa: ISO 4217, số nguyên minor, ngày hợp lệ",
+      "deps": [
+        "WO05-03"
+      ],
+      "acceptance": [
+        "T12",
+        "T13"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO06-01.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn và lỗi đã khắc phục",
+        "npx vitest run tests/domain/extraction.test.ts: 8/8 pass",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 104 tệp, typecheck, build:landing, Vitest 144/144, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 144/144 (có TEST_DATABASE_URL), matrix from-report: T12 và T13 NOT_RUN sang PASS (PARTIAL); các dòng PASS khác được khôi phục từ báo cáo xanh"
+      ],
+      "started_at": "2026-10-31T16:01:19.338Z",
+      "finished_at": "2026-10-31T16:04:47.943Z"
+    },
+    {
+      "id": "WO06-02",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Cổng AI phía server: tài liệu là dữ liệu không tin cậy, allowlist công cụ rỗng, chỉ gửi nội dung đã được cấp quyền",
+      "deps": [
+        "WO06-01"
+      ],
+      "acceptance": [
+        "T11",
+        "T45"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO06-02.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn và rollback",
+        "npx vitest run tests/domain/ai-gateway.test.ts: 6/6 pass",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 108 tệp, typecheck, build:landing, Vitest 150/150, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 150/150 (có TEST_DATABASE_URL trong cùng lệnh), matrix from-report: T11 và T45 NOT_RUN sang PASS, mức phủ PARTIAL; kiểm bằng provider ghi lại, chưa phải mô hình thật"
+      ],
+      "started_at": "2026-10-31T16:08:35.191Z",
+      "finished_at": "2026-10-31T16:11:47.438Z"
+    },
+    {
+      "id": "WO06-03",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Quy tắc null và xác nhận: ngày mơ hồ 03/04 cần xác nhận; thiếu tiền tệ hoặc serial thì null; trường quan trọng chặn hành động trước xác nhận",
+      "deps": [
+        "WO06-02"
+      ],
+      "acceptance": [
+        "T12",
+        "T13",
+        "T14"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO06-03.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn và rollback",
+        "npx vitest run tests/domain/confirmation.test.ts: 5/5 pass",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 112 tệp, typecheck, build:landing, Vitest 155/155, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 155/155 (có TEST_DATABASE_URL trong cùng lệnh), matrix from-report: T14 NOT_RUN sang PASS, mức phủ PARTIAL; độ chính xác mô hình thật chưa đo"
+      ],
+      "started_at": "2026-10-31T16:15:51.648Z",
+      "finished_at": "2026-10-31T16:17:38.983Z"
+    },
+    {
+      "id": "WO06-04",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Quota, ngân sách, timeout, retry tối đa 2, fallback nhập tay khi nhà cung cấp lỗi",
+      "deps": [
+        "WO06-03"
+      ],
+      "acceptance": [
+        "T15",
+        "T16"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO06-04.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn và rollback",
+        "npx vitest run tests/domain/ai-resilience.test.ts: 8/8 pass",
+        "npm run verify exit 0 (có TEST_DATABASE_URL trỏ aftervia_test): bundle 69/69, quét bí mật 116 tệp, typecheck, build:landing, Vitest 163/163, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 163/163 (có TEST_DATABASE_URL trong cùng lệnh), matrix from-report: T15 và T16 NOT_RUN sang PASS, mức phủ PARTIAL; nhà cung cấp giả, chưa có provider thật"
+      ],
+      "started_at": "2026-10-31T16:21:15.736Z",
+      "finished_at": "2026-10-31T16:24:04.467Z"
+    },
+    {
+      "id": "WO06-05",
+      "wo": "WO06",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Dịch vụ xác nhận trường: field_confirmations append-only với actor, thời gian, giá trị cũ và mới",
+      "deps": [
+        "WO06-04"
+      ],
+      "acceptance": [
+        "T14"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO06-05.md: lệnh, kết quả, tệp đổi, quy tắc, giới hạn (chưa kiểm quyền sở hữu extraction, chờ reviewer) và rollback",
+        "supabase/migrations/0006_field_confirmations.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test",
+        "tests/db/field-confirmations.test.ts: 7/7 pass (T14), gồm append-only bằng trigger 42501, RLS theo actor, audit field.confirm",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 120 tệp, typecheck, build:landing, Vitest 170/170 trong 22 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON Vitest 170/170 (success=true); matrix from-report không đổi dòng nào; T14 PASS với 10 kiểm thử (3 domain, 7 DB), mức phủ PARTIAL"
+      ],
+      "started_at": "2026-10-31T16:35:28.722Z",
+      "finished_at": "2026-10-31T16:38:29.810Z"
+    },
+    {
+      "id": "WO07-02",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Xử lý ngày: date-only không đổi theo múi giờ; lịch nhắc theo IANA timezone đã xác nhận",
+      "deps": [
+        "WO07-01"
+      ],
+      "acceptance": [
+        "T22"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO07-02.md: lệnh, kết quả, quy tắc, giới hạn (chưa kiểm quyền trên món đồ, chưa có bảng reminders) và rollback",
+        "packages/domain/src/reminder-schedule.ts: scheduleReminder đổi giờ treo tường theo IANA đã xác nhận; gap_forward và overlap_earlier; từ chối timezone_not_confirmed, invalid_timezone, invalid_date, invalid_time",
+        "tests/domain/reminder-schedule.test.ts: 7/7 pass (T22), gồm UTC+7, UTC-8 và UTC-7, mọi giờ trong hai ngày đổi giờ 2026 giữ đúng ngày địa phương, giờ không tồn tại và giờ lặp lại",
+        "tests/db/date-only.test.ts: 1/1 pass (T22), ngày mua giữ nguyên dưới phiên UTC+7, UTC-8 và UTC",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 125 tệp, typecheck, build:landing, Vitest 178/178 trong 24 tệp, kiểm thử vòng lặp 13/13; báo cáo JSON 178/178 success=true; from-report không đổi dòng nào; T22 PASS (PARTIAL), 9 kiểm thử"
+      ],
+      "started_at": "2026-10-31T16:44:32.559Z",
+      "finished_at": "2026-10-31T16:49:10.064Z"
+    },
+    {
+      "id": "WO07-03",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Nhắc việc chỉ từ ngày đã xác nhận; push bị từ chối vẫn có hộp thư trong app, không báo đã gửi",
+      "deps": [
+        "WO07-02"
+      ],
+      "acceptance": [
+        "T21"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO07-03.md: lệnh, kết quả, quy tắc, giới hạn (chưa có push thật, DEV-01 chờ người, chờ reviewer bảo mật) và rollback",
+        "supabase/migrations/0007_reminders.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; bảng lịch nhắc, lịch sử gửi và hộp thư chỉ thêm, RLS theo chủ sở hữu",
+        "tests/db/reminders.test.ts: 5/5 pass (T21): lịch nhắc chỉ từ ngày đã xác nhận, push bị từ chối là INBOX_ONLY và có hộp thư, push được nhận là PUSH_ACCEPTED, chỉ gửi một lần, chỉ đọc theo chủ sở hữu",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 129 tệp, typecheck, build:landing, Vitest 183/183 trong 25 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 183/183 success=true; matrix from-report: T21 NOT_RUN -> PASS với coverage PARTIAL; quyền push thật trên thiết bị vẫn là DEV-01"
+      ],
+      "started_at": "2026-10-31T16:53:43.737Z",
+      "finished_at": "2026-10-31T16:58:00.354Z"
+    },
+    {
+      "id": "WO07-04",
+      "wo": "WO07",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "i18n VI/EN: khóa văn bản đủ bộ, định dạng ngày và tiền bằng Intl, không chuỗi cứng trong UI",
+      "deps": [
+        "WO07-03"
+      ],
+      "acceptance": [
+        "T32"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO07-04.md: lệnh, kết quả, quy tắc, giới hạn (chưa có giao diện, landing chưa chuyển bộ văn bản, trình duyệt và thiết bị thuộc WO10-01 và DEV-01) và rollback",
+        "packages/i18n/src/vi.json và en.json: 29 khóa, cùng bộ khóa, placeholder khớp, NFC; index.ts: t() từ chối khóa lạ, formatDateOnly theo UTC, formatMoneyMinor theo ISO 4217",
+        "tests/i18n/catalog.test.ts: 7/7 pass (T32): đủ bộ khóa, placeholder, khóa lạ bị từ chối, NFC, ngày theo lịch, tiền theo đơn vị nhỏ nhất",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 135 tệp, typecheck, build:landing, Vitest 190/190 trong 26 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 190/190 success=true; matrix from-report: T32 NOT_RUN -> PASS, coverage PARTIAL; chữ dài và đổi ngôn ngữ trên trình duyệt chờ WO10-01"
+      ],
+      "started_at": "2026-10-31T17:04:10.072Z",
+      "finished_at": "2026-10-31T17:07:28.362Z"
+    },
+    {
+      "id": "WO08-01",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Module state machine của case: allowlist chuyển trạng thái, withdrawn không tính resolved, reopen cần lý do",
+      "deps": [
+        "WO07-04",
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO08-01.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (lý do bắt buộc, outcome, mở lại chỉ từ resolved), giới hạn và rollback",
+        "packages/domain/src/case-state.ts: 10 trạng thái, allowlist 20 cạnh theo vai trò, transitionCase trả về sự kiện và không đổi đầu vào, isResolved coi withdrawn không phải đã giải quyết",
+        "tests/domain/case-state.test.ts: 6/6 pass (T17 ×3, T19 ×2, T20 ×1): chặn chuyển trái phép và khách đóng case, resolve/close cần outcome và bằng chứng, withdrawn không tính đã giải quyết, reopen cần lý do và giữ outcome cũ",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 139 tệp, typecheck, build:landing, Vitest 196/196 trong 27 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 196/196 success=true; matrix from-report: T17, T19, T20 NOT_RUN -> PASS, coverage PARTIAL; T20 có phần lưu sự kiện ở WO08-02"
+      ],
+      "started_at": "2026-10-31T17:12:50.682Z",
+      "finished_at": "2026-10-31T17:15:41.768Z"
+    },
+    {
+      "id": "WO08-02",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Bảng cases và case_events append-only, version chống ghi đè (409), đóng case cần outcome và bằng chứng",
+      "deps": [
+        "WO08-01"
+      ],
+      "acceptance": [
+        "T17",
+        "T18",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO08-02.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (bằng chứng chưa quét, lý do hiển thị hai bên, tổ chức SUSPENDED), giới hạn và rollback",
+        "supabase/migrations/0008_cases.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; bảng quy tắc khớp allowlist domain; cases, case_events và case_evidence với trigger chỉ thêm; RLS theo khách và thành viên tổ chức; create_case, attach_case_evidence, transition_case",
+        "tests/db/cases.test.ts: 9/9 pass (T17 4, T18 2, T19 2, T20 1): khách không đóng được case, cách ly tổ chức, hai kết nối đồng thời cùng phiên bản cho một thành công và một 409 không có khoảng trống lịch sử, yêu cầu lặp không ghi thêm, resolve và close cần outcome và bằng chứng, reopen giữ outcome, lịch sử không sửa hay xóa được",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 143 tệp, typecheck, build:landing, Vitest 205/205 trong 28 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 205/205 success=true; matrix from-report: T18 NOT_RUN -> PASS (PARTIAL); PASS 22, NOT_RUN 24, FAIL 0"
+      ],
+      "started_at": "2026-10-31T17:21:26.448Z",
+      "finished_at": "2026-10-31T17:26:26.940Z"
+    },
+    {
+      "id": "WO08-03",
+      "wo": "WO08",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Inbox và phân công Desk: phạm vi tổ chức, quản lý phân công agent, mọi thay đổi có audit",
+      "deps": [
+        "WO08-02"
+      ],
+      "acceptance": [
+        "T05",
+        "T06"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO08-03.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (phạm vi inbox, chỉ owner và manager phân công, từ chối trả về kết quả), giới hạn và rollback",
+        "supabase/migrations/0009_desk.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; cases.assigned_to, sự kiện assigned, desk_inbox theo tổ chức, assign_case với audit từ chối và thay đổi",
+        "tests/db/desk.test.ts: 6/6 pass (T05, T06): inbox theo tổ chức và filter, tổ chức khác bị P0002, người được gán khác tổ chức bị từ chối, agent bị từ chối có audit, client không ghi trực tiếp được quyền và tổ chức, manager phân công có phiên bản, sự kiện và audit, phiên bản cũ là 409",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 147 tệp, typecheck, build:landing, Vitest 211/211 trong 29 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 211/211 success=true; T05 14 kiểm thử, T06 37 kiểm thử, tất cả pass; matrix from-report không đổi dòng nào; T05 và T06 giữ PASS"
+      ],
+      "started_at": "2026-10-31T17:31:44.298Z",
+      "finished_at": "2026-10-31T17:33:46.213Z"
+    },
+    {
+      "id": "WO09-01",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "case_participants và case_document_grants: thu hồi, hết hạn, phạm vi tài liệu cụ thể",
+      "deps": [
+        "WO08-03"
+      ],
+      "acceptance": [
+        "T07",
+        "T08"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-01.md: lệnh, kết quả, quy tắc, quyết định cần xác nhận (hạn 30 ngày, chỉ partner, chủ case đọc bằng chứng của mình, timeline cho người tham gia), giới hạn (chưa có proxy, bản đã tải không thu hồi được) và rollback",
+        "supabase/migrations/0010_sharing.sql: db:migrate lần 1 applied 1, lần 2 applied 0 trên aftervia_test; case_participants và case_document_grants chỉ server ghi, RLS theo người liên quan; check_document_access trả về lý do từ chối, người ngoài nhận not_allowed",
+        "tests/db/sharing.test.ts: 9/9 pass (T07 5, T08 4): đối tác chỉ thấy case được mời, đối tác dùng ID hoặc tài liệu của case khác bị từ chối, người lạ không được cấp grant, thu hồi grant và người tham gia có hiệu lực ngay, hết hạn được DB kiểm, grant không có ký tự đại diện và không trùng, quyền đọc và ghi, audit đầy đủ",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 151 tệp, typecheck, build:landing, Vitest 220/220 trong 30 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 220/220 success=true; T05 14 và T06 37 vẫn pass; matrix from-report: T07 và T08 NOT_RUN -> PASS, coverage PARTIAL; proxy đọc tài liệu là WO09-02"
+      ],
+      "started_at": "2026-10-31T17:39:17.483Z",
+      "finished_at": "2026-10-31T17:42:13.469Z"
+    },
+    {
+      "id": "WO09-02",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Proxy tải tài liệu: kiểm grant tại mỗi lần đọc, không URL công khai, thu hồi chặn lượt đọc mới",
+      "deps": [
+        "WO09-01",
+        "WO05-03"
+      ],
+      "acceptance": [
+        "T07",
+        "T08",
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-02.md: lệnh, kết quả, quy tắc, giới hạn (chưa có luồng tải byte, chế độ view chưa thực thi ở tầng byte, bản đã tải không thu hồi được) và rollback",
+        "supabase/migrations/0011_document_reads.sql và 0012_document_read_status.sql: read_case_document kiểm grant tại mỗi lần đọc, ghi audit cho mọi lần đọc được phép hoặc bị từ chối, chỉ nhận UUID, không trả về URL hay khóa lưu trữ, từ chối tài liệu không ở trạng thái quét được phép; db:migrate áp đúng và chạy lại không áp gì thêm",
+        "tests/db/document_reads.test.ts: 8/8 pass (T07 4, T08 3, T38 1): lượt đọc được cấp được ghi audit, lượt đọc khác case hoặc không có grant bị từ chối, grant chỉ xem không tải được, thu hồi và hết hạn chặn lượt đọc kế tiếp, đầu vào URL bị từ chối theo kiểu không có audit, không có cột URL, tài liệu quarantine không được phục vụ kể cả với chủ sở hữu",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 156 tệp, typecheck, build:landing, Vitest 228/228 trong 31 tệp, kiểm thử vòng lặp 13/13",
+        "Báo cáo JSON 228/228 success=true; T07 9, T08 7, T38 5 đều pass; matrix from-report: không đổi dòng nào; T07 và T08 giữ PASS ở mức PARTIAL; T38 giữ PASS"
+      ],
+      "started_at": "2026-10-31T17:47:21.939Z",
+      "finished_at": "2026-10-31T17:50:36.234Z"
+    },
+    {
+      "id": "WO09-03",
+      "wo": "WO09",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "HTTP API cho 13 thao tác của OpenAPI và kiểm hợp đồng (operationId khớp, lỗi không lộ đối tượng)",
+      "deps": [
+        "WO09-02"
+      ],
+      "acceptance": [
+        "T04",
+        "T05"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO09-03.md: lệnh, kết quả, đối chiếu 13 thao tác, sai khác so với hợp đồng, quy tắc, giới hạn và rollback",
+        "services/api/src/http/contract.ts: bảng 13 thao tác (operationId, method, đường dẫn, cách triển khai) và matchContract",
+        "services/api/src/http/app.ts: thao tác hợp đồng đi qua handleContract (401, lỗi code/message/request_id, 501 cho 5 thao tác chưa có nền tảng, alias upload-ticket, route_not_found)",
+        "tests/api/contract.test.ts: 17/17 pass: parity với OpenAPI, 401 và 501, T04 x2 và T05 x1 qua HTTP với 404 đồng nhất, luồng case, chuyển trạng thái, grant và thu hồi",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 160 tệp, typecheck, build:landing, Vitest 245/245 trong 32 tệp, kiểm thử vòng lặp 13/13; JSON 245/245 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0"
+      ],
+      "started_at": "2026-10-31T17:55:33.551Z",
+      "finished_at": "2026-10-31T18:08:27.485Z"
+    },
+    {
+      "id": "WO10-01",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Web Desk (React + Vite): loading/empty/error/offline/denied, escape nội dung, bố cục mobile-first",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T32",
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-01.md: lệnh, kết quả, lỗi receiver tìm bằng kiểm trình duyệt và đã sửa, giới hạn (chỉ danh sách, chưa đăng nhập, font và CSP chưa có, bản dịch cần rà soát)",
+        "apps/web/src: state.ts (phân loại phản hồi, kiểm hình dạng dữ liệu, loadItems), view.tsx (mọi trạng thái, văn bản qua t()), App.tsx (ngoại tuyến giữ dữ liệu cũ, thử lại, chuyển VI/EN), main.tsx, styles.css (mobile trước)",
+        "tests/web/desk.test.ts: 12 kiểm thử (T32 x3, T38 x4, còn lại là trạng thái và biên giới yêu cầu); tests/i18n/catalog.test.ts: thêm common.retry vào danh sách bắt buộc",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 171 tệp, typecheck gồm apps/web, build:landing, build:web, Vitest 257/257 trong 33 tệp, kiểm thử vòng lặp 13/13; JSON 257/257 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0",
+        "kiểm trình duyệt ngoài repo: 30/30 pass ở 360 và 1280 px, VI và EN, mọi trạng thái, ngoại tuyến, và bản phát hành không token; kết quả và ảnh trong scratchpad"
+      ],
+      "started_at": "2026-10-31T18:16:10.133Z",
+      "finished_at": "2026-10-31T18:26:30.022Z"
+    },
+    {
+      "id": "WO10-02",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Mobile shell (Expo): 4 tab, màn P0, hàng đợi offline có trạng thái pending. Chỉ kiểm typecheck và logic, không tuyên bố chạy trên máy thật",
+      "deps": [
+        "WO10-01"
+      ],
+      "acceptance": [
+        "T23"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-02.md: lệnh, kết quả, phụ thuộc đã ghim, giới hạn (không chạy trên thiết bị, chưa đăng nhập, chưa khử trùng máy chủ, AsyncStorage chưa kiểm trên máy), audit 31 cảnh báo và rollback",
+        "apps/mobile/src/offline: outbox.ts (hàng đợi có trạng thái, gửi tối đa một lần, không báo đã gửi khi chưa xác nhận), send-item.ts (ánh xạ HTTP sang bốn kết quả), draft.ts (kiểm bản nháp theo miền dữ liệu)",
+        "apps/mobile/app: 4 tab (Món đồ, Case, Nhắc việc, Cài đặt), màn thêm món đồ lưu nháp không báo đã gửi, đồng bộ thủ công, gửi lại chỉ sau xác nhận",
+        "tests/mobile/outbox.test.ts: 19 kiểm thử logic (tên không mang mã T23 vì T23 là DEVICE, vẫn NOT_RUN); tests/i18n/catalog.test.ts: thêm 16 khóa vào danh sách bắt buộc",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 194 tệp, typecheck gốc và apps/mobile, build:landing, build:web, Vitest 276/276 trong 34 tệp, kiểm thử vòng lặp 13/13; JSON 276/276 success=true; from-report không đổi dòng nào; PASS 24, NOT_RUN 22, FAIL 0"
+      ],
+      "started_at": "2026-10-31T18:41:51.981Z",
+      "finished_at": "2026-10-31T18:42:26.746Z"
+    },
+    {
+      "id": "WO11-01",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Xuất dữ liệu: chỉ đối tượng được phép; JSON + CSV + manifest SHA-256; liên kết tạm 24 giờ",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T24"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-01.md: lệnh, kết quả, phạm vi, giới hạn (chưa có HTTP, hết hạn đọc bằng mắt, chưa dọn dẹp gói, không có byte tài liệu) và rollback",
+        "supabase/migrations/0013_exports.sql: bảng gói và file chỉ thêm, RLS, export_granted_documents, store_export kiểm phạm vi và băm trong cơ sở dữ liệu, fetch_export_file với mã băm và TTL 24 giờ",
+        "services/api/src/export/bundle.ts: dựng năm tệp JSON, CSV (RFC 4180, chống tiêm công thức) và manifest SHA-256; chỉ chạy ở máy chủ",
+        "tests/db/exports.test.ts: 7 kiểm thử T24 trên aftervia_test (phạm vi grant, phạm vi chủ gói, manifest, gói sai phạm vi bị từ chối, liên kết tạm, đường dẫn và gửi lại, grant đã thu hồi) và 3 kiểm thử đơn vị",
+        "npm run verify exit 0 (TEST_DATABASE_URL trong cùng lệnh): bundle 69/69, quét bí mật 199 tệp, typecheck gốc và apps/mobile, build landing và web, Vitest 286/286 trong 35 tệp, kiểm thử vòng lặp 13/13; JSON 286/286 success=true; T24 NOT_RUN -> PASS (PARTIAL); PASS 25, NOT_RUN 21, FAIL 0"
+      ],
+      "started_at": "2026-10-31T18:48:46.863Z",
+      "finished_at": "2026-10-31T18:52:49.844Z"
+    },
+    {
+      "id": "WO11-03",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Màn Quyền riêng tư (xuất, xóa, chia sẻ) trên web và mobile, xác thực lại trước khi xóa",
+      "deps": [
+        "WO10-02",
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-03.md",
+        "npm run verify exit 0: 603 pass / 1 skipped; test:loop 25/25",
+        "npm run e2e:web exit 0: bước T25 mới trên Chromium thật, profiles.deletion_status=PENDING_DELETION, biên nhận liệt kê 6 việc chưa làm",
+        "đột biến M1/M2/M3 giết 3/1/5 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:04:42.798Z",
+      "finished_at": "2026-11-10T11:28:29.995Z"
+    },
+    {
+      "id": "WO12-01",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Sổ sự kiện thanh toán unique(provider, event_id); xác minh chữ ký và timestamp; chống replay và đảo thứ tự (sandbox)",
+      "deps": [
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
+      ],
+      "acceptance": [
+        "T27",
+        "T28"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO12-01.md",
+        "T27 và T28 NOT_RUN -> PASS qua matrix.mjs from-report trên lần chạy thật",
+        "npm run verify exit 0: 622 pass / 1 skipped; test:loop 27/27; e2e:web exit 0",
+        "đột biến M1/M2/M3/M4 giết 5/4/1/3 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:29:28.981Z",
+      "finished_at": "2026-11-10T11:42:18.660Z"
+    },
+    {
+      "id": "WO12-02",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Máy trạng thái entitlement (trial, active, grace, past_due, canceled, expired, refunded, disputed); hết hạn không khóa hồ sơ",
+      "deps": [
+        "WO12-01"
+      ],
+      "acceptance": [
+        "T29",
+        "T46"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO12-02.md",
+        "T29 và T46 NOT_RUN -> PASS qua matrix.mjs from-report trên lần chạy thật",
+        "npm run verify exit 0: 639 pass / 1 skipped; e2e:web exit 0",
+        "đột biến M1/M2/M3/M4 giết 2/1/1/1 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:44:23.130Z",
+      "finished_at": "2026-11-10T11:53:11.439Z"
+    },
+    {
+      "id": "WO12-03",
+      "wo": "WO12",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Đối soát bằng fixture từ báo cáo sandbox; tách doanh thu thực tế và số mô hình",
+      "deps": [
+        "WO12-02"
+      ],
+      "acceptance": [
+        "T30"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO12-03.md",
+        "T30 NOT_RUN -> PASS qua matrix.mjs from-report trên lần chạy thật",
+        "npm run verify exit 0: 655 pass / 1 skipped; e2e:web exit 0",
+        "đột biến M1/M2/M3/M4 giết 3/2/1/6 kiểm thử, sha256 khôi phục khớp"
+      ],
+      "started_at": "2026-11-10T11:53:45.357Z",
+      "finished_at": "2026-11-10T11:59:55.042Z"
+    },
+    {
+      "id": "WO13-01",
+      "wo": "WO13",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "Gia đình: chia sẻ theo từng món đồ, thu hồi có hiệu lực ở lần gọi tiếp theo",
+      "deps": [
+        "WO09-02"
+      ],
+      "acceptance": [
+        "T31"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO13-01.md",
+        "supabase/migrations/0015_family_sharing.sql",
+        "tests/db/family-sharing.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T19:23:22.194Z",
+      "finished_at": "2026-10-31T19:30:15.564Z"
+    },
+    {
+      "id": "WO14-01",
+      "wo": "WO14",
+      "gate": "P1",
+      "kind": "AUTO",
+      "title": "KPI hậu mãi: resolved, closed, withdrawn, reopened tách bạch; số đo thực tế tách số mô hình",
+      "deps": [
+        "WO08-02"
+      ],
+      "acceptance": [
+        "T43"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO14-01.md",
+        "supabase/migrations/0016_case_outcome_kpis.sql",
+        "tests/db/case-kpis.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T19:35:30.875Z",
+      "finished_at": "2026-10-31T19:40:02.935Z"
+    },
+    {
+      "id": "WO15-01",
+      "wo": "WO15",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Kiểm truy cập tự động (axe) trên các route web; nhãn và thứ tự tiêu điểm bàn phím",
+      "deps": [
+        "WO10-01"
+      ],
+      "acceptance": [
+        "T33"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO15-01.md",
+        "tests/web/a11y.test.ts",
+        "package.json",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T19:46:07.492Z",
+      "finished_at": "2026-10-31T19:51:03.640Z"
+    },
+    {
+      "id": "WO15-02",
+      "wo": "WO15",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Đo p95 cục bộ theo profile pilot đã công bố; ghi số mẫu và điều kiện; không suy diễn SLA",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T40"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO15-02.md",
+        "docs/plan/evidence/perf/WO15-02-local.json",
+        "tests/perf/p95-harness.ts",
+        "tests/perf/p95-local-run.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T19:56:21.731Z",
+      "finished_at": "2026-10-31T20:01:22.225Z"
+    },
+    {
+      "id": "WO16-02",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Cờ kill switch (AI, chia sẻ, thông báo, thanh toán, quốc gia) và break-glass hỗ trợ có phê duyệt, hạn và audit",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T42"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-02.md",
+        "supabase/migrations/0017_kill_switches_break_glass.sql",
+        "tests/db/break-glass.test.ts",
+        "tests/db/kill-switches.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:07:06.857Z",
+      "finished_at": "2026-10-31T20:13:05.031Z"
+    },
+    {
+      "id": "WO16-03",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Giám sát không PII, runbook sự cố, mức nghiêm trọng; kiểm log không chứa tài liệu hoặc token",
+      "deps": [
+        "WO16-02"
+      ],
+      "acceptance": [
+        "T37"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-03.md",
+        "services/api/src/observability/log.ts",
+        "services/api/src/observability/severity.ts",
+        "tests/observability/log.test.ts",
+        "docs/ops/INCIDENT_RUNBOOK.md",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:18:48.739Z",
+      "finished_at": "2026-10-31T20:23:53.741Z"
+    },
+    {
+      "id": "WO16-04",
+      "wo": "WO16",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Country pack: mặc định DISABLED, xác thực JSON schema, cổng bật thị trường cần phê duyệt pháp lý",
+      "deps": [
+        "WO04-03"
+      ],
+      "acceptance": [
+        "T41"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-04.md",
+        "packs/countries/VN.json",
+        "packages/domain/src/country-pack.ts",
+        "tests/country/gate.test.ts",
+        "tests/country/pack-schema.test.ts",
+        "docs/plan/02_ACCEPTANCE_MATRIX.csv"
+      ],
+      "started_at": "2026-10-31T20:28:37.313Z",
+      "finished_at": "2026-10-31T20:32:53.638Z"
+    },
+    {
+      "id": "HUM-WO17-02",
+      "wo": "WO17",
+      "gate": "G2",
+      "kind": "HUMAN",
+      "title": "Đánh giá bảo mật độc lập bởi người không phải tác giả AI (DEC05); mọi CRITICAL/HIGH phải được đóng",
+      "deps": [
+        "WO17-01a",
+        "WO17-01b"
+      ],
+      "acceptance": [
+        "T04",
+        "T05",
+        "T07",
+        "T08"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "DEV-01",
+      "wo": "WO10",
+      "gate": "G2",
+      "kind": "DEVICE",
+      "title": "Cài development hoặc release build trên iPhone và Android thật; chạy luồng P0 và quyền push",
+      "deps": [
+        "WO10-02"
+      ],
+      "acceptance": [
+        "T34",
+        "T35",
+        "T21",
+        "T23"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "DEV-02",
+      "wo": "WO10",
+      "gate": "G2",
+      "kind": "DEVICE",
+      "title": "Kiểm trình duyệt mục tiêu thật (Chrome, Safari, Firefox) theo phiên bản đã chốt",
+      "deps": [
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c",
+        "WO10-03d"
+      ],
+      "acceptance": [
+        "T36"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "INF-01",
+      "wo": "WO16",
+      "gate": "G2",
+      "kind": "INFRA",
+      "title": "Staging độc lập: diễn tập khôi phục DB và object, đo RPO/RTO thật, rollback có migration",
+      "deps": [
+        "WO16-01a",
+        "WO16-01b"
+      ],
+      "acceptance": [
+        "T39",
+        "T44"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO18-01",
+      "wo": "WO18",
+      "gate": "G3",
+      "kind": "AUTO_PREP",
+      "title": "Gói pháp lý: privacy và terms ở trạng thái DRAFT, checklist tên và IP, checklist store và billing; không xuất bản",
+      "deps": [
+        "WO16-04"
+      ],
+      "acceptance": [
+        "T41",
+        "T46"
+      ],
+      "status": "BLOCKED",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-10-31T20:37:42.089Z",
+      "blocked_reason": "T46 nay PASS cho phần hướng dẫn TRONG ỨNG DỤNG (WO12-02: hủy gói không xóa tài khoản; xóa tài khoản không hủy đăng ký ở store, nói rõ cả hai trường hợp trên web và di động). Phần còn thiếu không đổi: hủy thật trên tài khoản App Store/Google Play cần tài khoản store (HUMAN/INFRA), và DEC09 (thanh toán và store) vẫn KHÔNG CẤP. Phần AUTO_PREP đã xong ở mức DRAFT: docs/legal (hai bản nháp v0.2 và hai checklist) và docs/plan/evidence/WO18-01.md. Chờ HUM-WO18-02 và tài khoản store.",
+      "blocked_at": "2026-11-10T12:07:31.835Z"
+    },
+    {
+      "id": "HUM-WO18-02",
+      "wo": "WO18",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Luật sư và tư vấn IP duyệt theo quốc gia; duyệt store và billing (G3); phê duyệt DEC01, DEC07, DEC09",
+      "deps": [
+        "WO18-01"
+      ],
+      "acceptance": [
+        "T02",
+        "T41",
+        "T46"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO19-01",
+      "wo": "WO19",
+      "gate": "G3",
+      "kind": "AUTO_PREP",
+      "title": "Kế hoạch pilot 5–10 cửa hàng: baseline, sổ đo thao tác, SLA hỗ trợ đúng giờ làm việc, tiêu chí dừng",
+      "deps": [
+        "WO16-03"
+      ],
+      "acceptance": [
+        "E02",
+        "E03"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/pilot/KE_HOACH_PILOT.md (DRAFT): giả thuyết và quy tắc quyết định E02/E03 chép từ đặc tả, chỗ chưa chốt được ghi rõ; 10 điều kiện trước khi bắt đầu (chưa dòng nào đạt); baseline ít nhất 20 hồ sơ; định nghĩa cột và chỉ số; tiêu chí dừng là đề xuất; bảng phê duyệt chưa có dòng nào được duyệt",
+        "docs/pilot/SO_DO_THAO_TAC.csv: chỉ có tiêu đề 20 cột, không có dữ liệu; docs/pilot/SLA_HO_TRO.md (DRAFT): giờ làm việc, kênh và người trực, trường ticket, mức độ S1 đến S4 (đề xuất), truy cập hỗ trợ; các con số chờ chủ dự án",
+        "npm run verify exit 0 tại lượt này, URL DB nạp từ .github/workflows/ci.yml trong cùng lệnh: bundle 69/69; quét bí mật 250 tệp; Vitest 352 pass, 1 bỏ qua, 46 tệp; test:loop 13/13",
+        "Vitest JSON success=true, 352 pass, 0 fail; from-report changes rỗng; summary PASS 33, NOT_RUN 13, FAIL 0; E02 và E03 vẫn NOT_STARTED trong validation/03_EXPERIMENT_REGISTER.csv, không đổi",
+        "docs/plan/evidence/WO19-01.md: phạm vi, không làm, giới hạn cần con người, rollback"
+      ],
+      "started_at": "2026-10-31T20:53:11.802Z",
+      "finished_at": "2026-10-31T20:58:09.522Z"
+    },
+    {
+      "id": "HUM-WO19-02",
+      "wo": "WO19",
+      "gate": "G3",
+      "kind": "HUMAN",
+      "title": "Chạy pilot với cửa hàng thật; cần DEC08 cho dữ liệu thật và đồng ý của người dùng (G3)",
+      "deps": [
+        "WO19-01",
+        "DEV-01",
+        "HUM-WO18-02"
+      ],
+      "acceptance": [
+        "E02",
+        "E03",
+        "E04",
+        "E06"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO20-01",
+      "wo": "WO20",
+      "gate": "G4",
+      "kind": "AUTO_PREP",
+      "title": "Checklist phát hành G4 và kịch bản rollback trên staging; không chạm production",
+      "deps": [
+        "WO16-01a",
+        "WO16-01b",
+        "WO17-01a",
+        "WO17-01b",
+        "HUM-LEGAL-DEL-01"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO20-02",
+      "wo": "WO20",
+      "gate": "G4",
+      "kind": "HUMAN",
+      "title": "Quyết định phát hành G4 của chủ dự án; production chỉ mở khi có duyệt riêng (DEC10)",
+      "deps": [
+        "WO20-01",
+        "HUM-WO17-02",
+        "HUM-WO19-02"
+      ],
+      "acceptance": [
+        "T44"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO21-01",
+      "wo": "WO21",
+      "gate": "G5",
+      "kind": "HUMAN",
+      "title": "Tăng trưởng (G5): kênh bán, retention theo cohort, CAC; chỉ khi đã có dữ liệu pilot",
+      "deps": [
+        "HUM-WO20-02"
+      ],
+      "acceptance": [
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "HUM-WO22-01",
+      "wo": "WO22",
+      "gate": "G5",
+      "kind": "HUMAN",
+      "title": "Quyết định thị trường mới và tích hợp (WO22)",
+      "deps": [
+        "HUM-WO21-01"
+      ],
+      "acceptance": [
+        "E08"
+      ],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO23-01",
+      "wo": "WO23",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Lệnh split/add cho tools/loop/backlog.mjs để tách task quá lớn (WO10-03) hoặc thêm task mới phát sinh khi hòa giải kế hoạch ngoài",
+      "deps": [],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "node --test tools/loop/backlog.test.mjs: 14/14 pass",
+        "npm run typecheck && npm run typecheck:mobile: exit 0",
+        "npm run build:landing && npm run build:web: OK",
+        "npm run verify: 26 vitest files fail on TEST_DATABASE_URL (no Postgres/Docker in this machine), 172 pass + 180 skip ngoài DB; không giả PASS",
+        "npm audit --audit-level=high: image-size High vẫn mở qua expo->metro, build-time only, không sửa bằng non-force fix; xem docs/plan/evidence/WO23-01.md"
+      ],
+      "started_at": "2026-11-01T11:15:08.253Z",
+      "finished_at": "2026-11-01T11:15:08.343Z"
+    },
+    {
+      "id": "WO24-01",
+      "wo": "WO24",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "SBOM, đường phụ thuộc rõ ràng (ví dụ image-size qua expo->metro) và pin GitHub Action theo SHA; đối chiếu advisory thật trước khi coi là đã vá, không chỉ chạy npm audit fix",
+      "deps": [
+        "WO03-01"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "pin actions/checkout@11d5960a326750d5838078e36cf38b85af677262 và actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 (tag v4, đọc qua GitHub API 01/11/2026)",
+        "npm ls --all --json -> docs/plan/evidence/sbom/2026-11-01.json (794 goi), xac nhan duong phu thuoc image-size: expo->@expo/metro->metro->image-size@1.2.1",
+        "ghi nhan npm audit --omit=dev trong CI khong bat duoc image-size (devDependency); CI hien chi 1 job, khong tach theo thanh phan; xem docs/plan/evidence/WO24-01.md"
+      ],
+      "started_at": "2026-11-01T11:19:07.675Z",
+      "finished_at": "2026-11-01T11:19:08.177Z"
+    },
+    {
+      "id": "WO25-01",
+      "wo": "WO25",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "transitionCase (HTTP): đọc và xác thực outcome từ body, truyền thật vào public.transition_case thay vì null cố định; case resolve/close được qua API",
+      "deps": [
+        "WO09-03"
+      ],
+      "acceptance": [
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run tests/api/contract.test.ts (TEST_DATABASE_URL thật): 18/18 pass",
+        "npm run verify (Postgres cuc bo lan dau): exit 0, Vitest 353 pass/1 skip/0 fail trong 46/47 file",
+        "matrix summary khong doi: PASS 33, NOT_RUN 13 - xem docs/plan/evidence/WO25-01.md"
+      ],
+      "started_at": "2026-11-02T03:34:34.539Z",
+      "finished_at": "2026-11-02T03:34:34.583Z"
+    },
+    {
+      "id": "WO11-02a",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Thu hồi phiên và route HTTP requestDeletion: token phát trước lúc yêu cầu xóa bị từ chối; thay not_implemented; kiểm thử T25",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02a.md: authenticateSession kiểm mốc cắt phiên qua RLS; phiên trước mốc, phiên đúng giây mốc và phiên thiếu iat bị 401 ở mọi route; route requestDeletion thật thay not_implemented; receipt và lặp cùng mã",
+        "tests/api/account-deletion-http.test.ts: 5 kiểm thử T25 qua HTTP; tests/api/contract.test.ts bỏ requestDeletion khỏi danh sách 501; 23/23 pass",
+        "Đột biến: vô hiệu hóa kiểm tra mốc cắt làm đỏ 2 kiểm thử T25; đã khôi phục app.ts (checksum khớp)",
+        "npm run verify exit 0 tại lượt này: bundle 69/69; quét bí mật 258 tệp; Vitest 358 pass, 1 bỏ qua, 47 tệp; test:loop 18/18; Vitest JSON success=true; from-report không đổi dòng nào, T25 vẫn PARTIAL"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:26:39.192Z",
+      "finished_at": "2026-11-03T01:32:33.901Z"
+    },
+    {
+      "id": "WO11-02b",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khóa thao tác ghi khi tài khoản PENDING_DELETION ở các hàm ghi chính; kiểm thử T25",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02b.md: trigger refuse_writes_while_pending_deletion (migration 0018) trên 12 bảng; INSERT và UPDATE nội dung bị 55000 khi PENDING_DELETION; thu hồi và ghi không có phiên vẫn được",
+        "tests/db/pending-deletion-writes.test.ts: 4 kiểm thử T25; 15/15 cùng policy-parity và account-deletion",
+        "Đột biến: vô hiệu hóa trigger làm đỏ 2 kiểm thử T25; đã khôi phục migration (checksum khớp)",
+        "Sửa tests/support/local-auth-shim.sql: GUC rỗng là không có phiên; trước đó làm đỏ T06 khi trigger gọi auth.uid() ở đường admin",
+        "npm run verify exit 0: bundle 69/69; quét bí mật 262 tệp; Vitest 362 pass, 1 bỏ qua, 49 tệp; test:loop 18/18; Vitest JSON success=true; db:migrate OK (19 migration); matrix không đổi trạng thái"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:39:19.015Z",
+      "finished_at": "2026-11-03T01:48:34.556Z"
+    },
+    {
+      "id": "WO11-02c",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Bản đề xuất quyết định cho chủ dự án (AUTO_PREP): danh mục xóa và giữ lại, bảng chỉ thêm, danh tính và phiên, thành viên tổ chức, bên nhận; mỗi mục có phương án, khuyến nghị và hậu quả",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02c.md: bản đề xuất 6 quyết định (retention và grace, bảng chỉ thêm, DEC03 và phiên, thành viên tổ chức, bên nhận, xuất dữ liệu), mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống",
+        "Đã kiểm dữ liệu thật từ migration: các cột có nội dung cá nhân trong case_events, field_confirmations, export_files; legal/04 thiếu giá trị grace",
+        "npm run verify exit 0 tại đầu lượt (bundle 69/69; quét bí mật 264 tệp; Vitest 362 pass, 1 bỏ qua; test:loop 18/18). Không đổi mã; AUTO_PREP không có kiểm thử mới"
+      ],
+      "split_from": "WO11-02",
+      "started_at": "2026-11-03T01:54:24.624Z",
+      "finished_at": "2026-11-03T01:55:10.387Z"
+    },
+    {
+      "id": "WO11-02d",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: danh mục xóa và giữ lại theo legal/04 (chủ dự án và luật sư duyệt)",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02e",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: cơ chế xóa nội dung cá nhân trong bảng chỉ thêm có trigger chặn",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02f",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: xác minh danh tính và thu hồi phiên theo nhà cung cấp (DEC03)",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO11-02g",
+      "wo": "WO11",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: thành viên tổ chức và quyền của bên nhận khi khách yêu cầu xóa",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO11-02"
+    },
+    {
+      "id": "WO10-03a",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "HTTP createExport và getJob thay not_implemented: xuất gói qua API, link 24 giờ, kiểm phạm vi; kiểm thử T24",
+      "deps": [
+        "WO11-01"
+      ],
+      "acceptance": [
+        "T24"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run verify exit 0 (URL CI trong cùng lệnh): bundle 69/69; quét bí mật 267 tệp; Vitest 366 pass, 1 bỏ qua; test:loop 18/18",
+        "npx vitest run exports-http + contract: 22/22 pass (4 T24 HTTP mới)",
+        "Đột biến getJob không qua RLS: 1 kiểm thử đỏ (expected 200 to be 404); đã khôi phục, checksum khớp",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0; T24 PASS ở mức PARTIAL",
+        "Giới hạn: chưa có route tải gói; link 24 giờ chỉ băm trong DB, chưa trả ra; chờ quyết định. HawkScan BLOCKED (không có hawk, HAWK_API_KEY, stackhawk.yml). Chi tiết: docs/plan/evidence/WO10-03a.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:01:13.899Z",
+      "finished_at": "2026-11-03T02:10:36.165Z"
+    },
+    {
+      "id": "WO10-03b",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: thêm món, mở case, chuyển trạng thái và đóng có outcome qua HTTP; kiểm thử tích hợp Desk và API có T38",
+      "deps": [
+        "WO10-01",
+        "WO09-03",
+        "WO25-01"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run (3 tệp Desk, URL CI trong cùng lệnh): 28/28 pass (11 lớp yêu cầu, 5 tích hợp API, 12 Desk hiện có)",
+        "Đột biến bỏ kiểm tra UUID: 2 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): typecheck gốc và mobile; bundle 69/69; quét bí mật 272 tệp; Vitest 382 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có điều khiển giao diện (WO10-03e); POST /v1/items chưa khử trùng; chờ reviewer độc lập. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03b.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:17:47.047Z",
+      "finished_at": "2026-11-03T02:25:13.795Z"
+    },
+    {
+      "id": "WO10-03c",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: chia tài liệu (grant) và nút xuất gói, dùng HTTP từ WO10-03a; kiểm thử T38",
+      "deps": [
+        "WO10-03a",
+        "WO10-03b"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run (5 tệp Desk, URL CI trong cùng lệnh): 41/41 pass (8 và 5 mới, 11 và 5 của WO10-03b, 12 Desk cũ)",
+        "Đột biến bỏ kiểm tra UUID ở grantsPath: 1 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): typecheck gốc và mobile; bundle 69/69; quét bí mật 277 tệp; Vitest 395 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có điều khiển giao diện (WO10-03f); gói xuất chưa tải được (HUM-WO10-03a); grant không có khóa lặp ở máy chủ; chờ reviewer độc lập. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03c.md"
+      ],
+      "split_from": "WO10-03",
+      "started_at": "2026-11-03T02:30:55.285Z",
+      "finished_at": "2026-11-03T02:35:22.792Z"
+    },
+    {
+      "id": "WO10-03d",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: chọn kho byte cho tài liệu (DEC06) rồi luồng hoàn tất tải lên; không làm trong vòng lặp",
+      "deps": [],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO10-03"
+    },
+    {
+      "id": "WO26-01",
+      "wo": "WO26-01",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Hướng dẫn dev local trên máy chủ dự án (macOS): Node, Postgres 16, npm ci, verify, DB _test, chạy API và Desk; chỉ ghi tên biến môi trường, không ghi giá trị bí mật",
+      "deps": [
+        "WO03-04"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm ci exit 0; npm run db:migrate -- --with-shim trên DB _test mới: applied 19 (DB tạm đã xóa)",
+        "npm run verify exit 0 (URL CI trong cùng lệnh): bundle 69/69; quét bí mật 280 tệp; Vitest 395 pass, 1 bỏ qua; test:loop 18/18",
+        "Desk: npx vite --config apps/web/vite.config.ts --port 5173 trả HTTP 200 tại localhost:5173; đã dừng",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa kiểm trên macOS; chưa có lệnh chạy API (WO26-02). Chi tiết: docs/plan/evidence/WO26-01.md"
+      ],
+      "started_at": "2026-11-03T02:40:54.911Z",
+      "finished_at": "2026-11-03T02:46:48.506Z"
+    },
+    {
+      "id": "HUM-WO10-03a",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "HUMAN",
+      "title": "HUMAN: chọn cách trả link tải gói xuất 24 giờ (route tải trong đặc tả, hoặc trả mã truy cập một lần kèm reviewer độc lập); không làm trong vòng lặp",
+      "deps": [
+        "WO10-03a"
+      ],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "WO10-03e",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: điều khiển giao diện (VI/EN) cho thêm món, mở case và chuyển trạng thái, gọi lớp yêu cầu của WO10-03b; khóa nút khi đang gửi; kiểm thử T32 và T38",
+      "deps": [
+        "WO10-03b"
+      ],
+      "acceptance": [
+        "T32",
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npx vitest run (4 tệp: desk-forms 8, desk-forms-dom 7, desk 12, catalog 7): 34/34 pass",
+        "Đột biến bỏ khóa đang gửi: 1 kiểm thử đỏ; bỏ tái dùng khóa idempotency: 2 kiểm thử đỏ; đã khôi phục, checksum khớp",
+        "npm run verify exit 0 (URL CI, Postgres khởi động): typecheck gốc và mobile; bundle 69/69; quét bí mật 286 tệp; Vitest 410 pass, 1 bỏ qua; test:loop 18/18",
+        "from-report: changes []; PASS 33, NOT_RUN 13, FAIL 0",
+        "Giới hạn: chưa có E2E trên Chromium; nhãn outcome là bản dự thảo; case từ Desk cần bằng chứng để resolved (DEC06); POST /v1/items chưa khử trùng. HawkScan BLOCKED. Chi tiết: docs/plan/evidence/WO10-03e.md"
+      ],
+      "started_at": "2026-11-03T02:52:30.867Z",
+      "finished_at": "2026-11-03T04:31:02.480Z"
+    },
+    {
+      "id": "WO10-03f",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Desk: điều khiển giao diện (VI/EN) cho chia tài liệu, thu hồi và tạo gói xuất, gọi lớp yêu cầu của WO10-03c; khóa nút khi đang gửi; kiểm thử T38",
+      "deps": [
+        "WO10-03c"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-03f.md"
+      ],
+      "started_at": "2026-11-03T04:38:53.910Z",
+      "finished_at": "2026-11-03T04:48:39.228Z"
+    },
+    {
+      "id": "WO26-02",
+      "wo": "WO26",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Tệp khởi động API cục bộ (không phải production): đọc cấu hình từ biến môi trường, chỉ nối DB có hậu tố _test, không có đăng nhập giả lập ngoài chế độ kiểm thử; có kiểm thử cho các ràng buộc này",
+      "deps": [
+        "WO26-01"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO26-02.md"
+      ],
+      "started_at": "2026-11-03T04:54:29.564Z",
+      "finished_at": "2026-11-03T05:06:07.028Z"
+    },
+    {
+      "id": "E2E-WEB-01",
+      "wo": "WO10",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "E2E Chromium: luồng web đầy đủ trên máy chủ và Desk cục bộ (thêm món, mở case, chia tài liệu metadata, Desk xử lý, đóng có outcome, xuất gói); Playwright với Chromium có sẵn; bước xuất gắn T24; Safari và Firefox thuộc DEV-02",
+      "deps": [
+        "WO10-03f",
+        "WO26-02"
+      ],
+      "acceptance": [
+        "T24"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/E2E-WEB-01.md"
+      ],
+      "started_at": "2026-11-03T05:11:23.203Z",
+      "finished_at": "2026-11-03T05:19:40.853Z"
+    },
+    {
+      "id": "SEC-IDEM-01",
+      "wo": "SEC",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Khử trùng ở máy chủ theo Idempotency-Key cho POST /v1/items và cấp grant: lưu kết quả theo người dùng và khóa; cùng nội dung thì trả lại kết quả cũ, khác nội dung thì 409; kiểm thử T38",
+      "deps": [
+        "WO10-03c"
+      ],
+      "acceptance": [
+        "T38"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/SEC-IDEM-01.md"
+      ],
+      "started_at": "2026-11-04T00:54:45.892Z",
+      "finished_at": "2026-11-04T01:16:44.615Z"
+    },
+    {
+      "id": "WO16-01a",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Diễn tập khôi phục DB cục bộ: sao lưu logic DB _test thành tệp có manifest SHA-256, khôi phục sang DB _test cô lập, so số dòng, hash nội dung, chính sách RLS, trigger và hàm; object storage, RPO/RTO thật và staging (INF-01) chưa có",
+      "deps": [
+        "WO03-03"
+      ],
+      "acceptance": [
+        "T39"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-01a.md"
+      ],
+      "split_from": "WO16-01",
+      "started_at": "2026-11-06T10:32:25.585Z",
+      "finished_at": "2026-11-06T10:37:40.466Z"
+    },
+    {
+      "id": "WO16-01b",
+      "wo": "WO16-01",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Đối chiếu tombstone và chính sách xóa trong bản khôi phục, sau khi chủ dự án chốt danh mục xóa và các quyết định WO11-02d..g",
+      "deps": [
+        "WO16-01a",
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c",
+        "WO11-02e-EXP",
+        "WO11-02e-CONF",
+        "WO11-02e-CASE",
+        "WO11-02f-SESS",
+        "WO11-02g-MEM"
+      ],
+      "acceptance": [
+        "T26"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO16-01b.md",
+        "7 kiểm thử mới dựng lại đúng lỗ hổng: sao lưu trước khi xóa, khôi phục xong tài khoản về ACTIVE và reapply trả 0; nạp sổ ngoài backup thì về PENDING_DELETION",
+        "npm run verify exit 0: 662 pass / 1 skipped; e2e:web exit 0",
+        "T26 GIỮ MANUAL_PARTIAL: nơi lưu sổ còn là thư mục cục bộ, staging và object storage là INF-01; đổi sang PASS là quyết định của chủ dự án"
+      ],
+      "split_from": "WO16-01",
+      "started_at": "2026-11-10T12:00:14.183Z",
+      "finished_at": "2026-11-10T12:06:31.136Z"
+    },
+    {
+      "id": "WO17-01a",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Gói bằng chứng bảo mật, phần tài liệu: threat model (spec engineering/05) ánh xạ sang kiểm thử hiện có, rủi ro còn lại, phần chưa có bằng chứng (thanh toán, kho byte, scanner, staging), kịch bản DAST để chạy khi có server",
+      "deps": [
+        "WO16-03",
+        "WO10-03a",
+        "WO10-03b",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO17-01a.md"
+      ],
+      "split_from": "WO17-01",
+      "started_at": "2026-11-06T10:42:17.733Z",
+      "finished_at": "2026-11-06T10:47:41.403Z"
+    },
+    {
+      "id": "WO17-01b",
+      "wo": "WO17-01",
+      "gate": "G2",
+      "kind": "AUTO_PREP",
+      "title": "Phần còn lại của gói bằng chứng bảo mật: chạy DAST khi có server và HAWK_API_KEY, đối chiếu thanh toán và kho byte sau khi WO12-03 và WO10-03d xong",
+      "deps": [
+        "WO17-01a",
+        "WO12-03",
+        "WO10-03d"
+      ],
+      "acceptance": [
+        "T37",
+        "T38",
+        "T41"
+      ],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": [],
+      "split_from": "WO17-01"
+    },
+    {
+      "id": "WO10-03d-prep",
+      "wo": "WO10-03d",
+      "gate": "P0",
+      "kind": "AUTO_PREP",
+      "title": "Đề xuất, không quyết định, cho WO10-03d và HUM-WO10-03a: kho byte cho tài liệu (DEC06) và cách trả link gói xuất 24 giờ; mỗi mục có phương án, khuyến nghị, hệ quả và ô quyết định để trống",
+      "deps": [
+        "WO10-03a",
+        "WO10-03c"
+      ],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO10-03d-prep.md"
+      ],
+      "started_at": "2026-11-06T10:51:28.485Z",
+      "finished_at": "2026-11-06T10:55:48.609Z"
+    },
+    {
+      "id": "WO11-02g-MEM",
+      "wo": "WO11-02g",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Thành viên tổ chức khi khách yêu cầu xóa (Q4, phương án A, đã QUYẾT): đánh dấu REVOKED mọi thành viên ACTIVE của khách; từ chối yêu cầu xóa nếu khách là owner duy nhất của một tổ chức",
+      "deps": [
+        "WO11-02a",
+        "WO11-02b",
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02g-MEM.md",
+        "verify exit 0 (bundle 69/69; secrets 318 files; Vitest 463/463 pass, 1 skipped); JSON success 464 total, 463 pass, 0 fail; db:migrate applied 0020 on aftervia_test; mutations: no sole-owner check 5/14 red, no owner-row lock 2/8 red in 5/5 runs; migration restored sha256 match"
+      ],
+      "started_at": "2026-11-06T15:20:04.865Z",
+      "finished_at": "2026-11-06T15:32:37.867Z"
+    },
+    {
+      "id": "WO11-02f-SESS",
+      "wo": "WO11-02f",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Phiên và xác thực lại trước khi xóa (Q3, phương án C, đã QUYẾT TẠM): thời hạn phiên 15 phút; yêu cầu xóa tài khoản chỉ nhận phiên phát trong 5 phút gần nhất; chưa chọn nhà cung cấp danh tính (DEC03)",
+      "deps": [
+        "WO11-02a"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02f-SESS.md",
+        "verify exit 0: bundle 69/69; secrets 320 files; Vitest 466/466 pass, 1 skipped; JSON success 467 total, 466 pass, 0 fail; tests/api 92/92; mutations M1 2/9 red, M2 1/9 red, app.ts restored by sha256; E2E-WEB-01 passed 12/12"
+      ],
+      "started_at": "2026-11-06T15:38:02.820Z",
+      "finished_at": "2026-11-06T15:42:54.813Z"
+    },
+    {
+      "id": "WO11-02e-EXP",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Nội dung gói xuất (Q2, phương án C, đã QUYẾT): đưa export_files.body sang bảng sửa được có hạn 24 giờ; export_files chỉ giữ tham chiếu và SHA-256; có hàm dọn nội dung đã hết hạn",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-EXP.md",
+        "verify exit 0: bundle 69/69; secrets 324 files; Vitest 473/473 pass, 1 skipped; JSON success 474 total, 473 pass; db:migrate applied 0021 on the existing E2E data (5 bodies, 0 sha mismatches); mutations M1 purge, M2 fetch expiry, M3 expiry guard each 1/7 red; E2E-WEB-01 12/12"
+      ],
+      "started_at": "2026-11-06T15:47:05.081Z",
+      "finished_at": "2026-11-06T15:53:11.105Z"
+    },
+    {
+      "id": "WO11-02e-CONF",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Giá trị xác nhận trường (Q2, phương án C, đã QUYẾT): đưa field_confirmations.old_value và new_value sang bảng sửa được; bảng chỉ thêm giữ tham chiếu; T14 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-CONF.md",
+        "verify exit 0: bundle 69/69; secrets 328 files; Vitest 479/479 pass, 1 skipped; JSON success 480 total, 479 pass; db:migrate applied 0022 on real seeded confirmations (2 rows, 0 inconsistencies); T14 7 tests kept expectations; mutations M1 1/13, M2b 1/6, M3 4/13 red; M2 masked by RLS on the reference table (defense in depth, documented)"
+      ],
+      "started_at": "2026-11-06T15:57:32.641Z",
+      "finished_at": "2026-11-06T16:03:47.158Z"
+    },
+    {
+      "id": "WO11-02e-CASE",
+      "wo": "WO11-02e",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Lý do trong lịch sử case (Q2, phương án C, đã QUYẾT): đưa case_events.reason sang bảng sửa được; case_events giữ tham chiếu; ghi và đọc lịch sử vẫn đúng; T17 và T19 vẫn đạt",
+      "deps": [
+        "WO11-02c"
+      ],
+      "acceptance": [
+        "T25"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/WO11-02e-CASE.md",
+        "verify exit 0: bundle 69/69; secrets 332 files; Vitest 485/485 pass, 1 skipped; JSON success 486 total, 485 pass; db:migrate applied 0023; scrub path verified on a scratch database with a seeded reason (digest equal); targeted 35/35; mutations M1 4/6 red, M2c 1/6 red, M3 1/6 red; M2/M2b masked by RLS of referenced tables (documented); E2E-WEB-01 12/12"
+      ],
+      "started_at": "2026-11-06T16:11:06.494Z",
+      "finished_at": "2026-11-06T16:17:36.453Z"
+    },
+    {
+      "id": "AV-DQ-05-FIX",
+      "wo": "AV-DQ-05",
+      "gate": "P0",
+      "kind": "AUTO",
+      "title": "Siet cong E2E-WEB-01: kiem consoleErrors va version cuoi (tu AV-DQ-05, audit 04/11)",
+      "deps": [],
+      "acceptance": [
+        "T24",
+        "T17",
+        "T19",
+        "T20"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "npm run e2e:web (TEST_DATABASE_URL thuc, Playwright+Chromium moi cai): E2E-WEB-01 dat, version 6",
+        "npm run verify: exit 0, khong gi do them",
+        "Vuot ngan sach 65 theo chi thi truc tiep cua chu du an trong chat, xem docs/plan/evidence/AV-DQ-05-FIX.md"
+      ],
+      "started_at": "2026-11-08T10:14:29.105Z",
+      "finished_at": "2026-11-08T10:14:29.160Z"
+    },
+    {
+      "id": "HUM-LEGAL-DEL-01",
+      "wo": "WO11",
+      "gate": "G4",
+      "kind": "HUMAN",
+      "title": "HUMAN: luật sư xác nhận danh mục xóa và giữ lại dữ liệu (legal/04) trước khi phát hành; chặn WO20-01",
+      "deps": [],
+      "acceptance": [],
+      "status": "TODO",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "E2E-ENV-01",
+      "wo": "E2E",
+      "kind": "AUTO_PREP",
+      "title": "E2E web: cổng Web Desk đổi được qua AFTERVIA_E2E_DESK_PORT (harness đang giữ cứng 5173 với strictPort; máy này có dự án khác giữ 5173)",
+      "deps": [],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/E2E-ENV-01.md",
+        "npm run e2e:web exit 0: 13 bước, consoleErrors 0, cổng 5174",
+        "npm run verify exit 0: 706 passed, 1 skipped (DB _test)"
+      ],
+      "started_at": "2026-11-17T17:46:50.634Z",
+      "finished_at": "2026-11-17T17:50:19.743Z"
+    },
+    {
+      "id": "E2E-WEB-02",
+      "wo": "E2E",
+      "kind": "AUTO",
+      "title": "E2E Chromium, lỗi có kiểm soát trên Desk: phiên bản cũ bị 409 (T18) và chuyển sang Đã giải quyết thiếu kết quả bị chặn trước khi gửi (T17); case không đổi trạng thái; số 409 trong console khớp số phản hồi",
+      "deps": [
+        "E2E-WEB-01"
+      ],
+      "acceptance": [
+        "T17",
+        "T18"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/E2E-WEB-02.md",
+        "npm run e2e:web exit 0 (15 bước, 409 đối chiếu 1/1, mutation FAIL đúng)",
+        "npm run verify exit 0 (706 passed, 1 skipped)"
+      ],
+      "started_at": "2026-11-17T17:51:09.844Z",
+      "finished_at": "2026-11-17T17:55:49.088Z"
+    },
+    {
+      "id": "DEP-AUDIT-01",
+      "wo": "DEP",
+      "kind": "AUTO_PREP",
+      "title": "Audit sản xuất đỏ (npm audit --omit=dev --audit-level=high): điều tra nguyên nhân và đường sửa; không nới cổng",
+      "deps": [],
+      "acceptance": [],
+      "status": "BLOCKED",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-11-17T17:57:35.345Z",
+      "blocked_reason": "GHSA-fc5q-39xc-vjpf (picomatch <= 4.0.7, high) chưa có bản vá upstream; npm audit --omit=dev --audit-level=high exit 1 (27 lỗ hổng). Chờ bản vá hoặc quyết định ngoại lệ của chủ dự án (10_NEEDS_FROM_OWNER.md mục 2.8). Bằng chứng: docs/plan/evidence/DEP-AUDIT-01.md",
+      "blocked_at": "2026-11-17T17:59:04.851Z"
+    },
+    {
+      "id": "MOBILE-BUNDLE-01",
+      "wo": "MOBILE",
+      "kind": "AUTO_PREP",
+      "title": "Bundle Android hỏng: Metro không phân giải @aftervia/domain (apps/mobile/app/privacy.tsx); khôi phục để check:mobile-bundle xanh và tái lập được từ repo",
+      "deps": [],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/MOBILE-BUNDLE-01.md",
+        "npm run check:mobile-bundle exit 0: 2956425 bytes, 4/4 markers",
+        "TEST_DATABASE_URL=aftervia_test npm run verify exit 0: 706 passed, 1 skipped"
+      ],
+      "started_at": "2026-11-17T17:59:21.602Z",
+      "finished_at": "2026-11-17T18:02:52.336Z"
+    }
+  ]
+}

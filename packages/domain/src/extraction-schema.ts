@@ -1,0 +1,66 @@
+// Bản sao của docs/spec/AFTERVIA_AZ_2026-10-31/engineering/09_EXTRACTION.schema.json (WO06-01).
+// Test tests/domain/extraction.test.ts so khớp bản này với tệp đặc tả; lệch thì test đỏ.
+import type { AnySchema } from 'ajv';
+
+export const EXTRACTION_SCHEMA: AnySchema = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  title: 'Receipt extraction - proposal only',
+  type: 'object',
+  additionalProperties: false,
+  required: [
+    'document_id',
+    'schema_version',
+    'merchant',
+    'purchase_date',
+    'amount_minor',
+    'currency',
+    'item_name',
+    'serial',
+    'warnings',
+  ],
+  properties: {
+    document_id: { type: 'string', format: 'uuid' },
+    schema_version: { const: '1.0' },
+    merchant: {
+      allOf: [{ $ref: '#/$defs/field' }, { properties: { value: { type: ['string', 'null'] } } }],
+    },
+    purchase_date: {
+      allOf: [
+        { $ref: '#/$defs/field' },
+        { properties: { value: { type: ['string', 'null'], format: 'date' } } },
+      ],
+    },
+    amount_minor: {
+      allOf: [
+        { $ref: '#/$defs/field' },
+        { properties: { value: { type: ['integer', 'null'], minimum: 0 } } },
+      ],
+    },
+    currency: {
+      allOf: [
+        { $ref: '#/$defs/field' },
+        { properties: { value: { type: ['string', 'null'], pattern: '^[A-Z]{3}$' } } },
+      ],
+    },
+    item_name: {
+      allOf: [{ $ref: '#/$defs/field' }, { properties: { value: { type: ['string', 'null'] } } }],
+    },
+    serial: {
+      allOf: [{ $ref: '#/$defs/field' }, { properties: { value: { type: ['string', 'null'] } } }],
+    },
+    warnings: { type: 'array', items: { type: 'string' } },
+  },
+  $defs: {
+    field: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['value', 'source_text', 'page', 'review_status'],
+      properties: {
+        value: { type: ['string', 'number', 'null'] },
+        source_text: { type: ['string', 'null'] },
+        page: { type: ['integer', 'null'], minimum: 1 },
+        review_status: { enum: ['NEEDS_REVIEW', 'CONFIRMED', 'REJECTED'] },
+      },
+    },
+  },
+};

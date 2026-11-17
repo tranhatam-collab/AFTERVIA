@@ -1,0 +1,13 @@
+﻿product,category,public_capabilities,source_ids,implication,benchmark_required,status
+Claimlane,B2B hậu mãi,"AI, workflow, returns/warranty, API và quyền",S07;S08,Đã có chức năng cạnh tranh trực tiếp; không nói chỉ là ticketing,Onboarding SME; thời gian intake; tổng chi phí; portability,Chưa benchmark
+Product Wallet,Product passport/enterprise,"SDK/API, white label, ví sản phẩm và multi-tenant",S09,"Có hạ tầng B2B2C, không phải khoảng trống chưa ai làm",Quyền của người dùng; yêu cầu triển khai; chi phí cho SMB,Chưa benchmark
+Itemtopia,Kho tài sản cá nhân/nhóm,"Hóa đơn, bảo hành, quản lý tài sản và chia sẻ",S10,Receipt vault không mới,Merchant workflow và handoff có chứng cứ,Chưa benchmark
+Keevora,AI hậu mãi,"Receipt/warranty tracking, AI calls và nhiều ngôn ngữ theo công bố",S11,Đã gần với ý tưởng trợ lý bảo hành AI,"Chất lượng thực, quyền phê duyệt, vùng phục vụ",Chưa benchmark
+ReceiptCash,AI xử lý sau mua,Trợ lý theo dõi/yêu cầu lợi ích sau mua theo công bố,S12,Không tự nhận refund assistant là độc đáo,Tính năng chạy thật; mô hình B2B; kiểm soát dữ liệu,Chưa benchmark
+AfterShip,Thương mại/returns,Returns và warranty add-on,S13,Có kênh phân phối thương mại sẵn,Ngoại tuyến/đa thương hiệu; onboarding cửa hàng nhỏ,Chưa benchmark
+Loop,Returns/warranty,Quy trình trả hàng và bảo hành,S14,Không xem warranty là thị trường chưa ai phục vụ,Case đa bên; chuyển dữ liệu; total cost,Chưa benchmark
+Jobber,Field-service operations,"Quy trình dịch vụ, AI receptionist",S15,Có thể mở rộng sang phần bài toán này,Phần inventory/hậu mãi không chỉ sửa lịch hẹn,Tham chiếu nhóm
+Notion,Năng suất/tri thức,Workspace và agent,S16,Công cụ ngang có thể thay tính năng đơn giản,Chi phí cấu hình quy trình tương đương,Tham chiếu nhóm
+Duolingo,Học tập,Nội dung và thói quen học trả phí,S17,"Bài học về retention, không đối thủ trực tiếp",Không suy doanh thu học tập sang hậu mãi,Tham chiếu nhóm
+Canva,Sáng tạo,Thiết kế và cộng tác quy mô lớn,S18,"Bài học phân phối/template, không đối thủ trực tiếp",Không suy số người dùng sang TAM AFTERVIA,Tham chiếu nhóm
+Email + bảng tính + ứng dụng nhắn tin,Quy trình hiện hữu,"Linh hoạt, quen thuộc",Nghiên cứu khách cần làm,Đây có thể là đối thủ khó thay nhất,Phút thao tác; lỗi; tiền thực trả cho việc đổi,Chưa quan sát

@@ -1,0 +1,7 @@
+Hoàn thiện reminder, export và deletion AFTERVIA. Reminder chỉ từ ngày được người dùng/merchant xác nhận và có nguồn; date-only không đổi lệch vì timezone. Push bị từ chối vẫn có inbox, không báo đã gửi.
+
+Export job kiểm quyền từng object, tạo JSON versioned, CSV/bản đọc và file được phép; manifest hash hỗ trợ integrity không chứng minh authenticity; link/file tạm hết hạn24h.
+
+Delete flow xác thực, giải thích phần giữ hợp pháp, revoke sessions/grants, tombstone, xóa primary/index/cache/job/export theo policy. Backup expiry và subprocessor deletion phải được ghi, không hứa xóa mọi nơi tức thì. Restore phải reapply tombstone.
+
+Test unauthorized export, offline retry, timezone, account deletion, grant revoke và restore. Nếu chưa đủ công cụ delete/backup, ghi BLOCKED cho release. Không xử lý dữ liệu thật.

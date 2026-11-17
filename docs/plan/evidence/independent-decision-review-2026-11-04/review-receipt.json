@@ -1,0 +1,77 @@
+{
+  "audit_id": "AV-DQ-20261104-01",
+  "completed_at": "2026-11-04T08:04:58.118300+07:00",
+  "canonical_report": "/Users/tranhatam/Library/Mobile Documents/com~apple~CloudDocs/Documents/Devnewproject/AFTERVIA/docs/plan/05_AUTONOMY_STATUS.md",
+  "section_line": 177,
+  "canonical_report_sha256": "9599a8f0aa5d0fdd5daef14a64acf2745652e79b7ea5728ea4f52f6f75dd39d4",
+  "report_delta_sha256": "007d166e024a7e9e853649cded60616940180b6fa7a669fa00d1a7c99690ab66",
+  "local_head_unchanged": "9a76185498c2e945e30ceb159cd8eaab8838eee2",
+  "report_baseline": "6bf240d037de14715b2eadb0f5c41d5b2593b610",
+  "latest_remote_head": "e3d55e05462454dd604559d611865976451772fd",
+  "latest_remote_readback": {
+    "head": "e3d55e05462454dd604559d611865976451772fd",
+    "base": "b809781cd8f2894837310320d1c09d7686f0f4da",
+    "state": "open",
+    "draft": true,
+    "updated_at": "2026-11-04T00:51:22Z",
+    "checked_at": "2026-11-04T01:04:18.369014+00:00",
+    "exit": 0
+  },
+  "claims_count": 33,
+  "original_files": 366,
+  "original_unchanged_files": 365,
+  "changed_original_files": [
+    "docs/plan/05_AUTONOMY_STATUS.md"
+  ],
+  "old_report_prefix_preserved": true,
+  "previous_wo25_preserved": true,
+  "temporary_source_worktrees_clean": true,
+  "ci": {
+    "baseline_run": 41583398903,
+    "baseline_job": 125743176008,
+    "latest_run": 41749908234,
+    "latest_job": 126312142530,
+    "latest_verify": "success",
+    "latest_job_conclusion": "failure",
+    "vitest_total": 438,
+    "vitest_pass": 437,
+    "vitest_skip": 1,
+    "vitest_todo": "unknown"
+  },
+  "local_loop_tests": {
+    "total": 18,
+    "pass": 18,
+    "fail": 0,
+    "skip": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "sha": "6bf240d"
+  },
+  "latest_backlog": {
+    "tasks": 83,
+    "used": 56,
+    "budget": 60,
+    "decide": "START",
+    "task": "SEC-IDEM-01",
+    "AUTO_TODO": 6,
+    "AUTO_PREP_TODO": 2
+  },
+  "source_logic_probes": {
+    "total": 6,
+    "matched_oracle": 4,
+    "mismatched_oracle": 2,
+    "browser_e2e": false
+  },
+  "npm_audit": {
+    "total": 31,
+    "low": 1,
+    "moderate": 25,
+    "high": 5,
+    "critical": 0,
+    "exit": 1,
+    "latest_lock_identical": true
+  },
+  "product_or_decision_edits": false,
+  "commit_push_deploy_or_messages": false,
+  "status_after": " M docs/plan/05_AUTONOMY_STATUS.md\n M docs/plan/evidence/WO25-01.md\n?? docs/plan/evidence/independent-audit-2026-11-03/\n?? docs/plan/evidence/independent-decision-review-2026-11-04/\n"
+}

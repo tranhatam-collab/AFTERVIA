@@ -1,0 +1,11 @@
+Tạo dự án thử AFTERVIA: app iOS/Android và web phối hợp hậu mãi giữa khách hàng, cửa hàng, đơn vị dịch vụ. Tên thương hiệu tạm, chưa đăng ký. Đây là sandbox, chỉ dữ liệu giả được ghi rõ, không thanh toán/triển khai công khai.
+
+TRƯỚC KHI XÂY: xác nhận có thể xuất toàn bộ source, migrations, assets, lockfile; build độc lập; quyền sử dụng thương mại/self-host. Nếu không chứng minh được, ghi BLOCKED và chỉ làm prototype.
+
+Gate0: đăng nhập 2 tài khoản; tạo/đọc 1 item từ backend; restart vẫn còn; tài khoản A không đọc được dữ liệu B; export và hướng dẫn clean build. Không dùng mock để giả backend.
+
+Sau Gate0 mới làm luồng: thêm hóa đơn → AI đề xuất có nguồn/null khi thiếu → người dùng xác nhận → item → case → cửa hàng phân công → chia tài liệu cụ thể → cập nhật → đóng có chứng cứ → export/xóa.
+
+VI/EN, dark/light, mobile-first. Không tự quyết định quyền bảo hành; không tự gửi yêu cầu, gọi điện, chuyển tiền. Không dùng service key ở client.
+
+Mỗi bước báo tệp thay đổi, migration, test đã chạy/kết quả, phần chưa chạy, chi phí, cách rollback. Không ghi PASS khi chưa chạy. Không đổi main, mua dịch vụ hoặc dùng dữ liệu thật. Dừng sau Gate0 để review.

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AFTERVIA">
+  <rect width="64" height="64" rx="14" fill="#0F4D3A"/>
+  <path d="M14 50 L32 14 L50 50" fill="none" stroke="#F8FAF7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M21 39 C 27 31, 36 31, 43 37 C 38 43, 29 44, 21 39 Z" fill="#22C55E"/>
+</svg>

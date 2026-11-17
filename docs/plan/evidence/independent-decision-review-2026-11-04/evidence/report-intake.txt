@@ -1,0 +1,55 @@
+Tôi sẽ đọc lại danh sách quyết định từ tài liệu gốc trước, để câu hỏi khớp với nội dung thật và đầy đủ.
+
+Vòng lặp đang dừng ở `STOP_STUCK` sau E2E-WEB-01. Bảy task AUTO còn lại chờ các câu dưới đây, và CI trên PR #1 vẫn đỏ ở cổng audit P1. Anh trả lời theo số là được. Mục nào có "Khuyến nghị" thì anh có thể trả lời "đồng ý".
+
+**A. Gỡ CI và chạy tiếp vòng lặp**
+1. **Cổng audit P1 (PR #1):** chọn 1, 2, 3 hay 4 trong comment 6547639475. Khuyến nghị: 2 (ghi đè 4 gói, giữ nguyên cổng). Nếu không kiểm được bundle mobile thì chọn 4.
+2. **Thêm 2 task kỹ thuật:** khử trùng grant theo khóa ở máy chủ, và khử trùng `POST /v1/items` trước khi bật đồng bộ mobile. Không cần quyết định pháp lý. Khuyến nghị: có.
+3. **Ngân sách:** đã dùng 56/60 vòng. Có tăng thêm không, và bao nhiêu? Đề xuất +10, chỉ sau khi anh trả lời các mục 4–9. Hạn mức chi cho dịch vụ trả phí (D7) hiện chưa có; khuyến nghị 0 cho đến khi anh duyệt.
+
+**B. Xóa tài khoản và dữ liệu (WO11-02c, Q1–Q6)**
+4. **Danh mục xóa và giữ lại:** A) dùng bảng `legal/04` làm nháp; B) giữ lâu hơn cho hồ sơ thanh toán và chứng từ; C) xóa ngay. Khuyến nghị: A. Anh đặt grace bao nhiêu ngày, và merchant giữ chứng từ bao lâu? Luật sư phải xác nhận.
+5. **Nội dung cá nhân trong bảng chỉ thêm:** A) che tại chỗ bằng hàm đặc quyền; B) mã hóa theo người dùng; C) chuyển nội dung sang bảng sửa được. Khuyến nghị: C, vì hiện chưa có dữ liệu thật nên chi phí thấp.
+6. **Xác minh danh tính và phiên:** C ngay (rút ngắn phiên, xác thực lại trước khi xóa), rồi A khi chọn nhà cung cấp. Khuyến nghị: C. Thời hạn phiên bao nhiêu phút? Đề xuất 15.
+7. **Thành viên tổ chức khi khách xóa:** A) đánh dấu REVOKED, từ chối nếu là owner duy nhất. Khuyến nghị: A.
+8. **Quyền của bên nhận:** A) thu hồi ngay quyền truy cập tài liệu; C) merchant giữ bản ghi case như chứng từ. Khuyến nghị: A cho tài liệu, C cho bản ghi merchant. Luật sư xác nhận.
+9. **Xuất dữ liệu trong lúc chờ xóa:** A) cho phép; B) khóa. Khuyến nghị: A.
+
+**C. Hạ tầng và nhà cung cấp**
+10. **Nhà cung cấp danh tính cho đăng nhập thật (D3):** Supabase project thuộc anh, hay nhà cung cấp khác? Khuyến nghị: Supabase project thuộc anh.
+11. **Lưu trữ tệp tài liệu và scanner mã độc (DEC06):** anh chọn dịch vụ nào? Repo chưa có bảng so sánh. Nếu cần, tôi lập bảng để anh quyết.
+12. **AI thật (DEC06: vendor, vùng dữ liệu, privacy):** giữ tắt (`AI_PROVIDER=disabled`) hay duyệt vendor cụ thể? Khuyến nghị: giữ tắt.
+13. **Landing và DNS (D14, D15):** `iai.one` đang ở nhà cung cấp DNS nào? Cho phép tạo Cloudflare Pages và `aftervia.iai.one` khi nội dung đã duyệt không? Token đặt trong biến môi trường, không dán vào chat. Tôi không đổi nameserver của `iai.one`.
+14. **Công khai khi tên chưa clearance (D13, DEC12):** chờ clearance và luật sư duyệt nội dung (HUM-WEB-03) rồi mới công khai? Khuyến nghị: chờ.
+
+**D. Chính sách sản phẩm (cần duyệt để mở WO06–WO10)**
+15. **Trường cần xác nhận (WO06-03):** ngày mua, số tiền, tiền tệ, serial. Duyệt như đề xuất?
+16. **Lịch nhắc vào giờ đặc biệt (WO07-02):** giờ không tồn tại thì dời sang sau khoảng trống; giờ lặp lại thì lấy lần đầu. Duyệt?
+17. **Kết quả khi đóng case (WO08-01):** repaired, replaced, refunded, credited, no_remedy; mở lại chỉ từ resolved. Duyệt, và duyệt nhãn VI/EN (hiện là bản dự thảo)?
+18. **Bằng chứng chưa quét và tổ chức SUSPENDED (WO08-02):** đề xuất của tôi là không hiển thị nội dung bằng chứng chưa quét cho bên kia, chỉ báo trạng thái; tổ chức SUSPENDED không được chuyển trạng thái mới. Anh đồng ý?
+19. **Inbox và phân công (WO08-03):** inbox toàn tổ chức; chỉ owner và manager phân công. Duyệt?
+20. **Chia sẻ tài liệu (WO09-01):** tối đa 30 ngày; chỉ vai trò partner; người tham gia thấy timeline; lý do từ chối đầy đủ chỉ cho người liên quan. Duyệt?
+21. **Quyền đọc của chủ sở hữu (WO09-02):** không phụ thuộc trạng thái case. Duyệt?
+22. **Hợp đồng HTTP (WO09-03):** giới hạn mô tả là 500 (theo DB) hay 4000 (theo hợp đồng)? Đề xuất 500. Duyệt danh sách mã lỗi hiện có, và cách gắn bằng chứng qua `shared_document_ids` (chỉ bằng chứng, không cấp grant)?
+23. **Link tải gói xuất 24 giờ (HUM-WO10-03a):** A) route tải theo đặc tả, nhưng phải sửa đặc tả vì `docs/spec` là chỉ đọc; B) mã truy cập một lần, cần reviewer độc lập. Khuyến nghị: B, sau khi có reviewer.
+
+**E. Người, thiết bị, pháp lý, kinh doanh**
+24. **DEC01 (tên làm việc AFTERVIA) và DEC02 (SMB điện máy, B2B trước):** duyệt? Khuyến nghị: có.
+25. **Reviewer bảo mật độc lập (DEC05, HUM-WO17-02):** chỉ định ai? Không được là AI viết code.
+26. **Quốc gia pilot (DEC07, đang DISABLED):** chọn nước nào, hay chưa?
+27. **30 phỏng vấn và 5 design partner (HUM-WO02-02/03):** anh có người đồng ý không? Tôi không điền số giả.
+28. **Thiết bị:** iPhone và Android thật (DEV-01), Mac có Safari và máy có Firefox (DEV-02). Anh có, hay nhờ người?
+29. **Staging độc lập để diễn tập khôi phục DB (INF-01):** có tạo không?
+30. **Luật sư theo quốc gia và tư vấn IP (HUM-WO18-02):** có chỉ định không? Khuyến nghị: có, trước khi công bố.
+31. **Người bản ngữ rà soát VI/EN (WO07-04, WO10-01):** có không?
+32. **HawkScan (D4):** cấp `HAWK_API_KEY` trong môi trường và bật Docker (hiện không chạy). Anh có làm không?
+33. **Builder và quyền source (HUM-G0-01):** xác nhận giữ Claude Code trong repo (DEC-ENG-01) và ghi vào `04_DECISIONS.md`? Khuyến nghị: có.
+
+**Mặc định, tôi giữ nếu anh không nói khác**
+- D1: giữ chuỗi `send_later`. D2: PR #1 giữ nháp. D6: không bật `.claude/loop.md`.
+- DEC04 (hạn mức discovery): chưa duyệt.
+- DEC08–DEC12 (dữ liệu khách thật, thanh toán và store, phát hành production, kết nối dự án hiện hữu, tên miền và IP): giữ NOT_AUTHORIZED.
+- HUM-WO21-01 và HUM-WO22-01: để sau, cần dữ liệu pilot.
+- Không gọi dịch vụ trả phí, không dùng dữ liệu thật.
+
+Anh có thể trả lời theo số, ví dụ "1: 2; 2: có; 3: +10; 4: A, grace 30 ngày; …". Nếu anh muốn đồng ý toàn bộ khuyến nghị, chỉ cần viết "đồng ý khuyến nghị" và trả lời riêng các mục không có khuyến nghị. Khi có câu trả lời, tôi ghi quyết định vào `06_DECISION_QUEUE.md` và `WO11-02c`, cập nhật backlog rồi chạy lại `decide`.

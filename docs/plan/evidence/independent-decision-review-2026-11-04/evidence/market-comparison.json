@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-11-04T07:53:27.470299+07:00",
+  "mode": "official-document comparison only; no sign-up, paid trial, upload, vendor benchmark or selected provider",
+  "job": "B2B electronics/appliance aftersales: gather receipt/evidence, process case, share/revoke, export/delete",
+  "queries": [
+    "site.claimlane.com warranty claims management retailers suppliers repairs",
+    "site.support.zendesk.com ticket attachments access deletion data retention",
+    "site.support.google.com drive share files permissions expiry access Google Sheets"
+  ],
+  "options": [
+    {
+      "name": "Claimlane",
+      "kind": "direct competitor",
+      "url": "https://support.claimlane.com/en/articles/11137150-how-does-claimlane-work-for-b2b-businesses",
+      "document_date": "2026-09-23",
+      "provider_claim": "Retailer/supplier claims and document communication in one thread. Platform, not the party resolving individual claims.",
+      "plan_region_price": "NOT_CHECKED",
+      "independent_trial": "NOT_CHECKED"
+    },
+    {
+      "name": "Zendesk Agent Workspace / ADPP",
+      "kind": "adjacent ticketing",
+      "url": "https://support.zendesk.com/hc/en-us/articles/4408885871130-How-can-I-remove-attachments-from-tickets",
+      "provider_claim": "Attachment redaction/deletion while retaining ticket records; selected automation needs ADPP; scope excludes messaging attachments.",
+      "plan_region_price": "Package conditions read; price and region NOT_CHECKED",
+      "independent_trial": "NOT_CHECKED"
+    },
+    {
+      "name": "Manual email + case spreadsheet + restricted Drive folder",
+      "kind": "manual / no AI baseline",
+      "url": "https://support.google.com/drive/answer/7166529?hl=en",
+      "provider_claim": "File access roles, permission removal, inherited-folder restrictions, expiry for work/school accounts. Case tracking remains a manual workflow proposed by reviewer.",
+      "plan_region_price": "Expiry condition read; price and region NOT_CHECKED",
+      "independent_trial": "NOT_CHECKED"
+    }
+  ],
+  "common_trial_to_run_later": "Same 10 consented/synthetic case packets, including missing receipt, duplicate request, expiry/revoke, customer deletion and a closed case; measure completed case/export, time, corrections, role failures, full human cost. No superiority claimed."
+}

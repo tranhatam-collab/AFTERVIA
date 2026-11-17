@@ -1,0 +1,17 @@
+﻿risk_id,risk,impact,control,stop_or_review_trigger,owner_role,status
+R01,Khách không trả tiền,Thiếu pain đủ mạnh,Discovery + paid pilot,<3 cửa hàng sẵn sàng pilot sau tuyển đúng,Product,OPEN
+R02,Đối thủ làm tốt hơn,Không khác biệt có giá trị,Benchmark cùng task/TCO,Không thắng hoặc không giữ khách,Founder,OPEN
+R03,Wron khóa source,Mất kiểm soát tài sản,Gate0 export/build/license,Không vượt Gate0,Tech,OPEN
+R04,Rò tenant,Tổn hại dữ liệu,RLS+API+storage+negative tests,Bất kỳ leak xác nhận,Security,OPEN
+R05,AI bịa quyền lợi,Gây quyết định sai,Source+human confirmation+null,Critical unsupported action,Product,OPEN
+R06,COGS/hỗ trợ quá cao,Bán càng nhiều lỗ,Usage caps/cost tracking,Biên đóng góp dưới gate,Finance,OPEN
+R07,Pháp lý quốc gia thiếu,Mở dịch vụ không đủ điều kiện,Country disabled until review,Không legal owner/approval,Legal,OPEN
+R08,Thương hiệu xung đột,Phải đổi tên/tranh chấp,Trademark clearance trước marketing,Ý kiến counsel không chấp thuận,Legal,OPEN
+R09,Doanh thu ảo,Ra quyết định sai,Provider reconciliation actual/model split,Không có evidence cash-in,Finance,OPEN
+R10,Phụ thuộc founder,Không scale onboarding/support,Playbook và đội ngũ,Lead không xử lý đúng SLA nội bộ,Operations,OPEN
+R11,Store rejection,Chậm phân phối mobile,Development builds + privacy/billing review,Policy unresolved,Mobile,OPEN
+R12,Data lock-in trái kỳ vọng,Mất tin cậy,Export/delete/migration test,Không restore độc lập,Tech,OPEN
+R13,Mở quá nhiều quốc gia,Chi phí pháp lý/hỗ trợ vỡ,One market at a time,Không có support capacity,Founder,OPEN
+R14,Gói thấp lạm dụng,Credit/upload tăng,Quotas/rate limits/no overage,Chi phí vượt cap,Operations,OPEN
+R15,Lạm dụng hồ sơ giả,Fraud/misrepresentation,Không tự coi upload là thật; merchant review,Pattern gian lận có xác minh,Trust,OPEN
+R16,Vốn cạn,Dừng trước PMF,"Cash runway gates, không chờ doanh thu giả",Runway<3 tháng chưa funding,Founder,OPEN

@@ -1,0 +1,122 @@
+/* Web Desk (WO10-01). Mobile trước: lề 16px, không cuộn ngang, chữ dài tự ngắt dòng.
+   Bảng màu lấy từ bộ nhận diện; các cặp chữ/nền đã được kiểm tương phản trên landing. */
+:root {
+  color-scheme: light dark;
+  --color-paper: #F8FAF7;
+  --color-surface: #FFFFFF;
+  --color-ink: #1F2937;
+  --color-ink-muted: #6B7280;
+  --color-primary: #0F4D3A;
+  --color-on-primary: #F8FAF7;
+  --color-link: #0F4D3A;
+  --color-focus: #0F4D3A;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: #1F2937;
+    --color-surface: #273342;
+    --color-ink: #F8FAF7;
+    --color-ink-muted: #A7B0BD;
+    --color-primary: #22C55E;
+    --color-on-primary: #1F2937;
+    --color-link: #4ADE80;
+    --color-focus: #4ADE80;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.locale {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--color-link);
+  font: inherit;
+  cursor: pointer;
+}
+
+button[aria-pressed="true"] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.state {
+  margin: 1rem 0;
+}
+
+.items {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  min-width: 0;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+}
+
+.item-title {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.item-meta {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
+@media (min-width: 40rem) {
+  .items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

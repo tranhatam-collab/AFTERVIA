@@ -1,0 +1,54 @@
+[
+  {
+    "name": "pr",
+    "argv": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/pulls/1"
+    ],
+    "start": "2026-11-04T00:42:55.291031+00:00",
+    "end": "2026-11-04T00:42:56.307060+00:00",
+    "exit": 0,
+    "output": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/remote/pr.json"
+  },
+  {
+    "name": "comment-6547639475",
+    "argv": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/issues/comments/6547639475"
+    ],
+    "start": "2026-11-04T00:42:56.307094+00:00",
+    "end": "2026-11-04T00:42:56.972770+00:00",
+    "exit": 0,
+    "output": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/remote/comment-6547639475.json"
+  },
+  {
+    "name": "runs-head",
+    "argv": [
+      "gh",
+      "api",
+      "repos/tranhatam-collab/AFTERVIA/actions/runs?head_sha=6bf240d037de14715b2eadb0f5c41d5b2593b610&per_page=30"
+    ],
+    "start": "2026-11-04T00:42:56.972816+00:00",
+    "end": "2026-11-04T00:42:57.633324+00:00",
+    "exit": 0,
+    "output": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/remote/runs-head.json"
+  },
+  {
+    "name": "clone",
+    "argv": [
+      "git",
+      "clone",
+      "--single-branch",
+      "--branch",
+      "ccr-4544c9f7-b1t50m",
+      "https://github.com/tranhatam-collab/AFTERVIA.git",
+      "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/source"
+    ],
+    "start": "2026-11-04T00:42:57.633372+00:00",
+    "end": "2026-11-04T00:42:59.650793+00:00",
+    "exit": 0,
+    "output": "/var/folders/b8/rvqg3w055l143hxlsf0y5xhh0000gn/T/aftervia-decisions-review-o7ijysvn/logs/clone.log"
+  }
+]
