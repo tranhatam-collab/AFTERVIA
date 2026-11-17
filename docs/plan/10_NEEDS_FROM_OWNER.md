@@ -35,6 +35,7 @@ chờ thêm trước khi công khai: D-10 người duyệt, H08 pháp lý, D-30/
 | 2.5 | D22 thêm `workflow_dispatch` vào ci.yml | **Có** / Không | Chạy lại CI không cần commit mới (đã hỏi 10/11) |
 | 2.6 | D19 scanner tệp tải lên | (a) **giữ nguyên tới khi có scanner** / (b) chặn SCANNER_UNAVAILABLE / (c) dịch vụ riêng | Đóng D-04 của kiểm toán |
 | 2.7 | D1/D2/D6/D7 vận hành vòng lặp + trạng thái PR #1 | giữ như đề xuất trong `06_DECISION_QUEUE.md` | Quản trị |
+| 2.8 | **Cổng audit sản xuất đỏ vì một advisory chưa có bản vá**: GHSA-fc5q-39xc-vjpf (picomatch ≤4.0.7, high), cập nhật 17/11/2026 15:56 UTC. 23 mục high khác chỉ là chuỗi phụ thuộc tới picomatch. Đo 18/11: `npm audit --omit=dev --audit-level=high` exit 1, 27 lỗ hổng. Upstream chưa có bản vá (picomatch mới nhất 2.3.2 / 3.0.2 / 4.0.7). Dự đoán: CI sẽ đỏ ở bước audit lần chạy kế tiếp; chưa có run nào sau 13/11 để xác nhận | (a) **chờ bản vá upstream**, không nới cổng / (b) ngoại lệ có thời hạn: ghi tên advisory, lý do và ngày hết hạn, duyệt bằng chat / (c) hạ Expo SDK để gỡ chuỗi: không khuyến nghị, vì đảo ngược nâng cấp 58 đã làm để qua cổng | Cổng audit xanh trở lại. Đã đo 18/11 (MOBILE-BUNDLE-01, `docs/plan/evidence/MOBILE-BUNDLE-01.md`): picomatch KHÔNG có trong bundle Android. Sourcemap có 1084 nguồn, không nguồn nào từ picomatch, minimatch, glob, tinyglobby hay metro. Chuỗi chỉ thuộc công cụ build. Khuyến nghị: (b) có thời hạn. iOS chưa đo |
 
 ## Nhóm 3 — Cần tài khoản hoặc tiền (theo lộ trình go-live)
 

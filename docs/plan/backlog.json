@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 126,
-    "iterations_used": 73,
+    "iterations_used": 75,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
     "budget_history": [
       {
@@ -2171,6 +2171,37 @@
       ],
       "started_at": "2026-11-17T17:51:09.844Z",
       "finished_at": "2026-11-17T17:55:49.088Z"
+    },
+    {
+      "id": "DEP-AUDIT-01",
+      "wo": "DEP",
+      "kind": "AUTO_PREP",
+      "title": "Audit sản xuất đỏ (npm audit --omit=dev --audit-level=high): điều tra nguyên nhân và đường sửa; không nới cổng",
+      "deps": [],
+      "acceptance": [],
+      "status": "BLOCKED",
+      "attempts": 1,
+      "evidence": [],
+      "started_at": "2026-11-17T17:57:35.345Z",
+      "blocked_reason": "GHSA-fc5q-39xc-vjpf (picomatch <= 4.0.7, high) chưa có bản vá upstream; npm audit --omit=dev --audit-level=high exit 1 (27 lỗ hổng). Chờ bản vá hoặc quyết định ngoại lệ của chủ dự án (10_NEEDS_FROM_OWNER.md mục 2.8). Bằng chứng: docs/plan/evidence/DEP-AUDIT-01.md",
+      "blocked_at": "2026-11-17T17:59:04.851Z"
+    },
+    {
+      "id": "MOBILE-BUNDLE-01",
+      "wo": "MOBILE",
+      "kind": "AUTO_PREP",
+      "title": "Bundle Android hỏng: Metro không phân giải @aftervia/domain (apps/mobile/app/privacy.tsx); khôi phục để check:mobile-bundle xanh và tái lập được từ repo",
+      "deps": [],
+      "acceptance": [],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/MOBILE-BUNDLE-01.md",
+        "npm run check:mobile-bundle exit 0: 2956425 bytes, 4/4 markers",
+        "TEST_DATABASE_URL=aftervia_test npm run verify exit 0: 706 passed, 1 skipped"
+      ],
+      "started_at": "2026-11-17T17:59:21.602Z",
+      "finished_at": "2026-11-17T18:02:52.336Z"
     }
   ]
 }
