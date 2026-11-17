@@ -2,6 +2,7 @@
 // E2E Chromium (E2E-WEB-01): luồng web đầy đủ qua API cục bộ thật và Web Desk (Vite dev server, /v1 đi cùng gốc qua proxy).
 // Bước: thêm món, mở case, gắn bằng chứng và mời người tham gia (chỉ metadata, qua hàm cơ sở dữ liệu), chia tài liệu,
 // Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24), yêu cầu xóa tài khoản (T25).
+// Lỗi có kiểm soát (E2E-WEB-02): phiên bản cũ bị 409 và chuyển thiếu kết quả bị chặn trên form; case không đổi.
 // Chạy: npm run e2e:web. Cần TEST_DATABASE_URL trỏ tới DB _test (DB bị đặt lại) và Playwright
 // (đặt AFTERVIA_E2E_PLAYWRIGHT tới thư mục gói 'playwright' nếu không cài trong repo).
 // Cổng Web Desk mặc định 5173; nếu cổng đó đang bị dự án khác giữ, đặt AFTERVIA_E2E_DESK_PORT (E2E-ENV-01).
@@ -213,6 +214,28 @@ async function transition(page, dbUrl, caseId, { nextState, outcome, reason }) {
   await page.getByText(`Đã chuyển sang ${STATUS_LABEL[nextState]}. Phiên bản mới: ${version + 1}.`, { exact: true }).waitFor();
 }
 
+// Thông báo tiếng Việt của Web Desk (packages/i18n/src/vi.json), dùng để kiểm lỗi có kiểm soát (E2E-WEB-02).
+const STALE_VERSION_TEXT = 'Case đã được cập nhật ở nơi khác. Tải lại phiên bản hiện tại rồi thử lại.';
+const OUTCOME_REQUIRED_TEXT = 'Cần chọn kết quả khi chuyển sang Đã giải quyết.';
+
+// Điền form chuyển trạng thái đúng như người dùng nhập (không đọc phiên bản từ DB) rồi bấm gửi. Không chờ kết quả.
+async function attemptTransition(page, caseId, { expectedVersion, nextState, outcome, reason }) {
+  await page.locator('[name="caseId"]').fill(caseId);
+  await page.locator('[name="expectedVersion"]').fill(String(expectedVersion));
+  await page.locator('[name="nextState"]').selectOption(nextState);
+  if (outcome !== undefined) await page.locator('[name="outcome"]').selectOption(outcome);
+  await page.locator('[name="reason"]').fill(reason);
+  await page.getByRole('button', { name: 'Chuyển trạng thái', exact: true }).click();
+}
+
+// Sau một lỗi có kiểm soát, case phải còn đúng trạng thái và phiên bản: lỗi không được ghi gì.
+async function assertCaseUnchanged(dbUrl, caseId, status, version) {
+  const [row] = await adminQuery(dbUrl, 'select status, version from public.cases where id = $1', [caseId]);
+  if (row.status !== status || row.version !== version) {
+    throw new Error(`the case is ${row.status} at version ${row.version}, expected ${status} at version ${version}`);
+  }
+}
+
 async function main() {
   const dbUrl = process.env.TEST_DATABASE_URL ?? '';
   assertTestDatabase(dbUrl);
@@ -293,8 +316,34 @@ async function main() {
 
     const merchant = await newDeskPage(browser, tokens.merchantAgent, summary, 'merchant');
     const mpage = merchant.page;
+    // Đếm yêu cầu chuyển trạng thái và phản hồi 409 của trang agent, để đối chiếu với lỗi console (E2E-WEB-02).
+    let transitionRequests = 0;
+    let transitionConflicts = 0;
+    mpage.on('request', (r) => {
+      if (r.method() === 'POST' && r.url().includes('/transitions')) transitionRequests += 1;
+    });
+    mpage.on('response', (r) => {
+      if (r.status() === 409 && r.url().includes('/transitions')) transitionConflicts += 1;
+    });
     await mpage.goto(DESK);
     await mpage.getByRole('button', { name: 'Thêm món', exact: true }).waitFor();
+
+    // T18: phiên bản cũ bị máy chủ từ chối (409 version_conflict); Desk báo xung đột và case không đổi.
+    const beforeStale = transitionRequests;
+    await attemptTransition(mpage, caseId, { expectedVersion: 1, nextState: 'triaged', reason: 'Phân loại với phiên bản cũ (E2E)' });
+    await mpage.getByText(STALE_VERSION_TEXT, { exact: true }).waitFor();
+    if (transitionRequests !== beforeStale + 1) throw new Error('the stale transition did not reach the server exactly once');
+    await assertCaseUnchanged(dbUrl, caseId, 'submitted', 2);
+    log('T18: chuyển với phiên bản cũ bị 409 version_conflict; Desk báo xung đột; case vẫn submitted, phiên bản 2');
+
+    // T17: chuyển sang Đã giải quyết thiếu kết quả bị chặn ngay trên form; không có yêu cầu nào đi.
+    const beforeNoOutcome = transitionRequests;
+    await attemptTransition(mpage, caseId, { expectedVersion: 2, nextState: 'resolved', reason: 'Thiếu kết quả (E2E)' });
+    await mpage.getByText(OUTCOME_REQUIRED_TEXT, { exact: true }).waitFor();
+    if (transitionRequests !== beforeNoOutcome) throw new Error('the outcome guard let a request through');
+    await assertCaseUnchanged(dbUrl, caseId, 'submitted', 2);
+    log('T17: chuyển sang Đã giải quyết thiếu kết quả bị chặn trên form, không có yêu cầu; case vẫn submitted, phiên bản 2');
+
     await transition(mpage, dbUrl, caseId, { nextState: 'triaged', reason: 'Phân loại (E2E)' });
     await transition(mpage, dbUrl, caseId, { nextState: 'in_progress', reason: 'Đang xử lý (E2E)' });
     await transition(mpage, dbUrl, caseId, { nextState: 'resolved', outcome: 'repaired', reason: 'Đã sửa xong (E2E)' });
@@ -347,8 +396,17 @@ async function main() {
     await page.screenshot({ path: join(OUT, 'customer-final.png'), fullPage: true });
     await mpage.screenshot({ path: join(OUT, 'merchant-final.png'), fullPage: true });
     summary.ids = { caseId, docId, grantId, jobId };
-    summary.ok = summary.pageErrors.length === 0 && summary.consoleErrors.length === 0;
-    if (!summary.ok) throw new Error(`page errors: ${summary.pageErrors.length}; console errors: ${summary.consoleErrors.length}`);
+    // Trình duyệt tự ghi lỗi console cho mỗi phản hồi 409. Số lỗi đó phải khớp đúng số phản hồi 409 của chuyển trạng thái;
+    // mọi lỗi console khác vẫn làm E2E thất bại như trước (E2E-WEB-02).
+    const http409 = summary.consoleErrors.filter((m) => m.includes('the server responded with a status of 409'));
+    const otherConsoleErrors = summary.consoleErrors.filter((m) => !m.includes('the server responded with a status of 409'));
+    summary.transitionConflicts = transitionConflicts;
+    summary.consoleHttp409 = http409.length;
+    if (http409.length !== transitionConflicts) {
+      throw new Error(`console 409 errors ${http409.length} differ from transition 409 responses ${transitionConflicts}`);
+    }
+    summary.ok = summary.pageErrors.length === 0 && otherConsoleErrors.length === 0;
+    if (!summary.ok) throw new Error(`page errors: ${summary.pageErrors.length}; console errors: ${otherConsoleErrors.length}`);
   } finally {
     await browser?.close().catch(() => {});
     await vite?.close().catch(() => {});

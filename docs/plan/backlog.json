@@ -5,7 +5,7 @@
     "builder": "Claude Code trong repo này (DEC-ENG-01). Wron không được dùng trong vòng lặp này.",
     "generated_on": "2026-10-31",
     "iteration_budget": 126,
-    "iterations_used": 72,
+    "iterations_used": 73,
     "note": "Vòng lặp chỉ bắt đầu AUTO/AUTO_PREP. HUMAN, DEVICE, INFRA luôn WAITING_HUMAN. Không dùng dữ liệu thật, không production, không thanh toán live.",
     "budget_history": [
       {
@@ -2149,6 +2149,28 @@
       ],
       "started_at": "2026-11-17T17:46:50.634Z",
       "finished_at": "2026-11-17T17:50:19.743Z"
+    },
+    {
+      "id": "E2E-WEB-02",
+      "wo": "E2E",
+      "kind": "AUTO",
+      "title": "E2E Chromium, lỗi có kiểm soát trên Desk: phiên bản cũ bị 409 (T18) và chuyển sang Đã giải quyết thiếu kết quả bị chặn trước khi gửi (T17); case không đổi trạng thái; số 409 trong console khớp số phản hồi",
+      "deps": [
+        "E2E-WEB-01"
+      ],
+      "acceptance": [
+        "T17",
+        "T18"
+      ],
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/plan/evidence/E2E-WEB-02.md",
+        "npm run e2e:web exit 0 (15 bước, 409 đối chiếu 1/1, mutation FAIL đúng)",
+        "npm run verify exit 0 (706 passed, 1 skipped)"
+      ],
+      "started_at": "2026-11-17T17:51:09.844Z",
+      "finished_at": "2026-11-17T17:55:49.088Z"
     }
   ]
 }
