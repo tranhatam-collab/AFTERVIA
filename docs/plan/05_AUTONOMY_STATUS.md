@@ -648,3 +648,5 @@ tạo 04:18:27 — sau bản sửa f3f1685): cả ba job xanh; groundstead-verif
 gồm 41 kiểm thử e2e trước đó đỏ; PR #2 mergeable clean. Bước check:browser của lane G in
 "browser ready" — trình duyệt đã đúng sẵn khi nó chạy, tức bản sửa thứ tự bước trong ci.yml
 là nguyên nhân khắc phục; check:browser giữ vai trò lớp dự phòng. G-26 ĐÓNG.
+
+**18/11/2026 — E2E-ENV-01 (vòng E2E theo chỉ đạo của chủ dự án):** cổng Web Desk của harness đổi được qua `AFTERVIA_E2E_DESK_PORT`, vì cổng 5173 trên máy này đang bị dự án khác giữ. `npm run e2e:web` xanh trên cổng 5174: 13 bước, không lỗi trang, không lỗi console. `npm run verify` xanh 706 pass / 1 skip khi có `TEST_DATABASE_URL` trỏ tới DB `_test`; thiếu biến đó thì đỏ 55 file, đây là điều kiện hạ tầng và không phải lỗi mã. Ma trận không đổi trạng thái (PASS 36, MANUAL_PARTIAL 3, NOT_RUN 7). Evidence: `docs/plan/evidence/E2E-ENV-01.md`; receipt: `docs/plan/evidence/AUTO_RUNS/2026-11-17T1749Z.md`.

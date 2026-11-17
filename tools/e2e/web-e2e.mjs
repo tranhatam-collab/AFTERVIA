@@ -4,6 +4,7 @@
 // Desk xử lý (gửi, phân loại, xử lý, giải quyết có outcome, đóng), xuất gói (T24), yêu cầu xóa tài khoản (T25).
 // Chạy: npm run e2e:web. Cần TEST_DATABASE_URL trỏ tới DB _test (DB bị đặt lại) và Playwright
 // (đặt AFTERVIA_E2E_PLAYWRIGHT tới thư mục gói 'playwright' nếu không cài trong repo).
+// Cổng Web Desk mặc định 5173; nếu cổng đó đang bị dự án khác giữ, đặt AFTERVIA_E2E_DESK_PORT (E2E-ENV-01).
 // Dữ liệu tổng hợp. Không in URL DB, khóa hay token. Ảnh và tóm tắt ghi vào .loop/e2e (không commit).
 import { spawn } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
@@ -18,7 +19,7 @@ import { applyMigrations, applyShim, assertTestDatabase } from '../db/migrate.mj
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const OUT = join(ROOT, '.loop', 'e2e');
 const API_PORT = 8787;
-const DESK_PORT = 5173;
+const DESK_PORT = parseDeskPort(process.env.AFTERVIA_E2E_DESK_PORT);
 const API = `http://127.0.0.1:${API_PORT}`;
 const DESK = `http://127.0.0.1:${DESK_PORT}`;
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
@@ -37,6 +38,16 @@ const STATUS_LABEL = {
   resolved: 'Đã giải quyết',
   closed: 'Đã đóng',
 };
+
+// Cổng hợp lệ: số nguyên 1024–65535. Giá trị sai thì dừng ngay, không mở cổng nào.
+function parseDeskPort(raw) {
+  if (raw === undefined || raw === '') return 5173;
+  const port = Number(raw);
+  if (!Number.isInteger(port) || port < 1024 || port > 65535) {
+    throw new Error('AFTERVIA_E2E_DESK_PORT must be an integer from 1024 to 65535');
+  }
+  return port;
+}
 
 async function resetDatabase(dbUrl) {
   const client = new pg.Client({ connectionString: dbUrl });
@@ -206,7 +217,7 @@ async function main() {
   const dbUrl = process.env.TEST_DATABASE_URL ?? '';
   assertTestDatabase(dbUrl);
   mkdirSync(OUT, { recursive: true });
-  const summary = { steps: [], pageErrors: [], consoleErrors: [], ok: false };
+  const summary = { steps: [], pageErrors: [], consoleErrors: [], ok: false, deskPort: DESK_PORT };
   const log = (message) => {
     summary.steps.push(message);
     console.log(`ok: ${message}`);
