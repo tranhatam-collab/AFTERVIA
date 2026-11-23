@@ -1,5 +1,12 @@
 # Groundstead — Trạng thái vòng lặp
 
+## Cập nhật 23/11/2026 — sửa sự thật của kế hoạch (đợt sửa sau audit)
+
+- Audit 15/11 + đối chiếu 23/11: nhánh vẫn ở `54cec78` (13/11), không có commit mới; PR #2 vẫn draft, 0 review. Mọi phát hiện audit còn nguyên.
+- Backlog: 76 task (thêm GS-H12, GS-H13, GS-G1-GO, GS-G2-GO). `decide` trả `START GS-034`.
+- Đã sửa: GS-032 bỏ "chờ D-26" (D-26 đã chốt 10/11) và thêm phụ thuộc `GS-031b`; GS-034 mở khóa (hai tên dự phòng Wellstead/Landstead có sẵn ở 00_MASTER_PLAN §1); GS-H11 và GS-053b → `WAITING_HUMAN`; GS-031 sửa title còn 2/3 thẻ; GS-082 định nghĩa lại là cổng L0 (landing giới thiệu, D-38) và thêm phụ thuộc GS-H08; GS-G1-GO/GS-G2-GO là bản ghi quyết định qua cổng của chủ dự án — mọi task sau cổng giờ phụ thuộc `-GO`, không còn mở ra chỉ vì báo cáo rà cổng DONE.
+- Validator mới: task HUMAN/DEVICE/INFRA chỉ được `WAITING_HUMAN` hoặc `DONE`; `BLOCKED` bắt buộc có `blocked_reason`. Test mới bắt cả hai invariant và case "báo cáo cổng chưa đạt không mở task con".
+
 ## OWNER_REPORT (Lane G, deploy 13/11/2026)
 
 - Yêu cầu của chủ dự án: "Build cho xong tất cả những gì còn lại xong deploy luôn, tôi sẽ gắn DNS". Hiểu là: xong phần trang cần để deploy, deploy, chủ dự án tự gắn DNS. Phần backlog còn lại bị chặn bởi Cổng 1 (GS-G1 ← GS-032 ← GS-031b, cần nguồn chính thức đọc được) và các mục HUMAN, nên không làm.
@@ -60,27 +67,25 @@
 | 20 | GS-081 SEO kỹ thuật: canonical theo trang (sửa lỗi trang con trỏ về trang chủ), hreflang, Open Graph, Organization, HowTo, robots | DONE — verify exit 0, 176/176 kiểm thử (gồm 6 GT31); 3 đột biến trên HTML đã build bị bắt; GT31 PASS (PARTIAL); FAQPage chưa làm (chưa có nội dung); quyết định D-35 | `docs/evidence/GS-081.md` |
 | 21 | GS-053a Lõi job làm mới bản chụp cảnh báo: bộ chuyển GDACS theo RSS thật (đã đối chiếu cấu trúc), USGS, trạng thái nguồn, CLI `tools/alerts/refresh.mjs`; không chạy theo lịch | DONE — verify exit 0, 182/182 kiểm thử (gồm 6 job GT13–GT16); 3 đột biến bị bắt (M24–M26); GT13, GT14, GT16 PASS (PARTIAL). Chạy thật: GDACS `ok` (198 cảnh báo công khai còn hiệu lực), USGS `failed` (proxy chặn); sửa 2 lỗi bộ chuyển (giờ GMT, tên trường); đính chính D-33 | `docs/evidence/GS-053.md` |
 | — | GS-053b Chọn nơi chạy job định kỳ (D-36) và cấp khóa VAPID | WAITING_HUMAN — chờ chủ dự án | — |
-| — | GS-034 Tra nhãn hiệu sơ bộ | BLOCKED — chờ chủ dự án cung cấp hai tên dự phòng (kế hoạch trong repo không có) | — |
+| — | GS-034 Tra nhãn hiệu sơ bộ | TODO — đã mở khóa 23/11: hai tên dự phòng (Wellstead, Landstead) có sẵn trong 00_MASTER_PLAN §1 | — |
 
 ## Việc kế tiếp
-- Chờ quyết định D-26 từ chủ dự án. Sau khi có: ghi vào `03_DECISIONS.md`, kiểm lại nguồn NWS cho các chủ đề còn thiếu của GS-032, rồi mới `unblock`. GS-031b (thẻ mất điện) dùng nguồn NWS và cần cùng quyết định phạm vi.
-- GS-032 BLOCKED: chờ D-26 (phạm vi thẻ có chi tiết NWS) và nguồn đọc được (lý do đầy đủ trong backlog). Đây là điểm nghẽn chính: GS-032 → GS-052 → GS-G1 → gần như toàn bộ việc AUTO còn lại (GS-036…GS-106, GS-G2, GS-G3).
+- Vòng tới theo `decide`: GS-034 (tra nhãn hiệu sơ bộ 3 tên trên cơ sở dữ liệu công khai).
+- D-26 đã chốt 10/11 (GLOBAL, đổi đơn vị, bỏ chi tiết chỉ-HSK) — không còn là blocker. GS-032 BLOCKED chỉ còn vì thiếu nguồn đọc được và có quyền tóm lược (chi tiết trong backlog). Đây là điểm nghẽn chính: GS-031b + GS-032 → GS-052 → GS-G1 → GS-G1-GO → gần như toàn bộ việc AUTO còn lại (GS-036…GS-106, GS-G2, GS-G3).
 - GS-053a DONE (vòng 21): lõi job; GDACS đọc RSS thật; USGS bị proxy chặn nên chưa kiểm dữ liệu thật. GS-053b HUMAN: chủ dự án chọn nơi chạy job định kỳ (D-36) và cấp khóa VAPID. Đến lúc đó job chỉ chạy tay bằng `tools/alerts/refresh.mjs`.
 - Sau đó còn: GS-052 (mở thẻ 72 giờ theo hiểm họa, GT18; chờ GS-032), GS-062 (thu hồi với bản ghi mẫu), GS-100 (gói quốc gia mới, cần nguồn), và các cổng G1/G2/G3.
 - Gói chưa ký trên Preview và Production cho đến khi chủ dự án cấp khóa (D-30). Ở trạng thái này gói bị từ chối và nút tải báo "không có chữ ký hợp lệ" (đúng GT07).
 - Khóa thật cho gói: xem D-30 và GS-H12 bên dưới.
-- GS-034 đang BLOCKED: cần chủ dự án cung cấp hai tên dự phòng để tra cứu cùng với "Groundstead".
 - Canonical của trang con kế thừa từ layout (trỏ về trang chủ): đã sửa và ghi trong GS-081 (vòng 20).
 - Môi trường: phiên đang dùng `groundstead-sources` (mạng giới hạn 19 tên miền).
 
 ## Quyết định đang mở
 - **D-36:** nơi chạy job làm mới cảnh báo định kỳ (Vercel Cron, Supabase Edge Function hoặc GitHub Actions); quyền dùng dữ liệu GDACS công khai (GS-H11 chưa xong); danh sách host USGS được phép. Chặn GS-053b và việc hiện cảnh báo công khai. Chủ dự án quyết.
-- **D-26:** phạm vi của hai hướng dẫn lũ lụt và nắng nóng. Metadata ghi `GLOBAL`, nhưng nội dung là bản tóm tắt NWS Hoa Kỳ và có chi tiết chỉ áp dụng ở Hoa Kỳ (NOAA Weather Radio, inch, °F). Cần chủ dự án chọn: đổi phạm vi thành Hoa Kỳ, hoặc đổi đơn vị và bỏ chi tiết chỉ dành cho Hoa Kỳ rồi kiểm lại trích dẫn. Chặn: dùng hai hướng dẫn ngoài Hoa Kỳ.
 - **D-25:** đăng ký sớm đang đóng. Trước khi mở phải có chính sách riêng tư được duyệt và công bố, và trang phải nêu gói Thành viên trả phí cùng giá (kế hoạch §11: 39 USD/năm, giá kiểm lại sau 90 ngày). Quyết định giá là của chủ dự án.
 - **D-23:** mở thêm tên miền để đọc số khẩn cấp (VN: bocongan.gov.vn, dmc.gov.vn, nchmf.gov.vn, moh.gov.vn; Hoa Kỳ: fcc.gov, usa.gov). Không tự thêm.
 
 ## Chờ chủ dự án (đang chặn đường chính)
-- **Go-live (GS-082, Cổng 1):** chưa mở. Điều kiện: E2E đạt (chuỗi chặn hiện tại: D-26 → GS-032 → GS-052 → GS-G1); chủ dự án ghi duyệt cho đúng commit trong `03_DECISIONS.md` (GS-H02); DNS `groundstead.iai.one` (GS-H03); repo (GS-H01); khóa ký thật cho Production (D-30).
+- **Go-live:** theo D-38 (23/11) có hai cổng. **L0 (GS-082)** — landing giới thiệu công khai: chủ dự án ghi duyệt đúng commit trong `03_DECISIONS.md` (GS-H02), DNS `groundstead.iai.one` (GS-H03), duyệt bản DRAFT pháp lý theo phạm vi L0 (GS-H08); kiểm GT35 và toàn bộ route/deployment khi tắt Vercel Authentication. **G1 (GS-G1 → GS-G1-GO)** — sản phẩm 72 giờ: chuỗi chặn hiện tại GS-031b + GS-032 → GS-052 → GS-G1; thêm repo (GS-H01→GS-001), khóa ký thật (D-30/GS-H12), người duyệt nội dung (GS-H13/D-10).
 - **D-30 / GS-H12 (chặn gói ngoại tuyến sẵn sàng trên Preview và Production):** sinh cặp khóa Ed25519; đặt khóa riêng làm secret của build (không commit, không ghi ra đĩa); đặt khóa công khai làm `NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY`. Đến lúc đó gói bị từ chối (đúng GT07). Vòng lặp không tự sinh khóa thật.
 - **GS-H11 (không gấp):** 5 website chặn truy cập tự động hoặc không kết nối (IFRC, UNDRR, GDACS, Bộ Y tế, NCHMF) và FEMA/CDC cũng chặn: nhờ anh mở bằng trình duyệt, chép câu bản quyền/tái sử dụng gửi lại để ghi vào sổ nguồn.
 - **GS-053b (HUMAN, D-36):** chọn nơi chạy job định kỳ và cấp khóa VAPID cho thông báo đẩy (chỉ gói miễn phí). Không chặn các việc AUTO khác, trừ GS-G2 và GS-105 (phụ thuộc GS-053b).
@@ -88,7 +93,7 @@
 - **GS-H02, GS-H03:** duyệt nội dung landing và DNS `iai.one` (chặn landing công khai, cần trước 20/11).
 - **GS-031b:** thẻ mất điện cần một trang chính thức đọc được có hướng dẫn mất điện. NWS, USGS, Red Cross đã đọc không có; FEMA và CDC chặn tự động.
 - **APPllama.iai:** phiên này không có connector, MCP hay thư mục máy nào cho APPllama.iai (đã tra registry: không thấy). Cần URL hoặc tên chính xác, hoặc kết nối connector trong claude.ai, hoặc gắn thư mục máy qua Remote Control.
-- **PR #2 (AFTERVIA):** check `verify` đỏ ở bước `npm audit --omit=dev --audit-level=high` của repo gốc (5 lỗ hổng mức cao trong Expo SDK 54). Nhánh gốc đỏ từ 04/11. Cần chủ dự án chọn hướng nâng cấp hoặc đổi cổng audit (xem `docs/plan/05_AUTONOMY_STATUS.md` của AFTERVIA). Đã comment trên PR một lần. Commit `02c863a` (run `42266939440`, job `128061191274`) đỏ cùng lỗi; re-run trả 403 từ phiên này (GitHub App không có quyền actions). Nhánh này không đổi file nào ngoài `groundstead/`.
+- **PR #2 (AFTERVIA):** cập nhật 23/11 — 3/3 checks xanh từ run 43364985421 (13/11) sau bản sửa `ci.yml` của Lane A (G-26) trên nhánh nền; PR vẫn draft, 0 review, head `54cec78`. Chú ý: `ci.yml` trong head của nhánh này vẫn đặt `playwright install` trước `npm ci` của `groundstead/` (nhánh chậm nhánh nền 12 commit) — khi tách repo phải tạo CI riêng với thứ tự cài đúng. Nhánh này không đổi file nào ngoài `groundstead/`.
 
 ## Preview
 - Alias của nhánh: `groundstead-git-ccr-8dbbf147-1ge7hc-tranhatam-6714s-projects.vercel.app` (cần đăng nhập Vercel; không công khai; `noindex`).

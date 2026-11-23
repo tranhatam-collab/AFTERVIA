@@ -20,7 +20,7 @@ const sample = () => ({
   tasks: [
     task({ id: 'A', deps: [] }),
     task({ id: 'B', deps: ['A'] }),
-    task({ id: 'H', kind: 'HUMAN', acceptance: [] }),
+    task({ id: 'H', kind: 'HUMAN', acceptance: [], status: 'WAITING_HUMAN' }),
     task({ id: 'C', deps: ['H'] }),
   ],
 });
@@ -184,6 +184,40 @@ test('GT02 AUTO_EXT tasks are loop work; HUMAN deps still gate them', () => {
   assert.deepEqual(readyTasks(data).map((t) => t.id), ['X1']);
   startTask(data, 'X1');
   assert.throws(() => startTask(data, 'H1'), /never starts it/);
+});
+
+test('GT02 validate enforces the human-status and blocked-reason invariants', () => {
+  const bad = {
+    tasks: [
+      task({ id: 'H', kind: 'HUMAN', acceptance: [], status: 'TODO' }),
+      task({ id: 'I', kind: 'INFRA', acceptance: [], status: 'BLOCKED', blocked_reason: 'no account' }),
+      task({ id: 'D', kind: 'DEVICE', acceptance: [], status: 'IN_PROGRESS' }),
+      task({ id: 'B', status: 'BLOCKED' }),
+    ],
+  };
+  const errors = validateBacklog(bad, { acceptanceIds: new Set(['GT01']) }).join('\n');
+  assert.match(errors, /H: HUMAN task must be WAITING_HUMAN or DONE, got TODO/);
+  assert.match(errors, /I: INFRA task must be WAITING_HUMAN or DONE, got BLOCKED/);
+  assert.match(errors, /D: DEVICE task must be WAITING_HUMAN or DONE, got IN_PROGRESS/);
+  assert.match(errors, /B: BLOCKED without blocked_reason/);
+});
+
+test('GT02 a gate review DONE does not unlock work behind the human GO gate', () => {
+  const data = {
+    meta: { iterations_used: 0, iteration_budget: 9 },
+    tasks: [
+      task({ id: 'REVIEW', kind: 'AUTO_PREP', acceptance: [], status: 'DONE', evidence: ['gate report: some conditions failed'] }),
+      task({ id: 'GO', kind: 'HUMAN', acceptance: [], status: 'WAITING_HUMAN', deps: ['REVIEW'] }),
+      task({ id: 'NEXT', deps: ['GO'] }),
+    ],
+  };
+  // Even with the review recorded DONE, downstream work stays closed until the owner signs GO.
+  assert.deepEqual(readyTasks(data), []);
+  assert.equal(decide(data).action, 'STOP_STUCK');
+  const go = data.tasks.find((t) => t.id === 'GO');
+  go.status = 'DONE';
+  go.evidence = ['owner decision D-xx on 2026-11-23'];
+  assert.deepEqual(readyTasks(data).map((t) => t.id), ['NEXT']);
 });
 
 test('GT02 loadAcceptanceIds reads only GT ids from the matrix', async () => {

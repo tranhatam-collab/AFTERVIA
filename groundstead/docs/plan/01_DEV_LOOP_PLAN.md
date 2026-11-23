@@ -11,7 +11,8 @@ Kế hoạch sản phẩm: `00_MASTER_PLAN.md`. Backlog: `backlog.json`. Nghiệ
 | Mức | Định nghĩa |
 |---|---|
 | Một task xong | Lệnh `npm run verify` thoát 0 trên commit; kiểm thử mang mã GT của task chạy thật và đạt; có tệp `docs/evidence/<TASK-ID>.md`; `node tools/loop/backlog.mjs done <id> --evidence "..."` thành công. |
-| Một cổng xong (về kỹ thuật) | Task rà cổng (`GS-G1`, `GS-G2`, `GS-G3`) DONE với báo cáo nêu từng điều kiện ở §15.2 của kế hoạch là đạt, chưa đạt, hay chờ chủ dự án. |
+| Một cổng được rà (về kỹ thuật) | Task rà cổng (`GS-G1`, `GS-G2`, `GS-G3`) DONE với báo cáo nêu từng điều kiện ở §15.2 của kế hoạch là đạt, chưa đạt, hay chờ chủ dự án. DONE ở đây nghĩa là "đã rà và có báo cáo", kể cả khi báo cáo là "chưa đạt". |
+| Một cổng qua (GO) | Task `GS-G1-GO`/`GS-G2-GO` (HUMAN) DONE, ghi bản quyết định của chủ dự án sau khi đọc báo cáo rà cổng. Chỉ GO mới mở các task phía sau cổng; một báo cáo "chưa đạt" không được ghi GO. |
 | Phần máy làm được xong | `decide` trả `STOP_HANDOFF`: mọi task AUTO/AUTO_PREP/AUTO_EXT đều DONE; phần còn lại là việc chỉ người làm được. |
 
 Không có "PASS" khi chưa có lần chạy thật. Kiểm thử bị bỏ qua là `NOT_RUN`.
@@ -88,7 +89,7 @@ groundstead/
 | `AUTO` | Có | Code, kiểm thử, nội dung trong repo |
 | `AUTO_PREP` | Có | Tài liệu chuẩn bị, báo cáo, rà cổng; không có kiểm thử GT bắt buộc |
 | `AUTO_EXT` | Có, trong phạm vi D-04 | Tác động dịch vụ ngoài đã được cho phép: tạo project Vercel và Supabase cho dev, deploy preview có bảo vệ, đẩy repo mới, đưa landing lên `groundstead.iai.one` khi có bản ghi duyệt |
-| `HUMAN` | Không, luôn `WAITING_HUMAN` | Việc cần danh tính pháp lý, hợp đồng, chi tiền hoặc quyền mà AI không được thay mặt (§19 kế hoạch) |
+| `HUMAN` | Không, luôn `WAITING_HUMAN` | Việc cần danh tính pháp lý, hợp đồng, chi tiền hoặc quyền mà AI không được thay mặt (§19 kế hoạch). Validator từ chối backlog có task HUMAN/DEVICE/INFRA ở `TODO`/`IN_PROGRESS`/`BLOCKED` |
 
 Một task AUTO_EXT phụ thuộc HUMAN chỉ sẵn sàng khi chủ dự án báo việc HUMAN đã xong; vòng lặp ghi xác nhận đó vào `03_DECISIONS.md` (ngày, nội dung chủ dự án nói) rồi mới đánh dấu task HUMAN là DONE với bằng chứng là bản ghi đó.
 
@@ -189,7 +190,7 @@ node tools/loop/matrix.mjs from-report .loop/node-tests.json   # báo cáo do np
 | **Mốc T+30 — 06/12/2026** | GS-040, 041, 042, 060, 061, 062, 063, 064, 065, 053, 066 | Kế hoạch gia đình, tủ vật dụng, 3 bộ lập kế hoạch, lớp nhà cung cấp, hồ sơ và bộ lọc tuyên bố, tra thu hồi, 10 Gói, trang Gói, công khai affiliate, job cảnh báo + thông báo đẩy, bật affiliate thật |
 | **Cổng 2 — 21/12/2026** | GS-036, 091, 092, 093, 094, 095, 037, 054, 070, 071, 072, 073, 083, G2 | Spec và 8 module lộ trình EN/VI, công cụ tính, 40 thẻ, thêm nguồn cảnh báo, Supabase + RLS, đồng bộ, xóa/xuất dữ liệu, quyền theo tầng, hiệu năng và axe |
 | **Cổng 3 — 04/02/2027** | GS-100 … 106, G3 | Gói quốc gia mới, đợt 2 ngôn ngữ, vòng an toàn gia đình, chế độ Tổ chức, nhật ký độ trễ, nguồn cháy/khói |
-| Chờ người | GS-H01 … H10 | Xem §19 của `00_MASTER_PLAN.md` |
+| Chờ người | GS-H01 … H13, GS-G1-GO, GS-G2-GO | Xem §19 của `00_MASTER_PLAN.md`; task `-GO` là bản ghi quyết định qua cổng của chủ dự án |
 
 Thứ tự trong `backlog.json` là thứ tự ưu tiên: vòng lặp luôn lấy task sẵn sàng đứng đầu.
 

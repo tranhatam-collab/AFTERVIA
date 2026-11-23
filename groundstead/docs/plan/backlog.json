@@ -161,7 +161,7 @@
       "id": "GS-031",
       "gate": "G1",
       "kind": "AUTO",
-      "title": "3 thẻ an toàn đầu tiên EN/VI (ngập, mất điện, nắng nóng) tóm lược từ nguồn có quyền, nhãn AI_DRAFT, đủ hồ sơ",
+      "title": "2 thẻ an toàn đầu tiên EN/VI (ngập, nắng nóng) tóm lược từ nguồn có quyền, nhãn AI_DRAFT, đủ hồ sơ; thẻ mất điện tách thành GS-031b",
       "deps": [
         "GS-030"
       ],
@@ -252,16 +252,14 @@
       "id": "GS-034",
       "gate": "G1",
       "kind": "AUTO_PREP",
-      "title": "Tra nhãn hiệu sơ bộ \"Groundstead\" và 2 tên dự phòng trên cơ sở dữ liệu công khai; báo cáo cho chủ dự án (không phải ý kiến pháp lý)",
+      "title": "Tra nhãn hiệu sơ bộ \"Groundstead\" và 2 tên dự phòng (Wellstead, Landstead — 00_MASTER_PLAN §1) trên cơ sở dữ liệu công khai; báo cáo cho chủ dự án (không phải ý kiến pháp lý)",
       "deps": [
         "GS-000"
       ],
       "acceptance": [],
-      "status": "BLOCKED",
+      "status": "TODO",
       "attempts": 0,
-      "evidence": [],
-      "blocked_reason": "Cần hai tên dự phòng do chủ dự án cung cấp: kế hoạch trong repo không liệt kê tên dự phòng nào. Báo cáo yêu cầu đủ ba tên (Groundstead và hai tên dự phòng). Khi có danh sách, vòng lặp tra cứu trên cơ sở dữ liệu công khai và ghi kết quả (không phải ý kiến pháp lý).",
-      "blocked_at": "2026-11-06T13:56:20.648Z"
+      "evidence": []
     },
     {
       "id": "GS-035",
@@ -398,7 +396,8 @@
       "title": "Mở rộng lên 20 thẻ 72 giờ EN/VI có hồ sơ (liên lạc, túi mang đi, dự trữ, CO, bão, lũ quét, sạt lở, nóng, lạnh, khói, nước, vệ sinh, y tế, động đất, sóng thần)",
       "deps": [
         "GS-031",
-        "GS-033"
+        "GS-033",
+        "GS-031b"
       ],
       "acceptance": [
         "GT03",
@@ -408,7 +407,7 @@
       "status": "BLOCKED",
       "attempts": 0,
       "evidence": [],
-      "blocked_reason": "Chờ D-26 (phạm vi thẻ có chi tiết NWS Hoa Kỳ: GLOBAL hay Hoa Kỳ). Nguồn đọc được và có quyền dùng hiện chỉ có NWS và USGS. FEMA, CDC, IFRC, UNDRR trả 403 cho truy cập tự động; GDACS là trang JavaScript; moh.gov.vn không truy cập được. WHO, Hội Chữ thập đỏ, ReliefWeb và trang chính phủ VN bị cấm dùng lại. Chưa viết thẻ nào thay nguồn.",
+      "blocked_reason": "Nguồn đọc được và có quyền dùng hiện chỉ có NWS và USGS. FEMA, CDC, IFRC, UNDRR trả 403 cho truy cập tự động; GDACS là trang JavaScript; moh.gov.vn không truy cập được. WHO, Hội Chữ thập đỏ, ReliefWeb và trang chính phủ VN bị cấm dùng lại (D-17). Ứng viên chưa kiểm: Ready.gov/FEMA power-outage PDF (đọc công khai được, cần rà điều khoản từng câu trước khi tóm lược — GS-H11). D-26 đã chốt 10/11 (GLOBAL, mm/°C) nên không còn là blocker.",
       "blocked_at": "2026-11-06T15:46:43.406Z"
     },
     {
@@ -497,7 +496,7 @@
       "id": "GS-G1",
       "gate": "G1",
       "kind": "AUTO_PREP",
-      "title": "Rà Cổng 1: chạy toàn bộ nghiệm thu, báo cáo đạt/chưa đạt theo §15.2, phần chờ chủ dự án; cập nhật preview",
+      "title": "Rà Cổng 1 (REVIEW): chạy toàn bộ nghiệm thu, báo cáo từng điều kiện §15.2 đạt/chưa đạt/chờ chủ dự án. DONE chỉ nghĩa là đã rà và có báo cáo; cổng chỉ qua khi chủ dự án ghi GS-G1-GO",
       "deps": [
         "GS-010",
         "GS-080",
@@ -528,13 +527,14 @@
       "id": "GS-082",
       "gate": "G1",
       "kind": "AUTO_EXT",
-      "title": "Đưa landing EN/VI lên groundstead.iai.one khi có bản ghi duyệt của chủ dự án và quyền DNS",
+      "title": "Cổng L0: đưa landing giới thiệu EN/VI lên groundstead.iai.one khi có bản ghi duyệt đúng commit và quyền DNS. Trang không hứa sản phẩm 72 giờ/cảnh báo; signup/affiliate tắt; kiểm GT35 và toàn bộ route/deployment khi đổi Vercel Authentication",
       "deps": [
         "GS-080",
         "GS-013",
         "GS-035",
         "GS-H02",
-        "GS-H03"
+        "GS-H03",
+        "GS-H08"
       ],
       "acceptance": [
         "GT35"
@@ -565,7 +565,7 @@
       "kind": "AUTO",
       "title": "Kế hoạch gia đình: thành viên (trẻ nhỏ, người cao tuổi, khuyết tật, vật nuôi), liên lạc, điểm hẹn; lưu IndexedDB; xuất và in",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT19"
@@ -580,7 +580,7 @@
       "kind": "AUTO",
       "title": "Tủ vật dụng: số lượng, nơi cất, hạn dùng, ngày kiểm; đánh dấu đã có; bỏ món trùng; xuất danh sách để mua ở bất kỳ đâu",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT19"
@@ -610,7 +610,7 @@
       "kind": "AUTO",
       "title": "Lớp kết nối nhà cung cấp: giao diện chung, danh mục (nhà cung cấp, mã hàng, quốc gia, giá kèm thời điểm, liên kết); bộ chuyển với dữ liệu mẫu, không khóa thật",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT26"
@@ -721,7 +721,7 @@
       "title": "Content spec EN chi tiết cho 8 module lộ trình (bước 1–8), gồm biến thể vùng khí hậu và câu hỏi pháp lý theo nước",
       "deps": [
         "GS-030",
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [],
       "status": "TODO",
@@ -734,7 +734,7 @@
       "kind": "AUTO",
       "title": "Công cụ Nước Lành: lượng nước trữ theo người và ngày; dung tích thu nước mưa theo diện tích mái và lượng mưa",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT22"
@@ -749,7 +749,7 @@
       "kind": "AUTO",
       "title": "Công cụ Điện Lành: tính tải, dung lượng pin, công suất tấm pin theo giờ nắng",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT22"
@@ -764,7 +764,7 @@
       "kind": "AUTO",
       "title": "Công cụ Vườn Lành (calo, ngày dự trữ) và Vốn Lành (kế hoạch tài chính 24 tháng)",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT22"
@@ -779,7 +779,7 @@
       "kind": "AUTO",
       "title": "Bảng chấm điểm lô đất và danh mục Nhà Lành theo hiểm họa",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT22"
@@ -815,7 +815,7 @@
       "title": "Mở rộng lên 40 thẻ 72 giờ EN/VI",
       "deps": [
         "GS-032",
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT03",
@@ -833,7 +833,7 @@
       "title": "Thêm nguồn NWS, Meteoalarm, ReliefWeb với bản ghi mẫu",
       "deps": [
         "GS-051",
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT13",
@@ -849,7 +849,7 @@
       "kind": "AUTO_EXT",
       "title": "Supabase: lược đồ, RLS, Auth; kiểm RLS trên Postgres cục bộ _test; project dev chỉ dữ liệu giả, chỉ gói miễn phí",
       "deps": [
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT30"
@@ -912,7 +912,7 @@
       "title": "Ngân sách hiệu năng tuyến khẩn cấp; kiểm axe trên mọi trang thiết yếu",
       "deps": [
         "GS-021",
-        "GS-G1"
+        "GS-G1-GO"
       ],
       "acceptance": [
         "GT32",
@@ -954,7 +954,7 @@
       "kind": "AUTO",
       "title": "Gói quốc gia ES, BR, ID, PH, FR và danh bạ \"Ai giúp tôi\"",
       "deps": [
-        "GS-G2"
+        "GS-G2-GO"
       ],
       "acceptance": [
         "GT11",
@@ -970,7 +970,7 @@
       "kind": "AUTO",
       "title": "Đợt 2 ngôn ngữ cho thẻ an toàn (ES, PT-BR, ID, FR) qua kiểm tra bất biến",
       "deps": [
-        "GS-G2"
+        "GS-G2-GO"
       ],
       "acceptance": [
         "GT05"
@@ -985,7 +985,7 @@
       "kind": "AUTO",
       "title": "Đợt 2 ngôn ngữ cho 9 module, viết bản ngữ từ spec; hreflang và sitemap mở rộng",
       "deps": [
-        "GS-G2",
+        "GS-G2-GO",
         "GS-100"
       ],
       "acceptance": [
@@ -1002,7 +1002,7 @@
       "kind": "AUTO",
       "title": "Vòng an toàn gia đình: \"Tôi an toàn\", điểm hẹn, chia sẻ vị trí tạm thời có hạn",
       "deps": [
-        "GS-G2"
+        "GS-G2-GO"
       ],
       "acceptance": [
         "GT30",
@@ -1018,7 +1018,7 @@
       "kind": "AUTO",
       "title": "Chế độ Tổ chức: nhiều cơ sở, phân công, nhắc hạn, diễn tập",
       "deps": [
-        "GS-G2"
+        "GS-G2-GO"
       ],
       "acceptance": [
         "GT20"
@@ -1033,7 +1033,7 @@
       "kind": "AUTO",
       "title": "Nhật ký độ trễ cảnh báo từ dấu thời gian thật; trang công khai",
       "deps": [
-        "GS-G2",
+        "GS-G2-GO",
         "GS-053a",
         "GS-053b"
       ],
@@ -1050,7 +1050,7 @@
       "kind": "AUTO",
       "title": "Thêm NASA EONET và OpenAQ; thẻ cháy và khói",
       "deps": [
-        "GS-G2"
+        "GS-G2-GO"
       ],
       "acceptance": [
         "GT13"
@@ -1198,7 +1198,7 @@
       "title": "Mở bằng trình duyệt trang điều khoản của ready.gov, fema.gov, cdc.gov, ifrc.org, undrr.org, gdacs.org, moh.gov.vn, nchmf.gov.vn (các trang này chặn truy cập tự động hoặc cần JavaScript) và gửi lại câu bản quyền/tái sử dụng để ghi vào sổ nguồn",
       "deps": [],
       "acceptance": [],
-      "status": "TODO",
+      "status": "WAITING_HUMAN",
       "attempts": 0,
       "evidence": []
     },
@@ -1257,10 +1257,62 @@
         "GT13",
         "GT16"
       ],
-      "status": "TODO",
+      "status": "WAITING_HUMAN",
       "attempts": 0,
       "evidence": [],
       "split_from": "GS-053"
+    },
+    {
+      "id": "GS-H12",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Sinh cặp khóa Ed25519 cho gói ngoại tuyến (D-30): đặt khóa riêng làm secret của build (không commit, không ghi ra đĩa) và khóa công khai làm NEXT_PUBLIC_GROUNDSTEAD_PACK_PUBLIC_KEY; báo \"đã đặt\" kèm tên biến, không dán giá trị",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-H13",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Chỉ định người duyệt nội dung an toàn (D-10): tên hoặc vai trò người duyệt, phương thức ghi bản duyệt cho từng thẻ EN/VI; nhãn EXPERT_REVIEWED chỉ khi có bản ghi duyệt thật",
+      "deps": [],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-G1-GO",
+      "gate": "G1",
+      "kind": "HUMAN",
+      "title": "Quyết GO Cổng 1 sau khi đọc báo cáo GS-G1: chỉ ghi DONE khi mọi điều kiện §15.2 đạt trên bản chạy thật (20 thẻ duyệt, gói offline ký và kiểm trên deployment, cảnh báo live, danh bạ, GT liên quan). Một báo cáo \"chưa đạt\" KHÔNG được ghi DONE",
+      "deps": [
+        "GS-G1",
+        "GS-001",
+        "GS-H08",
+        "GS-H12",
+        "GS-H13"
+      ],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
+    },
+    {
+      "id": "GS-G2-GO",
+      "gate": "G2",
+      "kind": "HUMAN",
+      "title": "Quyết GO Cổng 2 sau khi đọc báo cáo GS-G2: chỉ ghi DONE khi mọi điều kiện §15.2 của Cổng 2 đạt trên bản chạy thật",
+      "deps": [
+        "GS-G2"
+      ],
+      "acceptance": [],
+      "status": "WAITING_HUMAN",
+      "attempts": 0,
+      "evidence": []
     }
   ]
 }

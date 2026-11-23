@@ -40,6 +40,12 @@ export function validateBacklog(data, { acceptanceIds = null } = {}) {
     if (task.status === 'DONE' && (!Array.isArray(task.evidence) || task.evidence.length === 0)) {
       errors.push(`${id}: DONE without evidence`);
     }
+    if (task.status === 'BLOCKED' && (typeof task.blocked_reason !== 'string' || task.blocked_reason.trim().length === 0)) {
+      errors.push(`${id}: BLOCKED without blocked_reason`);
+    }
+    if (!LOOP_KINDS.has(task.kind) && !['WAITING_HUMAN', 'DONE'].includes(task.status)) {
+      errors.push(`${id}: ${task.kind} task must be WAITING_HUMAN or DONE, got ${task.status}`);
+    }
   }
   for (const task of data.tasks) {
     for (const dep of task.deps ?? []) {

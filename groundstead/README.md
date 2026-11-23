@@ -2,7 +2,7 @@
 
 Nền tảng chuẩn bị khẩn cấp và lộ trình sống tự chủ, bền vững "Từ phố về đất lành": Chế độ 72 giờ đô thị dùng được khi mất mạng, 8 module lộ trình, cảnh báo đa nguồn và các Gói Groundstead tuyển chọn từ nhà cung cấp có sẵn (không kho).
 
-> **Trạng thái:** kế hoạch đã chốt, vòng lặp phát triển bắt đầu ngày 06/11/2026. Chưa có sản phẩm chạy, chưa có người dùng, chưa có doanh thu. "Groundstead" là tên làm việc, chưa tra nhãn hiệu xong.
+> **Trạng thái:** kế hoạch đã chốt, vòng lặp phát triển bắt đầu ngày 06/11/2026. Có build chạy trên Vercel nhưng còn bảo vệ truy cập; chưa có sản phẩm 72 giờ được nghiệm thu hay công khai, chưa có người dùng, chưa có doanh thu. "Groundstead" là tên làm việc, chưa tra nhãn hiệu xong.
 >
 > **Vị trí tạm:** thư mục này nằm trong repo AFTERVIA cho đến khi repo `tranhatam-collab/groundstead` được tạo; khi đó toàn bộ lịch sử được tách sang repo mới (`docs/plan/01_DEV_LOOP_PLAN.md` §2). Thư mục tự đóng gói, không phụ thuộc mã AFTERVIA.
 
@@ -15,7 +15,7 @@ Nền tảng chuẩn bị khẩn cấp và lộ trình sống tự chủ, bền 
 | `docs/plan/02_ACCEPTANCE.csv` | 37 tiêu chí nghiệm thu GT01–GT37 |
 | `docs/plan/03_DECISIONS.md` | Sổ quyết định |
 | `docs/plan/05_STATUS.md` | Trạng thái vòng lặp |
-| `docs/plan/backlog.json` | Backlog máy đọc được (68 task) |
+| `docs/plan/backlog.json` | Backlog máy đọc được (76 task) |
 | `docs/evidence/` | Bằng chứng từng task |
 
 ## Lệnh
