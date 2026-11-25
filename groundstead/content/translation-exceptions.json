@@ -1,0 +1,9 @@
+[
+  {
+    "card": "flood-safety",
+    "field": "steps[2]",
+    "term": "TV",
+    "vi": "truyền hình",
+    "reason": "Bản tiếng Việt viết 'radio and TV' thành 'đài phát thanh và truyền hình'. 'TV' là từ viết tắt được dịch đúng nghĩa, không phải tên riêng nên không giữ nguyên. Vòng lặp chỉ kiểm nghĩa; thẻ vẫn là AI_DRAFT và chưa có người duyệt."
+  }
+]

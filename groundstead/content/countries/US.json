@@ -1,0 +1,43 @@
+{
+  "code": "US",
+  "name": {
+    "en": "United States",
+    "vi": "Hoa Kỳ"
+  },
+  "locales": [
+    "en",
+    "vi"
+  ],
+  "currency": "USD",
+  "units": "imperial",
+  "status": "partial",
+  "pending": {
+    "en": "Only the US emergency number 911 has been checked, on an official NWS page. Other US numbers (police, fire, poison and crisis lines) are not listed yet. Check the official government website for the number where you are.",
+    "vi": "Chỉ số khẩn cấp 911 của Hoa Kỳ đã được đối chiếu, trên một trang chính thức của NWS. Các số khác (công an, cứu hỏa, ngộ độc, đường dây hỗ trợ khủng hoảng) chưa được liệt kê. Hãy kiểm tra trang chính phủ chính thức để biết số tại nơi bạn đang ở."
+  },
+  "emergency_numbers": [
+    {
+      "service": "general",
+      "number": "911",
+      "source": "us-nws-heat-illness",
+      "checked_on": "2026-11-06"
+    }
+  ],
+  "authorities": [
+    {
+      "role": "weather-service",
+      "name": "National Weather Service",
+      "url": "https://www.weather.gov/",
+      "source": "us-nws-safety",
+      "checked_on": "2026-11-06"
+    },
+    {
+      "role": "red-cross",
+      "name": "American Red Cross",
+      "url": "https://www.redcross.org/",
+      "source": "us-red-cross",
+      "checked_on": "2026-11-06"
+    }
+  ],
+  "checked_on": "2026-11-06"
+}
