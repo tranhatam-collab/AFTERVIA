@@ -1,5 +1,12 @@
 # Groundstead — Trạng thái vòng lặp
 
+## Cập nhật 27/11/2026 — L0 công khai
+
+- Chủ dự án xác nhận go-live cho mã giao diện `96cb41a` và quyết định D-39: công khai landing L0 EN/VI, giữ bộ pháp lý DRAFT ngoài website. Bản duyệt và phạm vi được ghi ở `03_DECISIONS.md`; `GS-H02` và `GS-H03` có bằng chứng trực tiếp, `GS-H08` vẫn `WAITING_HUMAN`.
+- `GS-082` DONE: Vercel project `groundstead` triển khai lượt production cuối `dpl_AmWZPzodd7h9bYvWuPykcwHMszh7` READY, alias `groundstead.iai.one`. Cloudflare CNAME DNS-only đã được Vercel xác minh. Truy cập ẩn danh `/vi/`, `/en/`, `/en/emergency/`, `/en/help/` và ảnh hero trả HTTP 200, TLS hợp lệ; preview vẫn chuyển sang SSO. Vercel Authentication ở mức `Standard Protection`.
+- `GT35` PASS cho lượt production cuối vì bản ghi duyệt đã có trên GitHub trước khi triển khai lại; lần mở công khai đầu tiên có lệch trình tự nhập bản ghi vào repo, đã nêu rõ trong `docs/evidence/GS-082-L0-2026-11-27.md`. Chưa có cổng CI tự chặn deploy thiếu bản ghi.
+- `GT36` vẫn `MANUAL_PENDING`; không công bố thẻ AI_DRAFT, gói offline chưa ký, đăng ký sớm hay affiliate. Trang hiện giữ `noindex, nofollow`. Vercel báo hóa đơn quá hạn và nguy cơ tài khoản bị tắt; chưa xử lý thanh toán.
+
 ## Cập nhật 23/11/2026 — sửa sự thật của kế hoạch (đợt sửa sau audit)
 
 - Audit 15/11 + đối chiếu 23/11: nhánh vẫn ở `54cec78` (13/11), không có commit mới; PR #2 vẫn draft, 0 review. Mọi phát hiện audit còn nguyên.

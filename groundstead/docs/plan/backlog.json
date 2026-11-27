@@ -5,7 +5,7 @@
     "builder": "Claude Code (vòng lặp send_later, một writer). Quyết định D-01..D-04 ở docs/plan/03_DECISIONS.md",
     "generated_on": "2026-11-06",
     "iteration_budget": 100,
-    "iterations_used": 21,
+    "iterations_used": 22,
     "note": "Vòng lặp chỉ bắt đầu AUTO, AUTO_PREP, AUTO_EXT. HUMAN luôn WAITING_HUMAN. Thứ tự trong mảng là thứ tự ưu tiên."
   },
   "tasks": [
@@ -538,9 +538,13 @@
       "acceptance": [
         "GT35"
       ],
-      "status": "TODO",
-      "attempts": 0,
-      "evidence": []
+      "status": "DONE",
+      "attempts": 1,
+      "evidence": [
+        "docs/evidence/GS-082-L0-2026-11-27.md: owner approval, Vercel dpl_AmWZPzodd7h9bYvWuPykcwHMszh7 READY, Cloudflare DNS verified, public EN/VI/emergency/help HTTP 200 TLS valid, preview SSO 302; initial exposure preceded repo receipt and is disclosed"
+      ],
+      "started_at": "2026-11-27T15:51:14.971Z",
+      "finished_at": "2026-11-27T15:51:15.039Z"
     },
     {
       "id": "GS-001",
