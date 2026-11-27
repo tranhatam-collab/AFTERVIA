@@ -72,7 +72,7 @@ test('GT32 keyboard: the skip link is the first stop on the home page and moves 
     await page.goto(`${base}/en/`, { waitUntil: 'load' });
     await page.keyboard.press('Tab');
     const focused = await page.evaluate(() => ({ cls: document.activeElement?.className, text: document.activeElement?.textContent }));
-    assert.equal(focused.cls, 'skip');
+    assert.match(focused.cls, /(?:^|\s)skip(?:\s|$)/);
     assert.equal(focused.text, MESSAGES.en.skipToContent);
     await page.keyboard.press('Enter');
     assert.equal(await page.evaluate(() => location.hash), '#main');

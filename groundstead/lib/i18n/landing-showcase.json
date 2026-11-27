@@ -1,0 +1,186 @@
+{
+  "vi": {
+    "skip": "Bỏ qua điều hướng",
+    "navLabel": "Điều hướng chính",
+    "footerNav": "Điều hướng chân trang",
+    "navApproach": "Tầm nhìn",
+    "nav72": "Chế độ 72 giờ",
+    "navJourney": "Lộ trình",
+    "navStart": "Bắt đầu",
+    "heroAlt": "Thung lũng xanh lúc bình minh",
+    "heroKicker": "GROUNDSTEAD / ĐẤT LÀNH",
+    "heroTitle": "Từ phố về <br>đất lành.",
+    "heroLede": "Chuẩn bị bình tĩnh cho hôm nay. Sống vững vàng cho ngày mai.",
+    "heroPrimary": "Khám phá Chế độ 72 giờ",
+    "heroSecondary": "Xem lộ trình",
+    "approachTitle": "Một nơi để bắt đầu, dù bạn đang ở đâu.",
+    "approachBody": "Groundstead nối việc chuẩn bị thiết thực trong đô thị với hành trình sống tự chủ dài hạn. Mỗi bước đều cần rõ nguồn, rõ giới hạn và dễ làm theo.",
+    "approachLink": "Điều chúng tôi giữ vững",
+    "essentialsAlt": "Bình nước, đèn, radio và túi chuẩn bị thiết yếu",
+    "imageCaption": "Bắt đầu với những gì thiết yếu.",
+    "hoursTitle": "Sẵn sàng bắt đầu từ những việc nhỏ.",
+    "hoursBody": "Chế độ 72 giờ đặt thông tin cần thiết ở nơi dễ tìm. Trong bản mẫu này, hãy thử đánh dấu ba việc nền tảng của gia đình bạn.",
+    "checklistTitle": "Ba việc đầu tiên",
+    "checkContact": "Có kế hoạch liên lạc",
+    "checkContactSub": "Ai sẽ gọi cho ai khi mất kết nối?",
+    "checkWater": "Chuẩn bị nước uống",
+    "checkWaterSub": "Kiểm lại lượng nước và nơi cất giữ.",
+    "checkLight": "Có nguồn sáng dự phòng",
+    "checkLightSub": "Đèn, pin và vị trí dễ lấy.",
+    "checklistNote": "Danh sách gợi ý để thử giao diện; chưa phải hướng dẫn 72 giờ đầy đủ.",
+    "journeyTitle": "Một hành trình sống vững.",
+    "journeyBody": "Từ đánh giá nơi mình đang đứng đến nước, điện, lương thực và cộng đồng. Chọn một chặng để xem hướng đi.",
+    "stageLabel": "CHẶNG ĐƯỜNG",
+    "stageNav": "Chọn chặng của lộ trình",
+    "prevStage": "Chặng trước",
+    "nextStage": "Chặng tiếp theo",
+    "principlesTitle": "Rõ ràng là một cách chăm sóc.",
+    "principlesBody": "Khi thông tin liên quan đến sự an toàn, cách trình bày phải đi cùng sự trung thực.",
+    "p1Title": "Biết thông tin đến từ đâu",
+    "p1Body": "Nội dung cần có nguồn, ngày cập nhật và giới hạn áp dụng.",
+    "p2Title": "Đọc được khi cần nhất",
+    "p2Body": "Thiết kế ưu tiên đường đi ngắn, chữ rõ và khả năng dùng khi kết nối yếu.",
+    "p3Title": "Không đánh đổi sự an toàn",
+    "p3Body": "Hướng dẫn thiết yếu không bị che sau màn hình mua hàng.",
+    "closingTitle": "Good land. <br>Steady life.",
+    "closingBody": "Đất Lành. Sống Lành. Một lựa chọn bắt đầu từ hôm nay.",
+    "closingCta": "Thử ba việc đầu tiên",
+    "footerTagline": "Good land. Steady life.",
+    "previewNotice": "Bản mẫu giao diện local để duyệt. Chưa phải dịch vụ cảnh báo, cứu hộ hay hướng dẫn đã được duyệt.",
+    "backTop": "Lên đầu trang ↑",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "darkTheme": "Chuyển giao diện tối",
+    "lightTheme": "Chuyển giao diện sáng",
+    "stages": [
+      [
+        "Đo độ sẵn sàng",
+        "Hiểu điểm xuất phát của gia đình trước khi quyết định bước tiếp theo."
+      ],
+      [
+        "Vốn Lành",
+        "Nhìn rõ quỹ dự phòng, chi phí thực và khoảng thời gian cần chuẩn bị."
+      ],
+      [
+        "Chọn vùng và đất",
+        "Đặt đúng câu hỏi về khí hậu, nước, y tế và điều kiện địa phương."
+      ],
+      [
+        "Nước Lành",
+        "Lập kế hoạch về nguồn nước, lưu trữ và những giới hạn cần kiểm chứng."
+      ],
+      [
+        "Điện Lành",
+        "Hiểu nhu cầu điện thiết yếu và các phương án dự phòng phù hợp."
+      ],
+      [
+        "Vườn Lành",
+        "Đi từ khả năng của nơi ở đến kế hoạch lương thực theo mùa."
+      ],
+      [
+        "Nhà Lành",
+        "Xem xét nơi ở qua các rủi ro, nhu cầu sinh hoạt và ngân sách."
+      ],
+      [
+        "Thân Lành",
+        "Đặt sức khỏe và khả năng tiếp cận chăm sóc y tế vào kế hoạch."
+      ],
+      [
+        "Làng Lành",
+        "Xây mạng lưới hỗ trợ bằng những mối liên hệ thật ở địa phương."
+      ]
+    ]
+  },
+  "en": {
+    "skip": "Skip navigation",
+    "navLabel": "Main navigation",
+    "footerNav": "Footer navigation",
+    "navApproach": "Our approach",
+    "nav72": "72-hour mode",
+    "navJourney": "The journey",
+    "navStart": "Begin",
+    "heroAlt": "Green highland valley at sunrise",
+    "heroKicker": "GROUNDSTEAD / ĐẤT LÀNH",
+    "heroTitle": "Good land. <br>Steady life.",
+    "heroLede": "Prepare calmly for today. Build a steadier life for tomorrow.",
+    "heroPrimary": "Explore 72-hour mode",
+    "heroSecondary": "See the journey",
+    "approachTitle": "A place to begin, wherever you are.",
+    "approachBody": "Groundstead connects practical urban preparedness with a longer path toward self-reliant living. Every step should be sourced, honest about its limits, and easy to follow.",
+    "approachLink": "What guides our work",
+    "essentialsAlt": "Water bottle, flashlight, radio and an essentials bag",
+    "imageCaption": "Begin with what matters.",
+    "hoursTitle": "Readiness begins with small steps.",
+    "hoursBody": "The 72-hour mode puts essential information within easy reach. In this preview, try checking off three foundational tasks for your household.",
+    "checklistTitle": "Three first steps",
+    "checkContact": "Make a contact plan",
+    "checkContactSub": "Who will call whom if connections fail?",
+    "checkWater": "Set aside drinking water",
+    "checkWaterSub": "Check the amount and where it is stored.",
+    "checkLight": "Keep a backup light",
+    "checkLightSub": "Know where the light and batteries are.",
+    "checklistNote": "A sample interaction for this preview, not a complete 72-hour guide.",
+    "journeyTitle": "A journey toward a steadier life.",
+    "journeyBody": "From knowing your starting point to water, power, food and community. Choose a stage to see the direction.",
+    "stageLabel": "THE JOURNEY",
+    "stageNav": "Choose a stage of the journey",
+    "prevStage": "Previous stage",
+    "nextStage": "Next stage",
+    "principlesTitle": "Clarity is a form of care.",
+    "principlesBody": "When information concerns safety, the way it is presented must be as honest as the content.",
+    "p1Title": "Know where it comes from",
+    "p1Body": "Content needs a source, an update date and clear limits.",
+    "p2Title": "Find it when it matters",
+    "p2Body": "Short paths, clear type and usability on weak connections come first.",
+    "p3Title": "Never trade away safety",
+    "p3Body": "Essential guidance never sits behind a purchase screen.",
+    "closingTitle": "Good land. <br>Steady life.",
+    "closingBody": "Đất Lành. Sống Lành. A choice that begins today.",
+    "closingCta": "Try the first steps",
+    "footerTagline": "Good land. Steady life.",
+    "previewNotice": "Local interface preview for review. This is not an active alert, rescue or approved guidance service.",
+    "backTop": "Back to top ↑",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "darkTheme": "Switch to dark theme",
+    "lightTheme": "Switch to light theme",
+    "stages": [
+      [
+        "Readiness check",
+        "Understand your household’s starting point before deciding what comes next."
+      ],
+      [
+        "Fund your path",
+        "See the reserve you need, real costs and the time it may take to prepare."
+      ],
+      [
+        "Choose land",
+        "Ask the right questions about climate, water, healthcare and local conditions."
+      ],
+      [
+        "Water",
+        "Plan for a water source, storage and the limits that need verification."
+      ],
+      [
+        "Power",
+        "Understand essential power needs and suitable backup options."
+      ],
+      [
+        "Food",
+        "Move from what your place can support to a seasonal food plan."
+      ],
+      [
+        "Shelter",
+        "Review your home through risk, daily needs and budget."
+      ],
+      [
+        "Health",
+        "Make health and access to care part of the plan."
+      ],
+      [
+        "Community",
+        "Build real local relationships that can support one another."
+      ]
+    ]
+  }
+}

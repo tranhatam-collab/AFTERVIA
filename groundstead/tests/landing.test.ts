@@ -54,10 +54,11 @@ for (const locale of LOCALES) {
     assert.ok(text.includes(m.positioning), 'the positioning sentence is shown');
   });
 
-  test(`GT10 ${locale} landing has no form, input, select, textarea or button, so early sign-up stays off`, () => {
-    for (const tag of ['form', 'input', 'select', 'textarea', 'button']) {
+  test(`GT10 ${locale} landing has no sign-up form or submit control`, () => {
+    for (const tag of ['form', 'input', 'select', 'textarea']) {
       assert.equal(elements(html, tag).length, 0, `no <${tag}> on the landing`);
     }
+    assert.ok(elements(html, 'button').every((button) => button.type === 'button'), 'interaction buttons cannot submit data');
   });
 
   test(`GT09 ${locale} landing puts emergency guidance and the contact list one link away, and no account or shop link`, () => {
