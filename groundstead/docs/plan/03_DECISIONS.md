@@ -35,6 +35,7 @@ Quyết định nào cũng ghi: câu hỏi, lựa chọn, quyết định, ngày
 | D-26 | Phạm vi của hai hướng dẫn lũ lụt và nắng nóng | Chủ dự án chọn (b): giữ phạm vi GLOBAL; đổi đơn vị sang mm và °C; bỏ chi tiết chỉ áp dụng ở Hoa Kỳ (đài NOAA Weather Radio và tương tự); kiểm lại trích dẫn từng câu. Áp dụng cho cả thẻ mất điện GS-031b. Thẻ vẫn là AI_DRAFT cho đến khi D-10 có người duyệt. | 10/11/2026 | Chủ dự án |
 | D-37 | Cổng audit của PR #2 (package gốc AFTERVIA) đỏ từ 04/11 | Chủ dự án chọn nâng cấp Expo và expo-router (khuyến nghị), không đổi ngưỡng audit. Có breaking change; cần chạy lại verify gốc và kiểm app mobile. | 10/11/2026 | Chủ dự án |
 | D-38 | Phạm vi công khai đầu tiên: landing giới thiệu hay sản phẩm 72 giờ? | Chọn hai cổng tách: **L0** là landing giới thiệu công khai trước (GS-082): không hứa hướng dẫn khẩn cấp đã công bố, cảnh báo live hay gói offline; signup/affiliate tắt. **G1** là sản phẩm 72 giờ theo §15.2, chỉ qua khi chủ dự án ghi `GS-G1-GO` sau báo cáo `GS-G1` trên bản chạy thật. Một cổng "đã rà" (task GS-Gx DONE) không đồng nghĩa "đã qua". Mốc 20/11 của G1 không còn đạt được và được rebaseline theo L0 → G1. | 23/11/2026 | Chủ dự án |
+| D-39 | Công khai L0 khi GS-035/GS-H08 vẫn DRAFT? | Chủ dự án chọn “Công khai L0, giữ pháp lý DRAFT chưa xuất bản” ngày 27/11/2026. Chỉ phát hành landing EN/VI và các route hỗ trợ hiện có; không công bố bản pháp lý nháp, không mở đăng ký sớm, affiliate, thẻ hướng dẫn AI_DRAFT hoặc gói ngoại tuyến chưa ký. GS-H08 tiếp tục chờ duyệt cho việc công bố bản pháp lý và các tính năng phụ thuộc. Quyết định này giới hạn riêng cổng L0, không phải phê duyệt nội dung pháp lý. | 27/11/2026 | Chủ dự án (xác nhận trong chat) |
 
 ## Đang mở
 
@@ -56,4 +57,4 @@ Mỗi lần chủ dự án duyệt nội dung để công khai, ghi một dòng:
 
 | Ngày | Commit | Phạm vi | Lời duyệt |
 |---|---|---|---|
-| — | — | — | Chưa có |
+| 27/11/2026 | `96cb41af1b76da1a4a94df78757ae3cd2cea4f2f` | Landing L0 EN/VI tại `groundstead.iai.one`, bản pháp lý DRAFT vẫn ngoài website; preview giữ bảo vệ | “ÁP DỤNG GOLIVE”; sau khi được cho biết đúng commit và phạm vi: “Xác nhận mở công khai production”; “Công khai L0, giữ pháp lý DRAFT chưa xuất bản”. Bản ghi được nhập vào repo sau thao tác mở công khai; xem `docs/evidence/GS-082-L0-2026-11-27.md`. |

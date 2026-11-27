@@ -533,8 +533,7 @@
         "GS-013",
         "GS-035",
         "GS-H02",
-        "GS-H03",
-        "GS-H08"
+        "GS-H03"
       ],
       "acceptance": [
         "GT35"
@@ -1096,9 +1095,11 @@
       "title": "Duyệt nội dung landing EN/VI để công khai",
       "deps": [],
       "acceptance": [],
-      "status": "WAITING_HUMAN",
+      "status": "DONE",
       "attempts": 0,
-      "evidence": []
+      "evidence": [
+        "Chủ dự án xác nhận mở công khai production cho landing EN/VI commit 96cb41a trong chat ngày 27/11/2026; docs/plan/03_DECISIONS.md bảng duyệt công khai; docs/evidence/GS-082-L0-2026-11-27.md"
+      ]
     },
     {
       "id": "GS-H03",
@@ -1107,9 +1108,11 @@
       "title": "Cho biết DNS của iai.one ở đâu hoặc cấp quyền tạo bản ghi groundstead.iai.one",
       "deps": [],
       "acceptance": [],
-      "status": "WAITING_HUMAN",
+      "status": "DONE",
       "attempts": 0,
-      "evidence": []
+      "evidence": [
+        "Chủ dự án yêu cầu go-live; Cloudflare CNAME DNS-only groundstead.iai.one và Vercel domains verify configured-correctly ngày 27/11/2026; docs/evidence/GS-082-L0-2026-11-27.md"
+      ]
     },
     {
       "id": "GS-H04",
